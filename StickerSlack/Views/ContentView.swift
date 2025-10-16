@@ -8,16 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-		TabView {
-			Text("hi")
+	@StateObject var hoarder: EmojiHoarder = EmojiHoarder()
+	
+	var body: some View {
+		NavigationStack {
+			TabView {
+				List {
+					ForEach(hoarder.testBundle.toEmojis(), id: \.self) { emoji in
+						Text(emoji.name)
+						Text(emoji.url)
+					}
+				}
 				.tabItem {
 					Label("home", systemImage: "house")
 				}
+			}
 		}
-    }
+	}
 }
 
 #Preview {
-    ContentView()
+	ContentView()
 }

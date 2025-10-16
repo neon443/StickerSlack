@@ -11,14 +11,14 @@ struct SlackResponse: Codable {
 	var ok: Bool
 	var emoji: [String:String]
 	
-	func toEmojiResponse() -> [SlackEmojiResponse] {
+	func toEmojis() -> [Emoji] {
 		return emoji.map {
-			SlackEmojiResponse(name: $0.key, url: $0.value)
+			Emoji(name: $0.key, url: $0.value)
 		}
 	}
 }
 
-struct SlackEmojiResponse: Codable {
+struct Emoji: Codable, Hashable {
 	var name: String
 	var url: String
 	
