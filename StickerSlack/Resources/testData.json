@@ -12,8 +12,6 @@
 		"thumbsup_all": "https://emoji.slack-edge.com/T0266FRGM/thumbsup_all/50096a1020.png",
 		"slack_call": "https://emoji.slack-edge.com/T0266FRGM/slack_call/b81fffd6dd.png",
 		"shipit": "alias:squirrel",
-		"white_square": "alias:white_large_square",
-		"black_square": "alias:black_large_square",
 		"simple_smile": "https://a.slack-edge.com/80588/img/emoji_2017_12_06/apple/simple_smile.png",
 		"neckbeard": "https://emoji.slack-edge.com/T0266FRGM/neckbeard/c8ec7bf188.png",
 		"metal": "https://emoji.slack-edge.com/T0266FRGM/metal/9f936a4278.png",
@@ -21,7 +19,6 @@
 		"feelsgood": "https://emoji.slack-edge.com/T0266FRGM/feelsgood/7bcbaa15fa.png",
 		"finnadie": "https://emoji.slack-edge.com/T0266FRGM/finnadie/08e66eb46d.png",
 		"goberserk": "https://emoji.slack-edge.com/T0266FRGM/goberserk/d8b892d59b.png",
-		"godmode": "https://emoji.slack-edge.com/T0266FRGM/godmode/1bd6476fbb.png",
-		"hurtrealbad": "https://emoji.slack-edge.com\""
+		"godmode": "https://emoji.slack-edge.com/T0266FRGM/godmode/1bd6476fbb.png"
 	}
 }

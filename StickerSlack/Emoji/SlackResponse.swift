@@ -15,13 +15,16 @@ struct SlackResponse: Codable {
 		let initialMap = emoji.map {
 			Emoji(name: $0.key, url: $0.value)
 		}
-		initialMap.map {
+		return initialMap.map {
 			var ret = $0
-			ret.urlString = ret.urlString.prefix(6) == "alias:" ? initialMap.first(where: { $0.name == ret.name })!.url : ret.urlString
+			if ret.urlString.prefix(6) == "alias:" {
+				if let orig = initialMap.first(where: {
+					$0.name == "\(ret.urlString.dropFirst(6))"
+				}) {
+					ret.urlString = orig.urlString
+				}
+			}
 			return ret
-		}
-		return emoji.map {
-			Emoji(name: $0.key, url: $0.value)
 		}
 	}
 }
