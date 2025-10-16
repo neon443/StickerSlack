@@ -12,6 +12,7 @@
 		A949B1F52EA04E8200215164 /* StickerSlackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F12EA04E8200215164 /* StickerSlackApp.swift */; };
 		A949B1F82EA04F2300215164 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
 		A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
+		A949B1FD2EA158DB00215164 /* testData.json in Resources */ = {isa = PBXBuildFile; fileRef = A949B1FC2EA158DB00215164 /* testData.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		A949B1F12EA04E8200215164 /* StickerSlackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSlackApp.swift; sourceTree = "<group>"; };
 		A949B1F72EA04F2300215164 /* EmojiHoarder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiHoarder.swift; sourceTree = "<group>"; };
 		A949B1FA2EA0518800215164 /* SlackResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackResponse.swift; sourceTree = "<group>"; };
+		A949B1FC2EA158DB00215164 /* testData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = testData.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 		A949B1F62EA04E8C00215164 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A949B1FC2EA158DB00215164 /* testData.json */,
 				A949B1EF2EA04E8200215164 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -147,6 +150,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A949B1FD2EA158DB00215164 /* testData.json in Resources */,
 				A949B1F32EA04E8200215164 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
