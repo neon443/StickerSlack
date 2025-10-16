@@ -16,7 +16,7 @@ struct ContentView: View {
 				List {
 					ForEach(hoarder.testBundle.toEmojis(), id: \.self) { emoji in
 						Text(emoji.name)
-						Text(emoji.url)
+						AsyncImage(url: emoji.url)
 					}
 				}
 				.tabItem {
