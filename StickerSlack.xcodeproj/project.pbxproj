@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A940FE3D2EA232590016870B /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* Emoji.swift */; };
 		A949B1F32EA04E8200215164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A949B1EF2EA04E8200215164 /* Assets.xcassets */; };
 		A949B1F42EA04E8200215164 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F02EA04E8200215164 /* ContentView.swift */; };
 		A949B1F52EA04E8200215164 /* StickerSlackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F12EA04E8200215164 /* StickerSlackApp.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A940FE3C2EA232590016870B /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
 		A949B1DF2EA04C0B00215164 /* StickerSlack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StickerSlack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A949B1EF2EA04E8200215164 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A949B1F02EA04E8200215164 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -63,9 +65,9 @@
 		A949B1F22EA04E8200215164 /* StickerSlack */ = {
 			isa = PBXGroup;
 			children = (
-				A949B1F92EA0517800215164 /* Emoji */,
 				A949B1F12EA04E8200215164 /* StickerSlackApp.swift */,
 				A949B1F72EA04F2300215164 /* EmojiHoarder.swift */,
+				A949B1F92EA0517800215164 /* Emoji */,
 				A949B1EE2EA04E8200215164 /* Views */,
 				A949B1F62EA04E8C00215164 /* Resources */,
 			);
@@ -85,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				A949B1FA2EA0518800215164 /* SlackResponse.swift */,
+				A940FE3C2EA232590016870B /* Emoji.swift */,
 			);
 			path = Emoji;
 			sourceTree = "<group>";
@@ -162,6 +165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A940FE3D2EA232590016870B /* Emoji.swift in Sources */,
 				A949B1F42EA04E8200215164 /* ContentView.swift in Sources */,
 				A949B1F52EA04E8200215164 /* StickerSlackApp.swift in Sources */,
 				A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */,

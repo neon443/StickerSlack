@@ -28,16 +28,3 @@ struct SlackResponse: Codable {
 		}
 	}
 }
-
-struct Emoji: Codable, Hashable {
-	var name: String
-	var urlString: String
-	var url: URL {
-		return URL(string: urlString) ?? URL(string: "https://")!
-	}
-	
-	init(name: String, url: String) {
-		self.name = name
-		self.urlString = url
-	}
-}
