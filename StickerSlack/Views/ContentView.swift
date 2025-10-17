@@ -14,7 +14,7 @@ struct ContentView: View {
 		NavigationStack {
 			TabView {
 				List {
-					ForEach(hoarder.testBundle.toEmojis(), id: \.self) { emoji in
+					ForEach(hoarder.emojis, id: \.self) { emoji in
 						Text(emoji.name)
 						emoji.image
 					}
