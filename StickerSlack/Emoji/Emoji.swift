@@ -16,20 +16,13 @@ protocol EmojiProtocol: Codable, Hashable {
 struct Emoji: EmojiProtocol {
 	var name: String
 	var urlString: String
+	
 	var url: URL {
 		return URL(string: urlString) ?? URL(string: "https://")!
 	}
 	
 	var image: Image { Image(uiImage: uiImage) }
-	private var uiImage: UIImage
-	
-//	var image: Image {
-//		if let data = try? Data(contentsOf: url),
-//		   let uiimage = UIImage(data: data) {
-//			return Image(uiImage: uiimage)
-//		}
-//		return Image(uiImage: UIImage())
-//	}
+	private var uiImage: UIImage = UIImage()
 	
 	init(from decoder: any Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -42,10 +35,11 @@ struct Emoji: EmojiProtocol {
 	init(name: String, url: String) {
 		self.name = name
 		self.urlString = url
-		self.uiImage = Emoji.grabImage(for: url)
+		grabImage()
 	}
 	
 	enum CodingKeys: CodingKey {
+		
 		case name
 		case urlString
 	}
@@ -56,9 +50,8 @@ struct Emoji: EmojiProtocol {
 		try container.encode(self.urlString, forKey: .urlString)
 	}
 	
-	static func grabImage(for url: String) -> UIImage {
-		let url = URL(string: url)!
-		return UIImage(data: try! Data(contentsOf: url))!
+	mutating func grabImage() {
+		uiImage = UIImage(data: try! Data(contentsOf: url))!
 	}
 }
 
