@@ -12,7 +12,7 @@ import Combine
 class EmojiHoarder: ObservableObject {
 	private let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	
-	@Published var emojis: [Emoji] = []
+	@Published var emojis: [Emoji]
 	
 	init() {
 //		guard let testURL = Bundle.main.url(forResource: "testData", withExtension: "json") else {
@@ -29,11 +29,19 @@ class EmojiHoarder: ObservableObject {
 		
 		let data = try! Data(contentsOf: endpoint)
 		let decoded: [SlackResponse] = try! JSONDecoder().decode([SlackResponse].self, from: data)
-		emojis = decoded.prefix(100).map { Emoji(name: $0.name, url: $0.imageUrl) }
-		Task {
-			for i in 0..<emojis.count {
-				await emojis[i] = emojis[i].grabImage()
-			}
+		var emojis = decoded.prefix(100).map { Emoji(name: $0.name, url: $0.imageUrl) }
+		for i in emojis.indices {
+			emojis[i].grabImageSync()
 		}
+		self.emojis = emojis
+//		Task {
+//			for i in emojis.indices {
+//				let newEmoji = await emojis[i].grabImage()
+//				DispatchQueue.main.async {
+//					self.emojis[i] = newEmoji
+//					self.emojis = self.emojis
+//				}
+//			}
+//		}
 	}
 }

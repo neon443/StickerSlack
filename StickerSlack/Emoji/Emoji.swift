@@ -61,5 +61,10 @@ struct Emoji: EmojiProtocol {
 		print(UIImage(data: response.0))
 		return Emoji(name: name, url: urlString, image: UIImage(data: response.0)!)
 	}
+	
+	mutating func grabImageSync() {
+		let data = try! Data(contentsOf: url)
+		uiImage = UIImage(data: data)!
+	}
 }
 

@@ -14,7 +14,36 @@
 		A949B1F82EA04F2300215164 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
 		A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
 		A949B1FD2EA158DB00215164 /* testData.json in Resources */ = {isa = PBXBuildFile; fileRef = A949B1FC2EA158DB00215164 /* testData.json */; };
+		A969D6942EA3E86500399C05 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A969D6932EA3E86500399C05 /* Messages.framework */; };
+		A969D6A02EA3E86600399C05 /* StickerSlackiMessageExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A969D6912EA3E86500399C05 /* StickerSlackiMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A969D6AC2EA3F1AF00399C05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A969D6A62EA3F1AF00399C05 /* Assets.xcassets */; };
+		A969D6AE2EA3F1AF00399C05 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A969D6A92EA3F1AF00399C05 /* MainInterface.storyboard */; };
+		A969D6AF2EA3F1AF00399C05 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969D6AA2EA3F1AF00399C05 /* MessagesViewController.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A969D69E2EA3E86600399C05 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A949B1D72EA04C0B00215164 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A969D6902EA3E86500399C05;
+			remoteInfo = StickerSlackiMessageExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A969D6A12EA3E86600399C05 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A969D6A02EA3E86600399C05 /* StickerSlackiMessageExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A940FE3C2EA232590016870B /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
@@ -25,6 +54,12 @@
 		A949B1F72EA04F2300215164 /* EmojiHoarder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiHoarder.swift; sourceTree = "<group>"; };
 		A949B1FA2EA0518800215164 /* SlackResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackResponse.swift; sourceTree = "<group>"; };
 		A949B1FC2EA158DB00215164 /* testData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = testData.json; sourceTree = "<group>"; };
+		A969D6912EA3E86500399C05 /* StickerSlackiMessageExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StickerSlackiMessageExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A969D6932EA3E86500399C05 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = Library/Frameworks/Messages.framework; sourceTree = DEVELOPER_DIR; };
+		A969D6A62EA3F1AF00399C05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A969D6A72EA3F1AF00399C05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A969D6A82EA3F1AF00399C05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		A969D6AA2EA3F1AF00399C05 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +70,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A969D68E2EA3E86500399C05 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A969D6942EA3E86500399C05 /* Messages.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -42,6 +85,8 @@
 			isa = PBXGroup;
 			children = (
 				A949B1F22EA04E8200215164 /* StickerSlack */,
+				A969D6AB2EA3F1AF00399C05 /* StickerSlackiMessageExtension */,
+				A969D6922EA3E86500399C05 /* Frameworks */,
 				A949B1E02EA04C0B00215164 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				A949B1DF2EA04C0B00215164 /* StickerSlack.app */,
+				A969D6912EA3E86500399C05 /* StickerSlackiMessageExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,6 +138,25 @@
 			path = Emoji;
 			sourceTree = "<group>";
 		};
+		A969D6922EA3E86500399C05 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A969D6932EA3E86500399C05 /* Messages.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A969D6AB2EA3F1AF00399C05 /* StickerSlackiMessageExtension */ = {
+			isa = PBXGroup;
+			children = (
+				A969D6A62EA3F1AF00399C05 /* Assets.xcassets */,
+				A969D6A72EA3F1AF00399C05 /* Info.plist */,
+				A969D6A92EA3F1AF00399C05 /* MainInterface.storyboard */,
+				A969D6AA2EA3F1AF00399C05 /* MessagesViewController.swift */,
+			);
+			path = StickerSlackiMessageExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -102,10 +167,12 @@
 				A949B1DB2EA04C0B00215164 /* Sources */,
 				A949B1DC2EA04C0B00215164 /* Frameworks */,
 				A949B1DD2EA04C0B00215164 /* Resources */,
+				A969D6A12EA3E86600399C05 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A969D69F2EA3E86600399C05 /* PBXTargetDependency */,
 			);
 			name = StickerSlack;
 			packageProductDependencies = (
@@ -113,6 +180,25 @@
 			productName = StickerSlack;
 			productReference = A949B1DF2EA04C0B00215164 /* StickerSlack.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A969D6902EA3E86500399C05 /* StickerSlackiMessageExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A969D6A52EA3E86600399C05 /* Build configuration list for PBXNativeTarget "StickerSlackiMessageExtension" */;
+			buildPhases = (
+				A969D68D2EA3E86500399C05 /* Sources */,
+				A969D68E2EA3E86500399C05 /* Frameworks */,
+				A969D68F2EA3E86500399C05 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StickerSlackiMessageExtension;
+			packageProductDependencies = (
+			);
+			productName = StickerSlackiMessageExtension;
+			productReference = A969D6912EA3E86500399C05 /* StickerSlackiMessageExtension.appex */;
+			productType = "com.apple.product-type.app-extension.messages";
 		};
 /* End PBXNativeTarget section */
 
@@ -125,6 +211,9 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					A949B1DE2EA04C0B00215164 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
+					A969D6902EA3E86500399C05 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
@@ -144,6 +233,7 @@
 			projectRoot = "";
 			targets = (
 				A949B1DE2EA04C0B00215164 /* StickerSlack */,
+				A969D6902EA3E86500399C05 /* StickerSlackiMessageExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -155,6 +245,15 @@
 			files = (
 				A949B1FD2EA158DB00215164 /* testData.json in Resources */,
 				A949B1F32EA04E8200215164 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A969D68F2EA3E86500399C05 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A969D6AC2EA3F1AF00399C05 /* Assets.xcassets in Resources */,
+				A969D6AE2EA3F1AF00399C05 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,7 +272,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A969D68D2EA3E86500399C05 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A969D6AF2EA3F1AF00399C05 /* MessagesViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A969D69F2EA3E86600399C05 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A969D6902EA3E86500399C05 /* StickerSlackiMessageExtension */;
+			targetProxy = A969D69E2EA3E86600399C05 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A969D6A92EA3F1AF00399C05 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A969D6A82EA3F1AF00399C05 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		A949B1E82EA04C0C00215164 /* Debug */ = {
@@ -380,6 +506,69 @@
 			};
 			name = Release;
 		};
+		A969D6A22EA3E86600399C05 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8JGND254B7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StickerSlackiMessageExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = StickerSlackiMessageExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neon443.StickerSlack.StickerSlackiMessageExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A969D6A32EA3E86600399C05 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8JGND254B7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StickerSlackiMessageExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = StickerSlackiMessageExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neon443.StickerSlack.StickerSlackiMessageExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -397,6 +586,15 @@
 			buildConfigurations = (
 				A949B1EB2EA04C0C00215164 /* Debug */,
 				A949B1EC2EA04C0C00215164 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A969D6A52EA3E86600399C05 /* Build configuration list for PBXNativeTarget "StickerSlackiMessageExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A969D6A22EA3E86600399C05 /* Debug */,
+				A969D6A32EA3E86600399C05 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
