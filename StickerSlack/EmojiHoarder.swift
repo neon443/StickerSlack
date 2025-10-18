@@ -29,6 +29,11 @@ class EmojiHoarder: ObservableObject {
 		
 		let data = try! Data(contentsOf: endpoint)
 		let decoded: [SlackResponse] = try! JSONDecoder().decode([SlackResponse].self, from: data)
-		emojis = decoded.prefix(10).map { Emoji(name: $0.name, url: $0.imageUrl) }
+		emojis = decoded.prefix(100).map { Emoji(name: $0.name, url: $0.imageUrl) }
+		Task {
+			for i in 0..<emojis.count {
+				await emojis[i] = emojis[i].grabImage()
+			}
+		}
 	}
 }

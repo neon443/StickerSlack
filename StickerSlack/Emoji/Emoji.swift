@@ -32,14 +32,17 @@ struct Emoji: EmojiProtocol {
 		)
 	}
 	
-	init(name: String, url: String) {
+	init(
+		name: String,
+		url: String,
+		image: UIImage = UIImage()
+	) {
 		self.name = name
 		self.urlString = url
-		grabImage()
+		self.uiImage = UIImage()
 	}
 	
 	enum CodingKeys: CodingKey {
-		
 		case name
 		case urlString
 	}
@@ -50,8 +53,13 @@ struct Emoji: EmojiProtocol {
 		try container.encode(self.urlString, forKey: .urlString)
 	}
 	
-	mutating func grabImage() {
-		uiImage = UIImage(data: try! Data(contentsOf: url))!
+	func grabImage() async -> Emoji {
+		let req = URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 10)
+		guard let response = try? await URLSession.shared.data(for: req) else {
+			return self
+		}
+		print(UIImage(data: response.0))
+		return Emoji(name: name, url: urlString, image: UIImage(data: response.0)!)
 	}
 }
 
