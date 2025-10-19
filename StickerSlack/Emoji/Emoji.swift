@@ -21,9 +21,6 @@ struct Emoji: EmojiProtocol {
 		return URL(string: urlString) ?? URL(string: "https://")!
 	}
 	
-	var image: Image { Image(uiImage: uiImage) }
-	private var uiImage: UIImage = UIImage()
-	
 	init(from decoder: any Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.init(
@@ -39,7 +36,6 @@ struct Emoji: EmojiProtocol {
 	) {
 		self.name = name
 		self.urlString = url
-		self.uiImage = UIImage()
 	}
 	
 	enum CodingKeys: CodingKey {
@@ -51,20 +47,6 @@ struct Emoji: EmojiProtocol {
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.name, forKey: .name)
 		try container.encode(self.urlString, forKey: .urlString)
-	}
-	
-	func grabImage() async -> Emoji {
-		let req = URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 10)
-		guard let response = try? await URLSession.shared.data(for: req) else {
-			return self
-		}
-		print(UIImage(data: response.0))
-		return Emoji(name: name, url: urlString, image: UIImage(data: response.0)!)
-	}
-	
-	mutating func grabImageSync() {
-		let data = try! Data(contentsOf: url)
-		uiImage = UIImage(data: data)!
 	}
 }
 

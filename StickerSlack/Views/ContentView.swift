@@ -16,7 +16,7 @@ struct ContentView: View {
 				List {
 					ForEach(hoarder.emojis, id: \.self) { emoji in
 						Text(emoji.name)
-						emoji.image
+						AsyncImage(url: emoji.url)
 					}
 				}
 				.tabItem {
