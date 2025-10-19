@@ -32,7 +32,6 @@ struct Emoji: EmojiProtocol {
 	init(
 		name: String,
 		url: String,
-		image: UIImage = UIImage()
 	) {
 		self.name = name
 		self.urlString = url
