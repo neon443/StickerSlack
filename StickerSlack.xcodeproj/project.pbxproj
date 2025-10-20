@@ -20,6 +20,9 @@
 		A969D6AE2EA3F1AF00399C05 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A969D6A92EA3F1AF00399C05 /* MainInterface.storyboard */; };
 		A969D6AF2EA3F1AF00399C05 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969D6AA2EA3F1AF00399C05 /* MessagesViewController.swift */; };
 		A9773C2F2EA54AF000F3B753 /* EmojiPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */; };
+		A9BE06DB2EA656B80033B213 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
+		A9BE06DC2EA657C70033B213 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* Emoji.swift */; };
+		A9BE06DD2EA657CF0033B213 /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -280,7 +283,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9BE06DC2EA657C70033B213 /* Emoji.swift in Sources */,
+				A9BE06DB2EA656B80033B213 /* EmojiHoarder.swift in Sources */,
 				A969D6AF2EA3F1AF00399C05 /* MessagesViewController.swift in Sources */,
+				A9BE06DD2EA657CF0033B213 /* SlackResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

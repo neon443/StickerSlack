@@ -9,7 +9,8 @@ import UIKit
 import Messages
 
 class MessagesViewController: MSMessagesAppViewController {
-    
+	var hoard: EmojiHoarder = EmojiHoarder()
+	
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -18,6 +19,13 @@ class MessagesViewController: MSMessagesAppViewController {
     // MARK: - Conversation Handling
     
     override func willBecomeActive(with conversation: MSConversation) {
+		print(hoard.emojis.count)
+		let l = UILabel()
+		l.frame = CGRect(x: 20, y: 20, width: 1000, height: 40)
+		l.textColor = .systemOrange
+		l.text = "\(hoard.emojis.count)"
+		view.addSubview(l)
+		view.bringSubviewToFront(l)
         // Called when the extension is about to move from the inactive to active state.
         // This will happen when the extension is about to present UI.
         

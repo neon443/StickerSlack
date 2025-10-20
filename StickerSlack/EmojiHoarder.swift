@@ -15,29 +15,8 @@ class EmojiHoarder: ObservableObject {
 	@Published var emojis: [Emoji]
 	
 	init() {
-//		guard let testURL = Bundle.main.url(forResource: "testData", withExtension: "json") else {
-//			fatalError("")
-//		}
-//		guard let data = try? Data(contentsOf: testURL) else {
-//			self.testBundle = SlackResponse(ok: false, emoji: [:])
-//			return
-//		}
-//		guard let decoded = try? JSONDecoder().decode(SlackResponse.self, from: data) else {
-//			fatalError("couldnt decode :sob:")
-//		}
-//		self.testBundle = decoded
-		
 		let data = try! Data(contentsOf: endpoint)
 		let decoded: [SlackResponse] = try! JSONDecoder().decode([SlackResponse].self, from: data)
 		self.emojis = decoded.map { Emoji(name: $0.name, url: $0.imageUrl) }
-//		Task {
-//			for i in emojis.indices {
-//				let newEmoji = await emojis[i].grabImage()
-//				DispatchQueue.main.async {
-//					self.emojis[i] = newEmoji
-//					self.emojis = self.emojis
-//				}
-//			}
-//		}
 	}
 }
