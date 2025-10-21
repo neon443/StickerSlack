@@ -11,11 +11,12 @@ struct ContentView: View {
 	@StateObject var hoarder: EmojiHoarder = EmojiHoarder()
 	
 	var body: some View {
-		NavigationStack {
+		NavigationView {
 			TabView {
 				List {
 					ForEach(hoarder.emojis, id: \.self) { emoji in
 						EmojiPreview(emoji: emoji)
+							.frame(maxWidth: 100)
 					}
 				}
 				.tabItem {

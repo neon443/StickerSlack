@@ -32,7 +32,6 @@ struct EmojiPreview: View {
 				}
 			}
 			.id(id)
-			.frame(width: 50, height: 50)
 		}
     }
 }
