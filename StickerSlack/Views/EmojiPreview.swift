@@ -15,7 +15,12 @@ struct EmojiPreview: View {
     var body: some View {
 		VStack {
 			Text(emoji.name)
-			AsyncImage(url: emoji.url) { phase in
+			if let image = emoji.image {
+				Image(uiImage: image)
+			} else {
+				ProgressView()
+			}
+			AsyncImage(url: emoji.remoteImageURL) { phase in
 				if let image = phase.image {
 					image
 						.resizable().scaledToFit()
@@ -38,9 +43,9 @@ struct EmojiPreview: View {
 
 #Preview {
 	EmojiPreview(
-		emoji: Emoji(
+		emoji: ApiEmoji(
 			name: "s?",
 			url: "https://neon443.github.io/images/fav.ico"
-		)
+		).toEmoji()
 	)
 }

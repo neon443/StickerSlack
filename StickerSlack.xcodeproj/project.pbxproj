@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A940FE3D2EA232590016870B /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* Emoji.swift */; };
+		A924C3722EA9127200F20781 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
+		A924C3732EA9127200F20781 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
+		A940FE3D2EA232590016870B /* ApiEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* ApiEmoji.swift */; };
 		A949B1F32EA04E8200215164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A949B1EF2EA04E8200215164 /* Assets.xcassets */; };
 		A949B1F42EA04E8200215164 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F02EA04E8200215164 /* ContentView.swift */; };
 		A949B1F52EA04E8200215164 /* StickerSlackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F12EA04E8200215164 /* StickerSlackApp.swift */; };
@@ -21,7 +23,7 @@
 		A969D6AF2EA3F1AF00399C05 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969D6AA2EA3F1AF00399C05 /* MessagesViewController.swift */; };
 		A9773C2F2EA54AF000F3B753 /* EmojiPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */; };
 		A9BE06DB2EA656B80033B213 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
-		A9BE06DC2EA657C70033B213 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* Emoji.swift */; };
+		A9BE06DC2EA657C70033B213 /* ApiEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* ApiEmoji.swift */; };
 		A9BE06DD2EA657CF0033B213 /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,7 +52,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A940FE3C2EA232590016870B /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
+		A924C3712EA9127200F20781 /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
+		A924C3742EA9134C00F20781 /* StickerSlack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerSlack.entitlements; sourceTree = "<group>"; };
+		A924C3752EA9137A00F20781 /* StickerSlackiMessageExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerSlackiMessageExtension.entitlements; sourceTree = "<group>"; };
+		A940FE3C2EA232590016870B /* ApiEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEmoji.swift; sourceTree = "<group>"; };
 		A949B1DF2EA04C0B00215164 /* StickerSlack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StickerSlack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A949B1EF2EA04E8200215164 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A949B1F02EA04E8200215164 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -117,6 +122,7 @@
 		A949B1F22EA04E8200215164 /* StickerSlack */ = {
 			isa = PBXGroup;
 			children = (
+				A924C3742EA9134C00F20781 /* StickerSlack.entitlements */,
 				A949B1F12EA04E8200215164 /* StickerSlackApp.swift */,
 				A949B1F72EA04F2300215164 /* EmojiHoarder.swift */,
 				A949B1F92EA0517800215164 /* Emoji */,
@@ -139,7 +145,8 @@
 			isa = PBXGroup;
 			children = (
 				A949B1FA2EA0518800215164 /* SlackResponse.swift */,
-				A940FE3C2EA232590016870B /* Emoji.swift */,
+				A940FE3C2EA232590016870B /* ApiEmoji.swift */,
+				A924C3712EA9127200F20781 /* Emoji.swift */,
 			);
 			path = Emoji;
 			sourceTree = "<group>";
@@ -155,6 +162,7 @@
 		A969D6AB2EA3F1AF00399C05 /* StickerSlackiMessageExtension */ = {
 			isa = PBXGroup;
 			children = (
+				A924C3752EA9137A00F20781 /* StickerSlackiMessageExtension.entitlements */,
 				A969D6A62EA3F1AF00399C05 /* Assets.xcassets */,
 				A969D6A72EA3F1AF00399C05 /* Info.plist */,
 				A969D6A92EA3F1AF00399C05 /* MainInterface.storyboard */,
@@ -270,10 +278,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A940FE3D2EA232590016870B /* Emoji.swift in Sources */,
+				A940FE3D2EA232590016870B /* ApiEmoji.swift in Sources */,
 				A949B1F42EA04E8200215164 /* ContentView.swift in Sources */,
 				A949B1F52EA04E8200215164 /* StickerSlackApp.swift in Sources */,
 				A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */,
+				A924C3732EA9127200F20781 /* Emoji.swift in Sources */,
 				A949B1F82EA04F2300215164 /* EmojiHoarder.swift in Sources */,
 				A9773C2F2EA54AF000F3B753 /* EmojiPreview.swift in Sources */,
 			);
@@ -283,7 +292,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9BE06DC2EA657C70033B213 /* Emoji.swift in Sources */,
+				A924C3722EA9127200F20781 /* Emoji.swift in Sources */,
+				A9BE06DC2EA657C70033B213 /* ApiEmoji.swift in Sources */,
 				A9BE06DB2EA656B80033B213 /* EmojiHoarder.swift in Sources */,
 				A969D6AF2EA3F1AF00399C05 /* MessagesViewController.swift in Sources */,
 				A9BE06DD2EA657CF0033B213 /* SlackResponse.swift in Sources */,
@@ -433,6 +443,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StickerSlack/StickerSlack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8JGND254B7;
@@ -477,6 +488,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StickerSlack/StickerSlack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8JGND254B7;
@@ -520,6 +532,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_ENTITLEMENTS = StickerSlackiMessageExtension/StickerSlackiMessageExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8JGND254B7;
@@ -551,6 +564,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_ENTITLEMENTS = StickerSlackiMessageExtension/StickerSlackiMessageExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8JGND254B7;

@@ -6,46 +6,60 @@
 //
 
 import Foundation
-import SwiftUI
+import UIKit
+import UniformTypeIdentifiers
 
-protocol EmojiProtocol: Codable, Hashable {
-	var name: String { get set }
-	var urlString: String { get set }
-}
-
-struct Emoji: EmojiProtocol {
+struct Emoji: Codable, Identifiable, Hashable {
+	var id: UUID
 	var name: String
-	var urlString: String
+	var localImageURL: URL
+	var remoteImageURL: URL
 	
-	var url: URL {
-		return URL(string: urlString) ?? URL(string: "https://")!
+	var image: UIImage?
+	
+	enum CodingKeys: String, CodingKey {
+		case id = "id"
+		case name = "name"
+		case localImageURL = "localImageURL"
+		case remoteImageURL = "remoteImageURL"
 	}
 	
 	init(from decoder: any Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
-		self.init(
-			name: try container.decode(String.self, forKey: .name),
-			url: try container.decode(String.self, forKey: .urlString)
-		)
+		self.id = try container.decode(UUID.self, forKey: .id)
+		self.name = try container.decode(String.self, forKey: .name)
+		self.localImageURL = try container.decode(URL.self, forKey: .localImageURL)
+		self.remoteImageURL = try container.decode(URL.self, forKey: .remoteImageURL)
+		
+		if let data = try? Data(contentsOf: localImageURL),
+		   let img = UIImage(data: data) {
+			self.image = img
+		} else {
+			self.image = nil
+		}
 	}
 	
 	init(
-		name: String,
-		url: String,
+		apiEmoji: ApiEmoji,
+		id: UUID = UUID()
 	) {
-		self.name = name
-		self.urlString = url
+		self.id = id
+		self.name = apiEmoji.name
+		self.remoteImageURL = apiEmoji.url
+		self.localImageURL = EmojiHoarder.container.appendingPathComponent(id.uuidString, conformingTo: .image)
+
+		
+//		Task { [weak self] in
+//			let (data, response) = try await URLSession.shared.data(from: apiEmoji.url)
+//			self.image = UIImage(data: data)
+//		}
+//		let image = try! Data(contentsOf: apiEmoji.url)
+//		try! image.write(to: localImageURL)
+//		self.image = UIImage(data: image) ?? UIImage()
 	}
 	
-	enum CodingKeys: CodingKey {
-		case name
-		case urlString
-	}
-	
-	func encode(to encoder: any Encoder) throws {
-		var container = encoder.container(keyedBy: CodingKeys.self)
-		try container.encode(self.name, forKey: .name)
-		try container.encode(self.urlString, forKey: .urlString)
+	func loadImage() async throws -> UIImage {
+		let (data, _) = try await URLSession.shared.data(from: remoteImageURL)
+		return UIImage(data: data)!
 	}
 }
-
