@@ -12,7 +12,7 @@ struct EmojiPreview: View {
 	@State var emoji: Emoji
 	
 	@State private var id: UUID = UUID()
-	@State private var image: UIImage?
+	@State var image: UIImage? = nil
 	
     var body: some View {
 		VStack {
@@ -49,12 +49,6 @@ struct EmojiPreview: View {
 							ProgressView()
 						}
 					}
-				}
-			}
-			.onTapGesture {
-				Task {
-					image = try? await emoji.downloadImage()
-					Haptic.success.trigger()
 				}
 			}
 			.id(id)

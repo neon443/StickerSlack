@@ -15,20 +15,29 @@ struct ContentView: View {
 		NavigationView {
 			TabView {
 				List {
-					ForEach(hoarder.emojis, id: \.self) { emoji in
+					ForEach($hoarder.emojis, id: \.self) { $emoji in
 						HStack {
-							EmojiPreview(emoji: emoji)
+							EmojiPreview(emoji: emoji, image: emoji.image)
 								.frame(maxWidth: 100)
 							Spacer()
 							Button("", systemImage: "arrow.down.circle") {
 								Task {
-									let _ = try? await emoji.downloadImage()
-									Haptic.success.trigger()
+									try? await emoji.downloadImage()
+									emoji.refresh()
 								}
 							}
 							.buttonStyle(.plain)
 						}
-						.border(emoji.isLocal ? .red : .clear)
+						.id(emoji.uiID)
+						.swipeActions(edge: .trailing, allowsFullSwipe: true) {
+							if emoji.isLocal {
+								Button("Remove", systemImage: "trash") {
+									emoji.deleteImage()
+									emoji.refresh()
+								}
+								.tint(.red)
+							}
+						}
 					}
 				}
 				.tabItem {

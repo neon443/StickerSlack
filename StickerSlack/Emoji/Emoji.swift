@@ -8,9 +8,11 @@
 import Foundation
 import UIKit
 import UniformTypeIdentifiers
+import Haptics
 
 struct Emoji: Codable, Identifiable, Hashable {
 	var id: UUID
+	var uiID: UUID
 	var name: String
 	var localImageURL: URL
 	var remoteImageURL: URL
@@ -31,6 +33,7 @@ struct Emoji: Codable, Identifiable, Hashable {
 	init(from decoder: any Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.id = try container.decode(UUID.self, forKey: .id)
+		self.uiID = UUID()
 		self.name = try container.decode(String.self, forKey: .name)
 		self.localImageURL = try container.decode(URL.self, forKey: .localImageURL)
 		self.remoteImageURL = try container.decode(URL.self, forKey: .remoteImageURL)
@@ -48,9 +51,12 @@ struct Emoji: Codable, Identifiable, Hashable {
 		id: UUID = UUID()
 	) {
 		self.id = id
+		self.uiID = id
 		self.name = apiEmoji.name
 		self.remoteImageURL = apiEmoji.url
-		self.localImageURL = EmojiHoarder.container.appendingPathComponent(id.uuidString, conformingTo: .image)
+		
+		let fileExtension = String(apiEmoji.urlString.split(separator: ".").last ?? "png")
+		self.localImageURL = EmojiHoarder.container.appendingPathComponent(id.uuidString+"."+fileExtension, conformingTo: .image)
 
 //		Task { [weak self] in
 //			let (data, response) = try await URLSession.shared.data(from: apiEmoji.url)
@@ -69,5 +75,13 @@ struct Emoji: Codable, Identifiable, Hashable {
 		let (data, _) = try await URLSession.shared.data(from: remoteImageURL)
 		try! data.write(to: localImageURL)
 		return UIImage(data: data)!
+	}
+	
+	func deleteImage() {
+		try? FileManager.default.removeItem(at: localImageURL)
+	}
+	
+	mutating func refresh() {
+		self.uiID = UUID()
 	}
 }
