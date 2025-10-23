@@ -28,6 +28,7 @@ struct ContentView: View {
 							}
 							.buttonStyle(.plain)
 						}
+						.border(emoji.isLocal ? .red : .clear)
 					}
 				}
 				.tabItem {

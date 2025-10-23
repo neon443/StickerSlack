@@ -23,6 +23,7 @@
 		A969D6AE2EA3F1AF00399C05 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A969D6A92EA3F1AF00399C05 /* MainInterface.storyboard */; };
 		A969D6AF2EA3F1AF00399C05 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969D6AA2EA3F1AF00399C05 /* MessagesViewController.swift */; };
 		A9773C2F2EA54AF000F3B753 /* EmojiPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */; };
+		A986A6682EAAB41000B6E0FA /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = A986A6672EAAB41000B6E0FA /* Haptics */; };
 		A9BE06DB2EA656B80033B213 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
 		A9BE06DC2EA657C70033B213 /* ApiEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* ApiEmoji.swift */; };
 		A9BE06DD2EA657CF0033B213 /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
@@ -79,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A924C3782EA9225800F20781 /* Haptics in Frameworks */,
+				A986A6682EAAB41000B6E0FA /* Haptics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +195,7 @@
 			name = StickerSlack;
 			packageProductDependencies = (
 				A924C3772EA9225800F20781 /* Haptics */,
+				A986A6672EAAB41000B6E0FA /* Haptics */,
 			);
 			productName = StickerSlack;
 			productReference = A949B1DF2EA04C0B00215164 /* StickerSlack.app */;
@@ -245,7 +248,7 @@
 			mainGroup = A949B1D62EA04C0B00215164;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				A924C3762EA9225800F20781 /* XCLocalSwiftPackageReference "../Haptics" */,
+				A986A6662EAAB41000B6E0FA /* XCRemoteSwiftPackageReference "Haptics" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A949B1E02EA04C0B00215164 /* Products */;
@@ -631,16 +634,25 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		A924C3762EA9225800F20781 /* XCLocalSwiftPackageReference "../Haptics" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Haptics;
+/* Begin XCRemoteSwiftPackageReference section */
+		A986A6662EAAB41000B6E0FA /* XCRemoteSwiftPackageReference "Haptics" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "http://github.com/neon443/Haptics";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		A924C3772EA9225800F20781 /* Haptics */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = Haptics;
+		};
+		A986A6672EAAB41000B6E0FA /* Haptics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A986A6662EAAB41000B6E0FA /* XCRemoteSwiftPackageReference "Haptics" */;
 			productName = Haptics;
 		};
 /* End XCSwiftPackageProductDependency section */

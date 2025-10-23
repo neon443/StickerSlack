@@ -15,6 +15,10 @@ struct Emoji: Codable, Identifiable, Hashable {
 	var localImageURL: URL
 	var remoteImageURL: URL
 	
+	var isLocal: Bool {
+		return (try? Data(contentsOf: localImageURL)) != nil
+	}
+	
 	var image: UIImage?
 	
 	enum CodingKeys: String, CodingKey {
