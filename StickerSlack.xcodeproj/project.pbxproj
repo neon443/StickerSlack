@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A924C3722EA9127200F20781 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
 		A924C3732EA9127200F20781 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
+		A924C3782EA9225800F20781 /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = A924C3772EA9225800F20781 /* Haptics */; };
 		A940FE3D2EA232590016870B /* ApiEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* ApiEmoji.swift */; };
 		A949B1F32EA04E8200215164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A949B1EF2EA04E8200215164 /* Assets.xcassets */; };
 		A949B1F42EA04E8200215164 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F02EA04E8200215164 /* ContentView.swift */; };
@@ -77,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A924C3782EA9225800F20781 /* Haptics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,6 +192,7 @@
 			);
 			name = StickerSlack;
 			packageProductDependencies = (
+				A924C3772EA9225800F20781 /* Haptics */,
 			);
 			productName = StickerSlack;
 			productReference = A949B1DF2EA04C0B00215164 /* StickerSlack.app */;
@@ -241,6 +244,9 @@
 			);
 			mainGroup = A949B1D62EA04C0B00215164;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A924C3762EA9225800F20781 /* XCLocalSwiftPackageReference "../Haptics" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A949B1E02EA04C0B00215164 /* Products */;
 			projectDirPath = "";
@@ -624,6 +630,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A924C3762EA9225800F20781 /* XCLocalSwiftPackageReference "../Haptics" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Haptics;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A924C3772EA9225800F20781 /* Haptics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Haptics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A949B1D72EA04C0B00215164 /* Project object */;
 }

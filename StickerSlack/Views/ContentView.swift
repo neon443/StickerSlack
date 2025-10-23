@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Haptics
 
 struct ContentView: View {
 	@StateObject var hoarder: EmojiHoarder = EmojiHoarder()
@@ -15,8 +16,18 @@ struct ContentView: View {
 			TabView {
 				List {
 					ForEach(hoarder.emojis, id: \.self) { emoji in
-						EmojiPreview(emoji: emoji)
-							.frame(maxWidth: 100)
+						HStack {
+							EmojiPreview(emoji: emoji)
+								.frame(maxWidth: 100)
+							Spacer()
+							Button("", systemImage: "arrow.down.circle") {
+								Task {
+									let _ = try? await emoji.downloadImage()
+									Haptic.success.trigger()
+								}
+							}
+							.buttonStyle(.plain)
+						}
 					}
 				}
 				.tabItem {

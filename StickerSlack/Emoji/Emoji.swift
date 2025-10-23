@@ -48,7 +48,6 @@ struct Emoji: Codable, Identifiable, Hashable {
 		self.remoteImageURL = apiEmoji.url
 		self.localImageURL = EmojiHoarder.container.appendingPathComponent(id.uuidString, conformingTo: .image)
 
-		
 //		Task { [weak self] in
 //			let (data, response) = try await URLSession.shared.data(from: apiEmoji.url)
 //			self.image = UIImage(data: data)
@@ -58,8 +57,13 @@ struct Emoji: Codable, Identifiable, Hashable {
 //		self.image = UIImage(data: image) ?? UIImage()
 	}
 	
-	func loadImage() async throws -> UIImage {
+	func downloadImage() async throws -> UIImage {
+		if let data = try? Data(contentsOf: localImageURL),
+			let uiimage = UIImage(data: data) {
+			return uiimage
+		}
 		let (data, _) = try await URLSession.shared.data(from: remoteImageURL)
+		try! data.write(to: localImageURL)
 		return UIImage(data: data)!
 	}
 }
