@@ -7,13 +7,16 @@
 
 import Foundation
 
-struct SlackResponse: Codable {
+struct SlackResponse: Identifiable, Codable {
+	var type: String
+	var id: UUID
 	var name: String
 	var imageUrl: String
 	var alias: String?
+	var expiration: Date
 	
-	
-	static func toEmojis(from: [SlackResponse]) -> [Emoji] {
-		return from.map { ApiEmoji(name: $0.name, url: $0.imageUrl).toEmoji() }
+	static func toEmojis(from response: [SlackResponse]?) -> [Emoji]? {
+		guard let response else { return nil }
+		return response.map { ApiEmoji(name: $0.name, url: $0.imageUrl).toEmoji() }
 	}
 }

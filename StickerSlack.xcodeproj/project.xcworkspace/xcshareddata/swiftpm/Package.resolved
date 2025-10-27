@@ -1,10 +1,10 @@
 {
-  "originHash" : "62caf5d3b5c5f962753f0e93862d5d90e6fcd2157c5fef072880f7c4ca348c7c",
+  "originHash" : "1d3269ec6ef7a3d9a10b9d3cc53bfd207a07ae67b8f251b18da218e827fd0bff",
   "pins" : [
     {
       "identity" : "haptics",
       "kind" : "remoteSourceControl",
-      "location" : "http://github.com/neon443/Haptics",
+      "location" : "https://github.com/neon443/Haptics",
       "state" : {
         "branch" : "main",
         "revision" : "90e080694752c1af657d2f7ac2dce22eaf439391"

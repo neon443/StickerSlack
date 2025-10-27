@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import UniformTypeIdentifiers
-import Haptics
 
 struct Emoji: Codable, Identifiable, Hashable {
 	var id: UUID

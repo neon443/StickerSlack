@@ -15,22 +15,38 @@ class EmojiHoarder: ObservableObject {
 	static let localEmojiDB: URL = EmojiHoarder.container.appendingPathExtension("localEmojiDB.json")
 	private let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	
-	@Published var emojis: [Emoji]
+	@Published var emojis: [Emoji] = []
 	
 	init() {
-		if let localEmojiDB = try? Data(contentsOf: EmojiHoarder.localEmojiDB) {
-			let decoded = try! JSONDecoder().decode([Emoji].self, from: localEmojiDB)
-			self.emojis = decoded
+		guard let fetched = fetchRemoteDB() else {
+			self.emojis = loadLocalDB()
 			return
 		}
 		
-		guard let data = try? Data(contentsOf: endpoint) else { fatalError("cachet unreachable") }
-		
-		let decoded: [SlackResponse] = try! JSONDecoder().decode([SlackResponse].self, from: data)
-		self.emojis = SlackResponse.toEmojis(from: decoded)
-		
+		self.emojis = fetched
+	}
+	
+	func storeStickers(_ toStore: [UUID]) {
+		for stickerId in toStore {
+			print(stickerId)
+		}
+	}
+	
+	func storeDB() {
 		try! JSONEncoder().encode(emojis).write(to: EmojiHoarder.localEmojiDB)
 	}
 	
-//	func storeStickers
+	func loadLocalDB() -> [Emoji] {
+		if let localEmojiDB = try? Data(contentsOf: EmojiHoarder.localEmojiDB) {
+			let decoded = try! JSONDecoder().decode([Emoji].self, from: localEmojiDB)
+			return decoded
+		}
+		return []
+	}
+	
+	func fetchRemoteDB() -> [Emoji]? {
+		guard let data = try? Data(contentsOf: endpoint) else { fatalError("cachet unreachable") }
+		let decoded: [SlackResponse] = try! JSONDecoder().decode([SlackResponse].self, from: data)
+		return SlackResponse.toEmojis(from: decoded)
+	}
 }
