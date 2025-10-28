@@ -14,6 +14,8 @@ class EmojiHoarder: ObservableObject {
 	static let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
 	static let localEmojiDB: URL = EmojiHoarder.container.appendingPathExtension("localEmojiDB.json")
 	private let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
+	private let encoder = JSONEncoder()
+	private let decoder = JSONDecoder()
 	
 	@Published var emojis: [Emoji] = []
 	
@@ -33,12 +35,12 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	func storeDB() {
-		try! JSONEncoder().encode(emojis).write(to: EmojiHoarder.localEmojiDB)
+		try! encoder.encode(emojis).write(to: EmojiHoarder.localEmojiDB)
 	}
 	
 	func loadLocalDB() -> [Emoji] {
 		if let localEmojiDB = try? Data(contentsOf: EmojiHoarder.localEmojiDB) {
-			let decoded = try! JSONDecoder().decode([Emoji].self, from: localEmojiDB)
+			let decoded = try! decoder.decode([Emoji].self, from: localEmojiDB)
 			return decoded
 		}
 		return []
@@ -46,7 +48,8 @@ class EmojiHoarder: ObservableObject {
 	
 	func fetchRemoteDB() -> [Emoji]? {
 		guard let data = try? Data(contentsOf: endpoint) else { fatalError("cachet unreachable") }
-		let decoded: [SlackResponse] = try! JSONDecoder().decode([SlackResponse].self, from: data)
+		decoder.dateDecodingStrategy = .iso8601
+		let decoded: [SlackResponse] = try! decoder.decode([SlackResponse].self, from: data)
 		return SlackResponse.toEmojis(from: decoded)
 	}
 }
