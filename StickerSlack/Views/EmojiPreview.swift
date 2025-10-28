@@ -17,7 +17,6 @@ struct EmojiPreview: View {
     var body: some View {
 		VStack {
 			Text(emoji.name)
-			
 			Group {
 				if let localImage = try? Data(contentsOf: emoji.localImageURL),
 				   let image = UIImage(data: localImage) {
