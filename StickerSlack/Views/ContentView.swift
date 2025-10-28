@@ -17,20 +17,18 @@ struct ContentView: View {
 		NavigationView {
 			TabView {
 				List {
-					HStack {
-						TextField("", text: $searchTerm) {
-							hoarder.filterEmojis(by: searchTerm)
-						}
-						
-						.autocorrectionDisabled()
-						.textFieldStyle(.roundedBorder)
-//						Button("downloaded", systemImage: "arrow.down.circle.fill") {
-//							<#code#>
-//						}
+					TextField("", text: $searchTerm) {
+						hoarder.filterEmojis(by: searchTerm)
 					}
+					
+					.autocorrectionDisabled()
+					.textFieldStyle(.roundedBorder)
+					
+					Text("\(hoarder.filteredEmojis.count) Emoji")
+					
 					ForEach($hoarder.filteredEmojis, id: \.self) { $emoji in
 						HStack {
-							EmojiPreview(emoji: emoji, image: emoji.image)
+							EmojiPreview(emoji: emoji)
 								.frame(maxWidth: 100)
 							Spacer()
 							if emoji.isLocal {
@@ -48,7 +46,6 @@ struct ContentView: View {
 								.buttonStyle(.plain)
 							}
 						}
-						.id(emoji.uiID)
 						.swipeActions(edge: .trailing, allowsFullSwipe: true) {
 							if emoji.isLocal {
 								Button("Remove", systemImage: "trash") {

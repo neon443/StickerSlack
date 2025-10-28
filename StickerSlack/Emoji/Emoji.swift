@@ -20,7 +20,14 @@ struct Emoji: Codable, Identifiable, Hashable {
 		return (try? Data(contentsOf: localImageURL)) != nil
 	}
 	
-	var image: UIImage?
+	var image: UIImage? {
+		if let data = try? Data(contentsOf: localImageURL),
+		   let img = UIImage(data: data) {
+			return img
+		} else {
+			return nil
+		}
+	}
 	
 	enum CodingKeys: String, CodingKey {
 		case id = "id"
@@ -36,13 +43,6 @@ struct Emoji: Codable, Identifiable, Hashable {
 		self.name = try container.decode(String.self, forKey: .name)
 		self.localImageURL = try container.decode(URL.self, forKey: .localImageURL)
 		self.remoteImageURL = try container.decode(URL.self, forKey: .remoteImageURL)
-		
-		if let data = try? Data(contentsOf: localImageURL),
-		   let img = UIImage(data: data) {
-			self.image = img
-		} else {
-			self.image = nil
-		}
 	}
 	
 	init(

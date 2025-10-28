@@ -28,6 +28,7 @@ class EmojiHoarder: ObservableObject {
 		}
 		
 		self.emojis = fetched
+		self.filteredEmojis = fetched
 	}
 	
 	func storeStickers(_ toStore: [UUID]) {
@@ -49,7 +50,7 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	func fetchRemoteDB() -> [Emoji]? {
-		guard let data = try? Data(contentsOf: endpoint) else { fatalError("cachet unreachable") }
+		guard let data = try? Data(contentsOf: endpoint) else { return nil }
 		decoder.dateDecodingStrategy = .iso8601
 		let decoded: [SlackResponse] = try! decoder.decode([SlackResponse].self, from: data)
 		return SlackResponse.toEmojis(from: decoded)

@@ -12,7 +12,6 @@ struct EmojiPreview: View {
 	@State var emoji: Emoji
 	
 	@State private var id: UUID = UUID()
-	@State var image: UIImage? = nil
 	
     var body: some View {
 		VStack {
@@ -28,7 +27,6 @@ struct EmojiPreview: View {
 								.resizable().scaledToFit()
 								.frame(width: 20, height: 20)
 								.symbolRenderingMode(.hierarchical)
-//								.foregroundStyle(.gray)
 						}
 				} else {
 					AsyncImage(url: emoji.remoteImageURL) { phase in
@@ -36,14 +34,18 @@ struct EmojiPreview: View {
 							image
 								.resizable().scaledToFit()
 						} else if phase.error != nil {
-							Image(systemName: "xmark.app.fill")
-								.resizable().scaledToFit()
-								.padding()
-								.symbolRenderingMode(.hierarchical)
-								.foregroundStyle(.red)
-								.onTapGesture {
-									id = UUID()
-								}
+							ZStack {
+								
+								Image(systemName: "xmark.app.fill")
+									.resizable().scaledToFit()
+									.padding()
+									.padding()
+									.symbolRenderingMode(.hierarchical)
+									.foregroundStyle(.red)
+									.onTapGesture {
+										id = UUID()
+									}
+							}
 						} else {
 							ProgressView()
 						}
