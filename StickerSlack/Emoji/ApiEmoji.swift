@@ -42,8 +42,8 @@ struct ApiEmoji: EmojiProtocol {
 		case urlString
 	}
 	
-	func toEmoji() -> Emoji {
-		return Emoji(apiEmoji: self)
+	func toEmoji(withID: UUID = UUID()) -> Emoji {
+		return Emoji(apiEmoji: self, id: withID)
 	}
 	
 	func encode(to encoder: any Encoder) throws {

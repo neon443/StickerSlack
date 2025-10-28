@@ -18,7 +18,12 @@ struct ContentView: View {
 			TabView {
 				List {
 					HStack {
-						Stepper("show?", value: $hoarder.prefix, step: 100) { $0 }
+						TextField("", text: $searchTerm) {
+							hoarder.filterEmojis(by: searchTerm)
+						}
+						
+						.autocorrectionDisabled()
+						.textFieldStyle(.roundedBorder)
 //						Button("downloaded", systemImage: "arrow.down.circle.fill") {
 //							<#code#>
 //						}
@@ -28,13 +33,20 @@ struct ContentView: View {
 							EmojiPreview(emoji: emoji, image: emoji.image)
 								.frame(maxWidth: 100)
 							Spacer()
-							Button("", systemImage: "arrow.down.circle") {
-								Task {
-									try? await emoji.downloadImage()
-									emoji.refresh()
+							if emoji.isLocal {
+								Button("", systemImage: "trash") {
+									emoji.deleteImage()
 								}
+								.buttonStyle(.plain)
+							} else {
+								Button("", systemImage: "arrow.down.circle") {
+									Task {
+										try? await emoji.downloadImage()
+										emoji.refresh()
+									}
+								}
+								.buttonStyle(.plain)
 							}
-							.buttonStyle(.plain)
 						}
 						.id(emoji.uiID)
 						.swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -49,6 +61,7 @@ struct ContentView: View {
 					}
 //					.searchable(text: $searchTerm, prompt: "Search")
 				}
+				.searchable(text: $searchTerm)
 				.tabItem {
 					Label("home", systemImage: "house")
 				}

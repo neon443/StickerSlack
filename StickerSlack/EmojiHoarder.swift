@@ -28,7 +28,6 @@ class EmojiHoarder: ObservableObject {
 		}
 		
 		self.emojis = fetched
-		self.filteredEmojis = emojis
 	}
 	
 	func storeStickers(_ toStore: [UUID]) {
@@ -63,7 +62,7 @@ class EmojiHoarder: ObservableObject {
 	
 	func filterEmojis(by searchTerm: String) {
 		guard !searchTerm.isEmpty else {
-			self.filteredEmojis = emojis
+			self.filteredEmojis = []
 			return
 		}
 		Task {

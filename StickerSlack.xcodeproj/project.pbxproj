@@ -27,6 +27,8 @@
 		A9BE06DB2EA656B80033B213 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
 		A9BE06DC2EA657C70033B213 /* ApiEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* ApiEmoji.swift */; };
 		A9BE06DD2EA657CF0033B213 /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
+		A9D15B8A2EB1142C00404792 /* EmojiPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D15B892EB1142C00404792 /* EmojiPack.swift */; };
+		A9D15B8B2EB1142C00404792 /* EmojiPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D15B892EB1142C00404792 /* EmojiPack.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,7 @@
 		A969D6A82EA3F1AF00399C05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A969D6AA2EA3F1AF00399C05 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPreview.swift; sourceTree = "<group>"; };
+		A9D15B892EB1142C00404792 /* EmojiPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +154,7 @@
 				A949B1FA2EA0518800215164 /* SlackResponse.swift */,
 				A940FE3C2EA232590016870B /* ApiEmoji.swift */,
 				A924C3712EA9127200F20781 /* Emoji.swift */,
+				A9D15B892EB1142C00404792 /* EmojiPack.swift */,
 			);
 			path = Emoji;
 			sourceTree = "<group>";
@@ -292,6 +296,7 @@
 				A949B1F52EA04E8200215164 /* StickerSlackApp.swift in Sources */,
 				A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */,
 				A924C3732EA9127200F20781 /* Emoji.swift in Sources */,
+				A9D15B8B2EB1142C00404792 /* EmojiPack.swift in Sources */,
 				A949B1F82EA04F2300215164 /* EmojiHoarder.swift in Sources */,
 				A9773C2F2EA54AF000F3B753 /* EmojiPreview.swift in Sources */,
 			);
@@ -306,6 +311,7 @@
 				A9BE06DB2EA656B80033B213 /* EmojiHoarder.swift in Sources */,
 				A969D6AF2EA3F1AF00399C05 /* MessagesViewController.swift in Sources */,
 				A9BE06DD2EA657CF0033B213 /* SlackResponse.swift in Sources */,
+				A9D15B8A2EB1142C00404792 /* EmojiPack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

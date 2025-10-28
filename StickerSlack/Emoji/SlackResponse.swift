@@ -17,6 +17,11 @@ struct SlackResponse: Identifiable, Codable {
 	
 	static func toEmojis(from response: [SlackResponse]?) -> [Emoji]? {
 		guard let response else { return nil }
-		return response.map { ApiEmoji(name: $0.name, url: $0.imageUrl).toEmoji() }
+		return response.map { item in
+			ApiEmoji(
+				name: item.name,
+				url: item.imageUrl
+			).toEmoji(withID: item.id)
+		}
 	}
 }
