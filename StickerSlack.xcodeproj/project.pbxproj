@@ -26,7 +26,12 @@
 		A969D6AF2EA3F1AF00399C05 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969D6AA2EA3F1AF00399C05 /* MessagesViewController.swift */; };
 		A9773C2F2EA54AF000F3B753 /* EmojiPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */; };
 		A9B9A81C2EB2BCE4004C9245 /* StickerBrowserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B9A81B2EB2BCE4004C9245 /* StickerBrowserDataSource.swift */; };
-		A9B9A81E2EB2BEF1004C9245 /* StickerBroswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B9A81D2EB2BEF1004C9245 /* StickerBroswerViewController.swift */; };
+		A9B9A82E2EB2CCBE004C9245 /* StickerSlackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */; };
+		A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
+		A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
+		A9B9A8312EB2CD14004C9245 /* FilterCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */; };
+		A9B9A8322EB2CD29004C9245 /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
+		A9B9A8332EB2CD4B004C9245 /* ApiEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* ApiEmoji.swift */; };
 		A9BE06DB2EA656B80033B213 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
 		A9BE06DC2EA657C70033B213 /* ApiEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940FE3C2EA232590016870B /* ApiEmoji.swift */; };
 		A9BE06DD2EA657CF0033B213 /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
@@ -41,6 +46,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = A969D6902EA3E86500399C05;
 			remoteInfo = StickerSlackiMessageExtension;
+		};
+		A9B9A8272EB2CCB5004C9245 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A949B1D72EA04C0B00215164 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A949B1DE2EA04C0B00215164;
+			remoteInfo = StickerSlack;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -78,7 +90,8 @@
 		A969D6AA2EA3F1AF00399C05 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPreview.swift; sourceTree = "<group>"; };
 		A9B9A81B2EB2BCE4004C9245 /* StickerBrowserDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBrowserDataSource.swift; sourceTree = "<group>"; };
-		A9B9A81D2EB2BEF1004C9245 /* StickerBroswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBroswerViewController.swift; sourceTree = "<group>"; };
+		A9B9A8232EB2CCB5004C9245 /* StickerSlackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StickerSlackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSlackTests.swift; sourceTree = "<group>"; };
 		A9D15B892EB1142C00404792 /* EmojiPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,6 +113,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9B9A8202EB2CCB5004C9245 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -108,6 +128,7 @@
 			children = (
 				A949B1F22EA04E8200215164 /* StickerSlack */,
 				A969D6AB2EA3F1AF00399C05 /* StickerSlackiMessageExtension */,
+				A9B9A82D2EB2CCBE004C9245 /* StickerSlackTests */,
 				A969D6922EA3E86500399C05 /* Frameworks */,
 				A949B1E02EA04C0B00215164 /* Products */,
 			);
@@ -118,6 +139,7 @@
 			children = (
 				A949B1DF2EA04C0B00215164 /* StickerSlack.app */,
 				A969D6912EA3E86500399C05 /* StickerSlackiMessageExtension.appex */,
+				A9B9A8232EB2CCB5004C9245 /* StickerSlackTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -181,9 +203,16 @@
 				A969D6A92EA3F1AF00399C05 /* MainInterface.storyboard */,
 				A969D6AA2EA3F1AF00399C05 /* MessagesViewController.swift */,
 				A9B9A81B2EB2BCE4004C9245 /* StickerBrowserDataSource.swift */,
-				A9B9A81D2EB2BEF1004C9245 /* StickerBroswerViewController.swift */,
 			);
 			path = StickerSlackiMessageExtension;
+			sourceTree = "<group>";
+		};
+		A9B9A82D2EB2CCBE004C9245 /* StickerSlackTests */ = {
+			isa = PBXGroup;
+			children = (
+				A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */,
+			);
+			path = StickerSlackTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,6 +260,26 @@
 			productReference = A969D6912EA3E86500399C05 /* StickerSlackiMessageExtension.appex */;
 			productType = "com.apple.product-type.app-extension.messages";
 		};
+		A9B9A8222EB2CCB5004C9245 /* StickerSlackTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9B9A8292EB2CCB5004C9245 /* Build configuration list for PBXNativeTarget "StickerSlackTests" */;
+			buildPhases = (
+				A9B9A81F2EB2CCB5004C9245 /* Sources */,
+				A9B9A8202EB2CCB5004C9245 /* Frameworks */,
+				A9B9A8212EB2CCB5004C9245 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A9B9A8282EB2CCB5004C9245 /* PBXTargetDependency */,
+			);
+			name = StickerSlackTests;
+			packageProductDependencies = (
+			);
+			productName = StickerSlackTests;
+			productReference = A9B9A8232EB2CCB5004C9245 /* StickerSlackTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -246,6 +295,10 @@
 					};
 					A969D6902EA3E86500399C05 = {
 						CreatedOnToolsVersion = 26.0.1;
+					};
+					A9B9A8222EB2CCB5004C9245 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = A949B1DE2EA04C0B00215164;
 					};
 				};
 			};
@@ -268,6 +321,7 @@
 			targets = (
 				A949B1DE2EA04C0B00215164 /* StickerSlack */,
 				A969D6902EA3E86500399C05 /* StickerSlackiMessageExtension */,
+				A9B9A8222EB2CCB5004C9245 /* StickerSlackTests */,
 			);
 		};
 /* End PBXProject section */
@@ -287,6 +341,13 @@
 			files = (
 				A969D6AC2EA3F1AF00399C05 /* Assets.xcassets in Resources */,
 				A969D6AE2EA3F1AF00399C05 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9B9A8212EB2CCB5004C9245 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,7 +374,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9B9A81E2EB2BEF1004C9245 /* StickerBroswerViewController.swift in Sources */,
 				A924C3722EA9127200F20781 /* Emoji.swift in Sources */,
 				A9BE06DC2EA657C70033B213 /* ApiEmoji.swift in Sources */,
 				A9BE06DB2EA656B80033B213 /* EmojiHoarder.swift in Sources */,
@@ -325,6 +385,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9B9A81F2EB2CCB5004C9245 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */,
+				A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */,
+				A9B9A8322EB2CD29004C9245 /* SlackResponse.swift in Sources */,
+				A9B9A82E2EB2CCBE004C9245 /* StickerSlackTests.swift in Sources */,
+				A9B9A8312EB2CD14004C9245 /* FilterCategory.swift in Sources */,
+				A9B9A8332EB2CD4B004C9245 /* ApiEmoji.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -332,6 +405,11 @@
 			isa = PBXTargetDependency;
 			target = A969D6902EA3E86500399C05 /* StickerSlackiMessageExtension */;
 			targetProxy = A969D69E2EA3E86600399C05 /* PBXContainerItemProxy */;
+		};
+		A9B9A8282EB2CCB5004C9245 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A949B1DE2EA04C0B00215164 /* StickerSlack */;
+			targetProxy = A9B9A8272EB2CCB5004C9245 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -618,6 +696,53 @@
 			};
 			name = Release;
 		};
+		A9B9A82A2EB2CCB5004C9245 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8JGND254B7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neon443.StickerSlackTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StickerSlack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StickerSlack";
+			};
+			name = Debug;
+		};
+		A9B9A82B2EB2CCB5004C9245 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8JGND254B7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neon443.StickerSlackTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StickerSlack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StickerSlack";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -644,6 +769,15 @@
 			buildConfigurations = (
 				A969D6A22EA3E86600399C05 /* Debug */,
 				A969D6A32EA3E86600399C05 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9B9A8292EB2CCB5004C9245 /* Build configuration list for PBXNativeTarget "StickerSlackTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9B9A82A2EB2CCB5004C9245 /* Debug */,
+				A9B9A82B2EB2CCB5004C9245 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

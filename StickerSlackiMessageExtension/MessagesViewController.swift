@@ -30,6 +30,7 @@ class MessagesViewController: MSMessagesAppViewController {
 		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .regular)
 		stickerBrowser.frame = CGRect(x: 60, y: 20, width: 200, height: 600)
 		stickerBrowser.dataSource = dataSource
+		stickerBrowser.autoresizingMask = [.flexibleWidth]
 		view.addSubview(stickerBrowser)
 		stickerBrowser.reloadData()
 		view.bringSubviewToFront(stickerBrowser)

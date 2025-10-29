@@ -27,11 +27,11 @@ struct Emoji: Codable, Identifiable, Hashable {
 		return (try? Data(contentsOf: localImageURL)) != nil
 	}
 	
-	var sticker: MSSticker {
+	var sticker: MSSticker? {
 		guard isLocal else {
-			fatalError("sticker \(name) isnt local")
+			return nil
 		}
-		return try! MSSticker(contentsOfFileURL: localImageURL, localizedDescription: name)
+		return try? MSSticker(contentsOfFileURL: localImageURL, localizedDescription: name)
 	}
 	
 	var image: UIImage? {
