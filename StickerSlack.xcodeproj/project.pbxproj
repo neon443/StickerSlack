@@ -17,7 +17,6 @@
 		A949B1F52EA04E8200215164 /* StickerSlackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F12EA04E8200215164 /* StickerSlackApp.swift */; };
 		A949B1F82EA04F2300215164 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
 		A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
-		A949B1FD2EA158DB00215164 /* testData.json in Resources */ = {isa = PBXBuildFile; fileRef = A949B1FC2EA158DB00215164 /* testData.json */; };
 		A969D6942EA3E86500399C05 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A969D6932EA3E86500399C05 /* Messages.framework */; };
 		A969D6A02EA3E86600399C05 /* StickerSlackiMessageExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A969D6912EA3E86500399C05 /* StickerSlackiMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A969D6AC2EA3F1AF00399C05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A969D6A62EA3F1AF00399C05 /* Assets.xcassets */; };
@@ -66,7 +65,6 @@
 		A949B1F12EA04E8200215164 /* StickerSlackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSlackApp.swift; sourceTree = "<group>"; };
 		A949B1F72EA04F2300215164 /* EmojiHoarder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiHoarder.swift; sourceTree = "<group>"; };
 		A949B1FA2EA0518800215164 /* SlackResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackResponse.swift; sourceTree = "<group>"; };
-		A949B1FC2EA158DB00215164 /* testData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = testData.json; sourceTree = "<group>"; };
 		A969D6912EA3E86500399C05 /* StickerSlackiMessageExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StickerSlackiMessageExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A969D6932EA3E86500399C05 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = Library/Frameworks/Messages.framework; sourceTree = DEVELOPER_DIR; };
 		A969D6A62EA3F1AF00399C05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -142,7 +140,6 @@
 		A949B1F62EA04E8C00215164 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A949B1FC2EA158DB00215164 /* testData.json */,
 				A949B1EF2EA04E8200215164 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -270,7 +267,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A949B1FD2EA158DB00215164 /* testData.json in Resources */,
 				A949B1F32EA04E8200215164 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
