@@ -75,7 +75,7 @@ class EmojiHoarder: ObservableObject {
 	
 	func filterEmojis(by searchTerm: String) {
 		guard !searchTerm.isEmpty else {
-			self.filteredEmojis = []
+			self.filteredEmojis = emojis
 			return
 		}
 		Task {
