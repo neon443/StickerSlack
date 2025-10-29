@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import Messages
 import UniformTypeIdentifiers
 
 struct Emoji: Codable, Identifiable, Hashable {
@@ -24,6 +25,13 @@ struct Emoji: Codable, Identifiable, Hashable {
 	
 	var isLocal: Bool {
 		return (try? Data(contentsOf: localImageURL)) != nil
+	}
+	
+	var sticker: MSSticker {
+		guard isLocal else {
+			fatalError("sticker \(name) isnt local")
+		}
+		return try! MSSticker(contentsOfFileURL: localImageURL, localizedDescription: name)
 	}
 	
 	var image: UIImage? {

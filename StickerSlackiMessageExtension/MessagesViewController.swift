@@ -9,23 +9,30 @@ import UIKit
 import Messages
 
 class MessagesViewController: MSMessagesAppViewController {
-	var hoard: EmojiHoarder = EmojiHoarder()
+	let dataSource: StickerBrowserDataSource = StickerBrowserDataSource()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+//		sleep(5)
     }
     
     // MARK: - Conversation Handling
     
     override func willBecomeActive(with conversation: MSConversation) {
-		print(hoard.emojis.count)
 		let l = UILabel()
-		l.frame = CGRect(x: 20, y: 20, width: 1000, height: 40)
+		l.frame = CGRect(x: 20, y: 20, width: 200, height: 40)
 		l.textColor = .systemOrange
-		l.text = "\(hoard.emojis.count)"
+		l.text = "hii!"
 		view.addSubview(l)
 		view.bringSubviewToFront(l)
+		
+		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .regular)
+		stickerBrowser.frame = CGRect(x: 60, y: 20, width: 200, height: 600)
+		stickerBrowser.dataSource = dataSource
+		view.addSubview(stickerBrowser)
+		stickerBrowser.reloadData()
+		view.bringSubviewToFront(stickerBrowser)
         // Called when the extension is about to move from the inactive to active state.
         // This will happen when the extension is about to present UI.
         
