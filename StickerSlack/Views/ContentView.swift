@@ -21,9 +21,20 @@ struct ContentView: View {
 						.onChange(of: searchTerm) { _ in
 							hoarder.filterEmojis(by: searchTerm)
 						}
-					
 					.autocorrectionDisabled()
 					.textFieldStyle(.roundedBorder)
+					
+					Button("none") {
+						hoarder.filterEmojis(byCategory: .none, searchTerm: searchTerm)
+					}
+					
+					Button("downloaded") {
+						hoarder.filterEmojis(byCategory: .downloaded, searchTerm: searchTerm)
+					}
+					
+					Button("not downloaded") {
+						hoarder.filterEmojis(byCategory: .notDownloaded, searchTerm: searchTerm)
+					}
 					
 					Text("\(hoarder.filteredEmojis.count) Emoji")
 					

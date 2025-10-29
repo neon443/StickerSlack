@@ -91,4 +91,22 @@ class EmojiHoarder: ObservableObject {
 			}
 		}
 	}
+	
+	func filterEmojis(byCategory category: FilterCategory, searchTerm: String) {
+		guard category != .none else {
+			filterEmojis(by: searchTerm)
+			return
+		}
+		Task {
+			filterEmojis(by: searchTerm)
+			switch category {
+			case .none:
+				fallthrough
+			case .downloaded:
+				withAnimation(.interactiveSpring) { filteredEmojis = filteredEmojis.filter { $0.isLocal } }
+			case .notDownloaded:
+				withAnimation(.interactiveSpring) { filteredEmojis = filteredEmojis.filter { !$0.isLocal } }
+			}
+		}
+	}
 }

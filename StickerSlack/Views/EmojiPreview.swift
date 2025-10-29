@@ -51,6 +51,7 @@ struct EmojiPreview: View {
 							}
 						} else {
 							ProgressView()
+								.frame(maxWidth: .infinity, maxHeight: .infinity)
 						}
 					}
 				}
