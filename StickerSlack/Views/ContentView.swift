@@ -60,8 +60,9 @@ struct ContentView: View {
 					}
 				}
 				.refreshable {
-					hoarder.refreshDB()
-					searchTerm = ""
+					hoarder.refreshDB() {
+						hoarder.filterEmojis(by: searchTerm)
+					}
 				}
 				.searchable(text: $searchTerm)
 				.tabItem {

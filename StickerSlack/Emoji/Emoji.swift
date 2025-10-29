@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 import UniformTypeIdentifiers
 
 struct Emoji: Codable, Identifiable, Hashable {
@@ -71,6 +72,6 @@ struct Emoji: Codable, Identifiable, Hashable {
 	}
 	
 	mutating func refresh() {
-		self.uiID = UUID()
+		withAnimation { self.uiID = UUID() }
 	}
 }
