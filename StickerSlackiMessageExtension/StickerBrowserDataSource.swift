@@ -14,6 +14,7 @@ class StickerBrowserDataSource: NSObject, MSStickerBrowserViewDataSource {
 	var emojis: [MSSticker] = []
 	
 	func numberOfStickers(in stickerBrowserView: MSStickerBrowserView) -> Int {
+		guard emojis.isEmpty else { return emojis.count }
 		for emoji in hoarder.emojis {
 			guard let sticker = emoji.sticker else { continue }
 			emojis.append(sticker)
