@@ -14,7 +14,7 @@ struct EmojiPreview: View {
 	@State private var id: UUID = UUID()
 	
     var body: some View {
-		VStack {
+		VStack(alignment: .leading) {
 			Text(emoji.name)
 			Group {
 				if let localImage = try? Data(contentsOf: emoji.localImageURL),
@@ -27,6 +27,7 @@ struct EmojiPreview: View {
 								.resizable().scaledToFit()
 								.frame(width: 20, height: 20)
 								.symbolRenderingMode(.hierarchical)
+								.shadow(radius: 1)
 						}
 				} else {
 					AsyncImage(url: emoji.remoteImageURL) { phase in
