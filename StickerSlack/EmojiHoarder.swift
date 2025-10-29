@@ -68,6 +68,14 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
+	func refreshDB() {
+		Task {
+			guard let fetched = try? await fetchRemoteDB() else { return }
+			self.emojis = fetched
+			self.filteredEmojis = fetched
+		}
+	}
+	
 	func setPrefix(to: Int) {
 		filterEmojis(by: "")
 		filteredEmojis = Array(filteredEmojis.prefix(prefix))

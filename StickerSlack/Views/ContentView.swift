@@ -17,9 +17,10 @@ struct ContentView: View {
 		NavigationView {
 			TabView {
 				List {
-					TextField("", text: $searchTerm) {
-						hoarder.filterEmojis(by: searchTerm)
-					}
+					TextField("", text: $searchTerm)
+						.onChange(of: searchTerm) { _ in
+							hoarder.filterEmojis(by: searchTerm)
+						}
 					
 					.autocorrectionDisabled()
 					.textFieldStyle(.roundedBorder)
@@ -29,11 +30,12 @@ struct ContentView: View {
 					ForEach($hoarder.filteredEmojis, id: \.self) { $emoji in
 						HStack {
 							EmojiPreview(emoji: emoji)
-								.frame(maxWidth: 100)
+								.frame(maxWidth: 100, maxHeight: 100)
 							Spacer()
 							if emoji.isLocal {
 								Button("", systemImage: "trash") {
 									emoji.deleteImage()
+									emoji.refresh()
 								}
 								.buttonStyle(.plain)
 							} else {
@@ -56,7 +58,10 @@ struct ContentView: View {
 							}
 						}
 					}
-//					.searchable(text: $searchTerm, prompt: "Search")
+				}
+				.refreshable {
+					hoarder.refreshDB()
+					searchTerm = ""
 				}
 				.searchable(text: $searchTerm)
 				.tabItem {

@@ -41,6 +41,9 @@ struct EmojiPreview: View {
 									.padding()
 									.symbolRenderingMode(.hierarchical)
 									.foregroundStyle(.red)
+									.onAppear {
+										id = UUID()
+									}
 									.onTapGesture {
 										id = UUID()
 									}
