@@ -11,9 +11,11 @@ import UniformTypeIdentifiers
 
 struct Emoji: Codable, Identifiable, Hashable {
 	var id: UUID
-	var uiID: UUID
+	var uiID: UUID = UUID()
 	var name: String
-	var localImageURL: URL
+	var localImageURL: URL {
+		return EmojiHoarder.container.appendingPathComponent(id.uuidString, conformingTo: .image)
+	}
 	var remoteImageURL: URL
 	
 	var isLocal: Bool {
@@ -32,16 +34,13 @@ struct Emoji: Codable, Identifiable, Hashable {
 	enum CodingKeys: String, CodingKey {
 		case id = "id"
 		case name = "name"
-		case localImageURL = "localImageURL"
-		case remoteImageURL = "remoteImageURL"
+		case remoteImageURL = "imageUrl"
 	}
 	
 	init(from decoder: any Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.id = try container.decode(UUID.self, forKey: .id)
-		self.uiID = UUID()
 		self.name = try container.decode(String.self, forKey: .name)
-		self.localImageURL = try container.decode(URL.self, forKey: .localImageURL)
 		self.remoteImageURL = try container.decode(URL.self, forKey: .remoteImageURL)
 	}
 	
@@ -50,12 +49,11 @@ struct Emoji: Codable, Identifiable, Hashable {
 		id: UUID = UUID()
 	) {
 		self.id = id
-		self.uiID = id
 		self.name = apiEmoji.name
 		self.remoteImageURL = apiEmoji.url
 		
 		let fileExtension = String(apiEmoji.urlString.split(separator: ".").last ?? "png")
-		self.localImageURL = EmojiHoarder.container.appendingPathComponent(id.uuidString+"."+fileExtension, conformingTo: .image)
+//		self.localImageURL = EmojiHoarder.container.appendingPathComponent(id.uuidString+"."+fileExtension, conformingTo: .image)
 
 //		Task { [weak self] in
 //			let (data, response) = try await URLSession.shared.data(from: apiEmoji.url)

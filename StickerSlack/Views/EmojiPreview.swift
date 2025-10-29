@@ -35,7 +35,6 @@ struct EmojiPreview: View {
 								.resizable().scaledToFit()
 						} else if phase.error != nil {
 							ZStack {
-								
 								Image(systemName: "xmark.app.fill")
 									.resizable().scaledToFit()
 									.padding()

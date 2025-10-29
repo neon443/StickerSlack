@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 
 class EmojiHoarder: ObservableObject {
 	static let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
-	static let localEmojiDB: URL = EmojiHoarder.container.appendingPathExtension("localEmojiDB.json")
+	static let localEmojiDB: URL = EmojiHoarder.container.appendingPathComponent("_localEmojiDB.json", conformingTo: .fileURL)
 	private let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	private let encoder = JSONEncoder()
 	private let decoder = JSONDecoder()
@@ -22,13 +22,15 @@ class EmojiHoarder: ObservableObject {
 	@Published var prefix: Int = 100
 	
 	init() {
-		guard let fetched = fetchRemoteDB() else {
-			self.emojis = loadLocalDB()
-			return
-		}
+		self.emojis = loadLocalDB()
+		self.filteredEmojis = self.emojis
 		
-		self.emojis = fetched
-		self.filteredEmojis = fetched
+		Task(priority: .high) {
+			if let fetched = await self.fetchRemoteDB() {
+				self.emojis = fetched
+				self.filteredEmojis = fetched
+			}
+		}
 	}
 	
 	func storeStickers(_ toStore: [UUID]) {
@@ -41,6 +43,10 @@ class EmojiHoarder: ObservableObject {
 		try! encoder.encode(emojis).write(to: EmojiHoarder.localEmojiDB)
 	}
 	
+	func storeDB(data: Data) {
+		try! data.write(to: EmojiHoarder.localEmojiDB)
+	}
+	
 	func loadLocalDB() -> [Emoji] {
 		if let localEmojiDB = try? Data(contentsOf: EmojiHoarder.localEmojiDB) {
 			let decoded = try! decoder.decode([Emoji].self, from: localEmojiDB)
@@ -49,11 +55,17 @@ class EmojiHoarder: ObservableObject {
 		return []
 	}
 	
-	func fetchRemoteDB() -> [Emoji]? {
-		guard let data = try? Data(contentsOf: endpoint) else { return nil }
-		decoder.dateDecodingStrategy = .iso8601
-		let decoded: [SlackResponse] = try! decoder.decode([SlackResponse].self, from: data)
-		return SlackResponse.toEmojis(from: decoded)
+	func fetchRemoteDB() async -> [Emoji]? {
+		do {
+			let (data, _) = try await URLSession.shared.data(from: endpoint)
+			decoder.dateDecodingStrategy = .iso8601
+			let decoded: [SlackResponse] = try! decoder.decode([SlackResponse].self, from: data)
+			storeDB(data: data)
+			return SlackResponse.toEmojis(from: decoded)
+		} catch {
+			print(error.localizedDescription)
+			fatalError()
+		}
 	}
 	
 	func setPrefix(to: Int) {
