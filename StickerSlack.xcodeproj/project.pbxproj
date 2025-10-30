@@ -661,7 +661,7 @@
 				DEVELOPMENT_TEAM = 8JGND254B7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerSlackiMessageExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = StickerSlackiMessageExtension;
+				INFOPLIST_KEY_CFBundleDisplayName = StickerSlack;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -693,7 +693,7 @@
 				DEVELOPMENT_TEAM = 8JGND254B7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerSlackiMessageExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = StickerSlackiMessageExtension;
+				INFOPLIST_KEY_CFBundleDisplayName = StickerSlack;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
