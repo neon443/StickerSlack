@@ -50,38 +50,53 @@ struct PerformanceTests {
 	}
 	
 	@Test func MSStickerValidation() async throws {
+		let undownloadedEmojisBefore = hoarder.emojis.filter { !$0.isLocal }.map { $0.id }
 		let downloadedEmojisBefore = hoarder.emojis.filter { $0.isLocal }.map { $0.id }
+		
+		try? await withThrowingDiscardingTaskGroup { group in
+			var i = 0
+			let maxTasks = ProcessInfo.processInfo.processorCount-1
+			var activeTasks = 0
+			
+			for emoji in hoarder.emojis {
+				if activeTasks >= maxTasks {
+					let ib4 = i
+					while i <= ib4 {
+						try? await Task.sleep(nanoseconds: 1)
+					}
+					activeTasks -= 1
+				}
+				group.addTask {
+					try? await doThing(on: emoji, i: &i)
+					activeTasks -= 1
+				}
+				activeTasks += 1
+			}
+		}
 		
 		await withDiscardingTaskGroup { group in
 			var i = 0
 			for emoji in hoarder.emojis {
+				emoji.deleteImage()
+				guard downloadedEmojisBefore.contains(emoji.id) else { continue }
+				async let (data, _) = try! URLSession.shared.data(from: emoji.remoteImageURL)
+				try! await data.write(to: emoji.localImageURL)
 				i+=1
-				group.addTask {
-					try? await Task.sleep(nanoseconds: 1)
-					async let (data, _) = try! URLSession.shared.data(from: emoji.remoteImageURL)
-					try! await data.write(to: emoji.localImageURL)
-					let _ = emoji.sticker?.validate()
-					print("\(i)/\(hoarder.emojis.count) \(emoji.name)")
-				}
+				print("\(i)/\(downloadedEmojisBefore.count) \(emoji.name)")
 			}
 		}
-
-//		var i = 0
-//		for emoji in hoarder.emojis {
-//			i+=1
-//			async let (data, _) = try! URLSession.shared.data(from: emoji.remoteImageURL)
-//			try! await data.write(to: emoji.localImageURL)
-//			let _ = emoji.sticker?.validate()
-//			print("\(i)/\(hoarder.emojis.count) \(emoji.name)")
-//		}
-		
-		var i = 0
-		for emoji in hoarder.emojis {
-			emoji.deleteImage()
-			guard downloadedEmojisBefore.contains(emoji.id) else { continue }
-			async let (data, _) = try! URLSession.shared.data(from: emoji.remoteImageURL)
+	}
+	
+	func doThing(on emoji: Emoji, i: inout Int) async throws {
+		do {
+			guard !emoji.isLocal else { return }
+			async let (data, _) = try URLSession.shared.data(from: emoji.remoteImageURL)
 			try! await data.write(to: emoji.localImageURL)
-			print("\(i)/\(downloadedEmojisBefore) \(emoji.name)")
+			let _ = emoji.sticker?.validate()
+			i+=1
+			print("\(i)/\(hoarder.emojis.count) \(emoji.name)")
+		} catch {
+			try! await doThing(on: emoji, i: &i)
 		}
 	}
 }
