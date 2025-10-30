@@ -20,8 +20,8 @@ class MessagesViewController: MSMessagesAppViewController {
     // MARK: - Conversation Handling
     
     override func willBecomeActive(with conversation: MSConversation) {
-		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .regular)
-		stickerBrowser.frame = CGRect(x: 60, y: 20, width: 200, height: 600)
+		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
+		stickerBrowser.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
 		stickerBrowser.dataSource = dataSource
 		stickerBrowser.autoresizingMask = [.flexibleWidth]
 		view.addSubview(stickerBrowser)

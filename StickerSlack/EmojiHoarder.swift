@@ -21,10 +21,11 @@ class EmojiHoarder: ObservableObject {
 	@Published var filteredEmojis: [Emoji] = []
 	@Published var prefix: Int = 100
 	
-	init() {
+	init(localOnly: Bool = false) {
 		withAnimation { self.emojis = loadLocalDB() }
 		withAnimation { self.filteredEmojis = self.emojis }
 		
+		guard !localOnly else { return }
 		Task.detached {
 			print(Thread.current)
 			await self.loadRemoteDB()
