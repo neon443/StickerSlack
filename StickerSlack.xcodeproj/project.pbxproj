@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A9104C752EB3AE4700D160EA /* Icon.pxd in Resources */ = {isa = PBXBuildFile; fileRef = A9104C722EB3AE4700D160EA /* Icon.pxd */; };
+		A9104C762EB3AE4700D160EA /* StickerSlack.icon in Resources */ = {isa = PBXBuildFile; fileRef = A9104C732EB3AE4700D160EA /* StickerSlack.icon */; };
+		A9104C772EB3AE4700D160EA /* Icon.pxd in Resources */ = {isa = PBXBuildFile; fileRef = A9104C722EB3AE4700D160EA /* Icon.pxd */; };
+		A9104C782EB3AE4700D160EA /* StickerSlack.icon in Resources */ = {isa = PBXBuildFile; fileRef = A9104C732EB3AE4700D160EA /* StickerSlack.icon */; };
+		A9104C792EB3AE4700D160EA /* Icon.pxd in Resources */ = {isa = PBXBuildFile; fileRef = A9104C722EB3AE4700D160EA /* Icon.pxd */; };
+		A9104C7A2EB3AE4700D160EA /* StickerSlack.icon in Resources */ = {isa = PBXBuildFile; fileRef = A9104C732EB3AE4700D160EA /* StickerSlack.icon */; };
+		A9104C7B2EB3AE6300D160EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A949B1EF2EA04E8200215164 /* Assets.xcassets */; };
+		A9104C7C2EB3AE6300D160EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A949B1EF2EA04E8200215164 /* Assets.xcassets */; };
 		A9112EAC2EAFFDB0006739E2 /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = A9112EAB2EAFFDB0006739E2 /* Haptics */; };
 		A924C3722EA9127200F20781 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
 		A924C3732EA9127200F20781 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
@@ -71,6 +79,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A9104C722EB3AE4700D160EA /* Icon.pxd */ = {isa = PBXFileReference; lastKnownFileType = file; path = Icon.pxd; sourceTree = "<group>"; };
+		A9104C732EB3AE4700D160EA /* StickerSlack.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = StickerSlack.icon; sourceTree = "<group>"; };
 		A924C3712EA9127200F20781 /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
 		A924C3742EA9134C00F20781 /* StickerSlack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerSlack.entitlements; sourceTree = "<group>"; };
 		A924C3752EA9137A00F20781 /* StickerSlackiMessageExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerSlackiMessageExtension.entitlements; sourceTree = "<group>"; };
@@ -123,11 +133,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A9104C742EB3AE4700D160EA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A9104C722EB3AE4700D160EA /* Icon.pxd */,
+				A9104C732EB3AE4700D160EA /* StickerSlack.icon */,
+				A949B1EF2EA04E8200215164 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		A949B1D62EA04C0B00215164 = {
 			isa = PBXGroup;
 			children = (
 				A949B1F22EA04E8200215164 /* StickerSlack */,
 				A969D6AB2EA3F1AF00399C05 /* StickerSlackiMessageExtension */,
+				A9104C742EB3AE4700D160EA /* Resources */,
 				A9B9A82D2EB2CCBE004C9245 /* StickerSlackTests */,
 				A969D6922EA3E86500399C05 /* Frameworks */,
 				A949B1E02EA04C0B00215164 /* Products */,
@@ -161,17 +182,8 @@
 				A949B1F72EA04F2300215164 /* EmojiHoarder.swift */,
 				A949B1F92EA0517800215164 /* Emoji */,
 				A949B1EE2EA04E8200215164 /* Views */,
-				A949B1F62EA04E8C00215164 /* Resources */,
 			);
 			path = StickerSlack;
-			sourceTree = "<group>";
-		};
-		A949B1F62EA04E8C00215164 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				A949B1EF2EA04E8200215164 /* Assets.xcassets */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		A949B1F92EA0517800215164 /* Emoji */ = {
@@ -331,6 +343,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9104C752EB3AE4700D160EA /* Icon.pxd in Resources */,
+				A9104C762EB3AE4700D160EA /* StickerSlack.icon in Resources */,
 				A949B1F32EA04E8200215164 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,8 +353,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9104C792EB3AE4700D160EA /* Icon.pxd in Resources */,
+				A9104C7A2EB3AE4700D160EA /* StickerSlack.icon in Resources */,
 				A969D6AC2EA3F1AF00399C05 /* Assets.xcassets in Resources */,
 				A969D6AE2EA3F1AF00399C05 /* MainInterface.storyboard in Resources */,
+				A9104C7B2EB3AE6300D160EA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +365,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9104C772EB3AE4700D160EA /* Icon.pxd in Resources */,
+				A9104C7C2EB3AE6300D160EA /* Assets.xcassets in Resources */,
+				A9104C782EB3AE4700D160EA /* StickerSlack.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
