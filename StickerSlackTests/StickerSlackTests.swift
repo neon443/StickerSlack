@@ -21,6 +21,16 @@ struct StickerSlackTests {
 		#expect(goodEmoji.sticker!.validate(), "should be true")
 		badEmoji.deleteImage()
 	}
+	
+	@Test func deleteAllEmojis() async throws {
+		await withDiscardingTaskGroup { group in
+			for emoji in hoarder.emojis {
+				group.addTask {
+					emoji.deleteImage()
+				}
+			}
+		}
+	}
 }
 
 struct PerformanceTests {
