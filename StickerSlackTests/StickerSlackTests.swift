@@ -52,21 +52,35 @@ struct PerformanceTests {
 	@Test func MSStickerValidation() async throws {
 		let downloadedEmojisBefore = hoarder.emojis.filter { $0.isLocal }.map { $0.id }
 		
+		await withDiscardingTaskGroup { group in
+			var i = 0
+			for emoji in hoarder.emojis {
+				i+=1
+				group.addTask {
+					try? await Task.sleep(nanoseconds: 1)
+					async let (data, _) = try! URLSession.shared.data(from: emoji.remoteImageURL)
+					try! await data.write(to: emoji.localImageURL)
+					let _ = emoji.sticker?.validate()
+					print("\(i)/\(hoarder.emojis.count) \(emoji.name)")
+				}
+			}
+		}
+
+//		var i = 0
+//		for emoji in hoarder.emojis {
+//			i+=1
+//			async let (data, _) = try! URLSession.shared.data(from: emoji.remoteImageURL)
+//			try! await data.write(to: emoji.localImageURL)
+//			let _ = emoji.sticker?.validate()
+//			print("\(i)/\(hoarder.emojis.count) \(emoji.name)")
+//		}
+		
 		var i = 0
 		for emoji in hoarder.emojis {
-			i+=1
-			let (data, _) = try! await URLSession.shared.data(from: emoji.remoteImageURL)
-			try! data.write(to: emoji.localImageURL)
-			let _ = emoji.sticker?.validate()
 			emoji.deleteImage()
-			print("\(i)/\(hoarder.emojis.count) \(emoji.name)")
-		}
-		
-		i = 0
-		for emoji in hoarder.emojis {
 			guard downloadedEmojisBefore.contains(emoji.id) else { continue }
-			let (data, _) = try! await URLSession.shared.data(from: emoji.remoteImageURL)
-			try! data.write(to: emoji.localImageURL)
+			async let (data, _) = try! URLSession.shared.data(from: emoji.remoteImageURL)
+			try! await data.write(to: emoji.localImageURL)
 			print("\(i)/\(downloadedEmojisBefore) \(emoji.name)")
 		}
 	}
