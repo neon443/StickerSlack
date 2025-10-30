@@ -43,6 +43,10 @@ struct ContentView: View {
 							EmojiPreview(emoji: emoji)
 								.frame(maxWidth: 100, maxHeight: 100)
 							Spacer()
+							Button("", systemImage: "checkmark") {
+								print(emoji.sticker?.validate())
+							}
+							Spacer()
 							if emoji.isLocal {
 								Button("", systemImage: "trash") {
 									emoji.deleteImage()

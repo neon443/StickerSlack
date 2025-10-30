@@ -6,20 +6,36 @@
 //
 
 import Testing
+import Foundation
 
 struct StickerSlackTests {
+	var hoarder = EmojiHoarder()
+	
+	@Test func MSStickerValidation() async throws {
+		let goodEmoji = Emoji(apiEmoji: ApiEmoji(name: "name", url: "https://neon443.github.io/images/fav.ico"), id: UUID(uuidString: "0c48f4c3-1c63-41ed-96db-909e50e35dfc")!)
+		let _ = try! await goodEmoji.downloadImage()
+		#expect(goodEmoji.sticker!.validate(), "should be true")
+		
+		let badEmoji = Emoji(apiEmoji: ApiEmoji(name: "160chars:shttps://emoji.slack-edge.com/T0266FRGM/100906/ddeb22d813b83b0f.pngs,sexpirationfds2025-10-28T08:00:02.011Zs},{gtypeh:jemojieeeidggg9cab2003-ad74-492a-", url: "https://files.catbox.moe/ifh710.png"), id: UUID(uuidString: "0c48f4c3-1c63-41ed-96db-909e50e35dfc")!)
+		let _ = try! await badEmoji.downloadImage()
+		#expect(goodEmoji.sticker!.validate(), "should be true")
+		badEmoji.deleteImage()
+	}
+}
+
+struct PerformanceTests {
 	var hoarder = EmojiHoarder()
 	
 	@Test func stickerConversion() async throws {
 		// Write your test here and use APIs like `#expect(...)` to check expected conditions.
 		for emoji in hoarder.emojis {
-			print(emoji.sticker)
+			let _ = emoji.sticker
 		}
 	}
 	
 	@Test func localImageURL() async throws {
 		for emoji in hoarder.emojis {
-			print(emoji.localImageURL)
+			let _ = emoji.localImageURL
 		}
 	}
 	
@@ -30,6 +46,28 @@ struct StickerSlackTests {
 			hoarder.filteredEmojis = []
 			hoarder.filterEmojis(by: query)
 			print(hoarder.filteredEmojis.count)
+		}
+	}
+	
+	@Test func MSStickerValidation() async throws {
+		let downloadedEmojisBefore = hoarder.emojis.filter { $0.isLocal }.map { $0.id }
+		
+		var i = 0
+		for emoji in hoarder.emojis {
+			i+=1
+			let (data, _) = try! await URLSession.shared.data(from: emoji.remoteImageURL)
+			try! data.write(to: emoji.localImageURL)
+			let _ = emoji.sticker?.validate()
+			emoji.deleteImage()
+			print("\(i)/\(hoarder.emojis.count) \(emoji.name)")
+		}
+		
+		i = 0
+		for emoji in hoarder.emojis {
+			guard downloadedEmojisBefore.contains(emoji.id) else { continue }
+			let (data, _) = try! await URLSession.shared.data(from: emoji.remoteImageURL)
+			try! data.write(to: emoji.localImageURL)
+			print("\(i)/\(downloadedEmojisBefore) \(emoji.name)")
 		}
 	}
 }
