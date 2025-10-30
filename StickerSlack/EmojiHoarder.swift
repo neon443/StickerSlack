@@ -27,7 +27,6 @@ class EmojiHoarder: ObservableObject {
 		
 		guard !localOnly else { return }
 		Task.detached {
-			print(Thread.current)
 			await self.loadRemoteDB()
 		}
 	}

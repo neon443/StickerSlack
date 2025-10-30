@@ -44,7 +44,13 @@ struct ContentView: View {
 								.frame(maxWidth: 100, maxHeight: 100)
 							Spacer()
 							Button("", systemImage: "checkmark") {
-								print(emoji.sticker?.validate())
+								if let sticker = emoji.sticker {
+									if sticker.validate() {
+										Haptic.success.trigger()
+									} else {
+										Haptic.error.trigger()
+									}
+								}
 							}
 							Spacer()
 							if emoji.isLocal {
@@ -56,7 +62,7 @@ struct ContentView: View {
 							} else {
 								Button("", systemImage: "arrow.down.circle") {
 									Task {
-										try? await emoji.downloadImage()
+										let _ = try? await emoji.downloadImage()
 										emoji.refresh()
 									}
 								}

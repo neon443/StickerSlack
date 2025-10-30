@@ -60,7 +60,6 @@ struct PerformanceTests {
 	}
 	
 	@Test func MSStickerValidation() async throws {
-		let undownloadedEmojisBefore = hoarder.emojis.filter { !$0.isLocal }.map { $0.id }
 		let downloadedEmojisBefore = hoarder.emojis.filter { $0.isLocal }.map { $0.id }
 		
 		try? await withThrowingDiscardingTaskGroup { group in
