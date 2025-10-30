@@ -10,10 +10,16 @@ import Testing
 struct StickerSlackTests {
 	var hoarder = EmojiHoarder()
 	
-	@Test func example() async throws {
+	@Test func stickerConversion() async throws {
 		// Write your test here and use APIs like `#expect(...)` to check expected conditions.
 		for emoji in hoarder.emojis {
 			print(emoji.sticker)
+		}
+	}
+	
+	@Test func localImageURL() async throws {
+		for emoji in hoarder.emojis {
+			print(emoji.localImageURL)
 		}
 	}
 	

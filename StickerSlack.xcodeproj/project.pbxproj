@@ -564,7 +564,7 @@
 		A949B1EB2EA04C0C00215164 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = StickerSlack;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StickerSlack/StickerSlack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -609,7 +609,7 @@
 		A949B1EC2EA04C0C00215164 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = StickerSlack;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StickerSlack/StickerSlack.entitlements;
 				CODE_SIGN_STYLE = Automatic;

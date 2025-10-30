@@ -19,7 +19,8 @@ struct Emoji: Codable, Identifiable, Hashable {
 		let urlString = remoteImageURL.absoluteString
 		let split = urlString.split(separator: ".")
 		let fileExtension = ".\(split.last ?? "png")"
-		return EmojiHoarder.container.appendingPathComponent(id.uuidString+fileExtension, conformingTo: .image)
+//		return EmojiHoarder.container.appendingPathComponent(id.uuidString+fileExtension, conformingTo: .image)
+		return URL(string: EmojiHoarder.container.absoluteString+id.uuidString+fileExtension)!
 	}
 	var remoteImageURL: URL
 	
