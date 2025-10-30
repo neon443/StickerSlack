@@ -70,7 +70,7 @@ class EmojiHoarder: ObservableObject {
 			return SlackResponse.toEmojis(from: decoded)
 		} catch {
 			print(error.localizedDescription)
-			fatalError()
+			return nil
 		}
 	}
 	
