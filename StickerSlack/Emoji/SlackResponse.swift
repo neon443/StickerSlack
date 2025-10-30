@@ -13,7 +13,6 @@ struct SlackResponse: Identifiable, Codable {
 	var name: String
 	var imageUrl: String
 	var alias: String?
-	var expiration: Date
 	
 	static func toEmojis(from response: [SlackResponse]?) -> [Emoji]? {
 		guard let response else { return nil }

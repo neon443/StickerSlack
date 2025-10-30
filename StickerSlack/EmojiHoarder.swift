@@ -25,11 +25,9 @@ class EmojiHoarder: ObservableObject {
 		withAnimation { self.emojis = loadLocalDB() }
 		withAnimation { self.filteredEmojis = self.emojis }
 		
-		Task(priority: .high) {
-			if let fetched = await self.fetchRemoteDB() {
-				withAnimation { self.emojis = fetched }
-				withAnimation { self.filteredEmojis = fetched }
-			}
+		Task.detached {
+			print(Thread.current)
+			await self.loadRemoteDB()
 		}
 	}
 	
@@ -55,12 +53,20 @@ class EmojiHoarder: ObservableObject {
 		return []
 	}
 	
+	func loadRemoteDB() async {
+		async let fetched = self.fetchRemoteDB()
+		if let fetched = await fetched {
+			withAnimation { self.emojis = fetched }
+			withAnimation { self.filteredEmojis = fetched }
+		}
+	}
+	
 	func fetchRemoteDB() async -> [Emoji]? {
 		do {
-			let (data, _) = try await URLSession.shared.data(from: endpoint)
+			async let (data, _) = try URLSession.shared.data(from: endpoint)
 			decoder.dateDecodingStrategy = .iso8601
-			let decoded: [SlackResponse] = try! decoder.decode([SlackResponse].self, from: data)
-			storeDB(data: data)
+			let decoded: [SlackResponse] = try decoder.decode([SlackResponse].self, from: await data)
+			try storeDB(data: await data)
 			return SlackResponse.toEmojis(from: decoded)
 		} catch {
 			print(error.localizedDescription)
@@ -69,12 +75,14 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	func refreshDB(withCallback callback: (() -> Void)? = nil) {
-		Task {
-			guard let fetched = try? await fetchRemoteDB() else { return }
-			withAnimation { self.emojis = fetched }
-			withAnimation { self.filteredEmojis = fetched }
-			if let callback {
-				callback()
+		Task.detached {
+			guard let fetched = await self.fetchRemoteDB() else { return }
+			DispatchQueue.main.async {
+				withAnimation { self.emojis = fetched }
+				withAnimation { self.filteredEmojis = fetched }
+				if let callback {
+					callback()
+				}
 			}
 		}
 	}
@@ -84,8 +92,8 @@ class EmojiHoarder: ObservableObject {
 			withAnimation(.interactiveSpring) { self.filteredEmojis = emojis }
 			return
 		}
-		Task {
-			let filtered = emojis.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
+		Task.detached {
+			let filtered = await self.emojis.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
 			DispatchQueue.main.async {
 				withAnimation(.interactiveSpring) { self.filteredEmojis = filtered }
 			}
@@ -97,15 +105,15 @@ class EmojiHoarder: ObservableObject {
 			filterEmojis(by: searchTerm)
 			return
 		}
-		Task {
-			filterEmojis(by: searchTerm)
+		self.filterEmojis(by: searchTerm)
+		DispatchQueue.main.async {
 			switch category {
 			case .none:
 				fallthrough
 			case .downloaded:
-				withAnimation(.interactiveSpring) { filteredEmojis = filteredEmojis.filter { $0.isLocal } }
+				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { $0.isLocal } }
 			case .notDownloaded:
-				withAnimation(.interactiveSpring) { filteredEmojis = filteredEmojis.filter { !$0.isLocal } }
+				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { !$0.isLocal } }
 			}
 		}
 	}

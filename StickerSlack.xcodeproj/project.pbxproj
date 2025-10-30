@@ -663,7 +663,7 @@
 				INFOPLIST_FILE = StickerSlackiMessageExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StickerSlackiMessageExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -695,7 +695,7 @@
 				INFOPLIST_FILE = StickerSlackiMessageExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StickerSlackiMessageExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

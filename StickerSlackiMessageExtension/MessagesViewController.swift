@@ -20,13 +20,6 @@ class MessagesViewController: MSMessagesAppViewController {
     // MARK: - Conversation Handling
     
     override func willBecomeActive(with conversation: MSConversation) {
-		let l = UILabel()
-		l.frame = CGRect(x: 20, y: 20, width: 200, height: 40)
-		l.textColor = .systemOrange
-		l.text = "hii!"
-		view.addSubview(l)
-		view.bringSubviewToFront(l)
-		
 		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .regular)
 		stickerBrowser.frame = CGRect(x: 60, y: 20, width: 200, height: 600)
 		stickerBrowser.dataSource = dataSource

@@ -13,13 +13,12 @@ import UniformTypeIdentifiers
 
 struct Emoji: Codable, Identifiable, Hashable {
 	var id: UUID
-	var uiID: UUID = UUID()
+	var uiID: UUID
 	var name: String
 	var localImageURL: URL {
 		let urlString = remoteImageURL.absoluteString
 		let split = urlString.split(separator: ".")
 		let fileExtension = ".\(split.last ?? "png")"
-//		return EmojiHoarder.container.appendingPathComponent(id.uuidString+fileExtension, conformingTo: .image)
 		return URL(string: EmojiHoarder.container.absoluteString+id.uuidString+fileExtension)!
 	}
 	var remoteImageURL: URL
@@ -53,6 +52,7 @@ struct Emoji: Codable, Identifiable, Hashable {
 	init(from decoder: any Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.id = try container.decode(UUID.self, forKey: .id)
+		self.uiID = id
 		self.name = try container.decode(String.self, forKey: .name)
 		self.remoteImageURL = try container.decode(URL.self, forKey: .remoteImageURL)
 	}
@@ -62,6 +62,7 @@ struct Emoji: Codable, Identifiable, Hashable {
 		id: UUID = UUID()
 	) {
 		self.id = id
+		self.uiID = id
 		self.name = apiEmoji.name
 		self.remoteImageURL = apiEmoji.url
 	}

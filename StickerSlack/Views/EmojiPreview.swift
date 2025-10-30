@@ -17,9 +17,8 @@ struct EmojiPreview: View {
 		VStack(alignment: .leading) {
 			Text(emoji.name)
 			Group {
-				if let localImage = try? Data(contentsOf: emoji.localImageURL),
-				   let image = UIImage(data: localImage) {
-					Image(uiImage: image)
+				if emoji.isLocal {
+					Image(uiImage: emoji.image!)
 						.resizable().scaledToFit()
 						.border(.orange)
 						.overlay(alignment: .bottomLeading) {
