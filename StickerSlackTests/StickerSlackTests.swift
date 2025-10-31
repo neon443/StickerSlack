@@ -131,4 +131,24 @@ struct PerformanceTests {
 			try! await doThing(on: emoji, i: &i)
 		}
 	}
+	
+	@Test func fakeDownloadAllStickers() async throws {
+		await withDiscardingTaskGroup { group in
+			for emoji in hoarder.emojis {
+				group.addTask {
+					try! Data().write(to: emoji.localImageURL)
+				}
+			}
+		}
+	}
+	
+	@Test func deleteAllImages() async throws {
+		await withDiscardingTaskGroup { group in
+			for emoji in hoarder.emojis {
+				group.addTask {
+					emoji.deleteImage()
+				}
+			}
+		}
+	}
 }

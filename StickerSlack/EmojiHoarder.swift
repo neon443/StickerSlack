@@ -37,6 +37,17 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
+	func deleteAllStickers() async {
+		await withTaskGroup { group in
+			for emoji in emojis {
+				group.addTask {
+					guard await emoji.isLocal else { return }
+					await emoji.deleteImage()
+				}
+			}
+		}
+	}
+	
 	func storeDB() {
 		try! encoder.encode(emojis).write(to: EmojiHoarder.localEmojiDB)
 	}

@@ -18,7 +18,7 @@ struct EmojiPreview: View {
 			Text(emoji.name)
 			Group {
 				if emoji.isLocal {
-					Image(uiImage: emoji.image!)
+					Image(uiImage: emoji.image ?? UIImage())
 						.resizable().scaledToFit()
 						.border(.orange)
 						.overlay(alignment: .bottomLeading) {
