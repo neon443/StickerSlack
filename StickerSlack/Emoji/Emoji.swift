@@ -81,6 +81,7 @@ struct Emoji: Codable, Identifiable, Hashable {
 		try? FileManager.default.removeItem(at: localImageURL)
 	}
 	
+	@MainActor
 	mutating func refresh() {
 		withAnimation { self.uiID = UUID() }
 	}

@@ -36,6 +36,12 @@ struct ContentView: View {
 						hoarder.filterEmojis(byCategory: .notDownloaded, searchTerm: searchTerm)
 					}
 					
+					Button("delete all images") {
+						Task.detached {
+							await hoarder.deleteAllStickers()
+						}
+					}
+					
 					Text("\(hoarder.filteredEmojis.count) Emoji")
 					
 					ForEach($hoarder.filteredEmojis, id: \.self) { $emoji in
