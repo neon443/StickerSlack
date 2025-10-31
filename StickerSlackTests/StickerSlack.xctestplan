@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "2BB8E66F-6DB9-47B7-B6C2-C0E860DB0CB7",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:StickerSlack.xcodeproj",
+      "identifier" : "A949B1DE2EA04C0B00215164",
+      "name" : "StickerSlack"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:StickerSlack.xcodeproj",
+        "identifier" : "A9B9A8222EB2CCB5004C9245",
+        "name" : "StickerSlackTests"
+      }
+    }
+  ],
+  "version" : 1
+}
