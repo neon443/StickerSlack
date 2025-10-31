@@ -17,13 +17,13 @@ class EmojiHoarder: ObservableObject {
 	private let encoder = JSONEncoder()
 	private let decoder = JSONDecoder()
 	
-	@Published var emojis: Set<Emoji> = []
+	@Published var emojis: [Emoji] = []
 	@Published var filteredEmojis: [Emoji] = []
 	@Published var prefix: Int = 100
 	
 	init(localOnly: Bool = false) {
 		let localDB = loadLocalDB()
-		withAnimation { self.emojis = Set(localDB) }
+		withAnimation { self.emojis = localDB }
 		withAnimation { self.filteredEmojis = localDB }
 		
 		guard !localOnly else { return }
@@ -68,7 +68,7 @@ class EmojiHoarder: ObservableObject {
 	func loadRemoteDB() async {
 		async let fetched = self.fetchRemoteDB()
 		if let fetched = await fetched {
-			withAnimation { self.emojis = Set(fetched) }
+			withAnimation { self.emojis = fetched }
 			withAnimation { self.filteredEmojis = fetched }
 		}
 	}
@@ -86,16 +86,11 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
-	func refreshDB(withCallback callback: (() -> Void)? = nil) {
-		Task.detached {
-			guard let fetched = await self.fetchRemoteDB() else { return }
-			DispatchQueue.main.async {
-				withAnimation { self.emojis = fetched }
-				withAnimation { self.filteredEmojis = fetched }
-				if let callback {
-					callback()
-				}
-			}
+	func refreshDB() async {
+		guard let fetched = await self.fetchRemoteDB() else { return }
+		DispatchQueue.main.async {
+			withAnimation { self.emojis = fetched }
+			withAnimation { self.filteredEmojis = fetched }
 		}
 	}
 	
