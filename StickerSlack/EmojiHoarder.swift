@@ -22,8 +22,9 @@ class EmojiHoarder: ObservableObject {
 	@Published var prefix: Int = 100
 	
 	init(localOnly: Bool = false) {
-		withAnimation { self.emojis = loadLocalDB() }
-		withAnimation { self.filteredEmojis = self.emojis }
+		let localDB = loadLocalDB()
+		withAnimation { self.emojis = localDB }
+		withAnimation { self.filteredEmojis = localDB }
 		
 		guard !localOnly else { return }
 		Task.detached {
@@ -85,28 +86,23 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
-	func refreshDB(withCallback callback: (() -> Void)? = nil) {
-		Task.detached {
-			guard let fetched = await self.fetchRemoteDB() else { return }
-			DispatchQueue.main.async {
-				withAnimation { self.emojis = fetched }
-				withAnimation { self.filteredEmojis = fetched }
-				if let callback {
-					callback()
-				}
-			}
+	func refreshDB() async {
+		guard let fetched = await self.fetchRemoteDB() else { return }
+		DispatchQueue.main.async {
+			withAnimation { self.emojis = fetched }
+			withAnimation { self.filteredEmojis = fetched }
 		}
 	}
 	
 	func filterEmojis(by searchTerm: String) {
 		guard !searchTerm.isEmpty else {
-			withAnimation(.interactiveSpring) { self.filteredEmojis = emojis }
+			withAnimation(.interactiveSpring) { self.filteredEmojis = Array(emojis) }
 			return
 		}
 		Task.detached {
 			let filtered = await self.emojis.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
 			DispatchQueue.main.async {
-				withAnimation(.interactiveSpring) { self.filteredEmojis = filtered }
+				withAnimation(.interactiveSpring) { self.filteredEmojis = Array(filtered) }
 			}
 		}
 	}

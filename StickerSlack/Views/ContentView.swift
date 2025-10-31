@@ -89,8 +89,9 @@ struct ContentView: View {
 					}
 				}
 				.refreshable {
-					hoarder.refreshDB() {
-						hoarder.filterEmojis(by: searchTerm)
+					Task.detached {
+						await hoarder.refreshDB()
+						await hoarder.filterEmojis(by: searchTerm)
 					}
 				}
 				.searchable(text: $searchTerm)
