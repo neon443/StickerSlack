@@ -8,6 +8,29 @@
 import Testing
 import Foundation
 
+struct ApiEmojiTests {
+	@Test func ApiEmojiEncode() async throws {
+		let apiEmoji = ApiEmoji(name: "name", url: "https://")
+		let encoded = try! JSONEncoder().encode(apiEmoji)
+		let decoded = try! JSONDecoder().decode(ApiEmoji.self, from: encoded)
+		#expect(decoded == apiEmoji)
+	}
+	
+	@Test func ApiEmojiEncoder() async throws {
+		let json = "{\"name\":\"name\",\"urlString\":\"https:\\/\\/\"}"
+		let decoded = try! JSONDecoder().decode(ApiEmoji.self, from: json.data(using: .utf8)!)
+		let expected = ApiEmoji(name: "name", url: "https://")
+		#expect(expected == ApiEmoji(name: "name", url: "https://"))
+	}
+	
+	@Test func ApiEmojiToEmoji() async throws {
+		let apiEmoji = ApiEmoji(name: "name", url: "https://")
+		let emoji = apiEmoji.toEmoji()
+		let expected = Emoji(apiEmoji: apiEmoji, id: emoji.id)
+		#expect(emoji == expected)
+	}
+}
+
 struct StickerSlackTests {
 	var hoarder = EmojiHoarder()
 	

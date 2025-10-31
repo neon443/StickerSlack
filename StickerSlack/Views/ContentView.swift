@@ -46,13 +46,15 @@ struct ContentView: View {
 							Button("", systemImage: "checkmark") {
 								if let sticker = emoji.sticker {
 									if sticker.validate() {
+										print("validation of \(emoji.name) succeeded")
 										Haptic.success.trigger()
 									} else {
+										print("validation of \(emoji.name) failed")
 										Haptic.error.trigger()
 									}
 								}
 							}
-							Spacer()
+							.buttonStyle(.plain)
 							if emoji.isLocal {
 								Button("", systemImage: "trash") {
 									emoji.deleteImage()
