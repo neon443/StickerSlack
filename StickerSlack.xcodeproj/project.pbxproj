@@ -139,9 +139,9 @@
 		A9104C742EB3AE4700D160EA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A9104C722EB3AE4700D160EA /* Icon.pxd */,
 				A9104C732EB3AE4700D160EA /* StickerSlack.icon */,
 				A949B1EF2EA04E8200215164 /* Assets.xcassets */,
+				A9104C722EB3AE4700D160EA /* Icon.pxd */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -589,6 +589,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -634,6 +635,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
