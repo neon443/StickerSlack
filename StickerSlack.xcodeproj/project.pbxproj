@@ -91,6 +91,7 @@
 		A949B1F72EA04F2300215164 /* EmojiHoarder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiHoarder.swift; sourceTree = "<group>"; };
 		A949B1FA2EA0518800215164 /* SlackResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackResponse.swift; sourceTree = "<group>"; };
 		A950E87D2EB57F1100A9F873 /* StickerSlack.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = StickerSlack.xctestplan; sourceTree = "<group>"; };
+		A950E8802EB6C13700A9F873 /* StickerSlackiMessageApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerSlackiMessageApp.entitlements; sourceTree = "<group>"; };
 		A969D6932EA3E86500399C05 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = Library/Frameworks/Messages.framework; sourceTree = DEVELOPER_DIR; };
 		A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPreview.swift; sourceTree = "<group>"; };
 		A986A6AD2EB658DF00B6E0FA /* StickerSlackiMessageApp.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StickerSlackiMessageApp.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -217,6 +218,7 @@
 		A986A6CC2EB659E000B6E0FA /* StickerSlackiMessageApp */ = {
 			isa = PBXGroup;
 			children = (
+				A950E8802EB6C13700A9F873 /* StickerSlackiMessageApp.entitlements */,
 				A986A6C62EB659E000B6E0FA /* Assets.xcassets */,
 				A986A6C72EB659E000B6E0FA /* Info.plist */,
 				A986A6C92EB659E000B6E0FA /* MainInterface.storyboard */,
@@ -663,6 +665,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_ENTITLEMENTS = StickerSlackiMessageApp/StickerSlackiMessageApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8JGND254B7;
@@ -694,6 +697,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_ENTITLEMENTS = StickerSlackiMessageApp/StickerSlackiMessageApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8JGND254B7;
