@@ -340,8 +340,8 @@
 			projectRoot = "";
 			targets = (
 				A949B1DE2EA04C0B00215164 /* StickerSlack */,
-				A9B9A8222EB2CCB5004C9245 /* StickerSlackTests */,
 				A986A6AC2EB658DF00B6E0FA /* StickerSlackiMessageApp */,
+				A9B9A8222EB2CCB5004C9245 /* StickerSlackTests */,
 			);
 		};
 /* End PBXProject section */
