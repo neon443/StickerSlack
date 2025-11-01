@@ -40,10 +40,13 @@ class EmojiHoarder: ObservableObject {
 	
 	func deleteAllStickers() async {
 		await withTaskGroup { group in
-			for emoji in emojis {
+			for i in emojis.indices {
 				group.addTask {
-					guard await emoji.isLocal else { return }
-					await emoji.deleteImage()
+					guard self.emojis[i].isLocal else { return }
+					self.emojis[i].deleteImage()
+					DispatchQueue.main.sync {
+						self.emojis[i].refresh()
+					}
 				}
 			}
 		}
@@ -100,7 +103,7 @@ class EmojiHoarder: ObservableObject {
 			return
 		}
 		Task.detached {
-			let filtered = await self.emojis.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
+			let filtered = self.emojis.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
 			DispatchQueue.main.async {
 				withAnimation(.interactiveSpring) { self.filteredEmojis = Array(filtered) }
 			}

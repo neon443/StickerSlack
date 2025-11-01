@@ -46,16 +46,9 @@ struct StickerSlackTests {
 	}
 	
 	@Test func deleteAllEmojis() async throws {
-		await withDiscardingTaskGroup { group in
-			for i in hoarder.emojis.indices {
-				group.addTask {
-					hoarder.emojis[i].deleteImage()
-					await MainActor.run {
-						hoarder.emojis[i].refresh()
-					}
-				}
-			}
-		}
+		let performanceTests = PerformanceTests(hoarder: hoarder)
+		try! await performanceTests.fakeDownloadAllStickers()
+		await hoarder.deleteAllStickers()
 	}
 }
 
