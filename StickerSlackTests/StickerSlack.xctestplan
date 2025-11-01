@@ -19,6 +19,16 @@
   "testTargets" : [
     {
       "parallelizable" : true,
+      "skippedTests" : {
+        "suites" : [
+          {
+            "name" : "PerformanceTests",
+            "testFunctions" : [
+              "downloadAll()"
+            ]
+          }
+        ]
+      },
       "target" : {
         "containerPath" : "container:StickerSlack.xcodeproj",
         "identifier" : "A9B9A8222EB2CCB5004C9245",
@@ -26,5 +36,5 @@
       }
     }
   ],
-  "version" : 1
+  "version" : 2
 }
