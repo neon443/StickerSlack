@@ -18,7 +18,7 @@ struct EmojiPreview: View {
 		VStack(alignment: .leading) {
 			Text(emoji.name)
 			Group {
-				if hoarder.localEmojis.contains(emoji) {
+				if emoji.isLocal {
 					Image(uiImage: emoji.image ?? UIImage())
 						.resizable().scaledToFit()
 						.border(.orange)

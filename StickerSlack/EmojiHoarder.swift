@@ -18,7 +18,6 @@ class EmojiHoarder: ObservableObject {
 	private let decoder = JSONDecoder()
 	
 	@Published var emojis: [Emoji] = []
-	@Published var localEmojis: Set<Emoji> = []
 	@Published var filteredEmojis: [Emoji] = []
 	@Published var prefix: Int = 100
 	
@@ -31,8 +30,6 @@ class EmojiHoarder: ObservableObject {
 		Task.detached {
 			print("start loading remote db")
 			await self.loadRemoteDB()
-			print("start local emojis loading")
-			await self.findLocalEmojis()
 			print("end")
 		}
 	}
@@ -47,7 +44,7 @@ class EmojiHoarder: ObservableObject {
 		await withTaskGroup { group in
 			for i in emojis.indices {
 				group.addTask {
-					guard await self.localEmojis.contains(self.emojis[i]) else { return }
+					guard await self.emojis[i].isLocal else { return }
 					await self.emojis[i].deleteImage()
 					DispatchQueue.main.sync {
 						self.emojis[i].refresh()
@@ -55,15 +52,6 @@ class EmojiHoarder: ObservableObject {
 				}
 			}
 		}
-	}
-	
-	nonisolated
-	func findLocalEmojis() async {
-		let filteredSetted = await Set(self.emojis.filter { $0.isLocal })
-		await MainActor.run {
-			self.localEmojis = filteredSetted
-		}
-		return
 	}
 	
 	func storeDB() {
@@ -137,32 +125,19 @@ class EmojiHoarder: ObservableObject {
 			case .none:
 				fallthrough
 			case .downloaded:
-				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { self.localEmojis.contains($0) } }
+				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { $0.isLocal } }
 			case .notDownloaded:
-				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { !self.localEmojis.contains($0) } }
+				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { !$0.isLocal } }
 			}
 		}
 	}
 	
-	func downloadEmoji(_ toDownload: Emoji) {
-		Task.detached {
-			if (try? await toDownload.downloadImage()) != nil {
-				let index = await self.emojis.firstIndex { $0 == toDownload }
-				guard let index else { return }
-				await MainActor.run {
-					self.localEmojis.insert(toDownload)
-					self.emojis[index].refresh()
-				}
-			}
-		}
+	func downloadEmoji(_ toDownload: Emoji) async {
+		
 	}
 	
 	@MainActor
 	func deleteEmoji(_ toDelete: Emoji) {
-		toDelete.deleteImage()
-		let index = self.emojis.firstIndex { $0 == toDelete }
-		guard let index else { return }
-		self.localEmojis.remove(toDelete)
-		self.emojis[index].refresh()
+		
 	}
 }

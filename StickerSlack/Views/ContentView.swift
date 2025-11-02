@@ -64,22 +64,27 @@ struct ContentView: View {
 								}
 							}
 							.buttonStyle(.plain)
-							if hoarder.localEmojis.contains(emoji) {
+							if emoji.isLocal {
 								Button("", systemImage: "trash") {
 									hoarder.deleteEmoji(emoji)
+									emoji.refresh()
 								}
 								.buttonStyle(.plain)
 							} else {
 								Button("", systemImage: "arrow.down.circle") {
-									hoarder.downloadEmoji(emoji)
+									Task.detached {
+										await hoarder.downloadEmoji(emoji)
+										await emoji.refresh()
+									}
 								}
 								.buttonStyle(.plain)
 							}
 						}
 						.swipeActions(edge: .trailing, allowsFullSwipe: true) {
-							if hoarder.localEmojis.contains(emoji) {
+							if emoji.isLocal {
 								Button("Remove", systemImage: "trash") {
 									hoarder.deleteEmoji(emoji)
+									emoji.refresh()
 								}
 								.tint(.red)
 							}
