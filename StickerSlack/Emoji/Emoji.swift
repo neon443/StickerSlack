@@ -15,20 +15,24 @@ struct Emoji: Codable, Identifiable, Hashable {
 	var id: UUID
 	var uiID: UUID
 	var name: String
-	var localImageURL: URL {
+	var localImageURLString: String {
 		let urlString = remoteImageURL.absoluteString
 		let split = urlString.split(separator: ".")
 		let fileExtension = ".\(split.last ?? "png")"
-		return URL(string: EmojiHoarder.container.absoluteString+id.uuidString+fileExtension)!
+		return EmojiHoarder.container.absoluteString+id.uuidString+fileExtension
+	}
+	var localImageURL: URL {
+		return URL(string: localImageURLString)!
 	}
 	var remoteImageURL: URL
 	
-	var isLocal: Bool {
+	var isLocal: Bool = false
+	var isLocalold: Bool {
 		return (try? Data(contentsOf: localImageURL)) != nil
 	}
 	
 	var sticker: MSSticker? {
-		guard isLocal else {
+		guard isLocalold else {
 			return nil
 		}
 		return try? MSSticker(contentsOfFileURL: localImageURL, localizedDescription: name)
@@ -55,6 +59,7 @@ struct Emoji: Codable, Identifiable, Hashable {
 		self.uiID = id
 		self.name = try container.decode(String.self, forKey: .name)
 		self.remoteImageURL = try container.decode(URL.self, forKey: .remoteImageURL)
+		self.isLocal = FileManager.default.fileExists(atPath: localImageURLString)
 	}
 	
 	init(
@@ -65,6 +70,7 @@ struct Emoji: Codable, Identifiable, Hashable {
 		self.uiID = id
 		self.name = apiEmoji.name
 		self.remoteImageURL = apiEmoji.url
+		self.isLocal = FileManager.default.fileExists(atPath: localImageURLString)
 	}
 	
 	func downloadImage() async throws -> UIImage {
