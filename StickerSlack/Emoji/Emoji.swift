@@ -71,15 +71,14 @@ struct Emoji: Codable, Identifiable, Hashable {
 		self.remoteImageURL = url
 	}
 	
-	nonisolated
-	func downloadImage() async throws -> UIImage {
+	func downloadImage() async throws {
 		if let data = try? await Data(contentsOf: localImageURL),
 			let uiimage = UIImage(data: data) {
-			return uiimage
+			return
 		}
 		let (data, _) = try await URLSession.shared.data(from: remoteImageURL)
 		try! await data.write(to: localImageURL)
-		return UIImage(data: data)!
+		return
 	}
 	
 	func deleteImage() {

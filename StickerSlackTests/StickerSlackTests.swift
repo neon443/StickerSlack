@@ -17,7 +17,7 @@ struct StickerSlackTests {
 			url: URL(string: "https://neon443.github.io/images/fav.ico")!,
 			id: UUID(uuidString: "0c48f4c3-1c63-41ed-96db-909e50e35dfc")!
 		)
-		let _ = try! await goodEmoji.downloadImage()
+		try! await goodEmoji.downloadImage()
 		#expect(goodEmoji.sticker!.validate(), "should be true")
 		
 		let badEmoji = Emoji(
@@ -25,7 +25,7 @@ struct StickerSlackTests {
 			url: URL(string: "https://files.catbox.moe/ifh710.png")!,
 			id: UUID(uuidString: "0c48f4c3-1c63-41ed-96db-909e50e35dfc")!
 		)
-		let _ = try! await badEmoji.downloadImage()
+		try! await badEmoji.downloadImage()
 		#expect(goodEmoji.sticker!.validate(), "should be true")
 		badEmoji.deleteImage()
 	}

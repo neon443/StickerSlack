@@ -131,13 +131,4 @@ class EmojiHoarder: ObservableObject {
 			}
 		}
 	}
-	
-	func downloadEmoji(_ toDownload: Emoji) async {
-		
-	}
-	
-	@MainActor
-	func deleteEmoji(_ toDelete: Emoji) {
-		
-	}
 }
