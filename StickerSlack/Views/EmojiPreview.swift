@@ -9,6 +9,7 @@ import SwiftUI
 import Haptics
 
 struct EmojiPreview: View {
+	@ObservedObject var hoarder: EmojiHoarder
 	@State var emoji: Emoji
 	
 	@State private var id: UUID = UUID()
@@ -17,7 +18,7 @@ struct EmojiPreview: View {
 		VStack(alignment: .leading) {
 			Text(emoji.name)
 			Group {
-				if emoji.isLocal {
+				if hoarder.localEmojis.contains(emoji) {
 					Image(uiImage: emoji.image ?? UIImage())
 						.resizable().scaledToFit()
 						.border(.orange)
@@ -62,6 +63,7 @@ struct EmojiPreview: View {
 
 #Preview {
 	EmojiPreview(
+		hoarder: EmojiHoarder(localOnly: true),
 		emoji: Emoji(
 			name: "s?",
 			url: URL(string: "https://neon443.github.io/images/fav.ico")!

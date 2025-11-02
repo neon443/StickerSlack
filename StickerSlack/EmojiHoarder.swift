@@ -32,7 +32,7 @@ class EmojiHoarder: ObservableObject {
 			print("start loading remote db")
 			await self.loadRemoteDB()
 			print("start local emojis loading")
-			await self.loadLocalEmojis()
+			await self.findLocalEmojis()
 			print("end")
 		}
 	}
@@ -47,7 +47,7 @@ class EmojiHoarder: ObservableObject {
 		await withTaskGroup { group in
 			for i in emojis.indices {
 				group.addTask {
-					guard await self.emojis[i].isLocal else { return }
+					guard await self.localEmojis.contains(self.emojis[i]) else { return }
 					await self.emojis[i].deleteImage()
 					DispatchQueue.main.sync {
 						self.emojis[i].refresh()
@@ -58,7 +58,7 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	nonisolated
-	func loadLocalEmojis() async {
+	func findLocalEmojis() async {
 		let filteredSetted = await Set(self.emojis.filter { $0.isLocal })
 		await MainActor.run {
 			self.localEmojis = filteredSetted
@@ -74,6 +74,7 @@ class EmojiHoarder: ObservableObject {
 		try! data.write(to: EmojiHoarder.localEmojiDB)
 	}
 	
+	nonisolated
 	func loadLocalDB() -> [Emoji] {
 		if let localEmojiDB = try? Data(contentsOf: EmojiHoarder.localEmojiDB) {
 			let decoded = try! decoder.decode([Emoji].self, from: localEmojiDB)
@@ -136,9 +137,9 @@ class EmojiHoarder: ObservableObject {
 			case .none:
 				fallthrough
 			case .downloaded:
-				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { $0.isLocal } }
+				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { self.localEmojis.contains($0) } }
 			case .notDownloaded:
-				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { !$0.isLocal } }
+				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { !self.localEmojis.contains($0) } }
 			}
 		}
 	}

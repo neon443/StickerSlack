@@ -46,7 +46,10 @@ struct ContentView: View {
 					
 					ForEach($hoarder.filteredEmojis, id: \.self) { $emoji in
 						HStack {
-							EmojiPreview(emoji: emoji)
+							EmojiPreview(
+								hoarder: hoarder,
+								emoji: emoji
+							)
 								.frame(maxWidth: 100, maxHeight: 100)
 							Spacer()
 							Button("", systemImage: "checkmark") {
@@ -61,7 +64,7 @@ struct ContentView: View {
 								}
 							}
 							.buttonStyle(.plain)
-							if emoji.isLocal {
+							if hoarder.localEmojis.contains(emoji) {
 								Button("", systemImage: "trash") {
 									emoji.deleteImage()
 									emoji.refresh()
@@ -78,7 +81,7 @@ struct ContentView: View {
 							}
 						}
 						.swipeActions(edge: .trailing, allowsFullSwipe: true) {
-							if emoji.isLocal {
+							if hoarder.localEmojis.contains(emoji) {
 								Button("Remove", systemImage: "trash") {
 									emoji.deleteImage()
 									emoji.refresh()
