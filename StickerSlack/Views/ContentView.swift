@@ -15,99 +15,91 @@ struct ContentView: View {
 	
 	var body: some View {
 		NavigationView {
-			TabView {
-				List {
-					TextField("", text: $searchTerm)
-						.onChange(of: searchTerm) { _ in
-							hoarder.filterEmojis(by: searchTerm)
+			List {
+				Button("none") {
+					hoarder.filterEmojis(byCategory: .none, searchTerm: searchTerm)
+				}
+				
+				Button("downloaded") {
+					hoarder.filterEmojis(byCategory: .downloaded, searchTerm: searchTerm)
+				}
+				
+				Button("not downloaded") {
+					hoarder.filterEmojis(byCategory: .notDownloaded, searchTerm: searchTerm)
+				}
+				
+				Button("delete all images") {
+					Task.detached {
+						await hoarder.deleteAllStickers()
+					}
+				}
+				
+				Text("\(hoarder.filteredEmojis.count) Emoji")
+				
+				ForEach($hoarder.filteredEmojis, id: \.self) { $emoji in
+					HStack {
+						EmojiPreview(
+							hoarder: hoarder,
+							emoji: emoji
+						)
+						.frame(maxWidth: 100, maxHeight: 100)
+						Spacer()
+						Button("", systemImage: "checkmark") {
+							if let sticker = emoji.sticker {
+								if sticker.validate() {
+									print("validation of \(emoji.name) succeeded")
+									Haptic.success.trigger()
+								} else {
+									print("validation of \(emoji.name) failed")
+									Haptic.error.trigger()
+								}
+							}
 						}
-					.autocorrectionDisabled()
-					.textFieldStyle(.roundedBorder)
-					
-					Button("none") {
-						hoarder.filterEmojis(byCategory: .none, searchTerm: searchTerm)
-					}
-					
-					Button("downloaded") {
-						hoarder.filterEmojis(byCategory: .downloaded, searchTerm: searchTerm)
-					}
-					
-					Button("not downloaded") {
-						hoarder.filterEmojis(byCategory: .notDownloaded, searchTerm: searchTerm)
-					}
-					
-					Button("delete all images") {
-						Task.detached {
-							await hoarder.deleteAllStickers()
-						}
-					}
-					
-					Text("\(hoarder.filteredEmojis.count) Emoji")
-					
-					ForEach($hoarder.filteredEmojis, id: \.self) { $emoji in
-						HStack {
-							EmojiPreview(
-								hoarder: hoarder,
-								emoji: emoji
-							)
-								.frame(maxWidth: 100, maxHeight: 100)
-							Spacer()
-							Button("", systemImage: "checkmark") {
-								if let sticker = emoji.sticker {
-									if sticker.validate() {
-										print("validation of \(emoji.name) succeeded")
-										Haptic.success.trigger()
-									} else {
-										print("validation of \(emoji.name) failed")
-										Haptic.error.trigger()
+						.buttonStyle(.plain)
+						if emoji.isLocal {
+							Button("", systemImage: "trash") {
+								emoji.deleteImage()
+								emoji.refresh()
+							}
+							.buttonStyle(.plain)
+						} else {
+							Button("", systemImage: "arrow.down.circle") {
+								Task.detached {
+									try? await emoji.downloadImage()
+									await MainActor.run {
+										emoji.refresh()
 									}
 								}
 							}
 							.buttonStyle(.plain)
-							if emoji.isLocal {
-								Button("", systemImage: "trash") {
-									emoji.deleteImage()
-									emoji.refresh()
-								}
-								.buttonStyle(.plain)
-							} else {
-								Button("", systemImage: "arrow.down.circle") {
-									Task.detached {
-										try? await emoji.downloadImage()
-										await MainActor.run {
-											emoji.refresh()
-										}
-									}
-								}
-								.buttonStyle(.plain)
-							}
 						}
-						.swipeActions(edge: .trailing, allowsFullSwipe: true) {
-							if emoji.isLocal {
-								Button("Remove", systemImage: "trash") {
-									emoji.deleteImage()
-									emoji.refresh()
-								}
-								.tint(.red)
+					}
+					.swipeActions(edge: .trailing, allowsFullSwipe: true) {
+						if emoji.isLocal {
+							Button("Remove", systemImage: "trash") {
+								emoji.deleteImage()
+								emoji.refresh()
 							}
+							.tint(.red)
 						}
 					}
 				}
-				.refreshable {
-					Task.detached {
-						await hoarder.refreshDB()
-						await hoarder.filterEmojis(by: searchTerm)
-					}
-				}
-				.searchable(text: $searchTerm)
-				.tabItem {
-					Label("home", systemImage: "house")
+			}
+			.navigationTitle("StickerSlack")
+			.onChange(of: searchTerm) { _ in
+				hoarder.filterEmojis(by: searchTerm)
+			}
+			.refreshable {
+				Task.detached {
+					await hoarder.refreshDB()
+					await hoarder.filterEmojis(by: searchTerm)
 				}
 			}
 		}
+		.searchable(text: $searchTerm, placement: .automatic)
 	}
 }
 
 #Preview {
-	ContentView()
+	ContentView(hoarder: EmojiHoarder(localOnly: true))
 }
