@@ -8,38 +8,23 @@
 import Testing
 import Foundation
 
-struct ApiEmojiTests {
-	@Test func ApiEmojiEncode() async throws {
-		let apiEmoji = ApiEmoji(name: "name", url: "https://")
-		let encoded = try! JSONEncoder().encode(apiEmoji)
-		let decoded = try! JSONDecoder().decode(ApiEmoji.self, from: encoded)
-		#expect(decoded == apiEmoji)
-	}
-	
-	@Test func ApiEmojiEncoder() async throws {
-		let json = "{\"name\":\"name\",\"urlString\":\"https:\\/\\/\"}"
-		let decoded = try! JSONDecoder().decode(ApiEmoji.self, from: json.data(using: .utf8)!)
-		let expected = ApiEmoji(name: "name", url: "https://")
-		#expect(expected == ApiEmoji(name: "name", url: "https://"))
-	}
-	
-	@Test func ApiEmojiToEmoji() async throws {
-		let apiEmoji = ApiEmoji(name: "name", url: "https://")
-		let emoji = apiEmoji.toEmoji()
-		let expected = Emoji(apiEmoji: apiEmoji, id: emoji.id)
-		#expect(emoji == expected)
-	}
-}
-
 struct StickerSlackTests {
 	var hoarder = EmojiHoarder()
 	
 	@Test func MSStickerValidation() async throws {
-		let goodEmoji = Emoji(apiEmoji: ApiEmoji(name: "name", url: "https://neon443.github.io/images/fav.ico"), id: UUID(uuidString: "0c48f4c3-1c63-41ed-96db-909e50e35dfc")!)
+		let goodEmoji = Emoji(
+			name: "name",
+			url: URL(string: "https://neon443.github.io/images/fav.ico")!,
+			id: UUID(uuidString: "0c48f4c3-1c63-41ed-96db-909e50e35dfc")!
+		)
 		let _ = try! await goodEmoji.downloadImage()
 		#expect(goodEmoji.sticker!.validate(), "should be true")
 		
-		let badEmoji = Emoji(apiEmoji: ApiEmoji(name: "160chars:shttps://emoji.slack-edge.com/T0266FRGM/100906/ddeb22d813b83b0f.pngs,sexpirationfds2025-10-28T08:00:02.011Zs},{gtypeh:jemojieeeidggg9cab2003-ad74-492a-", url: "https://files.catbox.moe/ifh710.png"), id: UUID(uuidString: "0c48f4c3-1c63-41ed-96db-909e50e35dfc")!)
+		let badEmoji = Emoji(
+			name: "160chars:shttps://emoji.slack-edge.com/T0266FRGM/100906/ddeb22d813b83b0f.pngs,sexpirationfds2025-10-28T08:00:02.011Zs},{gtypeh:jemojieeeidggg9cab2003-ad74-492a-",
+			url: URL(string: "https://files.catbox.moe/ifh710.png")!,
+			id: UUID(uuidString: "0c48f4c3-1c63-41ed-96db-909e50e35dfc")!
+		)
 		let _ = try! await badEmoji.downloadImage()
 		#expect(goodEmoji.sticker!.validate(), "should be true")
 		badEmoji.deleteImage()

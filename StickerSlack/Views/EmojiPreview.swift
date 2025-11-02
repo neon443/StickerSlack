@@ -62,9 +62,9 @@ struct EmojiPreview: View {
 
 #Preview {
 	EmojiPreview(
-		emoji: ApiEmoji(
+		emoji: Emoji(
 			name: "s?",
-			url: "https://neon443.github.io/images/fav.ico"
-		).toEmoji()
+			url: URL(string: "https://neon443.github.io/images/fav.ico")!
+		)
 	)
 }

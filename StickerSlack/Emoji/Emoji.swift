@@ -61,13 +61,14 @@ struct Emoji: Codable, Identifiable, Hashable {
 	}
 	
 	init(
-		apiEmoji: ApiEmoji,
+		name: String,
+		url: URL,
 		id: UUID = UUID()
 	) {
 		self.id = id
 		self.uiID = id
-		self.name = apiEmoji.name
-		self.remoteImageURL = apiEmoji.url
+		self.name = name
+		self.remoteImageURL = url
 	}
 	
 	func downloadImage() async throws -> UIImage {
