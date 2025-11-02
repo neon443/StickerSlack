@@ -18,6 +18,7 @@ class EmojiHoarder: ObservableObject {
 	private let decoder = JSONDecoder()
 	
 	@Published var emojis: [Emoji] = []
+	@Published var localEmojis: Set<Emoji> = []
 	@Published var filteredEmojis: [Emoji] = []
 	@Published var prefix: Int = 100
 	
@@ -29,6 +30,7 @@ class EmojiHoarder: ObservableObject {
 		guard !localOnly else { return }
 		Task.detached {
 			await self.loadRemoteDB()
+			await self.loadLocalEmojis()
 		}
 	}
 	
@@ -50,6 +52,11 @@ class EmojiHoarder: ObservableObject {
 				}
 			}
 		}
+	}
+	
+	func loadLocalEmojis() async {
+		self.localEmojis = Set(self.emojis.filter { $0.isLocal })
+		return
 	}
 	
 	func storeDB() {
@@ -76,13 +83,14 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
+	@concurrent
 	func fetchRemoteDB() async -> [Emoji]? {
 		do {
 			async let (data, _) = try URLSession.shared.data(from: endpoint)
 			decoder.dateDecodingStrategy = .iso8601
 			let decoded: [SlackResponse] = try decoder.decode([SlackResponse].self, from: await data)
 			try storeDB(data: await data)
-			return SlackResponse.toEmojis(from: decoded)
+			return await SlackResponse.toEmojis(from: decoded)
 		} catch {
 			print(error.localizedDescription)
 			return nil
