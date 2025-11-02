@@ -66,16 +66,12 @@ struct ContentView: View {
 							.buttonStyle(.plain)
 							if hoarder.localEmojis.contains(emoji) {
 								Button("", systemImage: "trash") {
-									emoji.deleteImage()
-									emoji.refresh()
+									hoarder.deleteEmoji(emoji)
 								}
 								.buttonStyle(.plain)
 							} else {
 								Button("", systemImage: "arrow.down.circle") {
-									Task {
-										let _ = try? await emoji.downloadImage()
-										emoji.refresh()
-									}
+									hoarder.downloadEmoji(emoji)
 								}
 								.buttonStyle(.plain)
 							}
@@ -83,8 +79,7 @@ struct ContentView: View {
 						.swipeActions(edge: .trailing, allowsFullSwipe: true) {
 							if hoarder.localEmojis.contains(emoji) {
 								Button("Remove", systemImage: "trash") {
-									emoji.deleteImage()
-									emoji.refresh()
+									hoarder.deleteEmoji(emoji)
 								}
 								.tint(.red)
 							}

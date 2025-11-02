@@ -145,10 +145,24 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	func downloadEmoji(_ toDownload: Emoji) {
-		
+		Task.detached {
+			if (try? await toDownload.downloadImage()) != nil {
+				let index = await self.emojis.firstIndex { $0 == toDownload }
+				guard let index else { return }
+				await MainActor.run {
+					self.localEmojis.insert(toDownload)
+					self.emojis[index].refresh()
+				}
+			}
+		}
 	}
 	
+	@MainActor
 	func deleteEmoji(_ toDelete: Emoji) {
-		
+		toDelete.deleteImage()
+		let index = self.emojis.firstIndex { $0 == toDelete }
+		guard let index else { return }
+		self.localEmojis.remove(toDelete)
+		self.emojis[index].refresh()
 	}
 }
