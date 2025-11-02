@@ -29,8 +29,11 @@ class EmojiHoarder: ObservableObject {
 		
 		guard !localOnly else { return }
 		Task.detached {
+			print("start loading remote db")
 			await self.loadRemoteDB()
+			print("start local emojis loading")
 			await self.loadLocalEmojis()
+			print("end")
 		}
 	}
 	
@@ -44,8 +47,8 @@ class EmojiHoarder: ObservableObject {
 		await withTaskGroup { group in
 			for i in emojis.indices {
 				group.addTask {
-					guard self.emojis[i].isLocal else { return }
-					self.emojis[i].deleteImage()
+					guard await self.emojis[i].isLocal else { return }
+					await self.emojis[i].deleteImage()
 					DispatchQueue.main.sync {
 						self.emojis[i].refresh()
 					}
@@ -54,8 +57,12 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
+	nonisolated
 	func loadLocalEmojis() async {
-		self.localEmojis = Set(self.emojis.filter { $0.isLocal })
+		let filteredSetted = await Set(self.emojis.filter { $0.isLocal })
+		await MainActor.run {
+			self.localEmojis = filteredSetted
+		}
 		return
 	}
 	
@@ -83,13 +90,13 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
-	@concurrent
+	nonisolated
 	func fetchRemoteDB() async -> [Emoji]? {
 		do {
 			async let (data, _) = try URLSession.shared.data(from: endpoint)
 			decoder.dateDecodingStrategy = .iso8601
 			let decoded: [SlackResponse] = try decoder.decode([SlackResponse].self, from: await data)
-			try storeDB(data: await data)
+			try await storeDB(data: await data)
 			return await SlackResponse.toEmojis(from: decoded)
 		} catch {
 			print(error.localizedDescription)
@@ -111,7 +118,7 @@ class EmojiHoarder: ObservableObject {
 			return
 		}
 		Task.detached {
-			let filtered = self.emojis.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
+			let filtered = await self.emojis.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
 			DispatchQueue.main.async {
 				withAnimation(.interactiveSpring) { self.filteredEmojis = Array(filtered) }
 			}
@@ -134,5 +141,13 @@ class EmojiHoarder: ObservableObject {
 				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { !$0.isLocal } }
 			}
 		}
+	}
+	
+	func downloadEmoji(_ toDownload: Emoji) {
+		
+	}
+	
+	func deleteEmoji(_ toDelete: Emoji) {
+		
 	}
 }
