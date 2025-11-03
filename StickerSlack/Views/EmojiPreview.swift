@@ -13,34 +13,41 @@ struct EmojiPreview: View {
 	@State var emoji: Emoji
 	
 	@State private var id: UUID = UUID()
+	@State private var delay: TimeInterval = 0
 	
     var body: some View {
 		VStack(alignment: .leading) {
 			Text(emoji.name)
 			Group {
-				AsyncImage(url: emoji.localImageURL) { phase in
-					if let image = phase.image {
-						image
-							.resizable().scaledToFit()
-					} else if phase.error != nil {
-						ImageErrorView()
-							.onTapGesture {
-								id = UUID()
-							}
-					} else {
-						AsyncImage(url: emoji.remoteImageURL) { phase in
-							if let image = phase.image {
-								image
-									.resizable().scaledToFit()
-							} else if phase.error != nil {
-								ImageErrorView()
-									.onTapGesture {
+				if let image = emoji.image {
+					Image(uiImage: image)
+						.resizable().scaledToFit()
+						.border(.orange)
+						.overlay(alignment: .bottomLeading) {
+							Image(systemName: "arrow.down.circle.fill")
+								.foregroundStyle(.gray)
+								.shadow(radius: 1)
+								.symbolRenderingMode(.hierarchical)
+						}
+				} else {
+					AsyncImage(url: emoji.remoteImageURL) { phase in
+						if let image = phase.image {
+							image
+								.resizable().scaledToFit()
+						} else if phase.error != nil {
+							ImageErrorView()
+								.onTapGesture {
+									id = UUID()
+								}
+								.onAppear {
+									DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
 										id = UUID()
+										delay+=0.1
 									}
-							} else {
-								ProgressView()
-									.frame(maxWidth: .infinity, maxHeight: .infinity)
-							}
+								}
+						} else {
+							ProgressView()
+								.frame(maxWidth: .infinity, maxHeight: .infinity)
 						}
 					}
 				}
@@ -64,7 +71,6 @@ struct ImageErrorView: View {
 	var body: some View {
 		Image(systemName: "xmark.app.fill")
 			.resizable().scaledToFit()
-			.padding()
 			.padding()
 			.symbolRenderingMode(.hierarchical)
 			.foregroundStyle(.red)
