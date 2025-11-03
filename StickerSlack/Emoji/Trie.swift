@@ -16,7 +16,6 @@ class TrieNode: ObservableObject {
 
 class Trie: ObservableObject {
 	@Published var root: TrieNode = TrieNode()
-	@Published var allItems: [String] = []
 	
 	func insert(word: String) {
 		let word = word.lowercased()
@@ -35,7 +34,6 @@ class Trie: ObservableObject {
 				currentNode.isEndOfWord = true
 			}
 		}
-		self.allItems.append(word)
 	}
 	
 	func search(for query: String) -> Bool {
@@ -52,7 +50,7 @@ class Trie: ObservableObject {
 	}
 	
 	func search(prefix prefixQuery: String) -> [String] {
-		guard !prefixQuery.isEmpty else { return allItems }
+		guard !prefixQuery.isEmpty else { return [] }
 		let prefixQuery = prefixQuery.lowercased()
 		var currentNode = root
 		
@@ -127,19 +125,16 @@ struct TrieTestingView: View {
 				.textFieldStyle(.roundedBorder)
 				.border(.orange)
 				.onChange(of: filterTerm) { _ in
-					filterResult = trie.search(prefix: filterTerm)
+					withAnimation { filterResult = trie.search(prefix: filterTerm) }
 				}
+			Text("\(filterResult.count)")
+				.modifier(numericTextCompat())
+			
 			List(filterResult, id: \.self) { item in
 				Text(item)
 			}
-//			.id(id)
 			
 			Text("\(trie.root.children.count)")
-			
-//			List {
-//				TrieNodeView(trieNode: trie.root)
-//			}
-//			.id(id)
 		}
 	}
 }
