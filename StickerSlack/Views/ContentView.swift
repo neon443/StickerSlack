@@ -42,8 +42,8 @@ struct ContentView: View {
 				
 				Text("\(hoarder.filteredEmojis.count) Emoji")
 				
-				if searchTerm.isEmpty {
-					ForEach($hoarder.emojis, id: \.self) { $emoji in
+//				if searchTerm.isEmpty {
+					ForEach($hoarder.filteredEmojis, id: \.self) { $emoji in
 						HStack {
 							EmojiPreview(
 								hoarder: hoarder,
@@ -51,18 +51,6 @@ struct ContentView: View {
 							)
 							.frame(maxWidth: 100, maxHeight: 100)
 							Spacer()
-							Button("", systemImage: "checkmark") {
-								if let sticker = emoji.sticker {
-									if sticker.validate() {
-										print("validation of \(emoji.name) succeeded")
-										Haptic.success.trigger()
-									} else {
-										print("validation of \(emoji.name) failed")
-										Haptic.error.trigger()
-									}
-								}
-							}
-							.buttonStyle(.plain)
 							if emoji.isLocal {
 								Button("", systemImage: "trash") {
 									emoji.deleteImage()
@@ -81,32 +69,23 @@ struct ContentView: View {
 								.buttonStyle(.plain)
 							}
 						}
-						.swipeActions(edge: .trailing, allowsFullSwipe: true) {
-							if emoji.isLocal {
-								Button("Remove", systemImage: "trash") {
-									emoji.deleteImage()
-									emoji.refresh()
-								}
-								.tint(.red)
-							}
-						}
 					}
-				} else {
-					ForEach(hoarder.filteredEmojis, id: \.self) { name in
-						Text(name)
-//						EmojiPreview(hoarder: hoarder, emoji: hoarder.emojis.first!)
-					}
-				}
+//				} else {
+//					ForEach(hoarder.filteredEmojis, id: \.self) { name in
+//						Text(name)
+//					}
+//				}
 			}
 			.navigationTitle("StickerSlack")
 			.onChange(of: searchTerm) { _ in
-				hoarder.filterEmojis(by: searchTerm)
+//				hoarder.filterEmojis(by: searchTerm)
+				hoarder.results(for: searchTerm)
 			}
 			.refreshable {
 				Task.detached {
 					await hoarder.refreshDB()
-					await hoarder.filterEmojis(by: searchTerm)
 				}
+				searchTerm = ""
 			}
 		}
 		.searchable(text: $searchTerm, placement: .automatic)

@@ -20,7 +20,7 @@ class EmojiHoarder: ObservableObject {
 	@Published var emojis: [Emoji] = []
 	
 	@Published var trie: Trie = Trie()
-	@Published var filteredEmojis: [String] = []
+	@Published var filteredEmojis: [Emoji] = []
 	
 	init(localOnly: Bool = false) {
 		let localDB = loadLocalDB()
@@ -110,8 +110,18 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
-	func filterEmojis(by searchTerm: String) {
-		filteredEmojis = trie.search(prefix: searchTerm)
+//	func filterEmojis(by searchTerm: String) {
+//		filteredEmojis = trie.search(prefix: searchTerm)
+//	}
+	
+	func results(for query: String) -> [Emoji] {
+		guard !query.isEmpty else {
+			filteredEmojis = emojis
+			return emojis
+		}
+		let names = Set(trie.search(prefix: query))
+		filteredEmojis = emojis.filter { names.contains($0.name) }
+		return filteredEmojis
 	}
 	
 //	func filterEmojis(byCategory category: FilterCategory, searchTerm: String) {
