@@ -22,54 +22,36 @@ struct ContentView: View {
 					)
 				}
 				
-//				Button("none") {
-//					hoarder.filterEmojis(byCategory: .none, searchTerm: searchTerm)
-//				}
-//				
-//				Button("downloaded") {
-//					hoarder.filterEmojis(byCategory: .downloaded, searchTerm: searchTerm)
-//				}
-//				
-//				Button("not downloaded") {
-//					hoarder.filterEmojis(byCategory: .notDownloaded, searchTerm: searchTerm)
-//				}
-				
-				Button("delete all images") {
-					Task.detached {
-						await hoarder.deleteAllStickers()
-					}
-				}
-				
 				Text("\(searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count) Emoji")
 				
 				if searchTerm.isEmpty {
-					ForEach($hoarder.emojis, id: \.self) { $emoji in
-						HStack {
-							EmojiPreview(
-								hoarder: hoarder,
-								emoji: emoji
-							)
-							.frame(maxWidth: 100, maxHeight: 100)
-							Spacer()
-							if emoji.isLocal {
-								Button("", systemImage: "trash") {
-									emoji.deleteImage()
-									emoji.refresh()
-								}
-								.buttonStyle(.plain)
-							} else {
-								Button("", systemImage: "arrow.down.circle") {
-									Task.detached {
-										try? await emoji.downloadImage()
-										await MainActor.run {
-											emoji.refresh()
-										}
-									}
-								}
-								.buttonStyle(.plain)
-							}
-						}
-					}
+//					ForEach($hoarder.emojis, id: \.self) { $emoji in
+//						HStack {
+//							EmojiPreview(
+//								hoarder: hoarder,
+//								emoji: emoji
+//							)
+//							.frame(maxWidth: 100, maxHeight: 100)
+//							Spacer()
+//							if emoji.isLocal {
+//								Button("", systemImage: "trash") {
+//									emoji.deleteImage()
+//									emoji.refresh()
+//								}
+//								.buttonStyle(.plain)
+//							} else {
+//								Button("", systemImage: "arrow.down.circle") {
+//									Task.detached {
+//										try? await emoji.downloadImage()
+//										await MainActor.run {
+//											emoji.refresh()
+//										}
+//									}
+//								}
+//								.buttonStyle(.plain)
+//							}
+//						}
+//					}
 				} else {
 					ForEach(hoarder.filteredEmojis, id: \.self) { name in
 						if let emoji = hoarder.trie.dict[name] {

@@ -9,5 +9,5 @@ import Foundation
 
 struct EmojiPack: Identifiable, Codable {
 	var id: UUID
-	var emojiIDs: [UUID]
+	var emojiNames: [String]
 }
