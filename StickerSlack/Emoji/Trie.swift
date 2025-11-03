@@ -21,6 +21,7 @@ class Trie: ObservableObject {
 		let word = word.lowercased()
 		var currentNode = root
 		let indices = word.indices
+		let last = indices.last
 		
 		for i in indices {
 			let char = word[i]
@@ -30,7 +31,7 @@ class Trie: ObservableObject {
 				currentNode.children[char] = TrieNode()
 				currentNode = currentNode.children[char]!
 			}
-			if i == indices.last {
+			if i == last {
 				currentNode.isEndOfWord = true
 			}
 		}

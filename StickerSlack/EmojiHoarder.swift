@@ -18,9 +18,9 @@ class EmojiHoarder: ObservableObject {
 	private let decoder = JSONDecoder()
 	
 	@Published var emojis: [Emoji] = []
+	
 	@Published var trie: Trie = Trie()
 	@Published var filteredEmojis: [String] = []
-	@Published var prefix: Int = 100
 	
 	init(localOnly: Bool = false) {
 		let localDB = loadLocalDB()
