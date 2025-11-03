@@ -12,6 +12,7 @@ import Haptics
 
 struct EmojiCollectionView: UIViewRepresentable {
 	let hoarder: EmojiHoarder
+	let items: [String]
 	
 	func makeUIView(context: Context) -> UITableView {
 		let tableView = UITableView()
@@ -21,31 +22,30 @@ struct EmojiCollectionView: UIViewRepresentable {
 	}
 	
 	func updateUIView(_ uiView: UITableView, context: Context) {
+		context.coordinator.hoarder = hoarder
+		context.coordinator.items = items
 		uiView.reloadData()
 	}
 	
 	func makeCoordinator() -> Coordinator {
-		Coordinator(hoarder: hoarder)
+		Coordinator(hoarder: hoarder, items: items)
 	}
 	
 	final class Coordinator: NSObject, UITableViewDataSource {
 		var hoarder: EmojiHoarder
+		var items: [String]
 		
-		init(hoarder: EmojiHoarder) {
+		init(hoarder: EmojiHoarder, items: [String]) {
 			self.hoarder = hoarder
+			self.items = items
 		}
 		
 		func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-			return hoarder.searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count
+			return items.count
 		}
 		
 		func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-			var emojiName: String
-			if hoarder.searchTerm.isEmpty {
-				emojiName = hoarder.emojis[indexPath.row].name
-			} else {
-				emojiName = hoarder.filteredEmojis[indexPath.row]
-			}
+			let emojiName = items[indexPath.row]
 			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 			
 			cell.contentConfiguration = UIHostingConfiguration {

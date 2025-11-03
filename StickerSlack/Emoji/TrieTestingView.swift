@@ -20,8 +20,13 @@ struct TrieTestingView: View {
 	@State var filterTerm: String = ""
 	@State var filterResult: [String] = []
 	
+	@State var uikit: Bool = false
+	
 	var body: some View {
 		VStack {
+			Toggle("uikit!!", isOn: $uikit)
+				.foregroundStyle(.blue)
+			
 			Button("reset", role: .destructive) {
 				hoarder.trie.root = TrieNode()
 			}
@@ -51,8 +56,13 @@ struct TrieTestingView: View {
 			Text("\(filterResult.count)")
 				.modifier(numericTextCompat())
 			
-			List(filterResult, id: \.self) { item in
-				EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[item]!)
+			if uikit {
+				EmojiCollectionView(hoarder: hoarder, items: filterResult)
+					.id(filterResult)
+			} else {
+				List(filterResult, id: \.self) { item in
+					EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[item]!)
+				}
 			}
 			
 			Text("\(hoarder.trie.root.children.count)")
