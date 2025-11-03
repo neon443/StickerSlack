@@ -21,6 +21,7 @@ class EmojiHoarder: ObservableObject {
 	
 	@Published var trie: Trie = Trie()
 	@Published var filteredEmojis: [String] = []
+	@Published var searchTerm: String = ""
 	
 	init(localOnly: Bool = false) {
 		let localDB = loadLocalDB()
