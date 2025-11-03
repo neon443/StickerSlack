@@ -40,7 +40,7 @@ struct ContentView: View {
 					}
 				}
 				
-				Text("\(hoarder.filteredEmojis.count) Emoji")
+				Text("\(searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count) Emoji")
 				
 				if searchTerm.isEmpty {
 					ForEach($hoarder.emojis, id: \.self) { $emoji in

@@ -81,7 +81,7 @@ class Trie: ObservableObject {
 
 struct TrieTestingView: View {
 	@ObservedObject var hoarder: EmojiHoarder = EmojiHoarder(localOnly: true)
-	@ObservedObject var trie: Trie = Trie()
+//	@ObservedObject var trie: Trie = Trie()
 	
 	@State var id: UUID = UUID()
 	
@@ -96,14 +96,16 @@ struct TrieTestingView: View {
 	var body: some View {
 		VStack {
 			Button("reset", role: .destructive) {
-				trie.root = TrieNode()
+				hoarder.trie.root = TrieNode()
 			}
 			Button("add emojis!") {
-				let start = Date().timeIntervalSince1970
-				for emoji in hoarder.emojis {
-					trie.insert(word: emoji.name, emoji: emoji)
-				}
-				print("done!", Date().timeIntervalSince1970-start)
+				hoarder.buildTrie()
+//				let start = Date().timeIntervalSince1970
+//				for emoji in hoarder.emojis {
+//					hoarder.trie.insert(word: emoji.name, emoji: emoji)
+//				}
+//				hoarder.buildTrieDict()
+//				print("done!", Date().timeIntervalSince1970-start)
 			}
 			.buttonStyle(.borderedProminent)
 			
@@ -111,7 +113,7 @@ struct TrieTestingView: View {
 				.textFieldStyle(.roundedBorder)
 				.border(.orange)
 				.onChange(of: searchTerm) { _ in
-					searchStatus = trie.search(for: searchTerm)
+					searchStatus = hoarder.trie.search(for: searchTerm)
 				}
 			if let searchStatus {
 				Circle()
@@ -123,21 +125,28 @@ struct TrieTestingView: View {
 				.textFieldStyle(.roundedBorder)
 				.border(.orange)
 				.onChange(of: filterTerm) { _ in
-					withAnimation { filterResult = trie.search(prefix: filterTerm) }
+					withAnimation { filterResult = hoarder.trie.search(prefix: filterTerm) }
 				}
 			Text("\(filterResult.count)")
 				.modifier(numericTextCompat())
 			
 			List(filterResult, id: \.self) { item in
 				Text(item)
+				HStack {
+					AsyncImage(url: hoarder.trie.dict[item]!.localImageURL)
+						.frame(width: 20, height: 20)
+					AsyncImage(url: hoarder.trie.dict[item]!.remoteImageURL)
+						.frame(width: 20, height: 20)
+				}
 			}
 			
-			Text("\(trie.root.children.count)")
+			Text("\(hoarder.trie.root.children.count)")
 		}
 	}
 }
 
 struct TrieNodeView: View {
+	@ObservedObject var trie: Trie
 	@State var trieNode: TrieNode
 	
 	var body: some View {
@@ -145,8 +154,8 @@ struct TrieNodeView: View {
 			let node = trieNode.children[key]!
 			Text(String(key))
 				.foregroundStyle(node.isEndOfWord ? .red : .primary)
-					.frame(width: 20, height: 20)
-			TrieNodeView(trieNode: node)
+				.frame(width: 20, height: 20)
+			TrieNodeView(trie: trie, trieNode: node)
 				.padding(.leading, 20)
 		}
 	}
