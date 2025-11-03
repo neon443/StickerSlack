@@ -93,11 +93,15 @@ struct TrieTestingView: View {
 	
 	var body: some View {
 		VStack {
+			Button("reset", role: .destructive) {
+				trie.root = TrieNode()
+			}
 			Button("add emojis!") {
-				for name in hoarder.emojis.map({ $0.name }) {
-					trie.insert(word: name)
+				let start = Date().timeIntervalSince1970
+				for emoji in hoarder.emojis {
+					trie.insert(word: emoji.name)
 				}
-				print("done!")
+				print("done!", Date().timeIntervalSince1970-start)
 			}
 			.buttonStyle(.borderedProminent)
 			

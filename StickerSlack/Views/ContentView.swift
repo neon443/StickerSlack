@@ -22,17 +22,17 @@ struct ContentView: View {
 					)
 				}
 				
-				Button("none") {
-					hoarder.filterEmojis(byCategory: .none, searchTerm: searchTerm)
-				}
-				
-				Button("downloaded") {
-					hoarder.filterEmojis(byCategory: .downloaded, searchTerm: searchTerm)
-				}
-				
-				Button("not downloaded") {
-					hoarder.filterEmojis(byCategory: .notDownloaded, searchTerm: searchTerm)
-				}
+//				Button("none") {
+//					hoarder.filterEmojis(byCategory: .none, searchTerm: searchTerm)
+//				}
+//				
+//				Button("downloaded") {
+//					hoarder.filterEmojis(byCategory: .downloaded, searchTerm: searchTerm)
+//				}
+//				
+//				Button("not downloaded") {
+//					hoarder.filterEmojis(byCategory: .notDownloaded, searchTerm: searchTerm)
+//				}
 				
 				Button("delete all images") {
 					Task.detached {
@@ -42,52 +42,59 @@ struct ContentView: View {
 				
 				Text("\(hoarder.filteredEmojis.count) Emoji")
 				
-				ForEach($hoarder.filteredEmojis, id: \.self) { $emoji in
-					HStack {
-						EmojiPreview(
-							hoarder: hoarder,
-							emoji: emoji
-						)
-						.frame(maxWidth: 100, maxHeight: 100)
-						Spacer()
-						Button("", systemImage: "checkmark") {
-							if let sticker = emoji.sticker {
-								if sticker.validate() {
-									print("validation of \(emoji.name) succeeded")
-									Haptic.success.trigger()
-								} else {
-									print("validation of \(emoji.name) failed")
-									Haptic.error.trigger()
-								}
-							}
-						}
-						.buttonStyle(.plain)
-						if emoji.isLocal {
-							Button("", systemImage: "trash") {
-								emoji.deleteImage()
-								emoji.refresh()
-							}
-							.buttonStyle(.plain)
-						} else {
-							Button("", systemImage: "arrow.down.circle") {
-								Task.detached {
-									try? await emoji.downloadImage()
-									await MainActor.run {
-										emoji.refresh()
+				if searchTerm.isEmpty {
+					ForEach($hoarder.emojis, id: \.self) { $emoji in
+						HStack {
+							EmojiPreview(
+								hoarder: hoarder,
+								emoji: emoji
+							)
+							.frame(maxWidth: 100, maxHeight: 100)
+							Spacer()
+							Button("", systemImage: "checkmark") {
+								if let sticker = emoji.sticker {
+									if sticker.validate() {
+										print("validation of \(emoji.name) succeeded")
+										Haptic.success.trigger()
+									} else {
+										print("validation of \(emoji.name) failed")
+										Haptic.error.trigger()
 									}
 								}
 							}
 							.buttonStyle(.plain)
+							if emoji.isLocal {
+								Button("", systemImage: "trash") {
+									emoji.deleteImage()
+									emoji.refresh()
+								}
+								.buttonStyle(.plain)
+							} else {
+								Button("", systemImage: "arrow.down.circle") {
+									Task.detached {
+										try? await emoji.downloadImage()
+										await MainActor.run {
+											emoji.refresh()
+										}
+									}
+								}
+								.buttonStyle(.plain)
+							}
+						}
+						.swipeActions(edge: .trailing, allowsFullSwipe: true) {
+							if emoji.isLocal {
+								Button("Remove", systemImage: "trash") {
+									emoji.deleteImage()
+									emoji.refresh()
+								}
+								.tint(.red)
+							}
 						}
 					}
-					.swipeActions(edge: .trailing, allowsFullSwipe: true) {
-						if emoji.isLocal {
-							Button("Remove", systemImage: "trash") {
-								emoji.deleteImage()
-								emoji.refresh()
-							}
-							.tint(.red)
-						}
+				} else {
+					ForEach(hoarder.filteredEmojis, id: \.self) { name in
+						Text(name)
+//						EmojiPreview(hoarder: hoarder, emoji: hoarder.emojis.first!)
 					}
 				}
 			}

@@ -18,19 +18,22 @@ class EmojiHoarder: ObservableObject {
 	private let decoder = JSONDecoder()
 	
 	@Published var emojis: [Emoji] = []
-	@Published var filteredEmojis: [Emoji] = []
+	@Published var trie: Trie = Trie()
+	@Published var filteredEmojis: [String] = []
 	@Published var prefix: Int = 100
 	
 	init(localOnly: Bool = false) {
 		let localDB = loadLocalDB()
 		withAnimation { self.emojis = localDB }
-		withAnimation { self.filteredEmojis = localDB }
+		buildTrie()
+		withAnimation { self.filteredEmojis = [] }
 		
 		guard !localOnly else { return }
 		Task.detached {
 			print("start loading remote db")
 			await self.loadRemoteDB()
 			print("end")
+			await self.buildTrie()
 		}
 	}
 	
@@ -62,6 +65,14 @@ class EmojiHoarder: ObservableObject {
 		try! data.write(to: EmojiHoarder.localEmojiDB)
 	}
 	
+	func buildTrie() {
+		let start = Date().timeIntervalSince1970
+		for emoji in emojis {
+			trie.insert(word: emoji.name)
+		}
+		print("done building trie in", Date().timeIntervalSince1970-start)
+	}
+	
 	nonisolated
 	func loadLocalDB() -> [Emoji] {
 		if let localEmojiDB = try? Data(contentsOf: EmojiHoarder.localEmojiDB) {
@@ -75,7 +86,6 @@ class EmojiHoarder: ObservableObject {
 		async let fetched = self.fetchRemoteDB()
 		if let fetched = await fetched {
 			withAnimation { self.emojis = fetched }
-			withAnimation { self.filteredEmojis = fetched }
 		}
 	}
 	
@@ -97,38 +107,28 @@ class EmojiHoarder: ObservableObject {
 		guard let fetched = await self.fetchRemoteDB() else { return }
 		DispatchQueue.main.async {
 			withAnimation { self.emojis = fetched }
-			withAnimation { self.filteredEmojis = fetched }
 		}
 	}
 	
 	func filterEmojis(by searchTerm: String) {
-		guard !searchTerm.isEmpty else {
-			withAnimation(.interactiveSpring) { self.filteredEmojis = Array(emojis) }
-			return
-		}
-		Task.detached {
-			let filtered = await self.emojis.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
-			DispatchQueue.main.async {
-				withAnimation(.interactiveSpring) { self.filteredEmojis = Array(filtered) }
-			}
-		}
+		filteredEmojis = trie.search(prefix: searchTerm)
 	}
 	
-	func filterEmojis(byCategory category: FilterCategory, searchTerm: String) {
-		guard category != .none else {
-			filterEmojis(by: searchTerm)
-			return
-		}
-		self.filterEmojis(by: searchTerm)
-		DispatchQueue.main.async {
-			switch category {
-			case .none:
-				fallthrough
-			case .downloaded:
-				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { $0.isLocal } }
-			case .notDownloaded:
-				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { !$0.isLocal } }
-			}
-		}
-	}
+//	func filterEmojis(byCategory category: FilterCategory, searchTerm: String) {
+//		guard category != .none else {
+//			filterEmojis(by: searchTerm)
+//			return
+//		}
+//		self.filterEmojis(by: searchTerm)
+//		DispatchQueue.main.async {
+//			switch category {
+//			case .none:
+//				fallthrough
+//			case .downloaded:
+//				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { $0.isLocal } }
+//			case .notDownloaded:
+//				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { !$0.isLocal } }
+//			}
+//		}
+//	}
 }
