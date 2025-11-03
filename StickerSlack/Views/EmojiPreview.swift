@@ -60,10 +60,7 @@ struct EmojiPreview: View {
 #Preview {
 	EmojiPreview(
 		hoarder: EmojiHoarder(localOnly: true),
-		emoji: Emoji(
-			name: "s?",
-			url: URL(string: "https://neon443.github.io/images/fav.ico")!
-		)
+		emoji: Emoji.test
 	)
 }
 

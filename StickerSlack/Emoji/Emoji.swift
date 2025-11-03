@@ -91,4 +91,9 @@ struct Emoji: Codable, Identifiable, Hashable {
 	mutating func refresh() {
 		withAnimation { self.uiID = UUID() }
 	}
+	
+	static var test: Emoji = Emoji(
+		name: "s?",
+		url: URL(string: "https://neon443.github.io/images/fav.ico")!
+	)
 }

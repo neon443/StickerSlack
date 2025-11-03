@@ -11,29 +11,43 @@ import Haptics
 struct ContentView: View {
 	@StateObject var hoarder: EmojiHoarder = EmojiHoarder()
 	
+	@State var searchTerm: String = ""
+	
 	var body: some View {
-		TextField("", text: $hoarder.searchTerm)
-		NavigationLink("trieTester") {
-			TrieTestingView(
-				hoarder: hoarder,
-			)
-		}
-		
-		Text("\(hoarder.searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count) Emoji")
-		
-		EmojiCollectionView(hoarder: hoarder)
-		
+		NavigationView {
+			List {
+				NavigationLink("trieTester") {
+					TrieTestingView(
+						hoarder: hoarder,
+					)
+				}
+				
+				Text("\(searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count) Emoji")
+				
+				if searchTerm.isEmpty {
+					ForEach($hoarder.emojis, id: \.self) { $emoji in
+						EmojiRow(hoarder: hoarder, emoji: emoji)
+					}
+				} else {
+					ForEach(hoarder.filteredEmojis, id: \.self) { name in
+						if let emoji = hoarder.trie.dict[name] {
+							EmojiRow(hoarder: hoarder, emoji: emoji)
+						}
+					}
+				}
+			}
 			.navigationTitle("StickerSlack")
-			.onChange(of: hoarder.searchTerm) { _ in
-				hoarder.filterEmojis(by: hoarder.searchTerm)
+			.onChange(of: searchTerm) { _ in
+				hoarder.filterEmojis(by: searchTerm)
 			}
 			.refreshable {
 				Task.detached {
 					await hoarder.refreshDB()
 				}
-				hoarder.searchTerm = ""
+				searchTerm = ""
 			}
-			.searchable(text: $hoarder.searchTerm, placement: .automatic)
+		}
+		.searchable(text: $searchTerm, placement: .automatic)
 	}
 }
 
