@@ -16,6 +16,12 @@ struct ContentView: View {
 	var body: some View {
 		NavigationView {
 			List {
+				NavigationLink("trieTester") {
+					TrieTestingView(
+						hoarder: hoarder,
+					)
+				}
+				
 				Button("none") {
 					hoarder.filterEmojis(byCategory: .none, searchTerm: searchTerm)
 				}

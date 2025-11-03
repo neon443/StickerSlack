@@ -16,6 +16,7 @@ class TrieNode: ObservableObject {
 
 class Trie: ObservableObject {
 	@Published var root: TrieNode = TrieNode()
+	@Published var allItems: [String] = []
 	
 	func insert(word: String) {
 		let word = word.lowercased()
@@ -25,18 +26,16 @@ class Trie: ObservableObject {
 		for i in indices {
 			let char = word[i]
 			if let node = currentNode.children[char] {
-				print("node \(char) exists")
 				currentNode = node
 			} else {
-				print("node \(char) didnt exist creating")
 				currentNode.children[char] = TrieNode()
 				currentNode = currentNode.children[char]!
-				if i == indices.last {
-					print("marking \(char) as end of word")
-					currentNode.isEndOfWord = true
-				}
+			}
+			if i == indices.last {
+				currentNode.isEndOfWord = true
 			}
 		}
+		self.allItems.append(word)
 	}
 	
 	func search(for query: String) -> Bool {
@@ -51,9 +50,37 @@ class Trie: ObservableObject {
 		}
 		return currentNode.isEndOfWord
 	}
+	
+	func search(prefix prefixQuery: String) -> [String] {
+		guard !prefixQuery.isEmpty else { return allItems }
+		let prefixQuery = prefixQuery.lowercased()
+		var currentNode = root
+		
+		for char in prefixQuery {
+			guard let child = currentNode.children[char] else {
+				return []
+			}
+			currentNode = child
+		}
+		
+		return collectWords(startingWith: prefixQuery, from: currentNode)
+	}
+	
+	func collectWords(startingWith: String, from node: TrieNode) -> [String] {
+		var results: [String] = []
+		
+		if node.isEndOfWord {
+			results.append(startingWith)
+		}
+		for child in node.children {
+			results += collectWords(startingWith: startingWith+String(child.key), from: child.value)
+		}
+		return results
+	}
 }
 
 struct TrieTestingView: View {
+	@ObservedObject var hoarder: EmojiHoarder = EmojiHoarder(localOnly: true)
 	@ObservedObject var trie: Trie = Trie()
 	
 	@State var id: UUID = UUID()
@@ -63,8 +90,19 @@ struct TrieTestingView: View {
 	@State var searchTerm: String = ""
 	@State var searchStatus: Bool? = nil
 	
+	@State var filterTerm: String = ""
+	@State var filterResult: [String] = []
+	
 	var body: some View {
 		VStack {
+			Button("add emojis!") {
+				for name in hoarder.emojis.map({ $0.name }) {
+					trie.insert(word: name)
+				}
+				print("done!")
+			}
+			.buttonStyle(.borderedProminent)
+			
 			TextField("", text: $newWord)
 				.textFieldStyle(.roundedBorder)
 				.border(.red)
@@ -85,12 +123,23 @@ struct TrieTestingView: View {
 					.foregroundStyle(searchStatus ? .green : .red)
 			}
 			
+			TextField("", text: $filterTerm)
+				.textFieldStyle(.roundedBorder)
+				.border(.orange)
+				.onChange(of: filterTerm) { _ in
+					filterResult = trie.search(prefix: filterTerm)
+				}
+			List(filterResult, id: \.self) { item in
+				Text(item)
+			}
+//			.id(id)
+			
 			Text("\(trie.root.children.count)")
 			
-			List {
-				TrieNodeView(trieNode: trie.root)
-			}
-			.id(id)
+//			List {
+//				TrieNodeView(trieNode: trie.root)
+//			}
+//			.id(id)
 		}
 	}
 }
