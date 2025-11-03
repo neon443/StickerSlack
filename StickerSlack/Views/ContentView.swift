@@ -42,8 +42,8 @@ struct ContentView: View {
 				
 				Text("\(hoarder.filteredEmojis.count) Emoji")
 				
-//				if searchTerm.isEmpty {
-					ForEach($hoarder.filteredEmojis, id: \.self) { $emoji in
+				if searchTerm.isEmpty {
+					ForEach($hoarder.emojis, id: \.self) { $emoji in
 						HStack {
 							EmojiPreview(
 								hoarder: hoarder,
@@ -70,16 +70,25 @@ struct ContentView: View {
 							}
 						}
 					}
-//				} else {
-//					ForEach(hoarder.filteredEmojis, id: \.self) { name in
-//						Text(name)
-//					}
-//				}
+				} else {
+					ForEach(hoarder.filteredEmojis, id: \.self) { name in
+						if let emoji = hoarder.trie.dict[name] {
+							EmojiPreview(hoarder: hoarder, emoji: emoji)
+								.onTapGesture {
+									Task.detached {
+										try? await hoarder.trie.dict[name]!.downloadImage()
+										await MainActor.run {
+											hoarder.trie.dict[name]!.refresh()
+										}
+									}
+								}
+						}
+					}
+				}
 			}
 			.navigationTitle("StickerSlack")
 			.onChange(of: searchTerm) { _ in
-//				hoarder.filterEmojis(by: searchTerm)
-				hoarder.results(for: searchTerm)
+				hoarder.filterEmojis(by: searchTerm)
 			}
 			.refreshable {
 				Task.detached {

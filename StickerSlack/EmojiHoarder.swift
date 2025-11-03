@@ -20,7 +20,7 @@ class EmojiHoarder: ObservableObject {
 	@Published var emojis: [Emoji] = []
 	
 	@Published var trie: Trie = Trie()
-	@Published var filteredEmojis: [Emoji] = []
+	@Published var filteredEmojis: [String] = []
 	
 	init(localOnly: Bool = false) {
 		let localDB = loadLocalDB()
@@ -67,10 +67,21 @@ class EmojiHoarder: ObservableObject {
 	
 	func buildTrie() {
 		let start = Date().timeIntervalSince1970
+		trie.root = TrieNode()
 		for emoji in emojis {
-			trie.insert(word: emoji.name)
+			trie.insert(word: emoji.name, emoji: emoji)
 		}
+		buildTrieDict()
 		print("done building trie in", Date().timeIntervalSince1970-start)
+	}
+	
+	func buildTrieDict() {
+		var dict: [String:Emoji] = [:]
+		for emoji in emojis {
+			dict[emoji.name] = emoji
+		}
+		self.filteredEmojis = dict.map { $0.key }
+		self.trie.dict = dict
 	}
 	
 	nonisolated
@@ -110,18 +121,8 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
-//	func filterEmojis(by searchTerm: String) {
-//		filteredEmojis = trie.search(prefix: searchTerm)
-//	}
-	
-	func results(for query: String) -> [Emoji] {
-		guard !query.isEmpty else {
-			filteredEmojis = emojis
-			return emojis
-		}
-		let names = Set(trie.search(prefix: query))
-		filteredEmojis = emojis.filter { names.contains($0.name) }
-		return filteredEmojis
+	func filterEmojis(by searchTerm: String) {
+		withAnimation { filteredEmojis = trie.search(prefix: searchTerm) }
 	}
 	
 //	func filterEmojis(byCategory category: FilterCategory, searchTerm: String) {

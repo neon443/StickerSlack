@@ -16,8 +16,9 @@ class TrieNode: ObservableObject {
 
 class Trie: ObservableObject {
 	@Published var root: TrieNode = TrieNode()
+	@Published var dict: [String:Emoji] = [:]
 	
-	func insert(word: String) {
+	func insert(word: String, emoji: Emoji) {
 		let word = word.lowercased()
 		var currentNode = root
 		let indices = word.indices
@@ -100,19 +101,11 @@ struct TrieTestingView: View {
 			Button("add emojis!") {
 				let start = Date().timeIntervalSince1970
 				for emoji in hoarder.emojis {
-					trie.insert(word: emoji.name)
+					trie.insert(word: emoji.name, emoji: emoji)
 				}
 				print("done!", Date().timeIntervalSince1970-start)
 			}
 			.buttonStyle(.borderedProminent)
-			
-			TextField("", text: $newWord)
-				.textFieldStyle(.roundedBorder)
-				.border(.red)
-			Button("add word") {
-				trie.insert(word: newWord)
-				id = UUID()
-			}
 			
 			TextField("", text: $searchTerm)
 				.textFieldStyle(.roundedBorder)
