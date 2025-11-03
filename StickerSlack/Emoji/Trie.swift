@@ -19,7 +19,8 @@ class Trie: ObservableObject {
 	
 	func insert(word: String) {
 		var currentNode = root
-		for char in word {
+		for i in word.indices {
+			let char = word[i]
 			if let node = currentNode.children[char] {
 				print("node \(char) exists")
 				currentNode = node
@@ -27,6 +28,10 @@ class Trie: ObservableObject {
 				print("node \(char) didnt exist creating")
 				currentNode.children[char] = TrieNode()
 				currentNode = currentNode.children[char]!
+				if i == word.indices.last {
+					print("marking \(char) as end of word")
+					currentNode.isEndOfWord = true
+				}
 			}
 		}
 	}
@@ -35,7 +40,7 @@ class Trie: ObservableObject {
 struct TrieTestingView: View {
 	@ObservedObject var trie: Trie = Trie()
 	@State var id: UUID = UUID()
-	@State var newWord: String = ""
+	@State var newWord: String = "hello"
 	@State var searchTerm: String = ""
 	
 	var body: some View {
@@ -65,9 +70,11 @@ struct TrieNodeView: View {
 	
 	var body: some View {
 		ForEach(trieNode.children.map { $0.key }, id: \.self) { key in
+			let node = trieNode.children[key]!
 			Text(String(key))
+				.foregroundStyle(node.isEndOfWord ? .red : .primary)
 					.frame(width: 20, height: 20)
-			TrieNodeView(trieNode: trieNode.children[key]!)
+			TrieNodeView(trieNode: node)
 				.padding(.leading, 20)
 		}
 	}
