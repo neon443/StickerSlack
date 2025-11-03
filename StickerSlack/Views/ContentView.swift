@@ -12,20 +12,17 @@ struct ContentView: View {
 	@StateObject var hoarder: EmojiHoarder = EmojiHoarder()
 	
 	var body: some View {
-//		NavigationView {
-//			List {
 		TextField("", text: $hoarder.searchTerm)
-				NavigationLink("trieTester") {
-					TrieTestingView(
-						hoarder: hoarder,
-					)
-				}
-				
-				Text("\(hoarder.searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count) Emoji")
-				
-				EmojiCollectionView(hoarder: hoarder)
-				
-
+		NavigationLink("trieTester") {
+			TrieTestingView(
+				hoarder: hoarder,
+			)
+		}
+		
+		Text("\(hoarder.searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count) Emoji")
+		
+		EmojiCollectionView(hoarder: hoarder)
+		
 			.navigationTitle("StickerSlack")
 			.onChange(of: hoarder.searchTerm) { _ in
 				hoarder.filterEmojis(by: hoarder.searchTerm)
@@ -36,8 +33,7 @@ struct ContentView: View {
 				}
 				hoarder.searchTerm = ""
 			}
-//		}
-		.searchable(text: $hoarder.searchTerm, placement: .automatic)
+			.searchable(text: $hoarder.searchTerm, placement: .automatic)
 	}
 }
 
