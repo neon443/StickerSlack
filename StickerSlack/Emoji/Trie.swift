@@ -18,8 +18,11 @@ class Trie: ObservableObject {
 	@Published var root: TrieNode = TrieNode()
 	
 	func insert(word: String) {
+		let word = word.lowercased()
 		var currentNode = root
-		for i in word.indices {
+		let indices = word.indices
+		
+		for i in indices {
 			let char = word[i]
 			if let node = currentNode.children[char] {
 				print("node \(char) exists")
@@ -28,20 +31,37 @@ class Trie: ObservableObject {
 				print("node \(char) didnt exist creating")
 				currentNode.children[char] = TrieNode()
 				currentNode = currentNode.children[char]!
-				if i == word.indices.last {
+				if i == indices.last {
 					print("marking \(char) as end of word")
 					currentNode.isEndOfWord = true
 				}
 			}
 		}
 	}
+	
+	func search(for query: String) -> Bool {
+		var currentNode = root
+		
+		for char in query.lowercased() {
+			if let node = currentNode.children[char] {
+				currentNode = node
+			} else {
+				return false
+			}
+		}
+		return currentNode.isEndOfWord
+	}
 }
 
 struct TrieTestingView: View {
 	@ObservedObject var trie: Trie = Trie()
+	
 	@State var id: UUID = UUID()
+	
 	@State var newWord: String = "hello"
+	
 	@State var searchTerm: String = ""
+	@State var searchStatus: Bool? = nil
 	
 	var body: some View {
 		VStack {
@@ -54,6 +74,16 @@ struct TrieTestingView: View {
 			}
 			
 			TextField("", text: $searchTerm)
+				.textFieldStyle(.roundedBorder)
+				.border(.orange)
+				.onChange(of: searchTerm) { _ in
+					searchStatus = trie.search(for: searchTerm)
+				}
+			if let searchStatus {
+				Circle()
+					.frame(width: 20, height: 20)
+					.foregroundStyle(searchStatus ? .green : .red)
+			}
 			
 			Text("\(trie.root.children.count)")
 			
