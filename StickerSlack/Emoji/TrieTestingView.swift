@@ -35,27 +35,34 @@ struct TrieTestingView: View {
 			}
 			.buttonStyle(.borderedProminent)
 			
-			TextField("", text: $searchTerm)
-				.textFieldStyle(.roundedBorder)
-				.border(.orange)
-				.onChange(of: searchTerm) { _ in
-					searchStatus = hoarder.trie.search(for: searchTerm)
+			HStack {
+				TextField("", text: $searchTerm)
+					.textFieldStyle(.roundedBorder)
+					.border(.orange)
+					.onChange(of: searchTerm) { _ in
+						searchStatus = hoarder.trie.search(for: searchTerm)
+					}
+				if let searchStatus {
+					Circle()
+						.frame(width: 20, height: 20)
+						.foregroundStyle(searchStatus ? .green : .red)
+				} else {
+					Text("?")
+						.frame(width: 20, height: 20)
 				}
-			if let searchStatus {
-				Circle()
-					.frame(width: 20, height: 20)
-					.foregroundStyle(searchStatus ? .green : .red)
 			}
 			
-			TextField("", text: $filterTerm)
-				.textFieldStyle(.roundedBorder)
-				.border(.orange)
-				.onChange(of: filterTerm) { _ in
-					withAnimation { filterResult = hoarder.trie.search(prefix: filterTerm) }
-				}
-			Text("\(filterResult.count)")
-				.modifier(numericTextCompat())
-			
+			HStack {
+				TextField("", text: $filterTerm)
+					.textFieldStyle(.roundedBorder)
+					.border(.orange)
+					.onChange(of: filterTerm) { _ in
+						withAnimation { filterResult = hoarder.trie.search(prefix: filterTerm) }
+					}
+				Text("\(filterResult.count)")
+					.modifier(numericTextCompat())
+			}
+				
 			if uikit {
 				EmojiCollectionView(hoarder: hoarder, items: filterResult)
 					.id(filterResult)

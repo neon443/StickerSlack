@@ -67,6 +67,13 @@ class EmojiHoarder: ObservableObject {
 		try! data.write(to: EmojiHoarder.localEmojiDB)
 	}
 	
+	func resetTrie() {
+		trie.root = TrieNode()
+		trie.dict = [:]
+		downloadedEmojis = []
+		filteredEmojis = []
+	}
+	
 	func buildTrie() {
 		let start = Date().timeIntervalSince1970
 		trie.root = TrieNode()

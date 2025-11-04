@@ -127,4 +127,17 @@ struct PerformanceTests {
 		try! await fakeDownloadAllStickers()
 		await hoarder.deleteAllStickers()
 	}
+	
+	@Test func buildTrie() async throws {
+		hoarder.resetTrie()
+		hoarder.buildTrie()
+	}
+	
+	@Test func testSearching() async throws {
+		try! await buildTrie()
+		let terms = ["h", "j", "s", "2", "heavysob", "hs", "asjasdklf", "a", "w", "t", "h", "z", "b", "c", "m", "n"]
+		for term in terms {
+			let _ = hoarder.trie.search(prefix: term)
+		}
+	}
 }
