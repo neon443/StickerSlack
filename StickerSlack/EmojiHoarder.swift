@@ -21,6 +21,7 @@ class EmojiHoarder: ObservableObject {
 	
 	@Published var trie: Trie = Trie()
 	@Published var filteredEmojis: [String] = []
+	@Published var downloadedEmojis: [String] = []
 	@Published var searchTerm: String = ""
 	
 	init(localOnly: Bool = false) {
@@ -81,8 +82,16 @@ class EmojiHoarder: ObservableObject {
 		for emoji in emojis {
 			dict[emoji.name] = emoji
 		}
-		self.filteredEmojis = dict.map { $0.key }
 		self.trie.dict = dict
+		buildDownloadedEmojis()
+	}
+	
+	func buildDownloadedEmojis() {
+		downloadedEmojis = []
+		for emoji in emojis {
+			guard emoji.isLocal else { continue }
+			downloadedEmojis.append(emoji.name)
+		}
 	}
 	
 	nonisolated
@@ -116,9 +125,17 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	func refreshDB() async {
-		guard let fetched = await self.fetchRemoteDB() else { return }
-		DispatchQueue.main.async {
+		guard let fetched = await self.fetchRemoteDB() else {
+			let local = loadLocalDB()
+			await MainActor.run {
+				emojis = local
+				buildTrie()
+			}
+			return
+		}
+		await MainActor.run {
 			withAnimation { self.emojis = fetched }
+			buildTrie()
 		}
 	}
 	
