@@ -28,7 +28,7 @@ struct TrieTestingView: View {
 				.foregroundStyle(.blue)
 			
 			Button("reset", role: .destructive) {
-				hoarder.trie.root = TrieNode()
+				hoarder.resetTrie()
 			}
 			Button("add emojis!") {
 				hoarder.buildTrie()

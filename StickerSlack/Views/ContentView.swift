@@ -35,26 +35,23 @@ struct ContentView: View {
 				Label("Browse", systemImage: "square.grid.2x2.fill")
 			}
 			
-			NavigationView {
-				List {
-					Text("\(searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count) Emoji")
-					
-					ForEach(hoarder.filteredEmojis, id: \.self) { name in
-						if let emoji = hoarder.trie.dict[name] {
-							EmojiRow(hoarder: hoarder, emoji: emoji)
-						}
+			List {
+				Text("\(searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count) Emoji")
+				
+				ForEach(hoarder.filteredEmojis, id: \.self) { name in
+					if let emoji = hoarder.trie.dict[name] {
+						EmojiRow(hoarder: hoarder, emoji: emoji)
 					}
 				}
-				.navigationTitle("StickerSlack")
-				.onChange(of: searchTerm) { _ in
-					hoarder.filterEmojis(by: searchTerm)
+			}
+			.onChange(of: searchTerm) { _ in
+				hoarder.filterEmojis(by: searchTerm)
+			}
+			.refreshable {
+				Task.detached {
+					await hoarder.refreshDB()
 				}
-				.refreshable {
-					Task.detached {
-						await hoarder.refreshDB()
-					}
-					searchTerm = ""
-				}
+				searchTerm = ""
 			}
 			.tabItem {
 				Label("Search", systemImage: "magnifyingglass")
