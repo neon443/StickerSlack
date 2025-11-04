@@ -52,6 +52,7 @@
 		A9EB724B2EB94A5700658CEB /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C172DB2EB8C9AC008A7885 /* Trie.swift */; };
 		A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */; };
 		A9EB724F2EB94A6B00658CEB /* TrieTestingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */; };
+		A9EB72502EB94FAD00658CEB /* EmojiPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -451,6 +452,7 @@
 				A9B9A8322EB2CD29004C9245 /* SlackResponse.swift in Sources */,
 				A9B9A82E2EB2CCBE004C9245 /* StickerSlackTests.swift in Sources */,
 				A9B9A8312EB2CD14004C9245 /* FilterCategory.swift in Sources */,
+				A9EB72502EB94FAD00658CEB /* EmojiPreview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
