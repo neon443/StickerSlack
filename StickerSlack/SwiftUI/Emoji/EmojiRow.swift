@@ -20,7 +20,7 @@ struct EmojiRow: View {
 			)
 			.frame(maxWidth: 100, maxHeight: 100)
 			Spacer()
-			if emoji.isLocal {
+			if hoarder.downloadedEmojis.contains(emoji.name) {
 				Button("", systemImage: "trash") {
 					emoji.deleteImage()
 					emoji.refresh()

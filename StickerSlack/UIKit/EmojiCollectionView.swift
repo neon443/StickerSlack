@@ -56,7 +56,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 					)
 					.frame(maxWidth: 100, maxHeight: 100)
 					Spacer()
-					if hoarder.trie.dict[emojiName]!.isLocal {
+					if hoarder.downloadedEmojis.contains(emojiName) {
 						Button("", systemImage: "trash") {
 							self.hoarder.trie.dict[emojiName]!.deleteImage()
 							self.hoarder.trie.dict[emojiName]!.refresh()

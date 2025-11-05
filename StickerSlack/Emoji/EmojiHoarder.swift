@@ -21,7 +21,7 @@ class EmojiHoarder: ObservableObject {
 	
 	@Published var trie: Trie = Trie()
 	@Published var filteredEmojis: [String] = []
-	@Published var downloadedEmojis: [String] = []
+	@Published var downloadedEmojis: Set<String> = []
 	@Published var searchTerm: String = ""
 	
 	init(localOnly: Bool = false) {
@@ -97,7 +97,7 @@ class EmojiHoarder: ObservableObject {
 		downloadedEmojis = []
 		for emoji in emojis {
 			guard emoji.isLocal else { continue }
-			downloadedEmojis.append(emoji.name)
+			downloadedEmojis.insert(emoji.name)
 		}
 	}
 	
