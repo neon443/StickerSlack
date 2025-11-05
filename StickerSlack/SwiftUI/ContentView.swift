@@ -13,12 +13,14 @@ struct ContentView: View {
 	
 	@State var searchTerm: String = ""
 	
+	var col: GridItem = GridItem(.fixed(100), spacing: 0, alignment: .center)
 	var body: some View {
 		TabView {
-			List {
-				ForEach(hoarder.downloadedEmojis, id: \.self) { name in
+			LazyHGrid(rows: Array(repeating: col, count: 4), spacing: 10) {
+				ForEach(hoarder.downloadedEmojis.sorted(by: <), id: \.self) { name in
 					if let emoji = hoarder.trie.dict[name] {
-						EmojiRow(hoarder: hoarder, emoji: emoji)
+						EmojiPreview(hoarder: hoarder, emoji: emoji)
+							.aspectRatio(1, contentMode: .fit)
 					}
 				}
 			}

@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 import UniformTypeIdentifiers
+import Haptics
 
 class EmojiHoarder: ObservableObject {
 	static let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
@@ -45,17 +46,10 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
-	func deleteAllStickers() async {
-		await withTaskGroup { group in
-			for i in emojis.indices {
-				group.addTask {
-					guard await self.emojis[i].isLocal else { return }
-					await self.emojis[i].deleteImage()
-					DispatchQueue.main.sync {
-						self.emojis[i].refresh()
-					}
-				}
-			}
+	func deleteAllStickers() {
+		for i in emojis.indices {
+			guard downloadedEmojis.contains(emojis[i].name) else { continue }
+			delete(emoji: emojis[i])
 		}
 	}
 	
@@ -148,6 +142,25 @@ class EmojiHoarder: ObservableObject {
 	
 	func filterEmojis(by searchTerm: String) {
 		withAnimation { filteredEmojis = trie.search(prefix: searchTerm) }
+	}
+	
+	func download(emoji: Emoji) {
+		Task.detached {
+			try? await emoji.downloadImage()
+			await MainActor.run {
+				self.downloadedEmojis.insert(emoji.name)
+				self.trie.dict[emoji.name]?.refresh()
+				Haptic.success.trigger()
+			}
+		}
+	}
+	
+	@MainActor
+	func delete(emoji: Emoji) {
+		emoji.deleteImage()
+		downloadedEmojis.remove(emoji.name)
+		self.trie.dict[emoji.name]?.refresh()
+		Haptic.heavy.trigger()
 	}
 	
 //	func filterEmojis(byCategory category: FilterCategory, searchTerm: String) {

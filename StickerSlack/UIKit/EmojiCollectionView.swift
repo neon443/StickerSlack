@@ -46,32 +46,25 @@ struct EmojiCollectionView: UIViewRepresentable {
 		
 		func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 			let emojiName = items[indexPath.row]
+			let emoji = hoarder.trie.dict[emojiName]!
 			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 			
 			cell.contentConfiguration = UIHostingConfiguration {
 				HStack {
 					EmojiPreview(
 						hoarder: hoarder,
-						emoji: hoarder.trie.dict[emojiName]!
+						emoji: emoji
 					)
 					.frame(maxWidth: 100, maxHeight: 100)
 					Spacer()
 					if hoarder.downloadedEmojis.contains(emojiName) {
 						Button("", systemImage: "trash") {
-							self.hoarder.trie.dict[emojiName]!.deleteImage()
-							self.hoarder.trie.dict[emojiName]!.refresh()
-							Haptic.heavy.trigger()
+							fatalError()
 						}
 						.buttonStyle(.plain)
 					} else {
 						Button("", systemImage: "arrow.down.circle") {
-							Task.detached {
-								try? await self.hoarder.trie.dict[emojiName]!.downloadImage()
-								await MainActor.run {
-									self.hoarder.trie.dict[emojiName]!.refresh()
-									Haptic.success.trigger()
-								}
-							}
+							self.hoarder.download(emoji: emoji)
 						}
 						.buttonStyle(.plain)
 					}

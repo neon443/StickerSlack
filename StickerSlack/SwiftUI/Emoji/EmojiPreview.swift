@@ -15,46 +15,43 @@ struct EmojiPreview: View {
 	@State private var id: UUID = UUID()
 	@State private var delay: TimeInterval = 0
 	
-    var body: some View {
-		VStack(alignment: .leading) {
-			Text(emoji.name)
-			Group {
-				if let image = emoji.image {
-					Image(uiImage: image)
-						.resizable().scaledToFit()
-						.border(.orange)
-						.overlay(alignment: .bottomLeading) {
-							Image(systemName: "arrow.down.circle.fill")
-								.foregroundStyle(.gray)
-								.shadow(radius: 1)
-								.symbolRenderingMode(.hierarchical)
-						}
-				} else {
-					AsyncImage(url: emoji.remoteImageURL) { phase in
-						if let image = phase.image {
-							image
-								.resizable().scaledToFit()
-						} else if phase.error != nil {
-							ImageErrorView()
-								.onTapGesture {
+	var body: some View {
+		Group {
+			if let image = emoji.image {
+				Image(uiImage: image)
+					.resizable().scaledToFit()
+					.border(.orange)
+					.overlay(alignment: .bottomLeading) {
+						Image(systemName: "arrow.down.circle.fill")
+							.foregroundStyle(.gray)
+							.shadow(radius: 1)
+							.symbolRenderingMode(.hierarchical)
+					}
+			} else {
+				AsyncImage(url: emoji.remoteImageURL) { phase in
+					if let image = phase.image {
+						image
+							.resizable().scaledToFit()
+					} else if phase.error != nil {
+						ImageErrorView()
+							.onTapGesture {
+								id = UUID()
+							}
+							.onAppear {
+								DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
 									id = UUID()
+									delay+=0.1
 								}
-								.onAppear {
-									DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
-										id = UUID()
-										delay+=0.1
-									}
-								}
-						} else {
-							ProgressView()
-								.frame(maxWidth: .infinity, maxHeight: .infinity)
-						}
+							}
+					} else {
+						ProgressView()
+							.frame(maxWidth: .infinity, maxHeight: .infinity)
 					}
 				}
 			}
-			.id(id)
 		}
-    }
+		.id(id)
+	}
 }
 
 #Preview {

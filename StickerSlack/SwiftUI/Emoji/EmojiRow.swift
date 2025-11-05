@@ -14,28 +14,26 @@ struct EmojiRow: View {
 
 	var body: some View {
 		HStack {
-			EmojiPreview(
-				hoarder: hoarder,
-				emoji: emoji
-			)
+			VStack {
+				HStack(spacing: .zero) {
+//					Text
+					Text(emoji.name)
+				}
+				EmojiPreview(
+					hoarder: hoarder,
+					emoji: emoji
+				)
+			}
 			.frame(maxWidth: 100, maxHeight: 100)
 			Spacer()
 			if hoarder.downloadedEmojis.contains(emoji.name) {
 				Button("", systemImage: "trash") {
-					emoji.deleteImage()
-					emoji.refresh()
-					Haptic.heavy.trigger()
+					hoarder.delete(emoji: emoji)
 				}
 				.buttonStyle(.plain)
 			} else {
 				Button("", systemImage: "arrow.down.circle") {
-					Task.detached {
-						try? await emoji.downloadImage()
-						await MainActor.run {
-							emoji.refresh()
-							Haptic.success.trigger()
-						}
-					}
+					hoarder.download(emoji: emoji)
 				}
 				.buttonStyle(.plain)
 			}
