@@ -166,6 +166,59 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		A91C09892EBBD75A00210C34 /* Trie */ = {
+			isa = PBXGroup;
+			children = (
+				A9C172DB2EB8C9AC008A7885 /* Trie.swift */,
+				A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */,
+			);
+			path = Trie;
+			sourceTree = "<group>";
+		};
+		A91C098A2EBBD77B00210C34 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				A949B1FA2EA0518800215164 /* SlackResponse.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		A91C098B2EBBD78700210C34 /* Categorisation */ = {
+			isa = PBXGroup;
+			children = (
+				A9D15B892EB1142C00404792 /* EmojiPack.swift */,
+				A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */,
+			);
+			path = Categorisation;
+			sourceTree = "<group>";
+		};
+		A91C098C2EBBD7AB00210C34 /* Emoji */ = {
+			isa = PBXGroup;
+			children = (
+				A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */,
+				A9EB72462EB948C400658CEB /* EmojiRow.swift */,
+			);
+			path = Emoji;
+			sourceTree = "<group>";
+		};
+		A91C098D2EBBD7C100210C34 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				A949B1F02EA04E8200215164 /* ContentView.swift */,
+				A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */,
+				A91C098C2EBBD7AB00210C34 /* Emoji */,
+			);
+			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		A91C098E2EBBD7C700210C34 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				A9EB72382EB93FDB00658CEB /* EmojiCollectionView.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
 		A949B1D62EA04C0B00215164 = {
 			isa = PBXGroup;
 			children = (
@@ -189,25 +242,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A949B1EE2EA04E8200215164 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				A949B1F02EA04E8200215164 /* ContentView.swift */,
-				A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		A949B1F22EA04E8200215164 /* StickerSlack */ = {
 			isa = PBXGroup;
 			children = (
 				A924C3742EA9134C00F20781 /* StickerSlack.entitlements */,
 				A949B1F12EA04E8200215164 /* StickerSlackApp.swift */,
-				A949B1F72EA04F2300215164 /* EmojiHoarder.swift */,
 				A949B1F92EA0517800215164 /* Emoji */,
+				A91C09892EBBD75A00210C34 /* Trie */,
 				A9104C812EB4022E00D160EA /* Extensions */,
-				A949B1EE2EA04E8200215164 /* Views */,
-				A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */,
+				A91C098E2EBBD7C700210C34 /* UIKit */,
+				A91C098D2EBBD7C100210C34 /* SwiftUI */,
 			);
 			path = StickerSlack;
 			sourceTree = "<group>";
@@ -215,14 +259,10 @@
 		A949B1F92EA0517800215164 /* Emoji */ = {
 			isa = PBXGroup;
 			children = (
-				A949B1FA2EA0518800215164 /* SlackResponse.swift */,
 				A924C3712EA9127200F20781 /* Emoji.swift */,
-				A9D15B892EB1142C00404792 /* EmojiPack.swift */,
-				A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */,
-				A9C172DB2EB8C9AC008A7885 /* Trie.swift */,
-				A9EB72382EB93FDB00658CEB /* EmojiCollectionView.swift */,
-				A9EB72462EB948C400658CEB /* EmojiRow.swift */,
-				A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */,
+				A949B1F72EA04F2300215164 /* EmojiHoarder.swift */,
+				A91C098B2EBBD78700210C34 /* Categorisation */,
+				A91C098A2EBBD77B00210C34 /* API */,
 			);
 			path = Emoji;
 			sourceTree = "<group>";
