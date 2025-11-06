@@ -9,7 +9,7 @@ import SwiftUI
 import Haptics
 
 struct EmojiPreview: View {
-	@ObservedObject var hoarder: EmojiHoarder
+	@ObservedObject var hoarder: EmojiHoarder = .shared
 	@State var emoji: Emoji
 	
 	@State private var id: UUID = UUID()
@@ -20,13 +20,6 @@ struct EmojiPreview: View {
 			if let image = emoji.image {
 				Image(uiImage: image)
 					.resizable().scaledToFit()
-					.border(.orange)
-					.overlay(alignment: .bottomLeading) {
-						Image(systemName: "arrow.down.circle.fill")
-							.foregroundStyle(.gray)
-							.shadow(radius: 1)
-							.symbolRenderingMode(.hierarchical)
-					}
 			} else {
 				AsyncImage(url: emoji.remoteImageURL) { phase in
 					if let image = phase.image {
@@ -54,13 +47,6 @@ struct EmojiPreview: View {
 	}
 }
 
-#Preview {
-	EmojiPreview(
-		hoarder: EmojiHoarder(localOnly: true),
-		emoji: Emoji.test
-	)
-}
-
 struct ImageErrorView: View {
 	var body: some View {
 		Image(systemName: "xmark.app.fill")
@@ -69,4 +55,11 @@ struct ImageErrorView: View {
 			.symbolRenderingMode(.hierarchical)
 			.foregroundStyle(.red)
 	}
+}
+
+#Preview {
+	EmojiPreview(
+		hoarder: EmojiHoarder(localOnly: true),
+		emoji: Emoji.test
+	)
 }

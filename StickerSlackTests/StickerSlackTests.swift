@@ -31,7 +31,7 @@ struct StickerSlackTests {
 	}
 	
 	@Test func deleteAllEmojis() async throws {
-		let performanceTests = PerformanceTests(hoarder: hoarder)
+		let performanceTests = PerformanceTests(hoarder: .shared)
 		try! await performanceTests.fakeDownloadAllStickers()
 		await hoarder.deleteAllStickers()
 	}

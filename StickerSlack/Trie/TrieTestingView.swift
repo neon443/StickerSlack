@@ -64,11 +64,11 @@ struct TrieTestingView: View {
 			}
 				
 			if uikit {
-				EmojiCollectionView(hoarder: hoarder, items: filterResult)
+				EmojiCollectionView(items: filterResult)
 					.id(filterResult)
 			} else {
 				List(filterResult, id: \.self) { item in
-					EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[item]!)
+					EmojiRow(emoji: hoarder.trie.dict[item]!)
 				}
 			}
 			

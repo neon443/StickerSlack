@@ -14,9 +14,9 @@
 		A9104C7C2EB3AE6300D160EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A949B1EF2EA04E8200215164 /* Assets.xcassets */; };
 		A9104C7F2EB4022500D160EA /* MSSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9104C7D2EB4022500D160EA /* MSSticker.swift */; };
 		A9104C802EB4022500D160EA /* MSSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9104C7D2EB4022500D160EA /* MSSticker.swift */; };
-		A9112EAC2EAFFDB0006739E2 /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = A9112EAB2EAFFDB0006739E2 /* Haptics */; };
 		A924C3732EA9127200F20781 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
 		A924C3782EA9225800F20781 /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = A924C3772EA9225800F20781 /* Haptics */; };
+		A931D4082EBC9646007BC75B /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = A931D4072EBC9646007BC75B /* Haptics */; };
 		A935437B2EB2A3C800BB80A4 /* FilterCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */; };
 		A949B1F32EA04E8200215164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A949B1EF2EA04E8200215164 /* Assets.xcassets */; };
 		A949B1F42EA04E8200215164 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F02EA04E8200215164 /* ContentView.swift */; };
@@ -126,7 +126,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A924C3782EA9225800F20781 /* Haptics in Frameworks */,
-				A9112EAC2EAFFDB0006739E2 /* Haptics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A986A6AE2EB658DF00B6E0FA /* Messages.framework in Frameworks */,
+				A931D4082EBC9646007BC75B /* Haptics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +337,7 @@
 			);
 			name = StickerSlackiMessageApp;
 			packageProductDependencies = (
+				A931D4072EBC9646007BC75B /* Haptics */,
 			);
 			productName = StickerSlackiMessageApp;
 			productReference = A986A6AD2EB658DF00B6E0FA /* StickerSlackiMessageApp.appex */;
@@ -907,6 +908,11 @@
 		};
 		A924C3772EA9225800F20781 /* Haptics */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = Haptics;
+		};
+		A931D4072EBC9646007BC75B /* Haptics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A9112EAA2EAFFDB0006739E2 /* XCRemoteSwiftPackageReference "Haptics" */;
 			productName = Haptics;
 		};
 /* End XCSwiftPackageProductDependency section */

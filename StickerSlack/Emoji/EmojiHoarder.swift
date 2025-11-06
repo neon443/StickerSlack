@@ -12,8 +12,9 @@ import UniformTypeIdentifiers
 import Haptics
 
 class EmojiHoarder: ObservableObject {
+	static let shared: EmojiHoarder = EmojiHoarder()
 	static let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
-	static let localEmojiDB: URL = EmojiHoarder.container.appendingPathComponent("_localEmojiDB.json", conformingTo: .fileURL)
+	nonisolated static let localEmojiDB: URL = EmojiHoarder.container.appendingPathComponent("_localEmojiDB.json", conformingTo: .fileURL)
 	private let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	private let encoder = JSONEncoder()
 	private let decoder = JSONDecoder()
@@ -46,6 +47,7 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
+	@MainActor
 	func deleteAllStickers() {
 		for i in emojis.indices {
 			guard downloadedEmojis.contains(emojis[i].name) else { continue }
