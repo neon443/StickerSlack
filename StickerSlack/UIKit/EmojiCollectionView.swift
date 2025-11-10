@@ -73,3 +73,15 @@ struct EmojiCollectionView: UIViewRepresentable {
 		}
 	}
 }
+//
+//class EmojiCell: UITableViewCell {
+//	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+//		let l = UILabel()
+//		l.text = "ifosa"
+//		self.view = l
+//	}
+//	
+//	required init?(coder: NSCoder) {
+//		fatalError("init(coder:) has not been implemented")
+//	}
+//}

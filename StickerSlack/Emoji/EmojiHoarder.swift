@@ -26,10 +26,10 @@ class EmojiHoarder: ObservableObject {
 	@Published var downloadedEmojis: Set<String> = []
 	@Published var searchTerm: String = ""
 	
-	init(localOnly: Bool = false) {
+	init(localOnly: Bool = false, skipIndex: Bool = false) {
 		let localDB = loadLocalDB()
 		withAnimation { self.emojis = localDB }
-		buildTrie()
+		if !skipIndex { buildTrie() }
 		withAnimation { self.filteredEmojis = [] }
 		
 		guard !localOnly else { return }
@@ -37,7 +37,7 @@ class EmojiHoarder: ObservableObject {
 			print("start loading remote db")
 			await self.loadRemoteDB()
 			print("end")
-			await self.buildTrie()
+			if !skipIndex { await self.buildTrie() }
 		}
 	}
 	

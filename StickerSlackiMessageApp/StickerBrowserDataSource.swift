@@ -9,7 +9,7 @@ import Foundation
 import Messages
 
 class StickerBrowserDataSource: NSObject, MSStickerBrowserViewDataSource {
-	var hoarder: EmojiHoarder = EmojiHoarder(localOnly: true)
+	var hoarder: EmojiHoarder = EmojiHoarder(localOnly: true, skipIndex: true)
 	
 	var emojis: [MSSticker] = []
 	
