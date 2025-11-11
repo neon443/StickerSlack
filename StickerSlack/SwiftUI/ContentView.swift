@@ -15,10 +15,6 @@ struct ContentView: View {
 		NavigationSplitView {
 			if #available(iOS 18, *) {
 				TabView {
-					Tab("Downloaded", systemImage: "arrow.down.circle.fill") {
-						DownloadedView()
-					}
-					
 					Tab("Browse", systemImage: "square.grid.2x2.fill") {
 						BrowseView()
 					}
@@ -26,7 +22,7 @@ struct ContentView: View {
 //					Tab {
 //						List {
 //							Text("\(searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count) Emoji")
-//							
+//
 //							ForEach(hoarder.filteredEmojis, id: \.self) { name in
 //								if let emoji = hoarder.trie.dict[name] {
 //									EmojiRow(emoji: emoji)
@@ -46,6 +42,10 @@ struct ContentView: View {
 //						Label("Search", systemImage: "magnifyingglass")
 //					}
 					
+					Tab("Downloaded", systemImage: "arrow.down.circle.fill") {
+						DownloadedView()
+					}
+					
 					Tab("Tree", systemImage: "tree.fill") {
 						TrieTestingView()
 					}
@@ -56,6 +56,7 @@ struct ContentView: View {
 						}
 					}
 				}
+				.searchable(text: $hoarder.searchTerm, placement: .navigationBarDrawer)
 //				.searchable(text: $hoarder.searchTerm)
 //				.modifier(tabViewActivationSearchActivation())
 			} else {

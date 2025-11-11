@@ -20,7 +20,6 @@ struct SearchView: View {
 				}
 			}
 		}
-		.searchable(text: $hoarder.searchTerm)
 		.onChange(of: hoarder.searchTerm) { _ in
 			hoarder.filterEmojis(by: hoarder.searchTerm)
 		}
