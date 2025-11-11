@@ -41,7 +41,7 @@ struct DownloadedView: View {
 						.clipShape(RoundedRectangle(cornerRadius: 15))
 						.contextMenu {
 							Text(emoji.name)
-							Button("Copy Name", systemImage: "document.on.document") {
+							Button("Copy Name", systemImage: "doc.on.clipboard") {
 								UIPasteboard.general.string = emoji.name
 							}
 							Button("Copy Image", systemImage: "photo.fill.on.rectangle.fill") {

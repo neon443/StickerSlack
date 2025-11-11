@@ -20,7 +20,7 @@ struct TrieTestingView: View {
 	@State var filterTerm: String = ""
 	@State var filterResult: [String] = []
 	
-	@State var uikit: Bool = true
+	@State var uikit: Bool = false
 	
 	var body: some View {
 		VStack {
