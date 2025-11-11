@@ -11,7 +11,7 @@ import SwiftUI
 import Haptics
 
 struct EmojiCollectionView: UIViewRepresentable {
-	let hoarder: EmojiHoarder = .shared
+	let hoarder: EmojiHoarder
 	let items: [String]
 	
 	func makeUIView(context: Context) -> UITableView {
@@ -28,14 +28,15 @@ struct EmojiCollectionView: UIViewRepresentable {
 	}
 	
 	func makeCoordinator() -> Coordinator {
-		Coordinator(items: items)
+		Coordinator(hoarder: hoarder, items: items)
 	}
 	
 	final class Coordinator: NSObject, UITableViewDataSource {
-		var hoarder: EmojiHoarder = .shared
+		var hoarder: EmojiHoarder
 		var items: [String]
 		
-		init(items: [String]) {
+		init(hoarder: EmojiHoarder, items: [String]) {
+			self.hoarder = hoarder
 			self.items = items
 		}
 		

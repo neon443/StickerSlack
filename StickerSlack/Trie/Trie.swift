@@ -18,7 +18,7 @@ class Trie: ObservableObject {
 	@Published var root: TrieNode = TrieNode()
 	@Published var dict: [String:Emoji] = [:]
 	
-	func insert(word: String, emoji: Emoji) {
+	func insert(word: String) {
 		let word = word.lowercased()
 		var currentNode = root
 		let indices = word.indices

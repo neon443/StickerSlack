@@ -9,14 +9,14 @@ import SwiftUI
 import Haptics
 
 struct ContentView: View {
-	@StateObject var hoarder: EmojiHoarder = .shared
+	@ObservedObject var hoarder: EmojiHoarder = EmojiHoarder()
 	
 	var body: some View {
 		NavigationSplitView {
 			if #available(iOS 18, *) {
 				TabView {
 					Tab("Browse", systemImage: "square.grid.2x2.fill") {
-						BrowseView()
+						BrowseView(hoarder: hoarder)
 					}
 					
 //					Tab {
@@ -43,16 +43,16 @@ struct ContentView: View {
 //					}
 					
 					Tab("Downloaded", systemImage: "arrow.down.circle.fill") {
-						DownloadedView()
+						DownloadedView(hoarder: hoarder)
 					}
 					
 					Tab("Tree", systemImage: "tree.fill") {
-						TrieTestingView()
+						TrieTestingView(hoarder: hoarder)
 					}
 					
 					Tab("Search", systemImage: "magnifyingglass", role: .search) {
 						NavigationStack {
-							SearchView()
+							SearchView(hoarder: hoarder)
 						}
 					}
 				}
@@ -61,19 +61,19 @@ struct ContentView: View {
 //				.modifier(tabViewActivationSearchActivation())
 			} else {
 				TabView {
-					DownloadedView()
+					DownloadedView(hoarder: hoarder)
 						.tabItem {
 							Label("Downloaded", systemImage: "arrow.down.circle.fill")
 						}
-					BrowseView()
+					BrowseView(hoarder: hoarder)
 						.tabItem {
 							Label("Browse", systemImage: "square.grid.2x2.fill")
 						}
-					TrieTestingView()
+					TrieTestingView(hoarder: hoarder)
 						.tabItem {
 							Label("Trie", systemImage: "tree.fill")
 						}
-					SearchView()
+					SearchView(hoarder: hoarder)
 						.tabItem {
 							Label("Search", systemImage: "magnifyingglass")
 						}

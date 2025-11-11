@@ -12,7 +12,6 @@ import UniformTypeIdentifiers
 import Haptics
 
 class EmojiHoarder: ObservableObject {
-	static let shared: EmojiHoarder = EmojiHoarder()
 	static let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
 	nonisolated static let localEmojiDB: URL = EmojiHoarder.container.appendingPathComponent("_localEmojiDB.json", conformingTo: .fileURL)
 	private let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
@@ -37,7 +36,9 @@ class EmojiHoarder: ObservableObject {
 			print("start loading remote db")
 			await self.loadRemoteDB()
 			print("end")
-			if !skipIndex { await self.buildTrie() }
+			if !skipIndex {
+				await self.buildTrie()
+			}
 		}
 	}
 	
@@ -74,7 +75,7 @@ class EmojiHoarder: ObservableObject {
 		let start = Date().timeIntervalSince1970
 		trie.root = TrieNode()
 		for emoji in emojis {
-			trie.insert(word: emoji.name, emoji: emoji)
+			trie.insert(word: emoji.name)
 		}
 		buildTrieDict()
 		print("done building trie in", Date().timeIntervalSince1970-start)

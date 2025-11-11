@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
-	@ObservedObject var hoarder: EmojiHoarder = .shared
+	@ObservedObject var hoarder: EmojiHoarder
 	
     var body: some View {
 		List {
@@ -16,7 +16,7 @@ struct SearchView: View {
 			
 			ForEach(hoarder.filteredEmojis, id: \.self) { name in
 				if let emoji = hoarder.trie.dict[name] {
-					EmojiRow(emoji: emoji)
+					EmojiRow(hoarder: hoarder, emoji: emoji)
 				}
 			}
 		}
@@ -27,5 +27,5 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView()
+    SearchView(hoarder: EmojiHoarder(localOnly: true))
 }

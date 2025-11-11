@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DownloadedView: View {
-	@ObservedObject var hoarder: EmojiHoarder = .shared
+	@ObservedObject var hoarder: EmojiHoarder
 	
 	@Environment(\.colorScheme) var colorScheme
 	var isDark: Bool { colorScheme == .dark }
@@ -33,7 +33,7 @@ struct DownloadedView: View {
 						ZStack {
 							Rectangle()
 								.foregroundStyle(isDark ? .black : .white)
-							EmojiPreview(emoji: emoji)
+							EmojiPreview(hoarder: hoarder, emoji: emoji)
 							RoundedRectangle(cornerRadius: 15)
 								.stroke(.gray, lineWidth: 1)
 						}
@@ -63,5 +63,5 @@ struct DownloadedView: View {
 }
 
 #Preview {
-	DownloadedView()
+	DownloadedView(hoarder: EmojiHoarder(localOnly: true))
 }

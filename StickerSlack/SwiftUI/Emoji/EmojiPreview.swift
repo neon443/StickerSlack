@@ -9,7 +9,7 @@ import SwiftUI
 import Haptics
 
 struct EmojiPreview: View {
-	@ObservedObject var hoarder: EmojiHoarder = .shared
+	@ObservedObject var hoarder: EmojiHoarder
 	@State var emoji: Emoji
 	
 	@State private var id: UUID = UUID()

@@ -9,7 +9,7 @@ import SwiftUI
 import Haptics
 
 struct EmojiRow: View {
-	@ObservedObject var hoarder: EmojiHoarder = .shared
+	@ObservedObject var hoarder: EmojiHoarder
 	@State var emoji: Emoji
 
 	var body: some View {
@@ -19,7 +19,7 @@ struct EmojiRow: View {
 //					Text
 					Text(emoji.name)
 				}
-				EmojiPreview(emoji: emoji)
+				EmojiPreview(hoarder: hoarder, emoji: emoji)
 			}
 			.frame(maxWidth: 100, maxHeight: 100)
 			

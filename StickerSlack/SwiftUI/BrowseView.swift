@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct BrowseView: View {
-	@ObservedObject var hoarder: EmojiHoarder = .shared
+	@ObservedObject var hoarder: EmojiHoarder
 	
     var body: some View {
 		List {
 			ForEach(hoarder.emojis, id: \.self) { emoji in
-				EmojiRow(emoji: emoji)
+				EmojiRow(hoarder: hoarder, emoji: emoji)
 			}
 		}
     }
 }
 
 #Preview {
-    BrowseView()
+    BrowseView(hoarder: EmojiHoarder(localOnly: true))
 }
