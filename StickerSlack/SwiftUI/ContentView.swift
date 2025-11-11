@@ -50,11 +50,15 @@ struct ContentView: View {
 						TrieTestingView()
 					}
 					
-					Tab(role: .search) {
-						SearchView()
+					Tab("Search", systemImage: "magnifyingglass", role: .search) {
+						NavigationStack {
+							SearchView()
+								.searchable(text: $hoarder.searchTerm)
+						}
 					}
 				}
-				.searchable(text: $hoarder.searchTerm, placement: .automatic)
+				.searchable(text: $hoarder.searchTerm)
+				.modifier(tabViewActivationSearchActivation())
 			} else {
 				TabView {
 					DownloadedView()

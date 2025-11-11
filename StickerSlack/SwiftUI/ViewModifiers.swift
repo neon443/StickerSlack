@@ -17,3 +17,13 @@ struct numericTextCompat: ViewModifier {
 		}
 	}
 }
+
+struct tabViewActivationSearchActivation: ViewModifier {
+	func body(content: Content) -> some View {
+		if #available(iOS 26, *) {
+			content.tabViewSearchActivation(.searchTabSelection)
+		} else {
+			content
+		}
+	}
+}
