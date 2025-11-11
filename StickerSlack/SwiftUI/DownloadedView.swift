@@ -14,10 +14,10 @@ struct DownloadedView: View {
 	var isDark: Bool { colorScheme == .dark }
 	
 	var minColWidth: CGFloat { 75 }
-	var spacing: CGFloat { 10 }
+	var spacing: CGFloat { 5 }
 	var col: GridItem {
 		GridItem(
-			.flexible(minimum: minColWidth, maximum: 125),
+			.flexible(minimum: minColWidth, maximum: 100),
 			spacing: spacing,
 			alignment: .center
 		)
@@ -27,7 +27,7 @@ struct DownloadedView: View {
 		ScrollView {
 			let columns: Int = max(1, Int((UIScreen.main.bounds.width - 2*spacing) / (minColWidth + spacing)))
 			let layout = Array(repeating: col, count: columns)
-			LazyVGrid(columns: layout, spacing: 10) {
+			LazyVGrid(columns: layout, spacing: spacing) {
 				ForEach(hoarder.emojis, id: \.self) { emoji in
 					if hoarder.downloadedEmojis.contains(emoji.name) {
 						ZStack {
@@ -41,10 +41,13 @@ struct DownloadedView: View {
 						.clipShape(RoundedRectangle(cornerRadius: 15))
 						.contextMenu {
 							Text(emoji.name)
-							Button("Share", systemImage: "square.and.arrow.up") {
-								
+							Button("Copy Name", systemImage: "document.on.document") {
+								UIPasteboard.general.string = emoji.name
 							}
-							ShareLink("Share", item: emoji.localImageURL, subject: nil, message: nil)
+							Button("Copy Image", systemImage: "photo.fill.on.rectangle.fill") {
+								UIPasteboard.general.image = emoji.image
+							}
+							Divider()
 							ShareLink("Share", item: emoji.remoteImageURL, subject: nil, message: nil)
 							Divider()
 							Button("Delete", systemImage: "trash.fill", role: .destructive) {
