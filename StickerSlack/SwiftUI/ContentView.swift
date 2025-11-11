@@ -53,7 +53,6 @@ struct ContentView: View {
 					SearchView(hoarder: hoarder)
 				}
 			}
-			.searchable(text: $hoarder.searchTerm)
 		} else {
 			TabView {
 				DownloadedView(hoarder: hoarder)
@@ -73,7 +72,6 @@ struct ContentView: View {
 						Label("Search", systemImage: "magnifyingglass")
 					}
 			}
-			.searchable(text: $hoarder.searchTerm)
 		}
 	}
 }
