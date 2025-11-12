@@ -10,10 +10,6 @@ import SwiftUI
 struct TrieTestingView: View {
 	@ObservedObject var hoarder: EmojiHoarder = EmojiHoarder(localOnly: true)
 	
-	@State var id: UUID = UUID()
-	
-	@State var newWord: String = "hello"
-	
 	@State var searchTerm: String = ""
 	@State var searchStatus: Bool? = nil
 	
