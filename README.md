@@ -3,7 +3,7 @@
 <div align="center">
 	<br/>
 	<p>
-		<img src="https://files.catbox.moe/r55fjl.png" title="icon" alt="icon" width="100" />
+		<img src="https://files.catbox.moe/d8go4n.png" title="icon" alt="icon" width="100" />
 	</p>
 	<p>
 		every slack emoji as an iMessage sticker
