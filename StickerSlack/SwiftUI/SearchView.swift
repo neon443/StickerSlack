@@ -10,21 +10,16 @@ import SwiftUI
 struct SearchView: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	
+	@State var filterTerm: String = ""
 	@State var filterResult: [String] = []
 	
 	var body: some View {
 		NavigationStack {
-			List {
-				Text("\(hoarder.searchTerm.isEmpty ? hoarder.emojis.count : filterResult.count) Emoji")
-				
-				ForEach(filterResult, id: \.self) { name in
-					if let emoji = hoarder.trie.dict[name] {
-						EmojiRow(hoarder: hoarder, emoji: emoji)
-					}
-				}
+			List(filterResult, id: \.self) { name in
+				EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
 			}
-			.onChange(of: hoarder.searchTerm) { _ in
-				filterResult = hoarder.trie.search(prefix: hoarder.searchTerm)
+			.onChange(of: filterTerm) { _ in
+				withAnimation { filterResult = hoarder.trie.search(prefix: filterTerm) }
 			}
 		}
 		.searchable(text: $hoarder.searchTerm)
