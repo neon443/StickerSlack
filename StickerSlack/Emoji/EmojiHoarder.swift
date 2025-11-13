@@ -21,7 +21,7 @@ class EmojiHoarder: ObservableObject {
 	@Published var emojis: [Emoji] = []
 	
 	@Published var trie: Trie = Trie()
-	@Published var filteredEmojis: [String] = []
+//	@Published var filteredEmojis: [String] = []
 	@Published var downloadedEmojis: Set<String> = []
 	@Published var searchTerm: String = ""
 	
@@ -29,7 +29,6 @@ class EmojiHoarder: ObservableObject {
 		let localDB = loadLocalDB()
 		withAnimation { self.emojis = localDB }
 		if !skipIndex { buildTrie() }
-		withAnimation { self.filteredEmojis = [] }
 		
 		guard !localOnly else { return }
 		Task.detached {
@@ -68,7 +67,6 @@ class EmojiHoarder: ObservableObject {
 		trie.root = TrieNode()
 		trie.dict = [:]
 		downloadedEmojis = []
-		filteredEmojis = []
 	}
 	
 	func buildTrie() {
@@ -141,10 +139,6 @@ class EmojiHoarder: ObservableObject {
 			withAnimation { self.emojis = fetched }
 			buildTrie()
 		}
-	}
-	
-	func filterEmojis(by searchTerm: String) {
-		withAnimation { filteredEmojis = trie.search(prefix: searchTerm) }
 	}
 	
 	func download(emoji: Emoji) {
