@@ -16,6 +16,8 @@ struct TrieTestingView: View {
 	@State var filterTerm: String = ""
 	@State var filterResult: [String] = []
 	
+	@State var filterTerm2: String = ""
+	
 	@State var uikit: Bool = false
 	
 	var body: some View {
@@ -58,6 +60,13 @@ struct TrieTestingView: View {
 				Text("\(filterResult.count)")
 					.modifier(numericTextCompat())
 			}
+			
+			TextField("", text: $filterTerm2)
+				.textFieldStyle(.roundedBorder)
+				.border(.orange)
+				.onChange(of: filterTerm2) { _ in
+					withAnimation { filterResult = hoarder.emojis.filter({ $0.name.localizedCaseInsensitiveContains(filterTerm2) }).map({ $0.name }) }
+				}
 				
 			if uikit {
 				EmojiCollectionView(hoarder: hoarder, items: filterResult)
