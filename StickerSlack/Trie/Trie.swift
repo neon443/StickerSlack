@@ -9,14 +9,14 @@ import Foundation
 import SwiftUI
 import Combine
 
-class TrieNode: ObservableObject {
-	@Published var children: [Character: TrieNode] = [:]
-	@Published var isEndOfWord: Bool = false
+class TrieNode: Codable {
+	var children: [String: TrieNode] = [:]
+	var isEndOfWord: Bool = false
 }
 
 class Trie: ObservableObject {
-	@Published var root: TrieNode = TrieNode()
-	@Published var dict: [String:Emoji] = [:]
+	var root: TrieNode = TrieNode()
+	var dict: [String:Emoji] = [:]
 	
 	func insert(word: String) {
 		let word = word.lowercased()
@@ -25,7 +25,7 @@ class Trie: ObservableObject {
 		let last = indices.last
 		
 		for i in indices {
-			let char = word[i]
+			let char = String(word[i])
 			if let node = currentNode.children[char] {
 				currentNode = node
 			} else {
@@ -42,7 +42,7 @@ class Trie: ObservableObject {
 		var currentNode = root
 		
 		for char in query.lowercased() {
-			if let node = currentNode.children[char] {
+			if let node = currentNode.children[String(char)] {
 				currentNode = node
 			} else {
 				return false
@@ -57,7 +57,7 @@ class Trie: ObservableObject {
 		var currentNode = root
 		
 		for char in prefixQuery {
-			guard let child = currentNode.children[char] else {
+			guard let child = currentNode.children[String(char)] else {
 				return []
 			}
 			currentNode = child

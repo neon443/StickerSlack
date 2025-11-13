@@ -14,6 +14,8 @@ import Haptics
 class EmojiHoarder: ObservableObject {
 	static let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
 	nonisolated static let localEmojiDB: URL = EmojiHoarder.container.appendingPathComponent("_localEmojiDB.json", conformingTo: .fileURL)
+	nonisolated static let localTrie: URL = EmojiHoarder.container.appendingPathComponent("_localTrie.json", conformingTo: .fileURL)
+	nonisolated static let localTrieDict: URL = EmojiHoarder.container.appendingPathComponent("_localTrieDict.json", conformingTo: .fileURL)
 	private let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	private let encoder = JSONEncoder()
 	private let decoder = JSONDecoder()
@@ -28,10 +30,11 @@ class EmojiHoarder: ObservableObject {
 	init(localOnly: Bool = false, skipIndex: Bool = false) {
 		let localDB = loadLocalDB()
 		withAnimation { self.emojis = localDB }
+		loadTrie()
 		if !skipIndex { buildTrie() }
 		
 		guard !localOnly else { return }
-		Task.detached {
+		Task {
 			print("start loading remote db")
 			await self.loadRemoteDB()
 			print("end")
@@ -69,22 +72,48 @@ class EmojiHoarder: ObservableObject {
 		downloadedEmojis = []
 	}
 	
+	func saveTrie() {
+		guard let data = try? encoder.encode(trie.root) else {
+			fatalError("failed to encode trie")
+		}
+		try! data.write(to: EmojiHoarder.localTrie)
+		
+		guard let dataDict = try? encoder.encode(trie.dict) else {
+			fatalError("failed to encode trie dict")
+		}
+		try! dataDict.write(to: EmojiHoarder.localTrieDict)
+	}
+	
+	func loadTrie() {
+		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrie.path) else { return }
+		guard let data = try? Data(contentsOf: EmojiHoarder.localTrie) else { return }
+		guard let decoded = try? decoder.decode(TrieNode.self, from: data) else {
+			fatalError("failed to decode trie")
+		}
+		self.trie.root = decoded
+		
+		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrieDict.path) else { return }
+		guard let dataDict = try? Data(contentsOf: EmojiHoarder.localTrieDict) else { return }
+		guard let decodedDict = try? decoder.decode([String:Emoji].self, from: dataDict) else {
+			fatalError("failed to decode dict")
+		}
+		self.trie.dict = decodedDict
+	}
+	
 	func buildTrie() {
 		let start = Date().timeIntervalSince1970
-		trie.root = TrieNode()
 		for emoji in emojis {
 			trie.insert(word: emoji.name)
 		}
 		buildTrieDict()
+		saveTrie()
 		print("done building trie in", Date().timeIntervalSince1970-start)
 	}
 	
 	func buildTrieDict() {
-		var dict: [String:Emoji] = [:]
 		for emoji in emojis {
-			dict[emoji.name] = emoji
+			trie.dict[emoji.name] = emoji
 		}
-		self.trie.dict = dict
 		buildDownloadedEmojis()
 	}
 	
