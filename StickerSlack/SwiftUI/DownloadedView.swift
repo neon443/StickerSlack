@@ -28,8 +28,8 @@ struct DownloadedView: View {
 			let columns: Int = max(1, Int((UIScreen.main.bounds.width - 2*spacing) / (minColWidth + spacing)))
 			let layout = Array(repeating: col, count: columns)
 			LazyVGrid(columns: layout, spacing: spacing) {
-				ForEach(hoarder.emojis, id: \.self) { emoji in
-					if hoarder.downloadedEmojis.contains(emoji.name) {
+				ForEach(hoarder.downloadedEmojisArr, id: \.self) { name in
+					if let emoji = hoarder.trie.dict[name] {
 						ZStack {
 							Rectangle()
 								.foregroundStyle(isDark ? .black : .white)

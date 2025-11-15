@@ -25,6 +25,7 @@ class EmojiHoarder: ObservableObject {
 	@Published var trie: Trie = Trie()
 //	@Published var filteredEmojis: [String] = []
 	@Published var downloadedEmojis: Set<String> = []
+	@Published var downloadedEmojisArr: [String] = []
 	@Published var searchTerm: String = ""
 	
 	init(localOnly: Bool = false, skipIndex: Bool = false) {
@@ -119,9 +120,11 @@ class EmojiHoarder: ObservableObject {
 	
 	func buildDownloadedEmojis() {
 		downloadedEmojis = []
+		downloadedEmojisArr = []
 		for emoji in emojis {
 			guard emoji.isLocal else { continue }
 			downloadedEmojis.insert(emoji.name)
+			downloadedEmojisArr.append(emoji.name)
 		}
 	}
 	
@@ -175,6 +178,7 @@ class EmojiHoarder: ObservableObject {
 			try? await emoji.downloadImage()
 			await MainActor.run {
 				self.downloadedEmojis.insert(emoji.name)
+				self.downloadedEmojisArr.append(emoji.name)
 				self.trie.dict[emoji.name]?.refresh()
 				Haptic.success.trigger()
 			}
@@ -185,6 +189,7 @@ class EmojiHoarder: ObservableObject {
 	func delete(emoji: Emoji) {
 		emoji.deleteImage()
 		downloadedEmojis.remove(emoji.name)
+		downloadedEmojisArr.removeAll(where: { $0 == emoji.name })
 		self.trie.dict[emoji.name]?.refresh()
 		Haptic.heavy.trigger()
 	}
