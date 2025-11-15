@@ -73,7 +73,9 @@ class EmojiHoarder: ObservableObject {
 		downloadedEmojis = []
 	}
 	
+	//cl i disabled ts cos its quicker to rebuild it then to load ts
 	func saveTrie() {
+		return
 		guard let data = try? encoder.encode(trie.root) else {
 			fatalError("failed to encode trie")
 		}
@@ -86,6 +88,7 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	func loadTrie() {
+		return
 		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrie.path) else { return }
 		guard let data = try? Data(contentsOf: EmojiHoarder.localTrie) else { return }
 		guard let decoded = try? decoder.decode(TrieNode.self, from: data) else {
