@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -30,6 +30,10 @@
 		A955B3F22EC22E9700E1732D /* BrowseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A955B3F02EC22E9700E1732D /* BrowseView.swift */; };
 		A955B3F52EC22EE900E1732D /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A955B3F42EC22EE900E1732D /* SearchView.swift */; };
 		A955B3F62EC22EE900E1732D /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A955B3F42EC22EE900E1732D /* SearchView.swift */; };
+		A957C1742ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C1732ECCE2CE00EA3EE9 /* SettingsView.swift */; };
+		A957C1752ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C1732ECCE2CE00EA3EE9 /* SettingsView.swift */; };
+		A957C1772ECD008E00EA3EE9 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C1762ECD008E00EA3EE9 /* Bundle.swift */; };
+		A957C1782ECD008E00EA3EE9 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C1762ECD008E00EA3EE9 /* Bundle.swift */; };
 		A9773C2F2EA54AF000F3B753 /* EmojiPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */; };
 		A986A6AE2EB658DF00B6E0FA /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A969D6932EA3E86500399C05 /* Messages.framework */; };
 		A986A6BA2EB658E100B6E0FA /* StickerSlackiMessageApp.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A986A6AD2EB658DF00B6E0FA /* StickerSlackiMessageApp.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -111,6 +115,8 @@
 		A955B3EC2EC22C4A00E1732D /* DownloadedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedView.swift; sourceTree = "<group>"; };
 		A955B3F02EC22E9700E1732D /* BrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseView.swift; sourceTree = "<group>"; };
 		A955B3F42EC22EE900E1732D /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		A957C1732ECCE2CE00EA3EE9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A957C1762ECD008E00EA3EE9 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		A969D6932EA3E86500399C05 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = Library/Frameworks/Messages.framework; sourceTree = DEVELOPER_DIR; };
 		A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPreview.swift; sourceTree = "<group>"; };
 		A986A6AD2EB658DF00B6E0FA /* StickerSlackiMessageApp.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StickerSlackiMessageApp.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				A9104C7D2EB4022500D160EA /* MSSticker.swift */,
+				A957C1762ECD008E00EA3EE9 /* Bundle.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -221,6 +228,7 @@
 				A955B3EC2EC22C4A00E1732D /* DownloadedView.swift */,
 				A955B3F02EC22E9700E1732D /* BrowseView.swift */,
 				A955B3F42EC22EE900E1732D /* SearchView.swift */,
+				A957C1732ECCE2CE00EA3EE9 /* SettingsView.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -400,6 +408,7 @@
 				};
 			};
 			buildConfigurationList = A949B1DA2EA04C0B00215164 /* Build configuration list for PBXProject "StickerSlack" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -411,7 +420,6 @@
 			packageReferences = (
 				A9112EAA2EAFFDB0006739E2 /* XCRemoteSwiftPackageReference "Haptics" */,
 			);
-			preferredProjectObjectVersion = 77;
 			productRefGroup = A949B1E02EA04C0B00215164 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -463,6 +471,8 @@
 				A949B1F42EA04E8200215164 /* ContentView.swift in Sources */,
 				A949B1F52EA04E8200215164 /* StickerSlackApp.swift in Sources */,
 				A9104C802EB4022500D160EA /* MSSticker.swift in Sources */,
+				A957C1772ECD008E00EA3EE9 /* Bundle.swift in Sources */,
+				A957C1742ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
 				A9EB72392EB93FDB00658CEB /* EmojiCollectionView.swift in Sources */,
 				A955B3EE2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
 				A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */,
@@ -508,9 +518,11 @@
 				A9BBC51A2EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A955B3ED2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
 				A9C172DC2EB8C9AC008A7885 /* Trie.swift in Sources */,
+				A957C1752ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
 				A9EB72472EB948C400658CEB /* EmojiRow.swift in Sources */,
 				A955B3F62EC22EE900E1732D /* SearchView.swift in Sources */,
 				A9B9A8322EB2CD29004C9245 /* SlackResponse.swift in Sources */,
+				A957C1782ECD008E00EA3EE9 /* Bundle.swift in Sources */,
 				A9B9A82E2EB2CCBE004C9245 /* StickerSlackTests.swift in Sources */,
 				A9B9A8312EB2CD14004C9245 /* FilterCategory.swift in Sources */,
 				A9EB72502EB94FAD00658CEB /* EmojiPreview.swift in Sources */,

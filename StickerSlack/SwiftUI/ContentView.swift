@@ -18,35 +18,12 @@ struct ContentView: View {
 					BrowseView(hoarder: hoarder)
 				}
 				
-				//					Tab {
-				//						List {
-				//							Text("\(searchTerm.isEmpty ? hoarder.emojis.count : hoarder.filteredEmojis.count) Emoji")
-				//
-				//							ForEach(hoarder.filteredEmojis, id: \.self) { name in
-				//								if let emoji = hoarder.trie.dict[name] {
-				//									EmojiRow(emoji: emoji)
-				//								}
-				//							}
-				//						}
-				//						.onChange(of: searchTerm) { _ in
-				//							hoarder.filterEmojis(by: searchTerm)
-				//						}
-				//						.refreshable {
-				//							Task.detached {
-				//								await hoarder.refreshDB()
-				//							}
-				//							searchTerm = ""
-				//						}
-				//					} label: {
-				//						Label("Search", systemImage: "magnifyingglass")
-				//					}
-				
 				Tab("Downloaded", systemImage: "arrow.down.circle.fill") {
 					DownloadedView(hoarder: hoarder)
 				}
 				
-				Tab("Tree", systemImage: "tree.fill") {
-					TrieTestingView(hoarder: hoarder)
+				Tab("Settings", systemImage: "gear") {
+					SettingsView(hoarder: hoarder)
 				}
 				
 				Tab(role: .search) {
@@ -62,10 +39,6 @@ struct ContentView: View {
 				BrowseView(hoarder: hoarder)
 					.tabItem {
 						Label("Browse", systemImage: "square.grid.2x2.fill")
-					}
-				TrieTestingView(hoarder: hoarder)
-					.tabItem {
-						Label("Trie", systemImage: "tree.fill")
 					}
 				SearchView(hoarder: hoarder)
 					.tabItem {
