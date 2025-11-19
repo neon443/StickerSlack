@@ -34,6 +34,9 @@
 		A957C1752ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C1732ECCE2CE00EA3EE9 /* SettingsView.swift */; };
 		A957C1772ECD008E00EA3EE9 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C1762ECD008E00EA3EE9 /* Bundle.swift */; };
 		A957C1782ECD008E00EA3EE9 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C1762ECD008E00EA3EE9 /* Bundle.swift */; };
+		A957C17A2ECE542D00EA3EE9 /* GifManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C1792ECE542D00EA3EE9 /* GifManager.swift */; };
+		A957C17B2ECE542D00EA3EE9 /* GifManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C1792ECE542D00EA3EE9 /* GifManager.swift */; };
+		A957C17C2ECE542D00EA3EE9 /* GifManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C1792ECE542D00EA3EE9 /* GifManager.swift */; };
 		A9773C2F2EA54AF000F3B753 /* EmojiPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */; };
 		A986A6AE2EB658DF00B6E0FA /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A969D6932EA3E86500399C05 /* Messages.framework */; };
 		A986A6BA2EB658E100B6E0FA /* StickerSlackiMessageApp.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A986A6AD2EB658DF00B6E0FA /* StickerSlackiMessageApp.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -117,6 +120,7 @@
 		A955B3F42EC22EE900E1732D /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A957C1732ECCE2CE00EA3EE9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A957C1762ECD008E00EA3EE9 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
+		A957C1792ECE542D00EA3EE9 /* GifManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifManager.swift; sourceTree = "<group>"; };
 		A969D6932EA3E86500399C05 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = Library/Frameworks/Messages.framework; sourceTree = DEVELOPER_DIR; };
 		A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPreview.swift; sourceTree = "<group>"; };
 		A986A6AD2EB658DF00B6E0FA /* StickerSlackiMessageApp.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StickerSlackiMessageApp.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -285,6 +289,7 @@
 				A949B1F72EA04F2300215164 /* EmojiHoarder.swift */,
 				A91C098B2EBBD78700210C34 /* Categorisation */,
 				A91C098A2EBBD77B00210C34 /* API */,
+				A957C1792ECE542D00EA3EE9 /* GifManager.swift */,
 			);
 			path = Emoji;
 			sourceTree = "<group>";
@@ -476,6 +481,7 @@
 				A9EB72392EB93FDB00658CEB /* EmojiCollectionView.swift in Sources */,
 				A955B3EE2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
 				A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */,
+				A957C17A2ECE542D00EA3EE9 /* GifManager.swift in Sources */,
 				A955B3F52EC22EE900E1732D /* SearchView.swift in Sources */,
 				A935437B2EB2A3C800BB80A4 /* FilterCategory.swift in Sources */,
 				A9C172DD2EB8C9AC008A7885 /* Trie.swift in Sources */,
@@ -494,6 +500,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A957C17B2ECE542D00EA3EE9 /* GifManager.swift in Sources */,
 				A986A6C32EB6598100B6E0FA /* FilterCategory.swift in Sources */,
 				A9EB724B2EB94A5700658CEB /* Trie.swift in Sources */,
 				A986A6CD2EB659E000B6E0FA /* MessagesViewController.swift in Sources */,
@@ -509,6 +516,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A957C17C2ECE542D00EA3EE9 /* GifManager.swift in Sources */,
 				A9104C7F2EB4022500D160EA /* MSSticker.swift in Sources */,
 				A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */,
 				A955B3F12EC22E9700E1732D /* BrowseView.swift in Sources */,

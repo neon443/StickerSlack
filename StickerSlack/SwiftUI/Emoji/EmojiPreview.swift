@@ -12,14 +12,28 @@ struct EmojiPreview: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	@State var emoji: Emoji
 	
+	@State var gifImage: Image?
+	@State var stopPointer: UnsafeMutablePointer<Bool>?
+	
 	@State private var id: UUID = UUID()
 	@State private var delay: TimeInterval = 0
 	
 	var body: some View {
 		Group {
 			if let image = emoji.image {
-				Image(uiImage: image)
-					.resizable().scaledToFit()
+				if emoji.localImageURLString.contains(".gif") {
+					if let gifImage {
+						gifImage
+							.resizable().scaledToFit()
+					} else {
+						Text("uhhhh")
+							.foregroundStyle(.red)
+							.font(.largeTitle)
+					}
+				} else {
+					Image(uiImage: image)
+						.resizable().scaledToFit()
+				}
 			} else {
 				AsyncImage(url: emoji.remoteImageURL) { phase in
 					if let image = phase.image {
@@ -41,6 +55,19 @@ struct EmojiPreview: View {
 							.frame(maxWidth: .infinity, maxHeight: .infinity)
 					}
 				}
+			}
+		}
+		.onAppear {
+			guard emoji.localImageURLString.contains(".gif") else { return }
+			gifImage = nil
+			guard let gifData = try? Data(contentsOf: emoji.localImageURL) as CFData else { return }
+			CGAnimateImageDataWithBlock(gifData, nil) { index, cgImage, stop in
+				if stopPointer != stop {
+					stopPointer?.pointee.toggle()
+					stopPointer = stop
+				}
+				guard !stop.pointee else { return }
+				gifImage = Image(uiImage: .init(cgImage: cgImage))
 			}
 		}
 		.id(id)
