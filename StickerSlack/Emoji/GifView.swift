@@ -37,8 +37,14 @@ struct GifView: View {
 				go.toggle()
 			}
 		}
-		.onAppear {
-			self.gif = GifManager.gifFrom(url: url)
+		.onTapGesture {
+			go.toggle()
+		}
+		.task {
+			self.gif = await GifManager.gifFrom(url: url)
+			guard gif.count > 0 else {
+				return
+			}
 			DispatchQueue.main.asyncAfter(deadline: .now()+gif[0].showFor) {
 				go.toggle()
 			}

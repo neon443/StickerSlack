@@ -10,11 +10,8 @@ import UIKit
 
 class GifManager {
 	static let defaultDuration: Double = 0.083333333333333329
-	static func gifFrom(url: URL) -> [(frame: CGImage, showFor: Double)] {
-//		let url = URL(string: "https://emoji.slack-edge.com/T0266FRGM/yay-bounce/046cfcc7ed81030f.gif")!
-//		guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else { fatalError("couldnt create source") }
-		
-		guard let data = try? Data(contentsOf: url) else { return [] }
+	static func gifFrom(url: URL) async -> [(frame: CGImage, showFor: Double)] {
+		guard let (data, _) = try? await URLSession.shared.data(from: url) else { return [] }
 		
 		return gifFrom(data: data)
 	}
