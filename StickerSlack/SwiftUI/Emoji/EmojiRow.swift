@@ -16,7 +16,6 @@ struct EmojiRow: View {
 		HStack {
 			VStack {
 				HStack(spacing: .zero) {
-//					Text
 					Text(emoji.name)
 				}
 				EmojiPreview(hoarder: hoarder, emoji: emoji)
