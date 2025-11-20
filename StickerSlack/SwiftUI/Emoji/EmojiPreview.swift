@@ -23,14 +23,6 @@ struct EmojiPreview: View {
 			if let image = emoji.image {
 				if emoji.localImageURLString.contains(".gif") {
 					GifView(url: emoji.localImageURL)
-//					if let gifImage {
-//						gifImage
-//							.resizable().scaledToFit()
-//					} else {
-//						Text("uhhhh")
-//							.foregroundStyle(.red)
-//							.font(.largeTitle)
-//					}
 				} else {
 					Image(uiImage: image)
 						.resizable().scaledToFit()
@@ -58,19 +50,6 @@ struct EmojiPreview: View {
 				}
 			}
 		}
-//		.onAppear {
-//			guard emoji.localImageURLString.contains(".gif") else { return }
-//			gifImage = nil
-//			guard let gifData = try? Data(contentsOf: emoji.localImageURL) as CFData else { return }
-//			CGAnimateImageDataWithBlock(gifData, nil) { index, cgImage, stop in
-//				if stopPointer != stop {
-//					stopPointer?.pointee.toggle()
-//					stopPointer = stop
-//				}
-//				guard !stop.pointee else { return }
-//				gifImage = Image(uiImage: .init(cgImage: cgImage))
-//			}
-//		}
 		.id(id)
 	}
 }

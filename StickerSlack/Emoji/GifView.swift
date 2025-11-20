@@ -10,24 +10,44 @@ import UIKit
 import SwiftUI
 import WebKit
 
-struct GifView: UIViewRepresentable {
-	private let url: URL
+struct GifView: View {
+	@State var url: URL
+	@State var gif: [(frame: CGImage, showFor: Double)] = []
+	@State var currentI: Int = 0
+	@State var go: Bool = false
 	
-	init(url: URL) {
-		self.url = url
+	var body: some View {
+//		/*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
+		TimelineView(.animation) { tl in
+			VStack {
+				if currentI < gif.count {
+					let image = Image(uiImage: .init(cgImage: gif[currentI].frame))
+					image
+						.resizable().scaledToFit()
+				}
+			}
+		}
+		.onChange(of: go) { _ in
+			if currentI == (gif.count-1) {
+				currentI = 0
+			} else {
+				currentI += 1
+			}
+			DispatchQueue.main.asyncAfter(deadline: .now()+gif[currentI].showFor) {
+				go.toggle()
+			}
+		}
+		.onAppear {
+			self.gif = GifManager.gifFrom(url: url)
+			DispatchQueue.main.asyncAfter(deadline: .now()+gif[0].showFor) {
+				go.toggle()
+			}
+		}
 	}
-	
-	func makeUIView(context: Context) -> WKWebView {
-		let webview = WKWebView()
-		
-		webview.allowsLinkPreview = false
-		webview.allowsBackForwardNavigationGestures = false
-		
-		webview.load(URLRequest(url: url))
-		return webview
-	}
-	
-	func updateUIView(_ uiView: WKWebView, context: Context) {
-		uiView.reload()
-	}
+}
+
+#Preview {
+	GifView(
+		url: URL(string: "https://files.catbox.moe/3x5sea.gif")!
+	)
 }
