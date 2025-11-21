@@ -30,20 +30,6 @@ struct WelcomeView: View {
     }
 }
 
-struct ListRow: View {
-	@State var number: Int
-	@State var text: String
-	
-	var body: some View {
-		HStack {
-			Text("\(number)")
-				.padding(.trailing, 10)
-				.foregroundStyle(.gray)
-			Text(text)
-		}
-	}
-}
-
 #Preview {
     WelcomeView()
 }

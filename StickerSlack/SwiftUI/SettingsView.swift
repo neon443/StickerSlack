@@ -39,8 +39,29 @@ struct SettingsView: View {
 					Text("\(hoarder.downloadedEmojis.count) downloaded Emoji")
 					NavigationLink {
 						List {
-							ForEach(hoarder.generateLetterStats(), id: \.self) { stat in
-								Text("\(stat.count) Emoji starting with \(stat.char)")
+							Picker(selection: $hoarder.letterStatsSorting.by) {
+								ForEach(EmojiHoarder.SortLetterStatsBy.allCases, id: \.self) { sortType in
+									Text(sortType.rawValue).tag(sortType)
+								}
+							} label: {
+								Label("Sort by", systemImage: "arrow.up.arrow.down")
+							}
+							Picker(selection: $hoarder.letterStatsSorting.ascending) {
+									Text("Ascending").tag(true)
+									Text("Descending").tag(false)
+							} label: {
+								Label("Order", systemImage: "greaterthan")
+							}
+							.onChange(of: hoarder.letterStatsSorting) { _ in
+								hoarder.sortLetterStats(by: hoarder.letterStatsSorting)
+							}
+
+							ForEach(hoarder.letterStats, id: \.self) { stat in
+								HStack {
+									Text("\(stat.char)")
+									Spacer()
+									Text("\(stat.count)")
+								}
 							}
 						}
 					} label: {

@@ -16,6 +16,8 @@
 		A9104C802EB4022500D160EA /* MSSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9104C7D2EB4022500D160EA /* MSSticker.swift */; };
 		A921C2DF2ED067BB00E57B1A /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A921C2DE2ED067BB00E57B1A /* WelcomeView.swift */; };
 		A921C2E02ED067BB00E57B1A /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A921C2DE2ED067BB00E57B1A /* WelcomeView.swift */; };
+		A921C2E22ED071C900E57B1A /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A921C2E12ED071C900E57B1A /* ListRow.swift */; };
+		A921C2E32ED071C900E57B1A /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A921C2E12ED071C900E57B1A /* ListRow.swift */; };
 		A924C3732EA9127200F20781 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
 		A924C3782EA9225800F20781 /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = A924C3772EA9225800F20781 /* Haptics */; };
 		A931D4082EBC9646007BC75B /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = A931D4072EBC9646007BC75B /* Haptics */; };
@@ -110,6 +112,7 @@
 		A9104C732EB3AE4700D160EA /* StickerSlack.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = StickerSlack.icon; sourceTree = "<group>"; };
 		A9104C7D2EB4022500D160EA /* MSSticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSSticker.swift; sourceTree = "<group>"; };
 		A921C2DE2ED067BB00E57B1A /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		A921C2E12ED071C900E57B1A /* ListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRow.swift; sourceTree = "<group>"; };
 		A924C3712EA9127200F20781 /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
 		A924C3742EA9134C00F20781 /* StickerSlack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerSlack.entitlements; sourceTree = "<group>"; };
 		A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategory.swift; sourceTree = "<group>"; };
@@ -241,6 +244,7 @@
 				A955B3F42EC22EE900E1732D /* SearchView.swift */,
 				A957C1732ECCE2CE00EA3EE9 /* SettingsView.swift */,
 				A921C2DE2ED067BB00E57B1A /* WelcomeView.swift */,
+				A921C2E12ED071C900E57B1A /* ListRow.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -503,6 +507,7 @@
 				A949B1F82EA04F2300215164 /* EmojiHoarder.swift in Sources */,
 				A9BBC5182EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A9EB72492EB948C400658CEB /* EmojiRow.swift in Sources */,
+				A921C2E22ED071C900E57B1A /* ListRow.swift in Sources */,
 				A9773C2F2EA54AF000F3B753 /* EmojiPreview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -533,6 +538,7 @@
 				A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */,
 				A955B3F12EC22E9700E1732D /* BrowseView.swift in Sources */,
 				A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */,
+				A921C2E32ED071C900E57B1A /* ListRow.swift in Sources */,
 				A9EB724A2EB948E000658CEB /* EmojiCollectionView.swift in Sources */,
 				A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
 				A9BBC51A2EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,

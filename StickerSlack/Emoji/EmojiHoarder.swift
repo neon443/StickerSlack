@@ -26,7 +26,9 @@ class EmojiHoarder: ObservableObject {
 	@Published var downloadedEmojis: Set<String> = []
 	@Published var downloadedEmojisArr: [String] = []
 	@Published var searchTerm: String = ""
+	
 	@Published var letterStats: [EmojiHoarder.LetterStat] = []
+	@Published var letterStatsSorting: EmojiHoarder.LetterStatSorting = .init(by: .letter, ascending: true)
 	
 	@Published var showWelcome: Bool = true
 	
@@ -115,6 +117,7 @@ class EmojiHoarder: ObservableObject {
 		}
 		buildTrieDict()
 		saveTrie()
+		generateLetterStats()
 		print("done building trie in", Date().timeIntervalSince1970-start)
 	}
 	
@@ -206,19 +209,51 @@ class EmojiHoarder: ObservableObject {
 		self.showWelcome = newValue
 	}
 	
-	func generateLetterStats() -> [EmojiHoarder.LetterStat] {
+	func generateLetterStats() {
 		var result: [EmojiHoarder.LetterStat] = []
 		for child in trie.root.children {
 			let count = trie.collectWords(startingWith: child.key, from: child.value).count
 			let stat = LetterStat(char: child.key, count: count)
 			result.append(stat)
 		}
-		return result
+		self.letterStats = result
+		sortLetterStats(by: self.letterStatsSorting)
+	}
+	
+	func sortLetterStats(by: EmojiHoarder.LetterStatSorting) {
+		self.letterStatsSorting = by
+		let sortByLetter = letterStatsSorting.by == .letter
+		switch by.ascending {
+		case true:
+			letterStats.sort {
+				if sortByLetter {
+					$0.char > $1.char
+				} else {
+					$0.count > $1.count
+				}
+			}
+		case false:
+			letterStats.sort {
+				if sortByLetter {
+					$0.char > $1.char
+				} else {
+					$0.count < $1.count
+				}
+			}
+		}
 	}
 	
 	struct LetterStat: Hashable {
 		var char: String
 		var count: Int
+	}
+	enum SortLetterStatsBy: String, CaseIterable {
+		case letter = "Letter"
+		case count = "Count"
+	}
+	struct LetterStatSorting: Hashable, Equatable {
+		var by: EmojiHoarder.SortLetterStatsBy = .count
+		var ascending: Bool = true
 	}
 	
 //	func filterEmojis(byCategory category: FilterCategory, searchTerm: String) {
