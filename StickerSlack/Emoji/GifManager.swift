@@ -9,7 +9,9 @@ import Foundation
 import UIKit
 
 class GifManager {
+	//from clock-run, 12 frames one second
 	static let defaultDuration: Double = 0.083333333333333329
+	
 	static func gifFrom(url: URL) async -> [(frame: CGImage, showFor: Double)] {
 		guard let (data, _) = try? await URLSession.shared.data(from: url) else { return [] }
 		
