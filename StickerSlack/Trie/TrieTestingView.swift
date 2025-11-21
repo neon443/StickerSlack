@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TrieTestingView: View {
-	@ObservedObject var hoarder: EmojiHoarder = EmojiHoarder(localOnly: true)
+	@ObservedObject var hoarder: EmojiHoarder 
 	
 	@State var searchTerm: String = ""
 	@State var searchStatus: Bool? = nil
@@ -99,5 +99,5 @@ struct TrieNodeView: View {
 }
 
 #Preview {
-	TrieTestingView()
+	TrieTestingView(hoarder: EmojiHoarder(localOnly: true))
 }

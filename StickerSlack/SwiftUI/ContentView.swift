@@ -12,40 +12,48 @@ struct ContentView: View {
 	@ObservedObject var hoarder: EmojiHoarder = EmojiHoarder()
 	
 	var body: some View {
-		if #available(iOS 18, *) {
-			TabView {
-				Tab("Browse", systemImage: "square.grid.2x2.fill") {
-					BrowseView(hoarder: hoarder)
+		Group {
+			if #available(iOS 18, *) {
+				TabView {
+					Tab("Browse", systemImage: "square.grid.2x2.fill") {
+						BrowseView(hoarder: hoarder)
+					}
+					
+					Tab("Downloaded", systemImage: "arrow.down.circle.fill") {
+						DownloadedView(hoarder: hoarder)
+					}
+					
+					Tab("Settings", systemImage: "gear") {
+						SettingsView(hoarder: hoarder)
+					}
+					
+					Tab(role: .search) {
+						SearchView(hoarder: hoarder)
+					}
 				}
-				
-				Tab("Downloaded", systemImage: "arrow.down.circle.fill") {
+			} else {
+				TabView {
 					DownloadedView(hoarder: hoarder)
-				}
-				
-				Tab("Settings", systemImage: "gear") {
-					SettingsView(hoarder: hoarder)
-				}
-				
-				Tab(role: .search) {
+						.tabItem {
+							Label("Downloaded", systemImage: "arrow.down.circle.fill")
+						}
+					BrowseView(hoarder: hoarder)
+						.tabItem {
+							Label("Browse", systemImage: "square.grid.2x2.fill")
+						}
 					SearchView(hoarder: hoarder)
+						.tabItem {
+							Label("Search", systemImage: "magnifyingglass")
+						}
 				}
-			}
-		} else {
-			TabView {
-				DownloadedView(hoarder: hoarder)
-					.tabItem {
-						Label("Downloaded", systemImage: "arrow.down.circle.fill")
-					}
-				BrowseView(hoarder: hoarder)
-					.tabItem {
-						Label("Browse", systemImage: "square.grid.2x2.fill")
-					}
-				SearchView(hoarder: hoarder)
-					.tabItem {
-						Label("Search", systemImage: "magnifyingglass")
-					}
 			}
 		}
+		.sheet(isPresented: $hoarder.showWelcome) {
+			print("hi")
+		} content: {
+			WelcomeView()
+		}
+
 	}
 }
 

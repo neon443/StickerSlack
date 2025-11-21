@@ -26,8 +26,13 @@ class EmojiHoarder: ObservableObject {
 	@Published var downloadedEmojis: Set<String> = []
 	@Published var downloadedEmojisArr: [String] = []
 	@Published var searchTerm: String = ""
+	@Published var letterStats: [EmojiHoarder.LetterStat] = []
+	
+	@Published var showWelcome: Bool = true
 	
 	init(localOnly: Bool = false, skipIndex: Bool = false) {
+		self.showWelcome = !UserDefaults.standard.bool(forKey: "showWelcome")
+		
 		let localDB = loadLocalDB()
 		withAnimation { self.emojis = localDB }
 		loadTrie()
@@ -194,6 +199,26 @@ class EmojiHoarder: ObservableObject {
 		downloadedEmojisArr.removeAll(where: { $0 == emoji.name })
 		self.trie.dict[emoji.name]?.refresh()
 		Haptic.heavy.trigger()
+	}
+	
+	func setShowWelcome(to newValue: Bool) {
+		UserDefaults.standard.set(!newValue, forKey: "shownWelcome")
+		self.showWelcome = newValue
+	}
+	
+	func generateLetterStats() -> [EmojiHoarder.LetterStat] {
+		var result: [EmojiHoarder.LetterStat] = []
+		for child in trie.root.children {
+			let count = trie.collectWords(startingWith: child.key, from: child.value).count
+			let stat = LetterStat(char: child.key, count: count)
+			result.append(stat)
+		}
+		return result
+	}
+	
+	struct LetterStat: Hashable {
+		var char: String
+		var count: Int
 	}
 	
 //	func filterEmojis(byCategory category: FilterCategory, searchTerm: String) {
