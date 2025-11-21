@@ -49,7 +49,7 @@ struct ContentView: View {
 			}
 		}
 		.sheet(isPresented: $hoarder.showWelcome) {
-			print("hi")
+			hoarder.setShowWelcome(to: false)
 		} content: {
 			WelcomeView()
 		}

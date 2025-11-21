@@ -30,7 +30,7 @@ class EmojiHoarder: ObservableObject {
 	@Published var letterStats: [EmojiHoarder.LetterStat] = []
 	@Published var letterStatsSorting: EmojiHoarder.LetterStatSorting = .init(by: .letter, ascending: true)
 	
-	@Published var showWelcome: Bool = true
+	@Published var showWelcome: Bool = false
 	
 	init(localOnly: Bool = false, skipIndex: Bool = false) {
 		self.showWelcome = !UserDefaults.standard.bool(forKey: "showWelcome")
@@ -205,7 +205,7 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	func setShowWelcome(to newValue: Bool) {
-		UserDefaults.standard.set(!newValue, forKey: "shownWelcome")
+		UserDefaults.standard.set(!newValue, forKey: "showWelcome")
 		self.showWelcome = newValue
 	}
 	
