@@ -9,7 +9,7 @@ import Foundation
 
 extension Bundle {
 	var appVersion: String {
-		let version = infoDictionary?["CFBundleVersion"] as? String
+		let version = infoDictionary?["CFBundleShortVersionString"] as? String
 		return version ?? "0.0"
 	}
 	
