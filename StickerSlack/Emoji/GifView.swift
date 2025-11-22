@@ -30,16 +30,19 @@ struct GifView: View {
 		}
 		.onDisappear {
 			timer?.invalidate()
+			timer = nil
 		}
 		.task {
-			self.gif = await GifManager.gifFrom(url: url)
-			guard gif.count > 0 else {
-				return
+			if gif.isEmpty {
+				self.gif = await GifManager.gifFrom(url: url)
 			}
-			guard timer == nil else {
+			guard gif.count > 0 else { return }
+			
+			if timer != nil {
 				timer!.invalidate()
-				return
+				timer = nil
 			}
+			
 			timer = Timer(timeInterval: gif[0].showFor, repeats: true) { timer in
 				if currentI == (gif.count-1) {
 					currentI = 0
