@@ -39,7 +39,9 @@ struct EmojiRow: View {
 				.buttonStyle(.plain)
 			} else {
 				Button("", systemImage: "arrow.down.circle") {
-					hoarder.download(emoji: emoji)
+					Task {
+						await hoarder.download(emoji: emoji)
+					}
 				}
 				.buttonStyle(.plain)
 			}

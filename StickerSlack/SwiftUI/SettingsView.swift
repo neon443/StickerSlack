@@ -92,7 +92,9 @@ struct SettingsView: View {
 				
 				Section("Use with Caution") {
 					Button("download all", role: .destructive) {
-						hoarder.downloadAllStickers()
+						Task {
+							await hoarder.downloadAllStickers()
+						}
 					}
 					Button("delete all", role: .destructive) {
 						hoarder.deleteAllStickers()

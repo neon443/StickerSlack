@@ -64,7 +64,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 						.buttonStyle(.plain)
 					} else {
 						Button("", systemImage: "arrow.down.circle") {
-							self.hoarder.download(emoji: emoji)
+							Task {
+								await self.hoarder.download(emoji: emoji)
+							}
 						}
 						.buttonStyle(.plain)
 					}

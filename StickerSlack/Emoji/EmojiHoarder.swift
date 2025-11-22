@@ -52,12 +52,49 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	@MainActor
-	func downloadAllStickers() {
+	func downloadAllStickers() async {
+		downloadedEmojisArr = []
+		
+		let cores = ProcessInfo.processInfo.processorCount-1
+		var indiciesSplit: [Range<Int>] = []
+		for i in 0..<cores {
+			let onething = emojis.count/cores
+			indiciesSplit.append(onething*i..<onething + (onething*i))
+			if i == (0..<cores).last {
+				let last = indiciesSplit.last!
+				indiciesSplit.append(onething*i..<(onething + (onething*i)+emojis.count-last.upperBound))
+			}
+		}
+		print(indiciesSplit)
+		
+		var t: Int = 0
+		for split in indiciesSplit {
+			for thing in split {
+				t+=1
+			}
+		}
+		
+		print(t)
+		print()
+		
+//		let indicies = emojis.indices.split(separator: indiciesSplit)
+		
+//		await withTaskGroup { group in
+//			for indicy in indicies {
+//				group.addTask {
+//					for i in indicy {
+//						print(i)
+//					}
+//				}
+//			}
+//		}
 		for emoji in emojis {
+			downloadedEmojisArr.append(emoji.name)
 			guard !downloadedEmojis.contains(emoji.name) else { continue }
-			download(emoji: emoji, skipStoreIndex: true)
+			await download(emoji: emoji, skipStoreIndex: true)
 			downloadedEmojis.insert(emoji.name)
 		}
+		
 		DispatchQueue.main.asyncAfter(deadline: .now()+1) {
 			self.storeDownloadedIndexes()
 		}
@@ -69,6 +106,8 @@ class EmojiHoarder: ObservableObject {
 			guard downloadedEmojis.contains(emojis[i].name) else { continue }
 			delete(emoji: emojis[i], skipStoreIndex: true)
 		}
+		downloadedEmojis = []
+		downloadedEmojisArr = []
 		storeDownloadedIndexes()
 	}
 	
@@ -207,27 +246,31 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
-	nonisolated func download(emoji: Emoji, skipStoreIndex: Bool = false) {
-		Task.detached {
+	nonisolated func download(emoji: Emoji, skipStoreIndex: Bool = false) async {
+//		Task.detached(priority: .high) {
 			try? await emoji.downloadImage()
 			await MainActor.run {
-				self.downloadedEmojis.insert(emoji.name)
-				self.downloadedEmojisArr.append(emoji.name)
+				if !skipStoreIndex {
+					self.downloadedEmojis.insert(emoji.name)
+					self.downloadedEmojisArr.append(emoji.name)
+					self.storeDownloadedIndexes()
+				}
 				self.trie.dict[emoji.name]?.refresh()
-				if !skipStoreIndex { self.storeDownloadedIndexes() }
-				Haptic.success.trigger()
+				if !skipStoreIndex { Haptic.success.trigger() }
 			}
-		}
+//		}
 	}
 	
 	@MainActor
 	func delete(emoji: Emoji, skipStoreIndex: Bool = false) {
 		emoji.deleteImage()
-		downloadedEmojis.remove(emoji.name)
-		downloadedEmojisArr.removeAll(where: { $0 == emoji.name })
+		if !skipStoreIndex {
+			downloadedEmojis.remove(emoji.name)
+			downloadedEmojisArr.removeAll(where: { $0 == emoji.name })
+			storeDownloadedIndexes()
+		}
 		self.trie.dict[emoji.name]?.refresh()
-		if !skipStoreIndex { storeDownloadedIndexes() }
-		Haptic.heavy.trigger()
+		if !skipStoreIndex { Haptic.heavy.trigger() }
 	}
 	
 	func setShowWelcome(to newValue: Bool) {
