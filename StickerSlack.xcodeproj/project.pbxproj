@@ -143,7 +143,6 @@
 		A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSlackTests.swift; sourceTree = "<group>"; };
 		A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		A9C172DB2EB8C9AC008A7885 /* Trie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
-		A9C7892C2ED2005000D954F5 /* StickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerView.swift; sourceTree = "<group>"; };
 		A9D15B892EB1142C00404792 /* EmojiPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPack.swift; sourceTree = "<group>"; };
 		A9E2ECD72EB74CE00038B2D6 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A9EB72382EB93FDB00658CEB /* EmojiCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionView.swift; sourceTree = "<group>"; };
@@ -325,7 +324,6 @@
 				A986A6C92EB659E000B6E0FA /* MainInterface.storyboard */,
 				A986A6CA2EB659E000B6E0FA /* MessagesViewController.swift */,
 				A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */,
-				A9C7892C2ED2005000D954F5 /* StickerView.swift */,
 			);
 			path = StickerSlackiMessageApp;
 			sourceTree = "<group>";
