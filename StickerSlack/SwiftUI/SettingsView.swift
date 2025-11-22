@@ -10,17 +10,21 @@ import SwiftUI
 struct SettingsView: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	
+	@Environment(\.colorScheme) var colorScheme
+	var isDark: Bool {
+		return colorScheme == .dark
+	}
 	var body: some View {
 		NavigationStack {
 			List {
 				Section {
 					VStack(alignment: .leading) {
-						Image(systemName: "app.dashed")
+						Image(isDark ? "icon-dark" : "icon")
 							.resizable().scaledToFit()
 							.frame(width: 100, height: 100)
 							.clipShape(RoundedRectangle(cornerRadius: 24))
 							.foregroundStyle(.purple)
-							.shadow(color: .purple, radius: 5)
+							.shadow(color: isDark ? .white : .purple, radius: 5)
 						Text("StickerSlack")
 							.font(.title)
 							.monospaced()
