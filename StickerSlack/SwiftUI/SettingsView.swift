@@ -24,7 +24,7 @@ struct SettingsView: View {
 							.frame(width: 100, height: 100)
 							.clipShape(RoundedRectangle(cornerRadius: 24))
 							.foregroundStyle(.purple)
-							.shadow(color: isDark ? .white : .purple, radius: 5)
+							.shadow(color: isDark ? .white : .purple, radius: 2)
 							.padding(.trailing, 10)
 						VStack(alignment: .leading) {
 							Text("StickerSlack")
@@ -46,6 +46,10 @@ struct SettingsView: View {
 				Section {
 					Text("\(hoarder.emojis.count) total Emoji")
 					Text("\(hoarder.downloadedEmojis.count) downloaded Emoji")
+					if hoarder.downloadedEmojis.count == hoarder.emojis.count {
+						Text("🎉")
+							.font(.largeTitle)
+					}
 					NavigationLink {
 						List {
 							Picker(selection: $hoarder.letterStatsSorting.by) {
@@ -55,16 +59,20 @@ struct SettingsView: View {
 							} label: {
 								Label("Sort by", systemImage: "arrow.up.arrow.down")
 							}
+							.onChange(of: hoarder.letterStatsSorting.by) { _ in
+								hoarder.sortLetterStats(by: hoarder.letterStatsSorting)
+							}
+							
 							Picker(selection: $hoarder.letterStatsSorting.ascending) {
 									Text("Ascending").tag(true)
 									Text("Descending").tag(false)
 							} label: {
 								Label("Order", systemImage: "greaterthan")
 							}
-							.onChange(of: hoarder.letterStatsSorting) { _ in
+							.onChange(of: hoarder.letterStatsSorting.ascending) { _ in
 								hoarder.sortLetterStats(by: hoarder.letterStatsSorting)
 							}
-
+							
 							ForEach(hoarder.letterStats, id: \.self) { stat in
 								HStack {
 									Text("\(stat.char)")
@@ -82,11 +90,27 @@ struct SettingsView: View {
 					hoarder.setShowWelcome(to: true)
 				}
 				
+				Section("Use with Caution") {
+					Button("download all", role: .destructive) {
+						hoarder.downloadAllStickers()
+					}
+					Button("delete all", role: .destructive) {
+						hoarder.deleteAllStickers()
+					}
+				}
+				
 				Section("Debug") {
 					NavigationLink {
 						TrieTestingView(hoarder: hoarder)
 					} label: {
 						Label("Tree", systemImage: "tree")
+					}
+					
+					Button(role: .destructive) {
+						hoarder.resetAllIndexes()
+						hoarder.buildTrie()
+					} label: {
+						Label("Reindex", systemImage: "list.bullet.clipboard.fill")
 					}
 				}
 				//			Section(content: <#T##() -> View#>, header: <#T##() -> View#>, footer: <#T##() -> View#>)

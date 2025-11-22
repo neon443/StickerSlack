@@ -65,7 +65,6 @@
 		A9BBC51A2EB8FA4500FFE82F /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */; };
 		A9C172DC2EB8C9AC008A7885 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C172DB2EB8C9AC008A7885 /* Trie.swift */; };
 		A9C172DD2EB8C9AC008A7885 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C172DB2EB8C9AC008A7885 /* Trie.swift */; };
-		A9C7892D2ED2005000D954F5 /* StickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C7892C2ED2005000D954F5 /* StickerView.swift */; };
 		A9D15B8B2EB1142C00404792 /* EmojiPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D15B892EB1142C00404792 /* EmojiPack.swift */; };
 		A9EB72392EB93FDB00658CEB /* EmojiCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72382EB93FDB00658CEB /* EmojiCollectionView.swift */; };
 		A9EB72472EB948C400658CEB /* EmojiRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72462EB948C400658CEB /* EmojiRow.swift */; };
@@ -524,7 +523,6 @@
 				A9EB724B2EB94A5700658CEB /* Trie.swift in Sources */,
 				A986A6CD2EB659E000B6E0FA /* MessagesViewController.swift in Sources */,
 				A986A6CE2EB659E000B6E0FA /* StickerBrowserDataSource.swift in Sources */,
-				A9C7892D2ED2005000D954F5 /* StickerView.swift in Sources */,
 				A957C17E2ECFAA1100EA3EE9 /* GifView.swift in Sources */,
 				A9BBC5192EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A986A6C42EB6598500B6E0FA /* SlackResponse.swift in Sources */,

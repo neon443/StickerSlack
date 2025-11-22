@@ -51,9 +51,15 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
-	func storeStickers(_ toStore: [UUID]) {
-		for stickerId in toStore {
-			print(stickerId)
+	@MainActor
+	func downloadAllStickers() {
+		for emoji in emojis {
+			guard !downloadedEmojis.contains(emoji.name) else { continue }
+			download(emoji: emoji, skipStoreIndex: true)
+			downloadedEmojis.insert(emoji.name)
+		}
+		DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+			self.storeDownloadedIndexes()
 		}
 	}
 	
@@ -61,26 +67,34 @@ class EmojiHoarder: ObservableObject {
 	func deleteAllStickers() {
 		for i in emojis.indices {
 			guard downloadedEmojis.contains(emojis[i].name) else { continue }
-			delete(emoji: emojis[i])
+			delete(emoji: emojis[i], skipStoreIndex: true)
 		}
+		storeDownloadedIndexes()
 	}
 	
-	func storeDB() {
+	private func storeDB() {
 		try! encoder.encode(emojis).write(to: EmojiHoarder.localEmojiDB)
 	}
 	
-	func storeDB(data: Data) {
+	private func storeDB(data: Data) {
 		try! data.write(to: EmojiHoarder.localEmojiDB)
 	}
 	
-	func resetTrie() {
+	func resetAllIndexes() {
 		trie.root = TrieNode()
 		trie.dict = [:]
+		try? FileManager.default.removeItem(at: EmojiHoarder.localTrieDict)
+		
 		downloadedEmojis = []
+		downloadedEmojisArr = []
+		UserDefaults.standard.removeObject(forKey: "downloadedEmojis")
+		UserDefaults.standard.removeObject(forKey: "downloadedEmojisArr")
+		searchTerm = ""
+		letterStats = []
 	}
 	
 	//cl i disabled ts cos its quicker to rebuild it then to load ts
-	func saveTrie() {
+	private func saveTrie() {
 //		return
 //		guard let data = try? encoder.encode(trie.root) else {
 //			fatalError("failed to encode trie")
@@ -93,7 +107,7 @@ class EmojiHoarder: ObservableObject {
 		try! dataDict.write(to: EmojiHoarder.localTrieDict)
 	}
 	
-	func loadTrie() {
+	private func loadTrie() {
 //		return
 //		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrie.path) else { return }
 //		guard let data = try? Data(contentsOf: EmojiHoarder.localTrie) else { return }
@@ -121,18 +135,18 @@ class EmojiHoarder: ObservableObject {
 		print("done building trie in", Date().timeIntervalSince1970-start)
 	}
 	
-	func buildTrieDict() {
+	private func buildTrieDict() {
 		for emoji in emojis {
 			trie.dict[emoji.name] = emoji
 		}
 		buildDownloadedEmojis()
 	}
 	
-	func buildDownloadedEmojis() {
+	private func buildDownloadedEmojis() {
 		downloadedEmojis = []
 		downloadedEmojisArr = []
-		downloadedEmojisArr = (try? JSONDecoder().decode([String].self, from: UserDefaults.standard.data(forKey: "downloadedEmojisArr") ?? Data())) ?? []
-		downloadedEmojis = (try? JSONDecoder().decode(Set<String>.self, from: UserDefaults.standard.data(forKey: "downloadedEmojis") ?? Data())) ?? []
+		downloadedEmojisArr = (try? decoder.decode([String].self, from: UserDefaults.standard.data(forKey: "downloadedEmojisArr") ?? Data())) ?? []
+		downloadedEmojis = (try? decoder.decode(Set<String>.self, from: UserDefaults.standard.data(forKey: "downloadedEmojis") ?? Data())) ?? []
 		
 		if downloadedEmojis.isEmpty || downloadedEmojisArr.isEmpty {
 			for emoji in emojis {
@@ -141,13 +155,15 @@ class EmojiHoarder: ObservableObject {
 				downloadedEmojisArr.append(emoji.name)
 			}
 		}
-		
-		UserDefaults.standard.set(try! JSONEncoder().encode(downloadedEmojis), forKey: "downloadedEmojis")
-		UserDefaults.standard.set(try! JSONEncoder().encode(downloadedEmojisArr), forKey: "downloadedEmojisArr")
+	}
+	
+	func storeDownloadedIndexes() {
+		UserDefaults.standard.set(try! encoder.encode(downloadedEmojis), forKey: "downloadedEmojis")
+		UserDefaults.standard.set(try! encoder.encode(downloadedEmojisArr), forKey: "downloadedEmojisArr")
 	}
 	
 	nonisolated
-	func loadLocalDB() -> [Emoji] {
+	private func loadLocalDB() -> [Emoji] {
 		if let localEmojiDB = try? Data(contentsOf: EmojiHoarder.localEmojiDB) {
 			let decoded = try! decoder.decode([Emoji].self, from: localEmojiDB)
 			return decoded
@@ -155,7 +171,7 @@ class EmojiHoarder: ObservableObject {
 		return []
 	}
 	
-	func loadRemoteDB() async {
+	private func loadRemoteDB() async {
 		async let fetched = self.fetchRemoteDB()
 		if let fetched = await fetched {
 			withAnimation { self.emojis = fetched }
@@ -163,7 +179,7 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	nonisolated
-	func fetchRemoteDB() async -> [Emoji]? {
+	private func fetchRemoteDB() async -> [Emoji]? {
 		do {
 			async let (data, _) = try URLSession.shared.data(from: endpoint)
 			decoder.dateDecodingStrategy = .iso8601
@@ -176,7 +192,7 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
-	func refreshDB() async {
+	private func refreshDB() async {
 		guard let fetched = await self.fetchRemoteDB() else {
 			let local = loadLocalDB()
 			await MainActor.run {
@@ -191,24 +207,26 @@ class EmojiHoarder: ObservableObject {
 		}
 	}
 	
-	func download(emoji: Emoji) {
+	nonisolated func download(emoji: Emoji, skipStoreIndex: Bool = false) {
 		Task.detached {
 			try? await emoji.downloadImage()
 			await MainActor.run {
 				self.downloadedEmojis.insert(emoji.name)
 				self.downloadedEmojisArr.append(emoji.name)
 				self.trie.dict[emoji.name]?.refresh()
+				if !skipStoreIndex { self.storeDownloadedIndexes() }
 				Haptic.success.trigger()
 			}
 		}
 	}
 	
 	@MainActor
-	func delete(emoji: Emoji) {
+	func delete(emoji: Emoji, skipStoreIndex: Bool = false) {
 		emoji.deleteImage()
 		downloadedEmojis.remove(emoji.name)
 		downloadedEmojisArr.removeAll(where: { $0 == emoji.name })
 		self.trie.dict[emoji.name]?.refresh()
+		if !skipStoreIndex { storeDownloadedIndexes() }
 		Haptic.heavy.trigger()
 	}
 	
@@ -263,22 +281,4 @@ class EmojiHoarder: ObservableObject {
 		var by: EmojiHoarder.SortLetterStatsBy = .count
 		var ascending: Bool = true
 	}
-	
-//	func filterEmojis(byCategory category: FilterCategory, searchTerm: String) {
-//		guard category != .none else {
-//			filterEmojis(by: searchTerm)
-//			return
-//		}
-//		self.filterEmojis(by: searchTerm)
-//		DispatchQueue.main.async {
-//			switch category {
-//			case .none:
-//				fallthrough
-//			case .downloaded:
-//				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { $0.isLocal } }
-//			case .notDownloaded:
-//				withAnimation(.interactiveSpring) { self.filteredEmojis = self.filteredEmojis.filter { !$0.isLocal } }
-//			}
-//		}
-//	}
 }
