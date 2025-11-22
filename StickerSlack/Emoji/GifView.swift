@@ -14,7 +14,8 @@ struct GifView: View {
 	@State var url: URL
 	@State var gif: [(frame: CGImage, showFor: Double)] = []
 	@State var currentI: Int = 0
-	@State var go: Bool = false
+	
+	@State var timer: Timer?
 	
 	var body: some View {
 //		/*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
@@ -27,33 +28,32 @@ struct GifView: View {
 				}
 			}
 		}
-		.onChange(of: go) { _ in
-			if currentI == (gif.count-1) {
-				currentI = 0
-			} else {
-				currentI += 1
-			}
-			DispatchQueue.main.asyncAfter(deadline: .now()+gif[currentI].showFor) {
-				go.toggle()
-			}
-		}
-		.onTapGesture {
-			go.toggle()
+		.onDisappear {
+			timer?.invalidate()
 		}
 		.task {
 			self.gif = await GifManager.gifFrom(url: url)
 			guard gif.count > 0 else {
 				return
 			}
-			DispatchQueue.main.asyncAfter(deadline: .now()+gif[0].showFor) {
-				go.toggle()
+			guard timer == nil else {
+				timer!.invalidate()
+				return
 			}
+			timer = Timer(timeInterval: gif[0].showFor, repeats: true) { timer in
+				if currentI == (gif.count-1) {
+					currentI = 0
+				} else {
+					currentI += 1
+				}
+			}
+			RunLoop.main.add(timer!, forMode: .common)
 		}
 	}
 }
 
 #Preview {
 	GifView(
-		url: URL(string: "https://files.catbox.moe/3x5sea.gif")!
+		url: URL(string: "https://emoji.slack-edge.com/T0266FRGM/clockrun/ec33c513d30a6ed8.gif")!
 	)
 }

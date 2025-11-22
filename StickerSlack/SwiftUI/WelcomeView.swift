@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    var body: some View {
+	@Environment(\.dismiss) var dismiss
+	
+	var body: some View {
 		VStack {
 			Text("StickerSlack")
 				.bold()
-				.font(.title)
+				.font(.largeTitle)
 				.monospaced()
 				.padding()
 			List {
@@ -26,10 +28,36 @@ struct WelcomeView: View {
 				}
 			}
 			.scrollContentBackground(.hidden)
+			Spacer()
+			if #available(iOS 19, *) {
+				Button() {
+					dismiss()
+				} label: {
+					Text("Continue")
+						.font(.title)
+						.bold()
+				}
+				.buttonStyle(.glassProminent)
+				.padding(.bottom)
+			} else {
+				Button() {
+					dismiss()
+				} label: {
+					Text("Continue")
+						.font(.title)
+						.bold()
+				}
+				.buttonStyle(.borderedProminent)
+				.padding(.bottom)
+			}
 		}
-    }
+	}
 }
 
 #Preview {
-    WelcomeView()
+	Color.gray.opacity(0.5)
+		.ignoresSafeArea(.all)
+		.sheet(isPresented: .constant(true)) {
+			WelcomeView()
+		}
 }
