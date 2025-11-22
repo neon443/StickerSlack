@@ -111,6 +111,18 @@ struct Emoji: Codable, Identifiable, Hashable {
 		}
 		
 		let rect = CGRect(origin: .zero, size: newSize)
+		
+		if let frames = image.images {
+			var result: [UIImage] = []
+			for frame in frames {
+				UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+				frame.draw(in: rect)
+				result.append(UIGraphicsGetImageFromCurrentImageContext() ?? UIImage())
+				UIGraphicsEndImageContext()
+			}
+			return UIImage.animatedImage(with: result, duration: image.duration) ?? UIImage()
+		}
+		
 		UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
 		image.draw(in: rect)
 		return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
