@@ -78,6 +78,11 @@ struct Emoji: Codable, Identifiable, Hashable {
 			return
 		}
 		let (data, _) = try await URLSession.shared.data(from: remoteImageURL)
+		
+		if let cgImage = UIImage(data: data)?.cgImage,
+		   cgImage.width < 300 || cgImage.height < 300 {
+			
+		}
 		try! await data.write(to: localImageURL)
 		return
 	}
@@ -90,6 +95,25 @@ struct Emoji: Codable, Identifiable, Hashable {
 	@MainActor
 	mutating func refresh() {
 		withAnimation { self.uiID = UUID() }
+	}
+	
+	func resize(image: UIImage, to targetSize: CGSize) -> UIImage {
+		let oldSize = image.size
+		let ratio: (x: CGFloat, y: CGFloat)
+		ratio.x = targetSize.width / oldSize.width
+		ratio.y = targetSize.height / oldSize.height
+		
+		var newSize: CGSize
+		if ratio.x > ratio.y {
+			newSize = CGSize(width: oldSize.width * ratio.y, height: oldSize.height * ratio.y)
+		} else {
+			newSize = CGSize(width: oldSize.width * ratio.x, height: oldSize.height * ratio.x)
+		}
+		
+		let rect = CGRect(origin: .zero, size: newSize)
+		UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+		image.draw(in: rect)
+		return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
 	}
 	
 	static var test: Emoji = Emoji(

@@ -18,22 +18,27 @@ struct SettingsView: View {
 		NavigationStack {
 			List {
 				Section {
-					VStack(alignment: .leading) {
+					HStack {
 						Image(isDark ? "icon-dark" : "icon")
 							.resizable().scaledToFit()
 							.frame(width: 100, height: 100)
 							.clipShape(RoundedRectangle(cornerRadius: 24))
 							.foregroundStyle(.purple)
 							.shadow(color: isDark ? .white : .purple, radius: 5)
-						Text("StickerSlack")
-							.font(.title)
-							.monospaced()
-							.bold()
-						HStack(alignment: .center, spacing: 5) {
-							Text(Bundle.main.appVersion)
+							.padding(.trailing, 10)
+						VStack(alignment: .leading) {
+							Text("StickerSlack")
+								.font(.title2)
+								.monospaced()
 								.bold()
-							Text(Bundle.main.appBuild)
-								.foregroundStyle(.gray)
+							HStack(alignment: .center, spacing: 5) {
+								Text(Bundle.main.appVersion)
+									.bold()
+									.font(.subheadline)
+								Text(Bundle.main.appBuild)
+									.foregroundStyle(.gray)
+									.font(.subheadline)
+							}
 						}
 					}
 				}

@@ -131,11 +131,19 @@ class EmojiHoarder: ObservableObject {
 	func buildDownloadedEmojis() {
 		downloadedEmojis = []
 		downloadedEmojisArr = []
-		for emoji in emojis {
-			guard emoji.isLocal else { continue }
-			downloadedEmojis.insert(emoji.name)
-			downloadedEmojisArr.append(emoji.name)
+		downloadedEmojisArr = (try? JSONDecoder().decode([String].self, from: UserDefaults.standard.data(forKey: "downloadedEmojisArr") ?? Data())) ?? []
+		downloadedEmojis = (try? JSONDecoder().decode(Set<String>.self, from: UserDefaults.standard.data(forKey: "downloadedEmojis") ?? Data())) ?? []
+		
+		if downloadedEmojis.isEmpty || downloadedEmojisArr.isEmpty {
+			for emoji in emojis {
+				guard emoji.isLocal else { continue }
+				downloadedEmojis.insert(emoji.name)
+				downloadedEmojisArr.append(emoji.name)
+			}
 		}
+		
+		UserDefaults.standard.set(try! JSONEncoder().encode(downloadedEmojis), forKey: "downloadedEmojis")
+		UserDefaults.standard.set(try! JSONEncoder().encode(downloadedEmojisArr), forKey: "downloadedEmojisArr")
 	}
 	
 	nonisolated

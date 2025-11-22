@@ -27,6 +27,7 @@ class MessagesViewController: MSMessagesAppViewController {
 		view.addSubview(stickerBrowser)
 		stickerBrowser.reloadData()
 		view.bringSubviewToFront(stickerBrowser)
+		
 		// Called when the extension is about to move from the inactive to active state.
 		// This will happen when the extension is about to present UI.
 		
