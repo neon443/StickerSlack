@@ -91,14 +91,16 @@ struct SettingsView: View {
 				}
 				
 				Section("Use with Caution") {
-					Button("download all", role: .destructive) {
+					Button("Download all", systemImage: "square.and.arrow.down.on.square", role: .destructive) {
 						Task {
 							await hoarder.downloadAllStickers()
 						}
 					}
-					Button("delete all", role: .destructive) {
+					.foregroundStyle(.red)
+					Button("Delete all", systemImage: "trash.circle", role: .destructive) {
 						hoarder.deleteAllStickers()
 					}
+					.foregroundStyle(.red)
 				}
 				
 				Section("Debug") {
@@ -108,12 +110,11 @@ struct SettingsView: View {
 						Label("Tree", systemImage: "tree")
 					}
 					
-					Button(role: .destructive) {
+					Button("Reindex", systemImage: "list.bullet.clipboard", role: .destructive) {
 						hoarder.resetAllIndexes()
 						hoarder.buildTrie()
-					} label: {
-						Label("Reindex", systemImage: "list.bullet.clipboard.fill")
 					}
+					.foregroundStyle(.red)
 				}
 				//			Section(content: <#T##() -> View#>, header: <#T##() -> View#>, footer: <#T##() -> View#>)
 			}

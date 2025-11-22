@@ -237,18 +237,16 @@ class EmojiHoarder: ObservableObject {
 	}
 	
 	nonisolated func download(emoji: Emoji, skipStoreIndex: Bool = false) async {
-//		Task.detached(priority: .high) {
-			try? await emoji.downloadImage()
-			await MainActor.run {
-				if !skipStoreIndex {
-					self.downloadedEmojis.insert(emoji.name)
-					self.downloadedEmojisArr.append(emoji.name)
-					self.storeDownloadedIndexes()
-				}
-				self.trie.dict[emoji.name]?.refresh()
-				if !skipStoreIndex { Haptic.success.trigger() }
+		try? await emoji.downloadImage()
+		await MainActor.run {
+			if !skipStoreIndex {
+				self.downloadedEmojis.insert(emoji.name)
+				self.downloadedEmojisArr.append(emoji.name)
+				self.storeDownloadedIndexes()
 			}
-//		}
+			self.trie.dict[emoji.name]?.refresh()
+			if !skipStoreIndex { Haptic.success.trigger() }
+		}
 	}
 	
 	@MainActor
