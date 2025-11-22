@@ -43,7 +43,7 @@ struct SettingsView: View {
 					}
 				}
 				
-				Section {
+				Section("Stats") {
 					Text("\(hoarder.emojis.count) total Emoji")
 					Text("\(hoarder.downloadedEmojis.count) downloaded Emoji")
 					if hoarder.downloadedEmojis.count == hoarder.emojis.count {

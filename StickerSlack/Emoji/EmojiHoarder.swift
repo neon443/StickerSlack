@@ -53,51 +53,41 @@ class EmojiHoarder: ObservableObject {
 	
 	@MainActor
 	func downloadAllStickers() async {
+		let start: Date = .now
+		
 		downloadedEmojisArr = []
 		
 		let cores = ProcessInfo.processInfo.processorCount-1
-		var indiciesSplit: [Range<Int>] = []
+		var ranges: [Range<Int>] = []
 		for i in 0..<cores {
 			let onething = emojis.count/cores
-			indiciesSplit.append(onething*i..<onething + (onething*i))
+			ranges.append(onething*i..<onething + (onething*i))
 			if i == (0..<cores).last {
-				let last = indiciesSplit.last!
-				indiciesSplit.append(onething*i..<(onething + (onething*i)+emojis.count-last.upperBound))
-			}
-		}
-		print(indiciesSplit)
-		
-		var t: Int = 0
-		for split in indiciesSplit {
-			for thing in split {
-				t+=1
+				let last = ranges.last!
+				ranges.removeLast()
+				ranges.append(onething*i..<(onething + (onething*i)+emojis.count-last.upperBound))
 			}
 		}
 		
-		print(t)
-		print()
-		
-//		let indicies = emojis.indices.split(separator: indiciesSplit)
-		
-//		await withTaskGroup { group in
-//			for indicy in indicies {
-//				group.addTask {
-//					for i in indicy {
-//						print(i)
-//					}
-//				}
-//			}
-//		}
-		for emoji in emojis {
-			downloadedEmojisArr.append(emoji.name)
-			guard !downloadedEmojis.contains(emoji.name) else { continue }
-			await download(emoji: emoji, skipStoreIndex: true)
-			downloadedEmojis.insert(emoji.name)
+		await withTaskGroup { group in
+			for range in ranges {
+				group.addTask {
+					for i in range {
+						await MainActor.run { self.downloadedEmojisArr.append(self.emojis[i].name) }
+						guard !self.downloadedEmojis.contains(await self.emojis[i].name) else { continue }
+						Task { await self.download(emoji: self.emojis[i], skipStoreIndex: true) }
+						await MainActor.run { self.downloadedEmojis.insert(self.emojis[i].name) }
+						if i == self.emojis.count {
+							Task { @MainActor in
+								self.storeDownloadedIndexes()
+							}
+						}
+					}
+				}
+			}
 		}
 		
-		DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-			self.storeDownloadedIndexes()
-		}
+		print(Date.now.timeIntervalSince(start))
 	}
 	
 	@MainActor
