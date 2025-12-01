@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EmojiPackView: View {
+	@ObservedObject var hoarder: EmojiHoarder
 	@State var pack: EmojiPack
 	
 	var body: some View {
@@ -15,9 +16,15 @@ struct EmojiPackView: View {
 			.bold()
 		Text(pack.description)
 			.foregroundStyle(.gray)
+		ForEach(pack.emojiNames, id: \.self) { name in
+			EmojiPreview(hoarder: hoarder, emoji: hoarder.trie.dict[name] ?? .test)
+		}
 	}
 }
 
 #Preview {
-	EmojiPackView(pack: .test)
+	EmojiPackView(
+		hoarder: EmojiHoarder(localOnly: true, skipIndex: true),
+		pack: .test
+	)
 }

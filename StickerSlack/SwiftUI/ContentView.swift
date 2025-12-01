@@ -33,13 +33,17 @@ struct ContentView: View {
 				}
 			} else {
 				TabView {
+					BrowseView(hoarder: hoarder)
+						.tabItem {
+							Label("Browse", systemImage: "square.grid.2x2.fill")
+						}
 					DownloadedView(hoarder: hoarder)
 						.tabItem {
 							Label("Downloaded", systemImage: "arrow.down.circle.fill")
 						}
-					BrowseView(hoarder: hoarder)
+					SettingsView(hoarder: hoarder)
 						.tabItem {
-							Label("Browse", systemImage: "square.grid.2x2.fill")
+							Label("Setings", systemImage: "gear")
 						}
 					SearchView(hoarder: hoarder)
 						.tabItem {

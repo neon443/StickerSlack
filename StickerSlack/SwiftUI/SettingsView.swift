@@ -110,6 +110,12 @@ struct SettingsView: View {
 						Label("Tree", systemImage: "tree")
 					}
 					
+					NavigationLink {
+						EmojiPackManager(hoarder: hoarder)
+					} label: {
+						Label("packs wip", systemImage: "square.stack")
+					}
+					
 					Button("Reindex", systemImage: "list.bullet.clipboard", role: .destructive) {
 						hoarder.resetAllIndexes()
 						hoarder.buildTrie()
