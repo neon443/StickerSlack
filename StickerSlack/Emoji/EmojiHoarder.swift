@@ -21,6 +21,7 @@ class EmojiHoarder: ObservableObject {
 	private let decoder = JSONDecoder()
 	
 	@Published var emojis: [Emoji] = []
+	@Published var emojiPacks: [EmojiPack] = []
 	
 	@Published var trie: Trie = Trie()
 	@Published var downloadedEmojis: Set<String> = []

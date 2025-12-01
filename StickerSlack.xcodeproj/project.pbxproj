@@ -65,6 +65,12 @@
 		A9BBC51A2EB8FA4500FFE82F /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */; };
 		A9C172DC2EB8C9AC008A7885 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C172DB2EB8C9AC008A7885 /* Trie.swift */; };
 		A9C172DD2EB8C9AC008A7885 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C172DB2EB8C9AC008A7885 /* Trie.swift */; };
+		A9CD6C352EDDE22800B7F421 /* EmojiPackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CD6C342EDDE22800B7F421 /* EmojiPackView.swift */; };
+		A9CD6C362EDDE22800B7F421 /* EmojiPackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CD6C342EDDE22800B7F421 /* EmojiPackView.swift */; };
+		A9CD6C382EDDE37500B7F421 /* EmojiPackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */; };
+		A9CD6C392EDDE37500B7F421 /* EmojiPackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */; };
+		A9CD6C3A2EDDE6B500B7F421 /* EmojiPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D15B892EB1142C00404792 /* EmojiPack.swift */; };
+		A9CD6C3B2EDDE6B500B7F421 /* EmojiPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D15B892EB1142C00404792 /* EmojiPack.swift */; };
 		A9D15B8B2EB1142C00404792 /* EmojiPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D15B892EB1142C00404792 /* EmojiPack.swift */; };
 		A9EB72392EB93FDB00658CEB /* EmojiCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72382EB93FDB00658CEB /* EmojiCollectionView.swift */; };
 		A9EB72472EB948C400658CEB /* EmojiRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72462EB948C400658CEB /* EmojiRow.swift */; };
@@ -143,6 +149,8 @@
 		A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSlackTests.swift; sourceTree = "<group>"; };
 		A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		A9C172DB2EB8C9AC008A7885 /* Trie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
+		A9CD6C342EDDE22800B7F421 /* EmojiPackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackView.swift; sourceTree = "<group>"; };
+		A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackManager.swift; sourceTree = "<group>"; };
 		A9D15B892EB1142C00404792 /* EmojiPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPack.swift; sourceTree = "<group>"; };
 		A9E2ECD72EB74CE00038B2D6 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A9EB72382EB93FDB00658CEB /* EmojiCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionView.swift; sourceTree = "<group>"; };
@@ -229,6 +237,7 @@
 			children = (
 				A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */,
 				A9EB72462EB948C400658CEB /* EmojiRow.swift */,
+				A9CD6C342EDDE22800B7F421 /* EmojiPackView.swift */,
 			);
 			path = Emoji;
 			sourceTree = "<group>";
@@ -260,6 +269,7 @@
 		A949B1D62EA04C0B00215164 = {
 			isa = PBXGroup;
 			children = (
+				A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */,
 				A9E2ECD72EB74CE00038B2D6 /* Config.xcconfig */,
 				A949B1F22EA04E8200215164 /* StickerSlack */,
 				A9104C742EB3AE4700D160EA /* Resources */,
@@ -487,6 +497,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A949B1F42EA04E8200215164 /* ContentView.swift in Sources */,
+				A9CD6C382EDDE37500B7F421 /* EmojiPackManager.swift in Sources */,
 				A949B1F52EA04E8200215164 /* StickerSlackApp.swift in Sources */,
 				A9104C802EB4022500D160EA /* MSSticker.swift in Sources */,
 				A957C1772ECD008E00EA3EE9 /* Bundle.swift in Sources */,
@@ -498,6 +509,7 @@
 				A957C17A2ECE542D00EA3EE9 /* GifManager.swift in Sources */,
 				A955B3F52EC22EE900E1732D /* SearchView.swift in Sources */,
 				A935437B2EB2A3C800BB80A4 /* FilterCategory.swift in Sources */,
+				A9CD6C352EDDE22800B7F421 /* EmojiPackView.swift in Sources */,
 				A9C172DD2EB8C9AC008A7885 /* Trie.swift in Sources */,
 				A955B3F22EC22E9700E1732D /* BrowseView.swift in Sources */,
 				A9EB724F2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
@@ -518,6 +530,7 @@
 			files = (
 				A957C17B2ECE542D00EA3EE9 /* GifManager.swift in Sources */,
 				A986A6C32EB6598100B6E0FA /* FilterCategory.swift in Sources */,
+				A9CD6C3A2EDDE6B500B7F421 /* EmojiPack.swift in Sources */,
 				A9EB724B2EB94A5700658CEB /* Trie.swift in Sources */,
 				A986A6CD2EB659E000B6E0FA /* MessagesViewController.swift in Sources */,
 				A986A6CE2EB659E000B6E0FA /* StickerBrowserDataSource.swift in Sources */,
@@ -538,6 +551,7 @@
 				A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */,
 				A955B3F12EC22E9700E1732D /* BrowseView.swift in Sources */,
 				A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */,
+				A9CD6C3B2EDDE6B500B7F421 /* EmojiPack.swift in Sources */,
 				A921C2E32ED071C900E57B1A /* ListRow.swift in Sources */,
 				A9EB724A2EB948E000658CEB /* EmojiCollectionView.swift in Sources */,
 				A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
@@ -545,7 +559,9 @@
 				A955B3ED2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
 				A9C172DC2EB8C9AC008A7885 /* Trie.swift in Sources */,
 				A957C1752ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
+				A9CD6C362EDDE22800B7F421 /* EmojiPackView.swift in Sources */,
 				A9EB72472EB948C400658CEB /* EmojiRow.swift in Sources */,
+				A9CD6C392EDDE37500B7F421 /* EmojiPackManager.swift in Sources */,
 				A955B3F62EC22EE900E1732D /* SearchView.swift in Sources */,
 				A9B9A8322EB2CD29004C9245 /* SlackResponse.swift in Sources */,
 				A957C1782ECD008E00EA3EE9 /* Bundle.swift in Sources */,
