@@ -12,6 +12,12 @@ struct BrowseView: View {
 	
     var body: some View {
 		List {
+			Picker("", selection: .constant(StickerType.giphyGif)) {
+				ForEach(StickerType.allCases, id: \.self) { type in
+					Text(type.description)
+				}
+			}
+			.pickerStyle(.segmented)
 			ForEach(hoarder.emojis, id: \.self) { emoji in
 				EmojiRow(hoarder: hoarder, emoji: emoji)
 			}

@@ -11,7 +11,7 @@ import SwiftUI
 import Messages
 import UniformTypeIdentifiers
 
-struct Emoji: Codable, Identifiable, Hashable {
+struct Emoji: StickerProtocol {
 	var id: UUID
 	var uiID: UUID
 	var name: String
@@ -21,30 +21,7 @@ struct Emoji: Codable, Identifiable, Hashable {
 		let fileExtension = ".\(split.last ?? "png")"
 		return EmojiHoarder.container.absoluteString+id.uuidString+fileExtension
 	}
-	var localImageURL: URL {
-		return URL(string: localImageURLString)!
-	}
 	var remoteImageURL: URL
-	
-	var isLocal: Bool {
-		return (try? Data(contentsOf: localImageURL)) != nil
-	}
-	
-	var sticker: MSSticker? {
-		guard isLocal else {
-			return nil
-		}
-		return try? MSSticker(contentsOfFileURL: localImageURL, localizedDescription: name)
-	}
-	
-	var image: UIImage? {
-		if let data = try? Data(contentsOf: localImageURL),
-		   let img = UIImage(data: data) {
-			return img
-		} else {
-			return nil
-		}
-	}
 	
 	enum CodingKeys: String, CodingKey {
 		case id = "id"
@@ -90,45 +67,9 @@ struct Emoji: Codable, Identifiable, Hashable {
 		return
 	}
 	
-	func deleteImage() {
-		try? FileManager.default.removeItem(at: localImageURL)
-		return
-	}
-	
 	@MainActor
 	mutating func refresh() {
 		withAnimation { self.uiID = UUID() }
-	}
-	
-	func resize(image: UIImage, to targetSize: CGSize) -> UIImage {
-		let oldSize = image.size
-		let ratio: (x: CGFloat, y: CGFloat)
-		ratio.x = targetSize.width / oldSize.width
-		ratio.y = targetSize.height / oldSize.height
-		
-		var newSize: CGSize
-		if ratio.x > ratio.y {
-			newSize = CGSize(width: oldSize.width * ratio.y, height: oldSize.height * ratio.y)
-		} else {
-			newSize = CGSize(width: oldSize.width * ratio.x, height: oldSize.height * ratio.x)
-		}
-		
-		let rect = CGRect(origin: .zero, size: newSize)
-		
-		if let frames = image.images {
-			var result: [UIImage] = []
-			for frame in frames {
-				UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-				frame.draw(in: rect)
-				result.append(UIGraphicsGetImageFromCurrentImageContext() ?? UIImage())
-				UIGraphicsEndImageContext()
-			}
-			return UIImage.animatedImage(with: result, duration: image.duration) ?? UIImage()
-		}
-		
-		UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-		image.draw(in: rect)
-		return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
 	}
 	
 	static var test: Emoji = Emoji(
