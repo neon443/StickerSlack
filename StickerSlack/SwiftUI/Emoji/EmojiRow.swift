@@ -14,13 +14,11 @@ struct EmojiRow: View {
 
 	var body: some View {
 		HStack {
-			VStack {
-				HStack(spacing: .zero) {
-					Text(emoji.name)
-				}
-				EmojiPreview(hoarder: hoarder, emoji: emoji)
-			}
+			EmojiPreview(hoarder: hoarder, emoji: emoji)
 			.frame(maxWidth: 100, maxHeight: 100)
+			.padding(.trailing, 20)
+			
+			Text(emoji.name)
 			
 			Spacer()
 			

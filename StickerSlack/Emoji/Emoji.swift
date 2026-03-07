@@ -58,7 +58,7 @@ struct Emoji: StickerProtocol {
 		var (data, _) = try await URLSession.shared.data(from: remoteImageURL)
 		
 		if let uiImage = UIImage(data: data),
-		   let cgImage = UIImage(data: data)?.cgImage,
+		   let cgImage = uiImage.cgImage,
 		   await !self.localImageURLString.contains(".gif"),
 		   cgImage.width < 300 || cgImage.height < 300 {
 			data = await resize(image: uiImage, to: CGSize(width: 300, height: 300)).pngData()!
@@ -74,6 +74,6 @@ struct Emoji: StickerProtocol {
 	
 	static var test: Emoji = Emoji(
 		name: "s?",
-		url: URL(string: "https://neon443.github.io/images/fav.ico")!
+		url: URL(string: "https://files.catbox.moe/d8go4n.png")!
 	)
 }

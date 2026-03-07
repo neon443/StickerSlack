@@ -8,18 +8,24 @@
 import SwiftUI
 
 struct BrowseView: View {
+	@State private var browseWhat: StickerType = .slackEmoji
 	@ObservedObject var hoarder: EmojiHoarder
 	
     var body: some View {
 		List {
-			Picker("", selection: .constant(StickerType.giphyGif)) {
+			Picker("", selection: $browseWhat) {
 				ForEach(StickerType.allCases, id: \.self) { type in
 					Text(type.description)
 				}
 			}
 			.pickerStyle(.segmented)
-			ForEach(hoarder.emojis, id: \.self) { emoji in
-				EmojiRow(hoarder: hoarder, emoji: emoji)
+			switch browseWhat {
+			case .slackEmoji:
+				ForEach(hoarder.emojis, id: \.self) { emoji in
+					EmojiRow(hoarder: hoarder, emoji: emoji)
+				}
+			case .giphyGif:
+					Text("hi")
 			}
 		}
     }
