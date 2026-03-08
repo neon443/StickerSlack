@@ -55,6 +55,9 @@
 		A986A6CE2EB659E000B6E0FA /* StickerBrowserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */; };
 		A986A6CF2EB659E000B6E0FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A986A6C62EB659E000B6E0FA /* Assets.xcassets */; };
 		A986A6D12EB659E000B6E0FA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A986A6C92EB659E000B6E0FA /* MainInterface.storyboard */; };
+		A99589AF2F5E0D83003A4A8C /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = A99589AE2F5E0D83003A4A8C /* image.png */; };
+		A99589B02F5E0D83003A4A8C /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = A99589AE2F5E0D83003A4A8C /* image.png */; };
+		A99589B12F5E0D83003A4A8C /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = A99589AE2F5E0D83003A4A8C /* image.png */; };
 		A9B9A82E2EB2CCBE004C9245 /* StickerSlackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */; };
 		A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
 		A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
@@ -156,6 +159,7 @@
 		A986A6C82EB659E000B6E0FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A986A6CA2EB659E000B6E0FA /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBrowserDataSource.swift; sourceTree = "<group>"; };
+		A99589AE2F5E0D83003A4A8C /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 		A9B9A8232EB2CCB5004C9245 /* StickerSlackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StickerSlackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSlackTests.swift; sourceTree = "<group>"; };
 		A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
@@ -206,6 +210,7 @@
 		A9104C742EB3AE4700D160EA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A99589AE2F5E0D83003A4A8C /* image.png */,
 				A9104C732EB3AE4700D160EA /* StickerSlack.icon */,
 				A949B1EF2EA04E8200215164 /* Assets.xcassets */,
 				A9104C722EB3AE4700D160EA /* Icon.pxd */,
@@ -504,6 +509,7 @@
 				A9104C762EB3AE4700D160EA /* StickerSlack.icon in Resources */,
 				A949B1F32EA04E8200215164 /* Assets.xcassets in Resources */,
 				A9104C752EB3AE4700D160EA /* Icon.pxd in Resources */,
+				A99589AF2F5E0D83003A4A8C /* image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,6 +518,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A986A6CF2EB659E000B6E0FA /* Assets.xcassets in Resources */,
+				A99589B12F5E0D83003A4A8C /* image.png in Resources */,
 				A986A6D12EB659E000B6E0FA /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,6 +530,7 @@
 				A9104C772EB3AE4700D160EA /* Icon.pxd in Resources */,
 				A9104C7C2EB3AE6300D160EA /* Assets.xcassets in Resources */,
 				A9104C782EB3AE4700D160EA /* StickerSlack.icon in Resources */,
+				A99589B02F5E0D83003A4A8C /* image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

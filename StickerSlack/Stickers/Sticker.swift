@@ -33,6 +33,25 @@ extension StickerProtocol {
 		}
 	}
 	
+	nonisolated
+	func downloadImage() async throws {
+		if let data = try? await Data(contentsOf: localImageURL),
+		   let _ = UIImage(data: data) {
+			return
+		}
+		
+		var (data, _) = try await URLSession.shared.data(from: remoteImageURL)
+		
+		if let uiImage = UIImage(data: data),
+		   let cgImage = uiImage.cgImage,
+		   await !self.localImageURLString.contains(".gif"),
+		   cgImage.width < 300 || cgImage.height < 300 {
+			data = await resize(image: uiImage, to: CGSize(width: 300, height: 300)).pngData()!
+		}
+		try! await data.write(to: localImageURL)
+		return
+	}
+	
 	func deleteImage() {
 		try? FileManager.default.removeItem(at: localImageURL)
 		return

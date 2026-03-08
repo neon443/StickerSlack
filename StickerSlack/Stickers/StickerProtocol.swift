@@ -10,7 +10,6 @@ import Messages
 
 protocol StickerProtocol: Codable, Identifiable, Hashable {
 	var id: UUID { get set }
-	var uiID: UUID { get set }
 	var name: String { get set }
 	
 	var localImageURL: URL { get }
@@ -24,7 +23,6 @@ protocol StickerProtocol: Codable, Identifiable, Hashable {
 	
 	func downloadImage() async throws
 	func deleteImage()
-	mutating func refresh()
 	func resize(image: UIImage, to targetSize: CGSize) -> UIImage
 	static var test: Self { get }
 }

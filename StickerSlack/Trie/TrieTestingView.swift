@@ -55,7 +55,7 @@ struct TrieTestingView: View {
 					.textFieldStyle(.roundedBorder)
 					.border(.orange)
 					.onChange(of: filterTerm) { _ in
-						withAnimation { filterResult = hoarder.trie.search(prefix: filterTerm) }
+						withAnimation(.snappy) { filterResult = hoarder.trie.search(prefix: filterTerm) }
 					}
 				Text("\(filterResult.count)")
 					.modifier(numericTextCompat())
@@ -65,7 +65,7 @@ struct TrieTestingView: View {
 				.textFieldStyle(.roundedBorder)
 				.border(.orange)
 				.onChange(of: filterTerm2) { _ in
-					withAnimation { filterResult = hoarder.emojis.filter({ $0.name.localizedCaseInsensitiveContains(filterTerm2) }).map({ $0.name }) }
+					withAnimation(.snappy) { filterResult = hoarder.emojis.filter({ $0.name.localizedCaseInsensitiveContains(filterTerm2) }).map({ $0.name }) }
 				}
 				
 			if uikit {

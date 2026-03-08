@@ -18,7 +18,7 @@ struct SearchView: View {
 				EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
 			}
 			.onChange(of: hoarder.searchTerm) { _ in
-				withAnimation { filterResult = hoarder.trie.search(prefix: hoarder.searchTerm) }
+				withAnimation(.snappy) { filterResult = hoarder.trie.search(prefix: hoarder.searchTerm) }
 			}
 		}
 		.searchable(text: $hoarder.searchTerm)

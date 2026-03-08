@@ -37,7 +37,7 @@ class EmojiHoarder: ObservableObject {
 		self.showWelcome = !UserDefaults.standard.bool(forKey: "showWelcome")
 		
 		let localDB = loadLocalDB()
-		withAnimation { self.emojis = localDB }
+		withAnimation(.snappy) { self.emojis = localDB }
 		loadTrie()
 		if !skipIndex { buildTrie() }
 		
@@ -204,7 +204,7 @@ class EmojiHoarder: ObservableObject {
 	private func loadRemoteDB() async {
 		async let fetched = self.fetchRemoteDB()
 		if let fetched = await fetched {
-			withAnimation { self.emojis = fetched }
+			withAnimation(.snappy) { self.emojis = fetched }
 		}
 	}
 	
@@ -232,7 +232,7 @@ class EmojiHoarder: ObservableObject {
 			return
 		}
 		await MainActor.run {
-			withAnimation { self.emojis = fetched }
+			withAnimation(.snappy) { self.emojis = fetched }
 			buildTrie()
 		}
 	}
@@ -241,11 +241,12 @@ class EmojiHoarder: ObservableObject {
 		try? await emoji.downloadImage()
 		await MainActor.run {
 			if !skipStoreIndex {
-				self.downloadedEmojis.insert(emoji.name)
-				self.downloadedEmojisArr.append(emoji.name)
+				withAnimation(.snappy) {
+					self.downloadedEmojis.insert(emoji.name)
+					self.downloadedEmojisArr.append(emoji.name)
+				}
 				self.storeDownloadedIndexes()
 			}
-			self.trie.dict[emoji.name]?.refresh()
 			if !skipStoreIndex { Haptic.success.trigger() }
 		}
 	}
@@ -254,11 +255,12 @@ class EmojiHoarder: ObservableObject {
 	func delete(emoji: Emoji, skipStoreIndex: Bool = false) {
 		emoji.deleteImage()
 		if !skipStoreIndex {
-			downloadedEmojis.remove(emoji.name)
-			downloadedEmojisArr.removeAll(where: { $0 == emoji.name })
+			withAnimation(.snappy) {
+				downloadedEmojis.remove(emoji.name)
+				downloadedEmojisArr.removeAll(where: { $0 == emoji.name })
+			}
 			storeDownloadedIndexes()
 		}
-		self.trie.dict[emoji.name]?.refresh()
 		if !skipStoreIndex { Haptic.heavy.trigger() }
 	}
 	

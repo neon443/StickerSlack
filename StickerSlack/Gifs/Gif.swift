@@ -11,7 +11,6 @@ import UniformTypeIdentifiers
 
 struct Gif: StickerProtocol {
 	var id: UUID
-	var uiID: UUID
 	var name: String
 	var localImageURLString: String {
 		let urlString = remoteImageURL.absoluteString
@@ -32,7 +31,6 @@ struct Gif: StickerProtocol {
 		id: UUID = UUID()
 	) {
 		self.id = id
-		self.uiID = id
 		self.name = name
 		self.remoteImageURL = url
 	}
@@ -54,11 +52,6 @@ struct Gif: StickerProtocol {
 		
 		try! data.write(to: localImageURL)
 		return
-	}
-	
-	@MainActor
-	mutating func refresh() {
-		withAnimation { self.uiID = UUID() }
 	}
 	
 	static var test: Gif = Gif(
