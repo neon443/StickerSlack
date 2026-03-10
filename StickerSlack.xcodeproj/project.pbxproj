@@ -77,6 +77,8 @@
 		A9BE30FA2F5B03F400A57668 /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30F92F5B03F400A57668 /* Sticker.swift */; };
 		A9BE30FB2F5B03F400A57668 /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30F92F5B03F400A57668 /* Sticker.swift */; };
 		A9BE30FC2F5B03F400A57668 /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30F92F5B03F400A57668 /* Sticker.swift */; };
+		A9BE30FE2F5FA47100A57668 /* Hoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30FD2F5FA47100A57668 /* Hoarder.swift */; };
+		A9BE30FF2F5FA78E00A57668 /* Hoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30FD2F5FA47100A57668 /* Hoarder.swift */; };
 		A9C172DC2EB8C9AC008A7885 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C172DB2EB8C9AC008A7885 /* Trie.swift */; };
 		A9C172DD2EB8C9AC008A7885 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C172DB2EB8C9AC008A7885 /* Trie.swift */; };
 		A9CD6C352EDDE22800B7F421 /* EmojiPackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CD6C342EDDE22800B7F421 /* EmojiPackView.swift */; };
@@ -168,6 +170,7 @@
 		A9BE30F12F5B004E00A57668 /* Gif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gif.swift; sourceTree = "<group>"; };
 		A9BE30F52F5B011A00A57668 /* StickerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerProtocol.swift; sourceTree = "<group>"; };
 		A9BE30F92F5B03F400A57668 /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
+		A9BE30FD2F5FA47100A57668 /* Hoarder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hoarder.swift; sourceTree = "<group>"; };
 		A9C172DB2EB8C9AC008A7885 /* Trie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
 		A9CD6C342EDDE22800B7F421 /* EmojiPackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackView.swift; sourceTree = "<group>"; };
 		A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackManager.swift; sourceTree = "<group>"; };
@@ -324,6 +327,7 @@
 				A9104C812EB4022E00D160EA /* Extensions */,
 				A91C098E2EBBD7C700210C34 /* UIKit */,
 				A91C098D2EBBD7C100210C34 /* SwiftUI */,
+				A9BE30FD2F5FA47100A57668 /* Hoarder.swift */,
 			);
 			path = StickerSlack;
 			sourceTree = "<group>";
@@ -571,6 +575,7 @@
 				A9BE30F02F5B004800A57668 /* GifHoarder.swift in Sources */,
 				A9BE30F22F5B004E00A57668 /* Gif.swift in Sources */,
 				A9BE30EC2F5AFE1E00A57668 /* StickerType.swift in Sources */,
+				A9BE30FE2F5FA47100A57668 /* Hoarder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,6 +590,7 @@
 				A9EB724B2EB94A5700658CEB /* Trie.swift in Sources */,
 				A9BE30FA2F5B03F400A57668 /* Sticker.swift in Sources */,
 				A986A6CD2EB659E000B6E0FA /* MessagesViewController.swift in Sources */,
+				A9BE30FF2F5FA78E00A57668 /* Hoarder.swift in Sources */,
 				A986A6CE2EB659E000B6E0FA /* StickerBrowserDataSource.swift in Sources */,
 				A957C17E2ECFAA1100EA3EE9 /* GifView.swift in Sources */,
 				A9BBC5192EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,

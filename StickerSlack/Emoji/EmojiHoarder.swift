@@ -11,14 +11,11 @@ import Combine
 import UniformTypeIdentifiers
 import Haptics
 
-class EmojiHoarder: ObservableObject {
-	static let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
+class EmojiHoarder: Hoarder, ObservableObject {
 	nonisolated static let localEmojiDB: URL = EmojiHoarder.container.appendingPathComponent("_localEmojiDB.json", conformingTo: .fileURL)
 	nonisolated static let localTrie: URL = EmojiHoarder.container.appendingPathComponent("_localTrie.json", conformingTo: .fileURL)
 	nonisolated static let localTrieDict: URL = EmojiHoarder.container.appendingPathComponent("_localTrieDict.json", conformingTo: .fileURL)
-	private let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
-	private let encoder = JSONEncoder()
-	private let decoder = JSONDecoder()
+	let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	
 	@Published var emojis: [Emoji] = []
 	@Published var emojiPacks: [EmojiPack] = []
