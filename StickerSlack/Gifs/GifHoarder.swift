@@ -9,6 +9,33 @@ import Foundation
 import SwiftUI
 import Combine
 
-//class GifHoarder: Hoarder {
-//
-//}
+class GifHoarder: Hoarder, ObservableObject {
+	var endpoint: URL = URL(string: "api.giphy.com/v1/gifs/trending")!
+	var endpointSearch: URL = URL(string: "api.giphy.com/v1/gifs/search")!
+	
+	@Published var searchTerm: String = ""
+	@Published var trendingGifs: [Gif] = []
+	
+	
+	func download(emoji: Emoji, skipStoreIndex: Bool) {
+//		<#code#>
+	}
+	
+	func delete(emoji: Emoji, skipStoreIndex: Bool) {
+//		<#code#>
+	}
+	
+	init() {
+		var request = URLRequest(url: endpoint)
+		request.setValue("", forHTTPHeaderField: "api_key")
+		request.setValue("100", forHTTPHeaderField: "limit")
+		Task {
+			do {
+				async let (data, _) = try URLSession.shared.data(from: endpoint)
+//				let decoded: [String: Any] = decoder.decode([String: Any].self, from: await data)
+				dump(await data)
+				print()
+			}
+		}
+	}
+}

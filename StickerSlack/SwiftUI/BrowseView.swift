@@ -25,7 +25,7 @@ struct BrowseView: View {
 					EmojiRow(hoarder: hoarder, emoji: emoji)
 				}
 			case .giphyGif:
-					Text("hi")
+				Text("hi")
 			}
 		}
     }

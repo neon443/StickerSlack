@@ -10,7 +10,7 @@ import Haptics
 
 struct ContentView: View {
 	@ObservedObject var hoarder: EmojiHoarder = EmojiHoarder()
-//	@ObservedObject var hoarder:  = EmojiHoarder()
+	@ObservedObject var gifhoarder: GifHoarder = GifHoarder()
 	
 	var body: some View {
 		Group {
