@@ -61,7 +61,7 @@ struct TrieTestingView: View {
 	
 	var body: some View {
 		VStack {
-			Toggle("uikit!!", isOn: $uikit)
+			Toggle("uikit list!!", isOn: $uikit)
 				.foregroundStyle(.blue)
 			
 			HStack {

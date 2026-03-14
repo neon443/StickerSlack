@@ -107,7 +107,7 @@ struct SettingsView: View {
 					NavigationLink {
 						TrieTestingView(hoarder: hoarder)
 					} label: {
-						Label("Tree", systemImage: "tree")
+						Label("search testing", systemImage: "magnifyingglass")
 					}
 					
 					NavigationLink {
