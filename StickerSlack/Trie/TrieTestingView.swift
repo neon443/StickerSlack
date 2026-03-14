@@ -35,10 +35,22 @@ struct TrieTestingView: View {
 			}
 			print("testing: trie search")
 		case .contains:
-			withAnimation(.snappy) {
-				filterResult = hoarder.emojis.filter({ $0.name.localizedCaseInsensitiveContains(filterTerm) }).map({ $0.name })
+			Task.detached {
+				var results: [[Emoji]] = []
+				var result: [Emoji] = []
+				for word in filterTerm.split(separator: " ") {
+					results.append(hoarder.emojis.filter({ $0.name.localizedCaseInsensitiveContains(word) }))
+				}
+				result = results.reduce(results[0]) { partialResult, array in
+					partialResult.filter { array.contains($0) }
+				}
+				await MainActor.run {
+					withAnimation(.snappy) {
+						filterResult = result.map { $0.name }
+					}
+					print("testing: contains search")
+				}
 			}
-			print("testing: contains search")
 		case .exact:
 			withAnimation(.snappy) {
 				searchStatus = hoarder.trie.search(for: filterTerm)
@@ -69,10 +81,7 @@ struct TrieTestingView: View {
 				}
 			}
 			.pickerStyle(.segmented)
-			.onChange(of: searchType) { _ in
-				runSearch()
-			}
-			.onChange(of: filterTerm) { _ in
+			.onChange(of: searchType.rawValue+filterTerm) { _ in
 				runSearch()
 			}
 
@@ -114,10 +123,12 @@ struct TrieTestingView: View {
 				
 			if uikit {
 				EmojiCollectionView(hoarder: hoarder, items: filterResult)
+					.animation(.snappy, value: filterResult)
 			} else {
 				List(filterResult, id: \.self) { item in
 					EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[item]!)
 				}
+				.animation(.snappy, value: filterResult)
 			}
 			
 			Text("\(hoarder.trie.root.children.count)")
