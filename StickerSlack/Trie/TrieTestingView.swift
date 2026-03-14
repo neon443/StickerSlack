@@ -10,67 +10,110 @@ import SwiftUI
 struct TrieTestingView: View {
 	@ObservedObject var hoarder: EmojiHoarder 
 	
-	@State var searchTerm: String = ""
 	@State var searchStatus: Bool? = nil
 	
 	@State var filterTerm: String = ""
 	@State var filterResult: [String] = []
 	
-	@State var filterTerm2: String = ""
-	
 	@State var uikit: Bool = false
+	
+	@State private var searchType: SearchType = .contains
+	private enum SearchType: String, CaseIterable {
+		case trie = "trie"
+		case contains = "contains"
+		case exact = "exact"
+	}
+	
+	private func runSearch() {
+		filterResult = []
+		searchStatus = nil
+		guard !filterTerm.isEmpty else { return }
+		switch searchType {
+		case .trie:
+			withAnimation(.snappy) {
+				filterResult = hoarder.trie.search(prefix: filterTerm)
+			}
+			print("testing: trie search")
+		case .contains:
+			withAnimation(.snappy) {
+				filterResult = hoarder.emojis.filter({ $0.name.localizedCaseInsensitiveContains(filterTerm) }).map({ $0.name })
+			}
+			print("testing: contains search")
+		case .exact:
+			withAnimation(.snappy) {
+				searchStatus = hoarder.trie.search(for: filterTerm)
+			}
+			print("testing: exact search")
+		}
+	}
 	
 	var body: some View {
 		VStack {
 			Toggle("uikit!!", isOn: $uikit)
 				.foregroundStyle(.blue)
 			
-			Button("reset", role: .destructive) {
-				hoarder.resetAllIndexes()
-			}
-			Button("add emojis!") {
-				hoarder.buildTrie()
-			}
-			.buttonStyle(.borderedProminent)
-			
 			HStack {
-				TextField("", text: $searchTerm)
-					.textFieldStyle(.roundedBorder)
-					.border(.orange)
-					.onChange(of: searchTerm) { _ in
-						searchStatus = hoarder.trie.search(for: searchTerm)
+				Button("reset", role: .destructive) {
+					hoarder.resetAllIndexes()
+				}
+				Spacer()
+				Button("add emojis!") {
+					hoarder.buildTrie()
+				}
+				.buttonStyle(.borderedProminent)
+			}
+			
+			Picker("", selection: $searchType) {
+				ForEach(SearchType.allCases, id: \.self) { typee in
+					Text(typee.rawValue).tag(typee)
+				}
+			}
+			.pickerStyle(.segmented)
+			.onChange(of: searchType) { _ in
+				runSearch()
+			}
+			.onChange(of: filterTerm) { _ in
+				runSearch()
+			}
+
+			if searchType == .exact {
+				HStack {
+					TextField("", text: $filterTerm)
+						.textFieldStyle(.roundedBorder)
+						.border(.orange)
+					if let searchStatus {
+						Circle()
+							.frame(width: 20, height: 20)
+							.foregroundStyle(searchStatus ? .green : .red)
+					} else {
+						Text("?")
+							.frame(width: 20, height: 20)
 					}
-				if let searchStatus {
-					Circle()
-						.frame(width: 20, height: 20)
-						.foregroundStyle(searchStatus ? .green : .red)
-				} else {
-					Text("?")
-						.frame(width: 20, height: 20)
 				}
 			}
 			
-			HStack {
-				TextField("", text: $filterTerm)
-					.textFieldStyle(.roundedBorder)
-					.border(.orange)
-					.onChange(of: filterTerm) { _ in
-						withAnimation(.snappy) { filterResult = hoarder.trie.search(prefix: filterTerm) }
-					}
-				Text("\(filterResult.count)")
-					.modifier(numericTextCompat())
+			if searchType == .trie {
+				HStack {
+					TextField("", text: $filterTerm)
+						.textFieldStyle(.roundedBorder)
+						.border(.orange)
+					Text("\(filterResult.count)")
+						.modifier(numericTextCompat())
+				}
 			}
 			
-			TextField("", text: $filterTerm2)
-				.textFieldStyle(.roundedBorder)
-				.border(.orange)
-				.onChange(of: filterTerm2) { _ in
-					withAnimation(.snappy) { filterResult = hoarder.emojis.filter({ $0.name.localizedCaseInsensitiveContains(filterTerm2) }).map({ $0.name }) }
+			if searchType == .contains {
+				HStack {
+					TextField("", text: $filterTerm)
+						.textFieldStyle(.roundedBorder)
+						.border(.orange)
+					Text("\(filterResult.count)")
+						.modifier(numericTextCompat())
 				}
+			}
 				
 			if uikit {
 				EmojiCollectionView(hoarder: hoarder, items: filterResult)
-					.id(filterResult)
 			} else {
 				List(filterResult, id: \.self) { item in
 					EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[item]!)
@@ -79,6 +122,7 @@ struct TrieTestingView: View {
 			
 			Text("\(hoarder.trie.root.children.count)")
 		}
+		.padding(.horizontal)
 	}
 }
 

@@ -22,9 +22,6 @@ protocol Hoarder {
 }
 
 extension Hoarder {
-	static var container: URL { FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
-	}
-	
 	var encoder: JSONEncoder { JSONEncoder() }
 	var decoder: JSONDecoder { JSONDecoder() }
 }

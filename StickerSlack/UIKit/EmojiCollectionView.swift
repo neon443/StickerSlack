@@ -50,27 +50,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 			
 			cell.contentConfiguration = UIHostingConfiguration {
-				HStack {
-					EmojiPreview(
-						hoarder: hoarder,
-						emoji: emoji
-					)
-					.frame(maxWidth: 100, maxHeight: 100)
-					Spacer()
-					if hoarder.downloadedEmojis.contains(emojiName) {
-						Button("", systemImage: "trash") {
-							fatalError()
-						}
-						.buttonStyle(.plain)
-					} else {
-						Button("", systemImage: "arrow.down.circle") {
-							Task {
-								await self.hoarder.download(emoji: emoji)
-							}
-						}
-						.buttonStyle(.plain)
-					}
-				}
+				EmojiRow(hoarder: hoarder, emoji: emoji)
+					.id(emoji)
 			}
 			return cell
 		}

@@ -7,9 +7,12 @@
 
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 import Combine
 
 class GifHoarder: Hoarder, ObservableObject {
+	static let container: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
+	
 	var endpoint: URL = URL(string: "api.giphy.com/v1/gifs/trending")!
 	var endpointSearch: URL = URL(string: "api.giphy.com/v1/gifs/search")!
 	
