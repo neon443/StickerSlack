@@ -33,29 +33,25 @@ struct TrieTestingView: View {
 			withAnimation(.snappy) {
 				filterResult = hoarder.trie.search(prefix: filterTerm)
 			}
-			print("testing: trie search")
+			print("testing: trie search complete")
 		case .contains:
 			Task.detached {
-				var results: [[Emoji]] = []
-				var result: [Emoji] = []
-				for word in filterTerm.split(separator: " ") {
-					results.append(hoarder.emojis.filter({ $0.name.localizedCaseInsensitiveContains(word) }))
-				}
-				result = results.reduce(results[0]) { partialResult, array in
-					partialResult.filter { array.contains($0) }
+				var result: [String] = await hoarder.trie.wordlist
+				for word in await filterTerm.split(separator: " ") {
+					result = result.filter { $0.localizedCaseInsensitiveContains(word) }
 				}
 				await MainActor.run {
 					withAnimation(.snappy) {
-						filterResult = result.map { $0.name }
+						filterResult = result
 					}
-					print("testing: contains search")
+					print("testing: contains search complete")
 				}
 			}
 		case .exact:
 			withAnimation(.snappy) {
-				searchStatus = hoarder.trie.search(for: filterTerm)
+				searchStatus = hoarder.trie.search(exactly: filterTerm)
 			}
-			print("testing: exact search")
+			print("testing: exact search complete")
 		}
 	}
 	

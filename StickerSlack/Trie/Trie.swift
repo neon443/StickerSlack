@@ -17,9 +17,12 @@ class TrieNode: Codable {
 class Trie: ObservableObject {
 	var root: TrieNode = TrieNode()
 	var dict: [String:Emoji] = [:]
-	
+
+	var wordlist: [String] = []
+
 	func insert(word: String) {
 		let word = word.lowercased()
+		wordlist.append(word)
 		var currentNode = root
 		let indices = word.indices
 		let last = indices.last
@@ -38,7 +41,7 @@ class Trie: ObservableObject {
 		}
 	}
 	
-	func search(for query: String) -> Bool {
+	func search(exactly query: String) -> Bool {
 		var currentNode = root
 		
 		for char in query.lowercased() {
