@@ -41,6 +41,14 @@ class Trie: ObservableObject {
 		}
 	}
 	
+	func search(for query: String) -> [String] {
+		var result: [String] = wordlist
+		for word in query.split(separator: " ") {
+			result = result.filter { $0.localizedCaseInsensitiveContains(word) }
+		}
+		return result
+	}
+	
 	func search(exactly query: String) -> Bool {
 		var currentNode = root
 		

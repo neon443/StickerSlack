@@ -10,10 +10,9 @@ import SwiftUI
 struct TrieTestingView: View {
 	@ObservedObject var hoarder: EmojiHoarder 
 	
-	@State var searchStatus: Bool? = nil
-	
-	@State var filterTerm: String = ""
-	@State var filterResult: [String] = []
+	@State var searchTerm: String = ""
+	@State var searchResults: [String] = []
+	@State var exactSearchResult: Bool? = nil
 	
 	@State var uikit: Bool = false
 	
@@ -25,31 +24,26 @@ struct TrieTestingView: View {
 	}
 	
 	private func runSearch() {
-		filterResult = []
-		searchStatus = nil
-		guard !filterTerm.isEmpty else { return }
+		searchResults = []
+		exactSearchResult = nil
+		guard !searchTerm.isEmpty else { return }
 		switch searchType {
 		case .trie:
 			withAnimation(.snappy) {
-				filterResult = hoarder.trie.search(prefix: filterTerm)
+				searchResults = hoarder.trie.search(prefix: searchTerm)
 			}
 			print("testing: trie search complete")
 		case .contains:
 			Task.detached {
-				var result: [String] = await hoarder.trie.wordlist
-				for word in await filterTerm.split(separator: " ") {
-					result = result.filter { $0.localizedCaseInsensitiveContains(word) }
-				}
+				let result = await hoarder.trie.search(for: searchTerm)
 				await MainActor.run {
-					withAnimation(.snappy) {
-						filterResult = result
-					}
+					withAnimation(.snappy) { searchResults = result }
 					print("testing: contains search complete")
 				}
 			}
 		case .exact:
 			withAnimation(.snappy) {
-				searchStatus = hoarder.trie.search(exactly: filterTerm)
+				exactSearchResult = hoarder.trie.search(exactly: searchTerm)
 			}
 			print("testing: exact search complete")
 		}
@@ -77,19 +71,19 @@ struct TrieTestingView: View {
 				}
 			}
 			.pickerStyle(.segmented)
-			.onChange(of: searchType.rawValue+filterTerm) { _ in
+			.onChange(of: searchType.rawValue+searchTerm) { _ in
 				runSearch()
 			}
 
 			if searchType == .exact {
 				HStack {
-					TextField("", text: $filterTerm)
+					TextField("", text: $searchTerm)
 						.textFieldStyle(.roundedBorder)
 						.border(.orange)
-					if let searchStatus {
+					if let exactSearchResult {
 						Circle()
 							.frame(width: 20, height: 20)
-							.foregroundStyle(searchStatus ? .green : .red)
+							.foregroundStyle(exactSearchResult ? .green : .red)
 					} else {
 						Text("?")
 							.frame(width: 20, height: 20)
@@ -99,32 +93,32 @@ struct TrieTestingView: View {
 			
 			if searchType == .trie {
 				HStack {
-					TextField("", text: $filterTerm)
+					TextField("", text: $searchTerm)
 						.textFieldStyle(.roundedBorder)
 						.border(.orange)
-					Text("\(filterResult.count)")
+					Text("\(searchResults.count)")
 						.modifier(numericTextCompat())
 				}
 			}
 			
 			if searchType == .contains {
 				HStack {
-					TextField("", text: $filterTerm)
+					TextField("", text: $searchTerm)
 						.textFieldStyle(.roundedBorder)
 						.border(.orange)
-					Text("\(filterResult.count)")
+					Text("\(searchResults.count)")
 						.modifier(numericTextCompat())
 				}
 			}
 				
 			if uikit {
-				EmojiCollectionView(hoarder: hoarder, items: filterResult)
-					.animation(.snappy, value: filterResult)
+				EmojiCollectionView(hoarder: hoarder, items: searchResults)
+					.animation(.snappy, value: searchResults)
 			} else {
-				List(filterResult, id: \.self) { item in
+				List(searchResults, id: \.self) { item in
 					EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[item]!)
 				}
-				.animation(.snappy, value: filterResult)
+				.animation(.snappy, value: searchResults)
 			}
 			
 			Text("\(hoarder.trie.root.children.count)")

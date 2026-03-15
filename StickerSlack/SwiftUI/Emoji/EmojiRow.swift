@@ -11,6 +11,10 @@ import Haptics
 struct EmojiRow: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	@State var emoji: Emoji
+	
+	var isLocal: Bool {
+		return hoarder.downloadedEmojis.contains(emoji.name)
+	}
 
 	var body: some View {
 		HStack {
@@ -24,12 +28,12 @@ struct EmojiRow: View {
 						.foregroundStyle(.gray.opacity(0.1))
 					Text(emoji.name)
 						.font(.caption)
-						.bold(hoarder.downloadedEmojis.contains(emoji.name))
-						.foregroundColor(hoarder.downloadedEmojis.contains(emoji.name) ? .green : .primary)
+						.bold(isLocal)
+						.foregroundColor(isLocal ? .green : .primary)
 						.padding(3)
 				}
 				.fixedSize()
-				if hoarder.downloadedEmojis.contains(emoji.name) {
+				if isLocal {
 					Image(systemName: "arrow.down.circle.fill")
 						.resizable().scaledToFit()
 						.frame(width: 20, height: 20)
@@ -41,7 +45,7 @@ struct EmojiRow: View {
 			
 			Spacer()
 			
-			if hoarder.downloadedEmojis.contains(emoji.name) {
+			if isLocal {
 				Button("", systemImage: "trash") {
 					hoarder.delete(emoji: emoji)
 				}

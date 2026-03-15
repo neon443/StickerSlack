@@ -24,7 +24,6 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	@Published var trie: Trie = Trie()
 	@Published var downloadedEmojis: Set<String> = []
 	@Published var downloadedEmojisArr: [String] = []
-	@Published var searchTerm: String = ""
 	
 	@Published var letterStats: [EmojiHoarder.LetterStat] = []
 	@Published var letterStatsSorting: EmojiHoarder.LetterStatSorting = .init(by: .letter, ascending: true)
@@ -117,7 +116,6 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		downloadedEmojisArr = []
 		UserDefaults.standard.removeObject(forKey: "downloadedEmojis")
 		UserDefaults.standard.removeObject(forKey: "downloadedEmojisArr")
-		searchTerm = ""
 		letterStats = []
 	}
 	

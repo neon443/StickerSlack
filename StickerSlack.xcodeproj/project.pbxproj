@@ -251,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				A9D15B892EB1142C00404792 /* EmojiPack.swift */,
+				A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */,
 				A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */,
 			);
 			path = Categorisation;
@@ -293,7 +294,6 @@
 		A949B1D62EA04C0B00215164 = {
 			isa = PBXGroup;
 			children = (
-				A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */,
 				A9E2ECD72EB74CE00038B2D6 /* Config.xcconfig */,
 				A949B1F22EA04E8200215164 /* StickerSlack */,
 				A9104C742EB3AE4700D160EA /* Resources */,

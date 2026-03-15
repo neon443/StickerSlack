@@ -15,7 +15,6 @@ protocol Hoarder {
 	var endpoint: URL { get }
 	var encoder: JSONEncoder { get }
 	var decoder: JSONDecoder { get }
-	var searchTerm: String { get set }
 	
 	func download(emoji: Emoji, skipStoreIndex: Bool) async
 	func delete(emoji: Emoji, skipStoreIndex: Bool)
