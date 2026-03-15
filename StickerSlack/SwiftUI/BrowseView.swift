@@ -24,7 +24,7 @@ struct BrowseView: View {
 				ForEach(hoarder.emojis, id: \.self) { emoji in
 					EmojiRow(hoarder: hoarder, emoji: emoji)
 				}
-			case .giphyGif:
+			case .giphyGifs:
 				Text("hi")
 			}
 		}

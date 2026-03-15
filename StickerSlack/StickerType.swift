@@ -9,7 +9,7 @@ import Foundation
 
 enum StickerType: CustomStringConvertible, CaseIterable, Identifiable {
 	case slackEmoji
-	case giphyGif
+	case giphyGifs
 	
 	var id: String { self.description }
 	
@@ -17,8 +17,8 @@ enum StickerType: CustomStringConvertible, CaseIterable, Identifiable {
 		switch self {
 		case .slackEmoji:
 			return "Slack Emoji"
-		case .giphyGif:
-			return "Giphy GIF"
+		case .giphyGifs:
+			return "Giphy GIFs"
 		}
 	}
 }

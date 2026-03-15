@@ -13,8 +13,8 @@ import Combine
 class GifHoarder: Hoarder, ObservableObject {
 	static let container: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
 	
-	var endpoint: URL = URL(string: "api.giphy.com/v1/gifs/trending")!
-	var endpointSearch: URL = URL(string: "api.giphy.com/v1/gifs/search")!
+	var endpoint: URL = URL(string: "https://api.giphy.com/v1/gifs/trending")!
+	var endpointSearch: URL = URL(string: "https://api.giphy.com/v1/gifs/search")!
 	
 	@Published var searchTerm: String = ""
 	@Published var trendingGifs: [Gif] = []
@@ -35,9 +35,8 @@ class GifHoarder: Hoarder, ObservableObject {
 		Task {
 			do {
 				async let (data, _) = try URLSession.shared.data(from: endpoint)
-//				let decoded: [String: Any] = decoder.decode([String: Any].self, from: await data)
 				dump(await data)
-				print()
+				print(await data.base64EncodedString())
 			}
 		}
 	}
