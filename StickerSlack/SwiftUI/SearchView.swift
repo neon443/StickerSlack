@@ -10,10 +10,10 @@ import SwiftUI
 struct SearchView: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	
+	@State private var currentSearch: Task<Void, Never>?
 	@State var searchTerm: String = ""
 	@State var searchResult: [String] = []
 	
-	@State private var currentSearch: Task<Void, Never>?
 	
 	var body: some View {
 		NavigationStack {

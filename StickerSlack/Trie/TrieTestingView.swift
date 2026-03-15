@@ -10,6 +10,7 @@ import SwiftUI
 struct TrieTestingView: View {
 	@ObservedObject var hoarder: EmojiHoarder 
 	
+	@State private var searchTask: Task<Void, Never>?
 	@State var searchTerm: String = ""
 	@State var searchResults: [String] = []
 	@State var exactSearchResult: Bool? = nil
@@ -34,7 +35,8 @@ struct TrieTestingView: View {
 			}
 			print("testing: trie search complete")
 		case .contains:
-			Task.detached {
+			if searchTask != nil { searchTask?.cancel() }
+			searchTask = Task.detached {
 				let result = await hoarder.trie.search(for: searchTerm)
 				await MainActor.run {
 					withAnimation(.snappy) { searchResults = result }
