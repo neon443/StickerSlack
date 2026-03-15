@@ -13,6 +13,7 @@ import Combine
 class GifHoarder: Hoarder, ObservableObject {
 	static let container: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
 	
+	static var apiKey: String = ""
 	var endpoint: URL = URL(string: "https://api.giphy.com/v1/gifs/trending")!
 	var endpointSearch: URL = URL(string: "https://api.giphy.com/v1/gifs/search")!
 	
@@ -29,14 +30,18 @@ class GifHoarder: Hoarder, ObservableObject {
 	}
 	
 	init() {
-		var request = URLRequest(url: endpoint)
-		request.setValue("", forHTTPHeaderField: "api_key")
-		request.setValue("100", forHTTPHeaderField: "limit")
+		var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false)
+		components?.queryItems = [
+			URLQueryItem(name: "api_key", value: GifHoarder.apiKey),
+			URLQueryItem(name: "limit", value: "100")
+		]
 		Task {
 			do {
-				async let (data, _) = try URLSession.shared.data(from: endpoint)
-				dump(await data)
-				print(await data.base64EncodedString())
+				async let (data, _) = try URLSession.shared.data(from: components!.url!)
+				dump(try await data)
+				print(try await data.base64EncodedString())
+			} catch {
+				print(error.localizedDescription)
 			}
 		}
 	}
