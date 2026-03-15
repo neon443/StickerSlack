@@ -15,24 +15,26 @@ struct EmojiRow: View {
 	var isLocal: Bool {
 		return hoarder.downloadedEmojis.contains(emoji.name)
 	}
-
+	
 	var body: some View {
 		HStack {
 			EmojiPreview(hoarder: hoarder, emoji: emoji)
-			.frame(width: 100, height: 100)
-			.padding(.trailing, 10)
+				.frame(width: 100, height: 100)
 			
 			VStack(alignment: .leading, spacing: 5) {
 				ZStack {
 					RoundedRectangle(cornerRadius: 5)
 						.foregroundStyle(.gray.opacity(0.1))
+						.shadow(radius: 2)
 					Text(emoji.name)
 						.font(.caption)
 						.bold(isLocal)
 						.foregroundColor(isLocal ? .green : .primary)
 						.padding(3)
+						.lineLimit(nil)
+						.layoutPriority(1)
+						.multilineTextAlignment(.leading)
 				}
-				.fixedSize()
 				if isLocal {
 					Image(systemName: "arrow.down.circle.fill")
 						.resizable().scaledToFit()
@@ -42,6 +44,7 @@ struct EmojiRow: View {
 						.transition(.scale)
 				}
 			}
+			.padding(.horizontal, 5)
 			
 			Spacer()
 			
@@ -61,18 +64,19 @@ struct EmojiRow: View {
 				.transition(.scale)
 			}
 		}
-    }
+		.padding(.leading, -1)
+		.padding(.trailing, -9)
+	}
 }
 
+@available(iOS 17, *)
 #Preview {
+	@Previewable var hoarder = EmojiHoarder(localOnly: true)
 	List {
-		EmojiRow(
-			hoarder: EmojiHoarder(localOnly: true),
-			emoji: Emoji.test
-		)
-		EmojiRow(
-			hoarder: EmojiHoarder(localOnly: true),
-			emoji: Emoji.test
-		)
+		EmojiRow(hoarder: hoarder, emoji: .test)
+		EmojiRow(hoarder: hoarder, emoji: .testLongName)
+		ForEach(hoarder.downloadedEmojisArr, id: \.self) { name in
+			EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
+		}
 	}
 }

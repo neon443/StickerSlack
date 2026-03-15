@@ -49,4 +49,9 @@ struct Emoji: StickerProtocol {
 		name: "a test slack emoji",
 		url: Bundle.main.url(forResource: "image", withExtension: "png")!
 	)
+	
+	static var testLongName: Emoji = Emoji(
+		name: "ForEach<Array<String>, String, EmojiRow>: the ID jarjarbinks occurs multiple times within the collection, this will give undefined results!",
+		url: Bundle.main.url(forResource: "image", withExtension: "png")!
+	)
 }

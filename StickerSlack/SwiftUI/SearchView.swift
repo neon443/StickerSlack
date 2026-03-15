@@ -13,18 +13,21 @@ struct SearchView: View {
 	@State var searchTerm: String = ""
 	@State var searchResult: [String] = []
 	
+	@State private var currentSearch: Task<Void, Never>?
+	
 	var body: some View {
 		NavigationStack {
 			List(searchResult, id: \.self) { name in
 				EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
 			}
-			.onChange(of: searchTerm) { _ in
-				Task.detached(name: "emojiSearch", priority: .userInitiated) {
-					let result = await hoarder.trie.search(for: searchTerm)
-					await MainActor.run {
-						withAnimation(.snappy) {
-							searchResult = result
-						}
+		}
+		.onChange(of: searchTerm) { _ in
+			if currentSearch != nil { currentSearch?.cancel() }
+			currentSearch = Task.detached {
+				let result = await hoarder.trie.search(for: searchTerm)
+				await MainActor.run {
+					withAnimation(.snappy) {
+						searchResult = result
 					}
 				}
 			}
@@ -34,5 +37,5 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView(hoarder: EmojiHoarder(localOnly: true))
+	SearchView(hoarder: EmojiHoarder(localOnly: true))
 }

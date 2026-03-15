@@ -99,10 +99,6 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		storeDownloadedIndexes()
 	}
 	
-	private func storeDB() {
-		try! encoder.encode(emojis).write(to: EmojiHoarder.localEmojiDB)
-	}
-	
 	private func storeDB(data: Data) {
 		try! data.write(to: EmojiHoarder.localEmojiDB)
 	}
@@ -110,6 +106,9 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	func resetAllIndexes() {
 		trie.root = TrieNode()
 		trie.dict = [:]
+		trie.wordlist = []
+		try? FileManager.default.removeItem(at: EmojiHoarder.localEmojiDB)
+		try? FileManager.default.removeItem(at: EmojiHoarder.localTrie)
 		try? FileManager.default.removeItem(at: EmojiHoarder.localTrieDict)
 		
 		downloadedEmojis = []
