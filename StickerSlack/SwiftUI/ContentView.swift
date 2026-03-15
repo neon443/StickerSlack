@@ -63,5 +63,5 @@ struct ContentView: View {
 }
 
 #Preview {
-	ContentView(hoarder: EmojiHoarder(localOnly: true))
+	ContentView(hoarder: EmojiHoarder(localOnly: false))
 }

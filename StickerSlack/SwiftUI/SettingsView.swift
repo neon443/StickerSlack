@@ -24,7 +24,8 @@ struct SettingsView: View {
 							.frame(width: 100, height: 100)
 							.clipShape(RoundedRectangle(cornerRadius: 24))
 							.foregroundStyle(.purple)
-							.shadow(color: isDark ? .white : .purple, radius: 2)
+							.shadow(color: isDark ? .black : .purple, radius: 5)
+							.padding(.leading, -1)
 							.padding(.trailing, 10)
 						VStack(alignment: .leading) {
 							Text("StickerSlack")
