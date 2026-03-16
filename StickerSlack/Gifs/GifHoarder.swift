@@ -29,7 +29,7 @@ class GifHoarder: Hoarder, ObservableObject {
 //		<#code#>
 	}
 	
-	init() {
+	init(localOnly: Bool = false) {
 		var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false)
 		components?.queryItems = [
 			URLQueryItem(name: "api_key", value: GifHoarder.apiKey),

@@ -11,6 +11,7 @@ import Haptics
 struct EmojiRow: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	@State var emoji: Emoji
+	@State var showTooltip: Bool = false
 	
 	var isLocal: Bool {
 		return hoarder.downloadedEmojis.contains(emoji.name)
@@ -21,30 +22,45 @@ struct EmojiRow: View {
 			EmojiPreview(hoarder: hoarder, emoji: emoji)
 				.frame(width: 100, height: 100)
 			
-			VStack(alignment: .leading, spacing: 5) {
-				ZStack {
-					RoundedRectangle(cornerRadius: 5)
-						.foregroundStyle(.gray.opacity(0.1))
-						.shadow(radius: 2)
-					Text(emoji.name)
-						.font(.caption)
-						.bold(isLocal)
-						.foregroundColor(isLocal ? .green : .primary)
-						.padding(3)
-						.lineLimit(nil)
-						.layoutPriority(1)
-						.multilineTextAlignment(.leading)
-				}
-				if isLocal {
-					Image(systemName: "arrow.down.circle.fill")
-						.resizable().scaledToFit()
-						.frame(width: 20, height: 20)
-						.symbolRenderingMode(.hierarchical)
-						.foregroundStyle(.gray)
-						.transition(.scale)
+			let alignment: HorizontalAlignment = emoji.name.count < 7 ? .center : .leading
+			VStack(alignment: alignment, spacing: 5) {
+				Text(emoji.name)
+					.font(.caption)
+					.bold(isLocal)
+					.foregroundColor(isLocal ? .green : .primary)
+					.lineLimit(nil)
+					.layoutPriority(1)
+					.multilineTextAlignment(.leading)
+					.fixedSize()
+				HStack(spacing: 5) {
+					Button() {
+						showTooltip.toggle()
+					} label: {
+						Image("thing")
+							.resizable().scaledToFit()
+							.frame(width: 20, height: 20)
+							.foregroundStyle(.gray)
+					}
+					.buttonStyle(.borderless)
+					.alert("From Slack", isPresented: $showTooltip) {
+						Button("OK") {}
+					}
+					if isLocal {
+						Image(systemName: "arrow.down.circle.fill")
+							.resizable().scaledToFit()
+							.frame(width: 20, height: 20)
+							.symbolRenderingMode(.hierarchical)
+							.foregroundStyle(.gray)
+							.transition(.scale)
+					}
 				}
 			}
-			.padding(.horizontal, 5)
+			.padding(5)
+			.background(
+				RoundedRectangle(cornerRadius: 15)
+					.foregroundStyle(.gray.opacity(0.1))
+					.shadow(radius: 2)
+			)
 			
 			Spacer()
 			
@@ -75,8 +91,18 @@ struct EmojiRow: View {
 	List {
 		EmojiRow(hoarder: hoarder, emoji: .test)
 		EmojiRow(hoarder: hoarder, emoji: .testLongName)
+		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "a", url: Emoji.test.remoteImageURL))
+		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "ab", url: Emoji.test.remoteImageURL))
+		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abc", url: Emoji.test.remoteImageURL))
+		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abcd", url: Emoji.test.remoteImageURL))
+		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abcde", url: Emoji.test.remoteImageURL))
+		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abcdef", url: Emoji.test.remoteImageURL))
+		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abcdefg", url: Emoji.test.remoteImageURL))
+		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abcdefgh", url: Emoji.test.remoteImageURL))
 		ForEach(hoarder.downloadedEmojisArr, id: \.self) { name in
-			EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
+			if let emoji = hoarder.trie.dict[name] {
+				EmojiRow(hoarder: hoarder, emoji: emoji)
+			}
 		}
 	}
 }
