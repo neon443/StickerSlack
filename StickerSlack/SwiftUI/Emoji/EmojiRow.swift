@@ -21,29 +21,27 @@ struct EmojiRow: View {
 		HStack {
 			EmojiPreview(hoarder: hoarder, emoji: emoji)
 				.frame(width: 100, height: 100)
+				.transition(.scale)
 			
-			let alignment: HorizontalAlignment = emoji.name.count < 7 ? .center : .leading
-			VStack(alignment: alignment, spacing: 5) {
+			VStack(alignment: .leading, spacing: 5) {
 				Text(emoji.name)
 					.font(.caption)
 					.bold(isLocal)
 					.foregroundColor(isLocal ? .green : .primary)
 					.lineLimit(nil)
-					.layoutPriority(1)
 					.multilineTextAlignment(.leading)
-					.fixedSize()
 				HStack(spacing: 5) {
-					Button() {
+					Button {
 						showTooltip.toggle()
 					} label: {
-						Image("thing")
+						Image("slack.logo")
 							.resizable().scaledToFit()
 							.frame(width: 20, height: 20)
 							.foregroundStyle(.gray)
 					}
 					.buttonStyle(.borderless)
 					.alert("From Slack", isPresented: $showTooltip) {
-						Button("OK") {}
+						Button("Done") {}
 					}
 					if isLocal {
 						Image(systemName: "arrow.down.circle.fill")
