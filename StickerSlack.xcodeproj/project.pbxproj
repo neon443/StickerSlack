@@ -58,6 +58,18 @@
 		A99589AF2F5E0D83003A4A8C /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = A99589AE2F5E0D83003A4A8C /* image.png */; };
 		A99589B02F5E0D83003A4A8C /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = A99589AE2F5E0D83003A4A8C /* image.png */; };
 		A99589B12F5E0D83003A4A8C /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = A99589AE2F5E0D83003A4A8C /* image.png */; };
+		A9A7A43F2F6835F800BB84C6 /* Trending.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A43E2F6835F800BB84C6 /* Trending.swift */; };
+		A9A7A4402F6835F800BB84C6 /* Trending.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A43E2F6835F800BB84C6 /* Trending.swift */; };
+		A9A7A4422F68360200BB84C6 /* GifObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4412F68360200BB84C6 /* GifObject.swift */; };
+		A9A7A4432F68360200BB84C6 /* GifObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4412F68360200BB84C6 /* GifObject.swift */; };
+		A9A7A4452F68360900BB84C6 /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4442F68360900BB84C6 /* Pagination.swift */; };
+		A9A7A4462F68360900BB84C6 /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4442F68360900BB84C6 /* Pagination.swift */; };
+		A9A7A4482F68361200BB84C6 /* Meta.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4472F68361200BB84C6 /* Meta.swift */; };
+		A9A7A4492F68361200BB84C6 /* Meta.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4472F68361200BB84C6 /* Meta.swift */; };
+		A9A7A44B2F6837A800BB84C6 /* GiphyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A44A2F6837A800BB84C6 /* GiphyUser.swift */; };
+		A9A7A44C2F6837A800BB84C6 /* GiphyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A44A2F6837A800BB84C6 /* GiphyUser.swift */; };
+		A9A7A44E2F68383900BB84C6 /* GiphyImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A44D2F68383900BB84C6 /* GiphyImages.swift */; };
+		A9A7A44F2F68383900BB84C6 /* GiphyImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A44D2F68383900BB84C6 /* GiphyImages.swift */; };
 		A9B9A82E2EB2CCBE004C9245 /* StickerSlackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */; };
 		A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
 		A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
@@ -162,6 +174,12 @@
 		A986A6CA2EB659E000B6E0FA /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBrowserDataSource.swift; sourceTree = "<group>"; };
 		A99589AE2F5E0D83003A4A8C /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
+		A9A7A43E2F6835F800BB84C6 /* Trending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trending.swift; sourceTree = "<group>"; };
+		A9A7A4412F68360200BB84C6 /* GifObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifObject.swift; sourceTree = "<group>"; };
+		A9A7A4442F68360900BB84C6 /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
+		A9A7A4472F68361200BB84C6 /* Meta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meta.swift; sourceTree = "<group>"; };
+		A9A7A44A2F6837A800BB84C6 /* GiphyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiphyUser.swift; sourceTree = "<group>"; };
+		A9A7A44D2F68383900BB84C6 /* GiphyImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiphyImages.swift; sourceTree = "<group>"; };
 		A9B9A8232EB2CCB5004C9245 /* StickerSlackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StickerSlackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSlackTests.swift; sourceTree = "<group>"; };
 		A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
@@ -239,14 +257,6 @@
 			path = Trie;
 			sourceTree = "<group>";
 		};
-		A91C098A2EBBD77B00210C34 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				A949B1FA2EA0518800215164 /* SlackResponse.swift */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
 		A91C098B2EBBD78700210C34 /* Categorisation */ = {
 			isa = PBXGroup;
 			children = (
@@ -317,6 +327,7 @@
 		A949B1F22EA04E8200215164 /* StickerSlack */ = {
 			isa = PBXGroup;
 			children = (
+				A9A7A4502F68447F00BB84C6 /* Models */,
 				A924C3742EA9134C00F20781 /* StickerSlack.entitlements */,
 				A949B1F12EA04E8200215164 /* StickerSlackApp.swift */,
 				A9BE30EB2F5AFE1E00A57668 /* StickerType.swift */,
@@ -338,7 +349,6 @@
 				A924C3712EA9127200F20781 /* Emoji.swift */,
 				A949B1F72EA04F2300215164 /* EmojiHoarder.swift */,
 				A91C098B2EBBD78700210C34 /* Categorisation */,
-				A91C098A2EBBD77B00210C34 /* API */,
 				A957C1792ECE542D00EA3EE9 /* GifManager.swift */,
 				A957C17D2ECFAA1100EA3EE9 /* GifView.swift */,
 			);
@@ -364,6 +374,36 @@
 				A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */,
 			);
 			path = StickerSlackiMessageApp;
+			sourceTree = "<group>";
+		};
+		A9A7A4502F68447F00BB84C6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A9A7A4522F68448A00BB84C6 /* Cachet */,
+				A9A7A4512F68448500BB84C6 /* Giphy */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A9A7A4512F68448500BB84C6 /* Giphy */ = {
+			isa = PBXGroup;
+			children = (
+				A9A7A43E2F6835F800BB84C6 /* Trending.swift */,
+				A9A7A4412F68360200BB84C6 /* GifObject.swift */,
+				A9A7A4442F68360900BB84C6 /* Pagination.swift */,
+				A9A7A4472F68361200BB84C6 /* Meta.swift */,
+				A9A7A44A2F6837A800BB84C6 /* GiphyUser.swift */,
+				A9A7A44D2F68383900BB84C6 /* GiphyImages.swift */,
+			);
+			path = Giphy;
+			sourceTree = "<group>";
+		};
+		A9A7A4522F68448A00BB84C6 /* Cachet */ = {
+			isa = PBXGroup;
+			children = (
+				A949B1FA2EA0518800215164 /* SlackResponse.swift */,
+			);
+			path = Cachet;
 			sourceTree = "<group>";
 		};
 		A9B9A82D2EB2CCBE004C9245 /* StickerSlackTests */ = {
@@ -548,10 +588,14 @@
 				A949B1F42EA04E8200215164 /* ContentView.swift in Sources */,
 				A9CD6C382EDDE37500B7F421 /* EmojiPackManager.swift in Sources */,
 				A949B1F52EA04E8200215164 /* StickerSlackApp.swift in Sources */,
+				A9A7A4452F68360900BB84C6 /* Pagination.swift in Sources */,
 				A9104C802EB4022500D160EA /* MSSticker.swift in Sources */,
+				A9A7A43F2F6835F800BB84C6 /* Trending.swift in Sources */,
+				A9A7A4422F68360200BB84C6 /* GifObject.swift in Sources */,
 				A957C1772ECD008E00EA3EE9 /* Bundle.swift in Sources */,
 				A957C17F2ECFAA1100EA3EE9 /* GifView.swift in Sources */,
 				A957C1742ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
+				A9A7A44B2F6837A800BB84C6 /* GiphyUser.swift in Sources */,
 				A9EB72392EB93FDB00658CEB /* EmojiCollectionView.swift in Sources */,
 				A955B3EE2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
 				A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */,
@@ -559,6 +603,7 @@
 				A955B3F52EC22EE900E1732D /* SearchView.swift in Sources */,
 				A935437B2EB2A3C800BB80A4 /* FilterCategory.swift in Sources */,
 				A9CD6C352EDDE22800B7F421 /* EmojiPackView.swift in Sources */,
+				A9A7A44E2F68383900BB84C6 /* GiphyImages.swift in Sources */,
 				A9C172DD2EB8C9AC008A7885 /* Trie.swift in Sources */,
 				A955B3F22EC22E9700E1732D /* BrowseView.swift in Sources */,
 				A9EB724F2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
@@ -575,6 +620,7 @@
 				A9BE30F02F5B004800A57668 /* GifHoarder.swift in Sources */,
 				A9BE30F22F5B004E00A57668 /* Gif.swift in Sources */,
 				A9BE30EC2F5AFE1E00A57668 /* StickerType.swift in Sources */,
+				A9A7A4482F68361200BB84C6 /* Meta.swift in Sources */,
 				A9BE30FE2F5FA47100A57668 /* Hoarder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -604,16 +650,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9A7A4462F68360900BB84C6 /* Pagination.swift in Sources */,
 				A957C17C2ECE542D00EA3EE9 /* GifManager.swift in Sources */,
 				A9104C7F2EB4022500D160EA /* MSSticker.swift in Sources */,
 				A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */,
 				A955B3F12EC22E9700E1732D /* BrowseView.swift in Sources */,
+				A9A7A4402F6835F800BB84C6 /* Trending.swift in Sources */,
 				A9BE30F72F5B011A00A57668 /* StickerProtocol.swift in Sources */,
 				A9BE30FC2F5B03F400A57668 /* Sticker.swift in Sources */,
 				A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */,
 				A9CD6C3B2EDDE6B500B7F421 /* EmojiPack.swift in Sources */,
 				A921C2E32ED071C900E57B1A /* ListRow.swift in Sources */,
 				A9BE30EF2F5B004800A57668 /* GifHoarder.swift in Sources */,
+				A9A7A4492F68361200BB84C6 /* Meta.swift in Sources */,
 				A9EB724A2EB948E000658CEB /* EmojiCollectionView.swift in Sources */,
 				A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
 				A9BBC51A2EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
@@ -628,10 +677,13 @@
 				A957C1782ECD008E00EA3EE9 /* Bundle.swift in Sources */,
 				A921C2E02ED067BB00E57B1A /* WelcomeView.swift in Sources */,
 				A9B9A82E2EB2CCBE004C9245 /* StickerSlackTests.swift in Sources */,
+				A9A7A44F2F68383900BB84C6 /* GiphyImages.swift in Sources */,
 				A9BE30F32F5B004E00A57668 /* Gif.swift in Sources */,
+				A9A7A44C2F6837A800BB84C6 /* GiphyUser.swift in Sources */,
 				A9B9A8312EB2CD14004C9245 /* FilterCategory.swift in Sources */,
 				A957C1802ECFAA1100EA3EE9 /* GifView.swift in Sources */,
 				A9EB72502EB94FAD00658CEB /* EmojiPreview.swift in Sources */,
+				A9A7A4432F68360200BB84C6 /* GifObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

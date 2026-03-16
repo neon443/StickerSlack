@@ -38,8 +38,8 @@ class GifHoarder: Hoarder, ObservableObject {
 		Task {
 			do {
 				async let (data, _) = try URLSession.shared.data(from: components!.url!)
-				dump(try await data)
-				print(try await data.base64EncodedString())
+				let object =
+				print(try JSONDecoder().decode(Trending.self, from: await data))
 			} catch {
 				print(error.localizedDescription)
 			}
