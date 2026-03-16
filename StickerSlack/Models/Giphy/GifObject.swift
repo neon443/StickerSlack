@@ -18,13 +18,13 @@ struct GifObject: Codable, Identifiable {
 	var source: String
 	var rating: String
 	var content_url: String?
-	var user: GiphyUser
+	var user: GiphyUser?
 	var source_tld: String
 	var source_post_url: String
-	var update_datetime: Date
-	var create_datetime: Date
-	var import_datetime: Date
-	var trending_datetime: Date
+	var update_datetime: String?
+	var create_datetime: String?
+	var import_datetime: String
+	var trending_datetime: String?
 	var images: GiphyImages
 	var title: String
 	var alt_text: String
