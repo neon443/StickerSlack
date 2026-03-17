@@ -23,12 +23,12 @@ struct BrowseView: View {
 			switch browseWhat {
 			case .slackEmoji:
 				ForEach(hoarder.emojis, id: \.self) { emoji in
-					EmojiRow(hoarder: hoarder, emoji: emoji)
+					StickerRow(hoarder: hoarder, emoji: emoji)
 						.listRowSeparator(.hidden)
 				}
 			case .giphyGifs:
 				ForEach(gifHoarder.trendingGifs) { gif in
-					EmojiRow(hoarder: hoarder, emoji: gif)
+					StickerRow(hoarder: hoarder, emoji: gif)
 				}
 			}
 		}

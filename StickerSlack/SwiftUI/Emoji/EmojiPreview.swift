@@ -8,7 +8,7 @@
 import SwiftUI
 import Haptics
 
-struct EmojiPreview: View {
+struct StickerPreview: View {
 	@State var emoji: any StickerProtocol
 	
 	@State var gifImage: Image?
@@ -33,7 +33,7 @@ struct ImageErrorView: View {
 }
 
 #Preview {
-	EmojiPreview(
+	StickerPreview(
 		emoji: Emoji.test
 	)
 }

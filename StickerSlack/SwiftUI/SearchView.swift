@@ -14,14 +14,18 @@ struct SearchView: View {
 	@State var searchTerm: String = ""
 	@State var searchResult: [String] = []
 	
-	
 	var body: some View {
 		NavigationStack {
 			List(searchResult, id: \.self) { name in
-				EmojiRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
+				StickerRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
 			}
 		}
 		.onChange(of: searchTerm) { _ in
+			guard !searchTerm.isEmpty else {
+				currentSearch?.cancel()
+				searchResult = []
+				return
+			}
 			if currentSearch != nil { currentSearch?.cancel() }
 			currentSearch = Task.detached {
 				let result = await hoarder.trie.search(for: searchTerm)

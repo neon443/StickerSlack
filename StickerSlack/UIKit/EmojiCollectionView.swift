@@ -50,7 +50,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 			
 			cell.contentConfiguration = UIHostingConfiguration {
-				EmojiRow(hoarder: hoarder, emoji: emoji)
+				StickerRow(hoarder: hoarder, emoji: emoji)
 					.id(emoji)
 			}
 			return cell

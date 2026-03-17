@@ -8,7 +8,7 @@
 import SwiftUI
 import Haptics
 
-struct EmojiRow<T: Hoarder>: View {
+struct StickerRow<T: Hoarder>: View {
 	@ObservedObject var hoarder: T
 	@State var emoji: any StickerProtocol
 	@State var showTooltip: Bool = false
@@ -19,7 +19,7 @@ struct EmojiRow<T: Hoarder>: View {
 	
 	var body: some View {
 		HStack {
-			EmojiPreview(emoji: emoji)
+			StickerPreview(emoji: emoji)
 				.frame(width: 100, height: 100)
 				.transition(.scale)
 			
@@ -70,7 +70,7 @@ struct EmojiRow<T: Hoarder>: View {
 				.transition(.scale)
 			} else {
 				Button("", systemImage: "arrow.down.circle") {
-					Task {
+					Task.detached {
 						await hoarder.download(emoji: emoji, skipStoreIndex: false)
 					}
 				}
@@ -87,20 +87,20 @@ struct EmojiRow<T: Hoarder>: View {
 #Preview {
 	@Previewable var hoarder = EmojiHoarder(localOnly: true)
 	List {
-		EmojiRow(hoarder: hoarder, emoji: Emoji.test)
-		EmojiRow(hoarder: hoarder, emoji: Emoji.testLongName)
-		EmojiRow(hoarder: hoarder, emoji: Gif.test)
-		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "a", url: Emoji.test.remoteImageURL))
-		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "ab", url: Emoji.test.remoteImageURL))
-		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abc", url: Emoji.test.remoteImageURL))
-		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abcd", url: Emoji.test.remoteImageURL))
-		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abcde", url: Emoji.test.remoteImageURL))
-		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abcdef", url: Emoji.test.remoteImageURL))
-		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abcdefg", url: Emoji.test.remoteImageURL))
-		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abcdefgh", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, emoji: Emoji.test)
+		StickerRow(hoarder: hoarder, emoji: Emoji.testLongName)
+		StickerRow(hoarder: hoarder, emoji: Gif.test)
+		StickerRow(hoarder: hoarder, emoji: Emoji(name: "a", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, emoji: Emoji(name: "ab", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abc", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abcd", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abcde", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abcdef", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abcdefg", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abcdefgh", url: Emoji.test.remoteImageURL))
 		ForEach(hoarder.downloadedEmojisArr, id: \.self) { name in
 			if let emoji = hoarder.trie.dict[name] {
-				EmojiRow(hoarder: hoarder, emoji: emoji)
+				StickerRow(hoarder: hoarder, emoji: emoji)
 			}
 		}
 	}

@@ -17,7 +17,7 @@ struct EmojiPackView: View {
 		Text(pack.description)
 			.foregroundStyle(.gray)
 		ForEach(pack.emojiNames, id: \.self) { name in
-			EmojiPreview(emoji: hoarder.trie.dict[name] ?? .test)
+			StickerPreview(emoji: hoarder.trie.dict[name] ?? .test)
 		}
 	}
 }

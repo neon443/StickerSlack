@@ -13,7 +13,6 @@ import Combine
 class GifHoarder: Hoarder, ObservableObject {
 	static let container: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
 	
-	static var apiKey: String = ""
 	var endpoint: URL = URL(string: "https://api.giphy.com/v1/gifs/trending")!
 	var endpointSearch: URL = URL(string: "https://api.giphy.com/v1/gifs/search")!
 	
