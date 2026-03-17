@@ -12,13 +12,13 @@ import Messages
 import UniformTypeIdentifiers
 
 struct Emoji: StickerProtocol {
-	var id: UUID
+	var id: String
 	var name: String
 	var localImageURLString: String {
 		let urlString = remoteImageURL.absoluteString
 		let split = urlString.split(separator: ".")
 		let fileExtension = ".\(split.last ?? "png")"
-		return EmojiHoarder.container.absoluteString+id.uuidString+fileExtension
+		return EmojiHoarder.container.absoluteString+id+fileExtension
 	}
 	var remoteImageURL: URL
 	
@@ -30,7 +30,7 @@ struct Emoji: StickerProtocol {
 	
 	init(from decoder: any Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
-		self.id = try container.decode(UUID.self, forKey: .id)
+		self.id = try container.decode(String.self, forKey: .id)
 		self.name = try container.decode(String.self, forKey: .name)
 		self.remoteImageURL = try container.decode(URL.self, forKey: .remoteImageURL)
 	}
@@ -38,7 +38,7 @@ struct Emoji: StickerProtocol {
 	init(
 		name: String,
 		url: URL,
-		id: UUID = UUID()
+		id: String = UUID().uuidString
 	) {
 		self.id = id
 		self.name = name

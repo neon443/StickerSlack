@@ -149,7 +149,7 @@ struct PerformanceTests {
 	
 	@Test func testDownloadedEmojis() async throws {
 		for emoji in hoarder.emojis {
-			let x = hoarder.downloadedEmojis.contains(emoji.name)
+			let x = hoarder.downloadedStickers.contains(emoji.name)
 		}
 	}
 }

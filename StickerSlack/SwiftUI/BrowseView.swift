@@ -10,6 +10,7 @@ import SwiftUI
 struct BrowseView: View {
 	@State private var browseWhat: StickerType = .slackEmoji
 	@ObservedObject var hoarder: EmojiHoarder
+	@ObservedObject var gifHoarder: GifHoarder
 	
     var body: some View {
 		List {
@@ -26,12 +27,17 @@ struct BrowseView: View {
 						.listRowSeparator(.hidden)
 				}
 			case .giphyGifs:
-				Text("hi")
+				ForEach(gifHoarder.trendingGifs) { gif in
+					EmojiRow(hoarder: hoarder, emoji: gif)
+				}
 			}
 		}
     }
 }
 
 #Preview {
-    BrowseView(hoarder: EmojiHoarder(localOnly: true))
+	BrowseView(
+		hoarder: EmojiHoarder(localOnly: true),
+		gifHoarder: GifHoarder(localOnly: true)
+	)
 }

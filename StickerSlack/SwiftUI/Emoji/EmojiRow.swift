@@ -8,18 +8,18 @@
 import SwiftUI
 import Haptics
 
-struct EmojiRow: View {
-	@ObservedObject var hoarder: EmojiHoarder
-	@State var emoji: Emoji
+struct EmojiRow<T: Hoarder>: View {
+	@ObservedObject var hoarder: T
+	@State var emoji: any StickerProtocol
 	@State var showTooltip: Bool = false
 	
 	var isLocal: Bool {
-		return hoarder.downloadedEmojis.contains(emoji.name)
+		return hoarder.downloadedStickers.contains(emoji.name)
 	}
 	
 	var body: some View {
 		HStack {
-			EmojiPreview(hoarder: hoarder, emoji: emoji)
+			EmojiPreview(emoji: emoji)
 				.frame(width: 100, height: 100)
 				.transition(.scale)
 			
@@ -64,14 +64,14 @@ struct EmojiRow: View {
 			
 			if isLocal {
 				Button("", systemImage: "trash") {
-					hoarder.delete(emoji: emoji)
+					hoarder.delete(emoji: emoji, skipStoreIndex: false)
 				}
 				.buttonStyle(.plain)
 				.transition(.scale)
 			} else {
 				Button("", systemImage: "arrow.down.circle") {
 					Task {
-						await hoarder.download(emoji: emoji)
+						await hoarder.download(emoji: emoji, skipStoreIndex: false)
 					}
 				}
 				.buttonStyle(.plain)
@@ -87,8 +87,9 @@ struct EmojiRow: View {
 #Preview {
 	@Previewable var hoarder = EmojiHoarder(localOnly: true)
 	List {
-		EmojiRow(hoarder: hoarder, emoji: .test)
-		EmojiRow(hoarder: hoarder, emoji: .testLongName)
+		EmojiRow(hoarder: hoarder, emoji: Emoji.test)
+		EmojiRow(hoarder: hoarder, emoji: Emoji.testLongName)
+		EmojiRow(hoarder: hoarder, emoji: Gif.test)
 		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "a", url: Emoji.test.remoteImageURL))
 		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "ab", url: Emoji.test.remoteImageURL))
 		EmojiRow(hoarder: hoarder, emoji: Emoji(name: "abc", url: Emoji.test.remoteImageURL))

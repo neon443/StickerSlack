@@ -10,14 +10,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct Gif: StickerProtocol {
-	var id: UUID
+	var id: String
 	var name: String
 	var localImageURLString: String {
 		let urlString = remoteImageURL.absoluteString
 		let split = urlString.split(separator: ".")
 		let fileExtension = ".\(split.last ?? "png")"
 			
-		return EmojiHoarder.container.appendingPathComponent("gifs", conformingTo: .directory).absoluteString+id.uuidString+fileExtension
+		return EmojiHoarder.container.appendingPathComponent("gifs", conformingTo: .directory).absoluteString+id+fileExtension
 	}
 	var remoteImageURL: URL
 	
@@ -28,7 +28,7 @@ struct Gif: StickerProtocol {
 	init(
 		name: String,
 		url: URL,
-		id: UUID = UUID()
+		id: String = UUID().uuidString
 	) {
 		self.id = id
 		self.name = name

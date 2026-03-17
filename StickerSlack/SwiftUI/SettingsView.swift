@@ -46,8 +46,8 @@ struct SettingsView: View {
 				
 				Section("Stats") {
 					Text("\(hoarder.emojis.count) total Emoji")
-					Text("\(hoarder.downloadedEmojis.count) downloaded Emoji")
-					if hoarder.downloadedEmojis.count == hoarder.emojis.count {
+					Text("\(hoarder.downloadedStickers.count) downloaded Emoji")
+					if hoarder.downloadedStickers.count == hoarder.emojis.count {
 						Text("🎉")
 							.font(.largeTitle)
 					}

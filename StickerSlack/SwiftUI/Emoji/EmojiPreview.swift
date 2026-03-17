@@ -9,8 +9,7 @@ import SwiftUI
 import Haptics
 
 struct EmojiPreview: View {
-	@ObservedObject var hoarder: EmojiHoarder
-	@State var emoji: Emoji
+	@State var emoji: any StickerProtocol
 	
 	@State var gifImage: Image?
 
@@ -35,7 +34,6 @@ struct ImageErrorView: View {
 
 #Preview {
 	EmojiPreview(
-		hoarder: EmojiHoarder(localOnly: true),
 		emoji: Emoji.test
 	)
 }

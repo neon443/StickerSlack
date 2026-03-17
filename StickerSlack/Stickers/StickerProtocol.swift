@@ -9,7 +9,7 @@ import Foundation
 import Messages
 
 protocol StickerProtocol: Codable, Identifiable, Hashable {
-	var id: UUID { get set }
+	var id: String { get set }
 	var name: String { get set }
 	
 	var localImageURL: URL { get }

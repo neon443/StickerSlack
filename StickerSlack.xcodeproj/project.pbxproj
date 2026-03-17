@@ -70,6 +70,15 @@
 		A9A7A44C2F6837A800BB84C6 /* GiphyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A44A2F6837A800BB84C6 /* GiphyUser.swift */; };
 		A9A7A44E2F68383900BB84C6 /* GiphyImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A44D2F68383900BB84C6 /* GiphyImages.swift */; };
 		A9A7A44F2F68383900BB84C6 /* GiphyImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A44D2F68383900BB84C6 /* GiphyImages.swift */; };
+		A9A7A4572F69568700BB84C6 /* GifHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30EE2F5B004800A57668 /* GifHoarder.swift */; };
+		A9A7A4582F69569100BB84C6 /* Trending.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A43E2F6835F800BB84C6 /* Trending.swift */; };
+		A9A7A4592F69569100BB84C6 /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4442F68360900BB84C6 /* Pagination.swift */; };
+		A9A7A45A2F69569100BB84C6 /* Meta.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4472F68361200BB84C6 /* Meta.swift */; };
+		A9A7A45B2F69569100BB84C6 /* GifObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4412F68360200BB84C6 /* GifObject.swift */; };
+		A9A7A45C2F69569100BB84C6 /* GiphyImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A44D2F68383900BB84C6 /* GiphyImages.swift */; };
+		A9A7A45D2F69569100BB84C6 /* GiphyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A44A2F6837A800BB84C6 /* GiphyUser.swift */; };
+		A9A7A45E2F6956B700BB84C6 /* StickerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30EB2F5AFE1E00A57668 /* StickerType.swift */; };
+		A9A7A45F2F69570200BB84C6 /* Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30F12F5B004E00A57668 /* Gif.swift */; };
 		A9B9A82E2EB2CCBE004C9245 /* StickerSlackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */; };
 		A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
 		A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
@@ -280,6 +289,7 @@
 		A91C098D2EBBD7C100210C34 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				A9A7A4602F69597000BB84C6 /* Gifs */,
 				A949B1F02EA04E8200215164 /* ContentView.swift */,
 				A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */,
 				A91C098C2EBBD7AB00210C34 /* Emoji */,
@@ -406,6 +416,13 @@
 			path = Cachet;
 			sourceTree = "<group>";
 		};
+		A9A7A4602F69597000BB84C6 /* Gifs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Gifs;
+			sourceTree = "<group>";
+		};
 		A9B9A82D2EB2CCBE004C9245 /* StickerSlackTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -506,9 +523,6 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				KnownAssetTags = (
-					New,
-				);
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
@@ -639,9 +653,18 @@
 				A9EB724B2EB94A5700658CEB /* Trie.swift in Sources */,
 				A9BE30FA2F5B03F400A57668 /* Sticker.swift in Sources */,
 				A986A6CD2EB659E000B6E0FA /* MessagesViewController.swift in Sources */,
+				A9A7A4572F69568700BB84C6 /* GifHoarder.swift in Sources */,
 				A9BE30FF2F5FA78E00A57668 /* Hoarder.swift in Sources */,
+				A9A7A4582F69569100BB84C6 /* Trending.swift in Sources */,
+				A9A7A4592F69569100BB84C6 /* Pagination.swift in Sources */,
+				A9A7A45A2F69569100BB84C6 /* Meta.swift in Sources */,
+				A9A7A45B2F69569100BB84C6 /* GifObject.swift in Sources */,
+				A9A7A45C2F69569100BB84C6 /* GiphyImages.swift in Sources */,
+				A9A7A45D2F69569100BB84C6 /* GiphyUser.swift in Sources */,
 				A986A6CE2EB659E000B6E0FA /* StickerBrowserDataSource.swift in Sources */,
 				A957C17E2ECFAA1100EA3EE9 /* GifView.swift in Sources */,
+				A9A7A45F2F69570200BB84C6 /* Gif.swift in Sources */,
+				A9A7A45E2F6956B700BB84C6 /* StickerType.swift in Sources */,
 				A9BBC5192EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A986A6C42EB6598500B6E0FA /* SlackResponse.swift in Sources */,
 				A986A6C22EB6597600B6E0FA /* Emoji.swift in Sources */,
@@ -866,6 +889,8 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13;
 				MARKETING_VERSION = "$(VERSION)";
+				ON_DEMAND_RESOURCES_INITIAL_INSTALL_TAGS = "";
+				ON_DEMAND_RESOURCES_PREFETCH_ORDER = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neon443.StickerSlack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -915,6 +940,8 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13;
 				MARKETING_VERSION = "$(VERSION)";
+				ON_DEMAND_RESOURCES_INITIAL_INSTALL_TAGS = "";
+				ON_DEMAND_RESOURCES_PREFETCH_ORDER = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neon443.StickerSlack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;

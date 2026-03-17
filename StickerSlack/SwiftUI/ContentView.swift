@@ -17,7 +17,7 @@ struct ContentView: View {
 			if #available(iOS 18, *) {
 				TabView {
 					Tab("Browse", systemImage: "square.grid.2x2.fill") {
-						BrowseView(hoarder: hoarder)
+						BrowseView(hoarder: hoarder, gifHoarder: gifhoarder)
 					}
 					
 					Tab("Downloaded", systemImage: "arrow.down.circle.fill") {
@@ -34,7 +34,7 @@ struct ContentView: View {
 				}
 			} else {
 				TabView {
-					BrowseView(hoarder: hoarder)
+					BrowseView(hoarder: hoarder, gifHoarder: gifhoarder)
 						.tabItem {
 							Label("Browse", systemImage: "square.grid.2x2.fill")
 						}

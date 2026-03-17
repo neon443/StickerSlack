@@ -22,7 +22,7 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	@Published var emojiPacks: [EmojiPack] = []
 	
 	@Published var trie: Trie = Trie()
-	@Published var downloadedEmojis: Set<String> = []
+	@Published var downloadedStickers: Set<String> = []
 	@Published var downloadedEmojisArr: [String] = []
 	
 	@Published var letterStats: [EmojiHoarder.LetterStat] = []
@@ -72,9 +72,9 @@ class EmojiHoarder: Hoarder, ObservableObject {
 				group.addTask {
 					for i in range {
 						await MainActor.run { self.downloadedEmojisArr.append(self.emojis[i].name) }
-						guard !self.downloadedEmojis.contains(await self.emojis[i].name) else { continue }
+						guard !self.downloadedStickers.contains(await self.emojis[i].name) else { continue }
 						Task { await self.download(emoji: self.emojis[i], skipStoreIndex: true) }
-						await MainActor.run { self.downloadedEmojis.insert(self.emojis[i].name) }
+						await MainActor.run { self.downloadedStickers.insert(self.emojis[i].name) }
 						if i == self.emojis.count {
 							Task { @MainActor in
 								self.storeDownloadedIndexes()
@@ -91,10 +91,10 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	@MainActor
 	func deleteAllStickers() {
 		for i in emojis.indices {
-			guard downloadedEmojis.contains(emojis[i].name) else { continue }
+			guard downloadedStickers.contains(emojis[i].name) else { continue }
 			delete(emoji: emojis[i], skipStoreIndex: true)
 		}
-		downloadedEmojis = []
+		downloadedStickers = []
 		downloadedEmojisArr = []
 		storeDownloadedIndexes()
 	}
@@ -111,7 +111,7 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		try? FileManager.default.removeItem(at: EmojiHoarder.localTrie)
 		try? FileManager.default.removeItem(at: EmojiHoarder.localTrieDict)
 		
-		downloadedEmojis = []
+		downloadedStickers = []
 		downloadedEmojisArr = []
 		UserDefaults.standard.removeObject(forKey: "downloadedEmojis")
 		UserDefaults.standard.removeObject(forKey: "downloadedEmojisArr")
@@ -168,22 +168,22 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	}
 	
 	private func buildDownloadedEmojis() {
-		downloadedEmojis = []
+		downloadedStickers = []
 		downloadedEmojisArr = []
 		downloadedEmojisArr = (try? decoder.decode([String].self, from: UserDefaults.standard.data(forKey: "downloadedEmojisArr") ?? Data())) ?? []
-		downloadedEmojis = (try? decoder.decode(Set<String>.self, from: UserDefaults.standard.data(forKey: "downloadedEmojis") ?? Data())) ?? []
+		downloadedStickers = (try? decoder.decode(Set<String>.self, from: UserDefaults.standard.data(forKey: "downloadedEmojis") ?? Data())) ?? []
 		
-		if downloadedEmojis.isEmpty || downloadedEmojisArr.isEmpty {
+		if downloadedStickers.isEmpty || downloadedEmojisArr.isEmpty {
 			for emoji in emojis {
 				guard emoji.isLocal else { continue }
-				downloadedEmojis.insert(emoji.name)
+				downloadedStickers.insert(emoji.name)
 				downloadedEmojisArr.append(emoji.name)
 			}
 		}
 	}
 	
 	func storeDownloadedIndexes() {
-		UserDefaults.standard.set(try! encoder.encode(downloadedEmojis), forKey: "downloadedEmojis")
+		UserDefaults.standard.set(try! encoder.encode(downloadedStickers), forKey: "downloadedEmojis")
 		UserDefaults.standard.set(try! encoder.encode(downloadedEmojisArr), forKey: "downloadedEmojisArr")
 	}
 	
@@ -232,12 +232,12 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		}
 	}
 	
-	nonisolated func download(emoji: Emoji, skipStoreIndex: Bool = false) async {
+	nonisolated func download(emoji: StickerProtocol, skipStoreIndex: Bool = false) async {
 		try? await emoji.downloadImage()
 		await MainActor.run {
 			if !skipStoreIndex {
 				withAnimation(.snappy) {
-					self.downloadedEmojis.insert(emoji.name)
+					self.downloadedStickers.insert(emoji.name)
 					self.downloadedEmojisArr.append(emoji.name)
 				}
 				self.storeDownloadedIndexes()
@@ -247,11 +247,11 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	}
 	
 	@MainActor
-	func delete(emoji: Emoji, skipStoreIndex: Bool = false) {
+	func delete(emoji: StickerProtocol, skipStoreIndex: Bool = false) {
 		emoji.deleteImage()
 		if !skipStoreIndex {
 			withAnimation(.snappy) {
-				downloadedEmojis.remove(emoji.name)
+				downloadedStickers.remove(emoji.name)
 				downloadedEmojisArr.removeAll(where: { $0 == emoji.name })
 			}
 			storeDownloadedIndexes()

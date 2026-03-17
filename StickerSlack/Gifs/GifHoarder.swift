@@ -19,13 +19,14 @@ class GifHoarder: Hoarder, ObservableObject {
 	
 	@Published var searchTerm: String = ""
 	@Published var trendingGifs: [Gif] = []
+	@Published var downloadedStickers: Set<String> = []
 	
 	
-	func download(emoji: Emoji, skipStoreIndex: Bool) {
+	func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
 //		<#code#>
 	}
 	
-	func delete(emoji: Emoji, skipStoreIndex: Bool) {
+	func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
 //		<#code#>
 	}
 	
@@ -39,7 +40,10 @@ class GifHoarder: Hoarder, ObservableObject {
 			do {
 				async let (data, _) = try URLSession.shared.data(from: components!.url!)
 				let object: Trending = try JSONDecoder().decode(Trending.self, from: await data)
-				print(object.data.count)
+				guard object.meta.status == 200 else {
+					fatalError("non ok status code")
+				}
+				trendingGifs = object.data.map { $0.toGif }
 			} catch {
 				print(error)
 			}

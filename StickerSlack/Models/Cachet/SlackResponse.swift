@@ -9,7 +9,7 @@ import Foundation
 
 struct SlackResponse: Identifiable, Codable {
 	var type: String
-	var id: UUID
+	var id: String
 	var name: String
 	var imageUrl: String
 	var alias: String?
