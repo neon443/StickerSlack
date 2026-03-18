@@ -3,7 +3,7 @@
 <div align="center">
 	<br/>
 	<p>
-		<img src="https://files.catbox.moe/d8go4n.png" title="icon" alt="icon" width="100" />
+		<img src="https://github.com/neon443/StickerSlack/blob/main/Resources/Assets.xcassets/icon.imageset/StickerSlack-iOS-Default-1024x1024@1x.png?raw=true" title="icon" alt="icon" width="100" />
 	</p>
 	<p>
 		every slack emoji as an iMessage sticker
@@ -13,8 +13,8 @@
 		</a>
 	</p>
 	<p>
-		<a href="https://testflight.apple.com/join/JWTN897S">
-			testflight
+		<a href="https://apps.apple.com/us/app/stickerslack/id6754695612">
+			appstore
 		</a>
 	</p>
 	<br/>
