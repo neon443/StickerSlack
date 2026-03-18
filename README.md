@@ -13,8 +13,8 @@
 		</a>
 	</p>
 	<p>
-		<a href="https://testflight.apple.com/join/JWTN897S">
-			testflight
+		<a href="https://apps.apple.com/us/app/stickerslack/id6754695612">
+			appstore
 		</a>
 	</p>
 	<br/>
