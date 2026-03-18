@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct DownloadedView: View {
-	@ObservedObject var hoarder: EmojiHoarder
+	@ObservedObject var emojiHoarder: EmojiHoarder
+	@ObservedObject var gifHoarder: GifHoarder
 	
 	@Environment(\.colorScheme) var colorScheme
 	var isDark: Bool { colorScheme == .dark }
@@ -29,12 +30,12 @@ struct DownloadedView: View {
 				let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
 				let layout = Array(repeating: col, count: columns)
 				LazyVGrid(columns: layout, spacing: spacing) {
-					ForEach(hoarder.downloadedEmojisArr, id: \.self) { name in
-						if let emoji = hoarder.trie.dict[name] {
+					ForEach(emojiHoarder.downloadedEmojisArr, id: \.self) { name in
+						if let emoji = emojiHoarder.trie.dict[name] {
 							ZStack {
 								Rectangle()
 									.foregroundStyle(isDark ? .black : .white)
-								EmojiPreview(hoarder: hoarder, emoji: emoji)
+								StickerPreview(emoji: emoji)
 								RoundedRectangle(cornerRadius: 15)
 									.stroke(.gray, lineWidth: 1)
 							}
@@ -52,7 +53,7 @@ struct DownloadedView: View {
 								ShareLink("Share", item: emoji.remoteImageURL, subject: nil, message: nil)
 								Divider()
 								Button("Delete", systemImage: "trash.fill", role: .destructive) {
-									hoarder.delete(emoji: emoji)
+									emojiHoarder.delete(emoji: emoji)
 								}
 							}
 						}
@@ -65,5 +66,8 @@ struct DownloadedView: View {
 }
 
 #Preview {
-	DownloadedView(hoarder: EmojiHoarder(localOnly: true))
+	DownloadedView(
+		emojiHoarder: EmojiHoarder(localOnly: true),
+		gifHoarder: GifHoarder(localOnly: true)
+	)
 }

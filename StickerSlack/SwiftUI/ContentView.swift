@@ -9,7 +9,7 @@ import SwiftUI
 import Haptics
 
 struct ContentView: View {
-	@ObservedObject var hoarder: EmojiHoarder = EmojiHoarder()
+	@ObservedObject var emojiHoarder: EmojiHoarder = EmojiHoarder()
 	@ObservedObject var gifhoarder: GifHoarder = GifHoarder()
 	
 	var body: some View {
@@ -17,44 +17,44 @@ struct ContentView: View {
 			if #available(iOS 18, *) {
 				TabView {
 					Tab("Browse", systemImage: "square.grid.2x2.fill") {
-						BrowseView(hoarder: hoarder, gifHoarder: gifhoarder)
+						BrowseView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
 					}
 					
 					Tab("Downloaded", systemImage: "arrow.down.circle.fill") {
-						DownloadedView(hoarder: hoarder)
+						DownloadedView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
 					}
 					
 					Tab("Settings", systemImage: "gear") {
-						SettingsView(hoarder: hoarder)
+						SettingsView(hoarder: emojiHoarder)
 					}
 					
 					Tab(role: .search) {
-						SearchView(hoarder: hoarder)
+						SearchView(hoarder: emojiHoarder)
 					}
 				}
 			} else {
 				TabView {
-					BrowseView(hoarder: hoarder, gifHoarder: gifhoarder)
+					BrowseView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
 						.tabItem {
 							Label("Browse", systemImage: "square.grid.2x2.fill")
 						}
-					DownloadedView(hoarder: hoarder)
+					DownloadedView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
 						.tabItem {
 							Label("Downloaded", systemImage: "arrow.down.circle.fill")
 						}
-					SettingsView(hoarder: hoarder)
+					SettingsView(hoarder: emojiHoarder)
 						.tabItem {
 							Label("Setings", systemImage: "gear")
 						}
-					SearchView(hoarder: hoarder)
+					SearchView(hoarder: emojiHoarder)
 						.tabItem {
 							Label("Search", systemImage: "magnifyingglass")
 						}
 				}
 			}
 		}
-		.sheet(isPresented: $hoarder.showWelcome) {
-			hoarder.setShowWelcome(to: false)
+		.sheet(isPresented: $emojiHoarder.showWelcome) {
+			emojiHoarder.setShowWelcome(to: false)
 		} content: {
 			WelcomeView()
 		}
@@ -63,5 +63,5 @@ struct ContentView: View {
 }
 
 #Preview {
-	ContentView(hoarder: EmojiHoarder(localOnly: false))
+	ContentView(emojiHoarder: EmojiHoarder(localOnly: false))
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BrowseView: View {
 	@State private var browseWhat: StickerType = .slackEmoji
-	@ObservedObject var hoarder: EmojiHoarder
+	@ObservedObject var emojiHoarder: EmojiHoarder
 	@ObservedObject var gifHoarder: GifHoarder
 	
     var body: some View {
@@ -22,13 +22,13 @@ struct BrowseView: View {
 			.pickerStyle(.segmented)
 			switch browseWhat {
 			case .slackEmoji:
-				ForEach(hoarder.emojis, id: \.self) { emoji in
-					StickerRow(hoarder: hoarder, emoji: emoji)
+				ForEach(emojiHoarder.emojis, id: \.self) { emoji in
+					StickerRow(hoarder: emojiHoarder, emoji: emoji)
 						.listRowSeparator(.hidden)
 				}
 			case .giphyGifs:
 				ForEach(gifHoarder.trendingGifs) { gif in
-					StickerRow(hoarder: hoarder, emoji: gif)
+					StickerRow(hoarder: emojiHoarder, emoji: gif)
 				}
 			}
 		}
@@ -37,7 +37,7 @@ struct BrowseView: View {
 
 #Preview {
 	BrowseView(
-		hoarder: EmojiHoarder(localOnly: true),
+		emojiHoarder: EmojiHoarder(localOnly: true),
 		gifHoarder: GifHoarder(localOnly: true)
 	)
 }
