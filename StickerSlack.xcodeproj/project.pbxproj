@@ -79,6 +79,8 @@
 		A9A7A45D2F69569100BB84C6 /* GiphyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A44A2F6837A800BB84C6 /* GiphyUser.swift */; };
 		A9A7A45E2F6956B700BB84C6 /* StickerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30EB2F5AFE1E00A57668 /* StickerType.swift */; };
 		A9A7A45F2F69570200BB84C6 /* Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30F12F5B004E00A57668 /* Gif.swift */; };
+		A9A7A4682F6AA17C00BB84C6 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4672F6AA17C00BB84C6 /* Int.swift */; };
+		A9A7A4692F6AA17C00BB84C6 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4672F6AA17C00BB84C6 /* Int.swift */; };
 		A9B9A82E2EB2CCBE004C9245 /* StickerSlackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */; };
 		A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1F72EA04F2300215164 /* EmojiHoarder.swift */; };
 		A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
@@ -189,6 +191,7 @@
 		A9A7A4472F68361200BB84C6 /* Meta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meta.swift; sourceTree = "<group>"; };
 		A9A7A44A2F6837A800BB84C6 /* GiphyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiphyUser.swift; sourceTree = "<group>"; };
 		A9A7A44D2F68383900BB84C6 /* GiphyImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiphyImages.swift; sourceTree = "<group>"; };
+		A9A7A4672F6AA17C00BB84C6 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		A9B9A8232EB2CCB5004C9245 /* StickerSlackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StickerSlackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9B9A82C2EB2CCBE004C9245 /* StickerSlackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSlackTests.swift; sourceTree = "<group>"; };
 		A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
@@ -253,6 +256,7 @@
 			children = (
 				A9104C7D2EB4022500D160EA /* MSSticker.swift */,
 				A957C1762ECD008E00EA3EE9 /* Bundle.swift */,
+				A9A7A4672F6AA17C00BB84C6 /* Int.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -623,6 +627,7 @@
 				A9A7A44E2F68383900BB84C6 /* GiphyImages.swift in Sources */,
 				A9C172DD2EB8C9AC008A7885 /* Trie.swift in Sources */,
 				A955B3F22EC22E9700E1732D /* BrowseView.swift in Sources */,
+				A9A7A4692F6AA17C00BB84C6 /* Int.swift in Sources */,
 				A9EB724F2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
 				A924C3732EA9127200F20781 /* Emoji.swift in Sources */,
 				A9D15B8B2EB1142C00404792 /* EmojiPack.swift in Sources */,
@@ -693,6 +698,7 @@
 				A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
 				A9BBC51A2EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A955B3ED2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
+				A9A7A4682F6AA17C00BB84C6 /* Int.swift in Sources */,
 				A9C172DC2EB8C9AC008A7885 /* Trie.swift in Sources */,
 				A957C1752ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
 				A9CD6C362EDDE22800B7F421 /* EmojiPackView.swift in Sources */,

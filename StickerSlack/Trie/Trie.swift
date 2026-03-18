@@ -42,11 +42,11 @@ class Trie: ObservableObject {
 	}
 	
 	func search(for query: String) -> [String] {
-		var result: [String] = wordlist
+		var result: Set<String> = Set(wordlist)
 		for word in query.split(separator: " ") {
 			result = result.filter { $0.localizedCaseInsensitiveContains(word) }
 		}
-		return result
+		return Array(result)
 	}
 	
 	func search(exactly query: String) -> Bool {

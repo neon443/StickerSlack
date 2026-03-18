@@ -16,11 +16,18 @@ struct SearchView: View {
 	
 	var body: some View {
 		NavigationStack {
-			List(searchResult, id: \.self) { name in
-				StickerRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
+			List() {
+				Text("\(searchResult.count) Result\(searchResult.count.plural)")
+				ForEach(searchResult, id: \.self) { name in
+					StickerRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
+				}
 			}
 		}
+		.searchable(text: $searchTerm)
 		.onChange(of: searchTerm) { _ in
+			if searchTerm.isEmpty { searchResult = [] }
+		}
+		.onSubmit(of: .search) {
 			guard !searchTerm.isEmpty else {
 				currentSearch?.cancel()
 				searchResult = []
@@ -36,7 +43,6 @@ struct SearchView: View {
 				}
 			}
 		}
-		.searchable(text: $searchTerm)
 	}
 }
 
