@@ -11,7 +11,7 @@ struct SearchView: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	
 	@State private var currentSearch: Task<Void, Never>?
-	@State var searchTerm: String = "a2mFsDTpX5blodY8ltkG6Q1xy5NgFSbc"
+	@State var searchTerm: String = ""
 	@State var searchResult: [String] = []
 	
 	var body: some View {
