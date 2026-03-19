@@ -47,7 +47,7 @@ struct GiphyImages: Codable {
 	var original_still: still?
 	
 	//15s looping version
-	var looping: looping?
+//	var looping: looping?
 	//mp4 format 50kb, first 1-2s of the gif
 	var preview: video?
 	//50kb first 1-2s of the gif

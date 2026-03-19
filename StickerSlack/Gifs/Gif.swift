@@ -144,7 +144,7 @@ struct Gif: StickerProtocol {
 				webp_size: "26984"
 			),
 			original_still: nil,
-			looping: nil,
+//			looping: nil,
 			preview: nil,
 			preview_gif: nil
 		),
