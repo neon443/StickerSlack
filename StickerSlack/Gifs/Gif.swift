@@ -17,7 +17,7 @@ struct Gif: StickerProtocol {
 		let split = urlString.split(separator: ".")
 		let fileExtension = ".\(split.last ?? "png")"
 			
-		return Hoarder.container.absoluteString+id+fileExtension
+		return GifHoarder.container.absoluteString+id+fileExtension
 	}
 	var remoteImageURL: URL
 	
