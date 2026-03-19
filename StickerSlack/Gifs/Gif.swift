@@ -17,7 +17,7 @@ struct Gif: StickerProtocol {
 		let split = urlString.split(separator: ".")
 		let fileExtension = ".\(split.last ?? "png")"
 			
-		return EmojiHoarder.container.appendingPathComponent("gifs", conformingTo: .directory).absoluteString+id+fileExtension
+		return Hoarder.container.absoluteString+id+fileExtension
 	}
 	var remoteImageURL: URL
 	

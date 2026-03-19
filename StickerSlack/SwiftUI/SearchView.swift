@@ -16,8 +16,9 @@ struct SearchView: View {
 	
 	var body: some View {
 		NavigationStack {
-			List() {
+			List {
 				Text("\(searchResult.count) Result\(searchResult.count.plural)")
+					.contentTransition(.numericText())
 				ForEach(searchResult, id: \.self) { name in
 					StickerRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
 				}
@@ -25,17 +26,17 @@ struct SearchView: View {
 		}
 		.searchable(text: $searchTerm)
 		.onChange(of: searchTerm) { _ in
-			if searchTerm.isEmpty { searchResult = [] }
-		}
-		.onSubmit(of: .search) {
 			guard !searchTerm.isEmpty else {
 				currentSearch?.cancel()
-				searchResult = []
+				withAnimation { searchResult = [] }
 				return
 			}
-			if currentSearch != nil { currentSearch?.cancel() }
-			currentSearch = Task.detached {
+			if currentSearch != nil {
+				withAnimation { currentSearch?.cancel() }
+			}
+			currentSearch = Task {
 				let result = await hoarder.trie.search(for: searchTerm)
+				guard !Task.isCancelled else { return }
 				await MainActor.run {
 					withAnimation(.snappy) {
 						searchResult = result
