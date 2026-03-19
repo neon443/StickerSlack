@@ -34,15 +34,15 @@ struct SearchView: View {
 			if currentSearch != nil {
 				withAnimation { currentSearch?.cancel() }
 			}
-			currentSearch = Task {
-				let result = await hoarder.trie.search(for: searchTerm)
+//			currentSearch = Task {
+				let result = hoarder.trie.search(for: searchTerm)
 				guard !Task.isCancelled else { return }
-				await MainActor.run {
+//				await MainActor.run {
 					withAnimation(.snappy) {
 						searchResult = result
 					}
-				}
-			}
+//				}
+//			}
 		}
 	}
 }

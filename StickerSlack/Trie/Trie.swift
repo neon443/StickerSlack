@@ -18,11 +18,12 @@ class Trie: ObservableObject {
 	var root: TrieNode = TrieNode()
 	var dict: [String:Emoji] = [:]
 
-	var wordlist: [String] = []
+	var wordlist: Set<String> = []
+//	var previousSearchTerm
 
 	func insert(word: String) {
 		let word = word.lowercased()
-		wordlist.append(word)
+		wordlist.insert(word)
 		var currentNode = root
 		let indices = word.indices
 		let last = indices.last
@@ -42,7 +43,7 @@ class Trie: ObservableObject {
 	}
 	
 	func search(for query: String) -> [String] {
-		var result: Set<String> = Set(wordlist)
+		var result: Set<String> = wordlist
 		for word in query.split(separator: " ") {
 			result = result.filter { $0.localizedCaseInsensitiveContains(word) }
 		}
