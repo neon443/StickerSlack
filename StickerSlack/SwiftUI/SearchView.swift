@@ -12,6 +12,7 @@ struct SearchView: View {
 	
 	@State private var currentSearch: Task<Void, Never>?
 	@State var searchTerm: String = ""
+	@State var previousSearches: [String] = []
 	@State var searchResult: [String] = []
 	
 	var body: some View {
@@ -25,24 +26,22 @@ struct SearchView: View {
 			}
 		}
 		.searchable(text: $searchTerm)
-		.onChange(of: searchTerm) { _ in
+		.onChange(of: searchTerm) { new in
+			if currentSearch != nil { currentSearch?.cancel() }
+			defer { previousSearches.append("") }
 			guard !searchTerm.isEmpty else {
 				currentSearch?.cancel()
-				withAnimation { searchResult = [] }
+				searchResult = []
 				return
 			}
-			if currentSearch != nil {
-				withAnimation { currentSearch?.cancel() }
-			}
-//			currentSearch = Task {
-				let result = hoarder.trie.search(for: searchTerm)
-				guard !Task.isCancelled else { return }
-//				await MainActor.run {
-					withAnimation(.snappy) {
+			currentSearch = Task {
+				let result = hoarder.trie.search(for: searchTerm, previousQuery: previousSearches.last, previousResult: Set(searchResult))
+				await MainActor.run {
+					withAnimation {
 						searchResult = result
 					}
-//				}
-//			}
+				}
+			}
 		}
 	}
 }

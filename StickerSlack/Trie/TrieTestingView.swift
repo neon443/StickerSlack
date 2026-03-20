@@ -37,7 +37,7 @@ struct TrieTestingView: View {
 		case .contains:
 			if searchTask != nil { searchTask?.cancel() }
 			searchTask = Task.detached {
-				let result = await hoarder.trie.search(for: searchTerm)
+				let result = await hoarder.trie.search(for: searchTerm, previousQuery: nil, previousResult: nil)
 				await MainActor.run {
 					withAnimation(.snappy) { searchResults = result }
 					print("testing: contains search complete")

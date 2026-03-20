@@ -42,12 +42,17 @@ class Trie: ObservableObject {
 		}
 	}
 	
-	func search(for query: String) -> [String] {
+	func search(for query: String, previousQuery: String?, previousResult: Set<String>?) -> [String] {
 		var result: Set<String> = wordlist
+		if let previousQuery,
+		   let previousResult,
+		   query.hasPrefix(previousQuery) {
+			result = previousResult
+		}
 		for word in query.split(separator: " ") {
 			result = result.filter { $0.localizedCaseInsensitiveContains(word) }
 		}
-		return Array(result)
+		return Array(result).sorted()
 	}
 	
 	func search(exactly query: String) -> Bool {
