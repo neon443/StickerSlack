@@ -14,26 +14,20 @@ struct StickerSlackTests {
 	@Test func MSStickerValidation() async throws {
 		let goodEmoji = Emoji(
 			name: "name",
-			url: URL(string: "https://neon443.github.io/images/fav.ico")!,
-			id: UUID(uuidString: "0c48f4c3-1c63-41ed-96db-909e50e35dfc")!
+			url: URL(string: "https://neon443.xyz/images/fav.ico")!,
+			id: "0c48f4c3-1c63-41ed-96db-909e50e35dfc"
 		)
 		try! await goodEmoji.downloadImage()
-		#expect(goodEmoji.sticker!.validate(), "should be true")
+		#expect(goodEmoji.msSticker!.validate(), "should be true")
 		
 		let badEmoji = Emoji(
 			name: "160chars:shttps://emoji.slack-edge.com/T0266FRGM/100906/ddeb22d813b83b0f.pngs,sexpirationfds2025-10-28T08:00:02.011Zs},{gtypeh:jemojieeeidggg9cab2003-ad74-492a-",
 			url: URL(string: "https://files.catbox.moe/ifh710.png")!,
-			id: UUID(uuidString: "0c48f4c3-1c63-41ed-96db-909e50e35dfc")!
+			id: "0c48f4c3-1c63-41ed-96db-909e50e35dfc"
 		)
 		try! await badEmoji.downloadImage()
-		#expect(goodEmoji.sticker!.validate(), "should be true")
+		#expect(goodEmoji.msSticker!.validate(), "should be true")
 		badEmoji.deleteImage()
-	}
-	
-	@Test func deleteAllEmojis() async throws {
-		let performanceTests = PerformanceTests(hoarder: .shared)
-		try! await performanceTests.fakeDownloadAllStickers()
-		await hoarder.deleteAllStickers()
 	}
 }
 
@@ -43,7 +37,7 @@ struct PerformanceTests {
 	@Test func stickerConversion() async throws {
 		// Write your test here and use APIs like `#expect(...)` to check expected conditions.
 		for emoji in hoarder.emojis {
-			let _ = emoji.sticker
+			let _ = emoji.msSticker
 		}
 	}
 	
@@ -53,16 +47,7 @@ struct PerformanceTests {
 		}
 	}
 	
-	@Test func filteringEmojis() async throws {
-		let searchQueries = ["heavysob", "yay", "afsdjk", "afhjskf", "g4", "aqua-osx", "neotunes", "", "", ""]
-		for query in searchQueries {
-			print(query)
-			hoarder.filteredEmojis = []
-			hoarder.filterEmojis(by: query)
-			print(hoarder.filteredEmojis.count)
-		}
-	}
-	
+	/*
 	@Test func downloadAll() async throws {
 		let downloadedEmojisBefore = hoarder.emojis.filter { $0.isLocal }.map { $0.id }
 		
@@ -99,13 +84,14 @@ struct PerformanceTests {
 			}
 		}
 	}
+	*/
 	
 	func doThing(on emoji: Emoji, i: inout Int) async throws {
 		do {
 			guard !emoji.isLocal else { return }
 			async let (data, _) = try URLSession.shared.data(from: emoji.remoteImageURL)
 			try! await data.write(to: emoji.localImageURL)
-			let _ = emoji.sticker?.validate()
+			let _ = emoji.msSticker?.validate()
 			i+=1
 			print("\(i)/\(hoarder.emojis.count) \(emoji.name)")
 		} catch {
@@ -113,32 +99,24 @@ struct PerformanceTests {
 		}
 	}
 	
-	@Test func fakeDownloadAllStickers() async throws {
-		await withDiscardingTaskGroup { group in
-			for emoji in hoarder.emojis {
-				group.addTask {
-					try! Data().write(to: emoji.localImageURL)
-				}
-			}
-		}
-	}
+//	@Test func fakeDownloadAllStickers() async throws {
+//		await withDiscardingTaskGroup { group in
+//			for emoji in hoarder.emojis {
+//				group.addTask {
+//					try! Data().write(to: emoji.localImageURL)
+//				}
+//			}
+//		}
+//	}
 	
 	@Test func deleteAllImages() async throws {
-		try! await fakeDownloadAllStickers()
+//		try! await fakeDownloadAllStickers()
 		await hoarder.deleteAllStickers()
 	}
 	
 	@Test func buildTrie() async throws {
-		hoarder.resetTrie()
+		hoarder.resetAllIndexes()
 		hoarder.buildTrie()
-	}
-	
-	@Test func testSearching() async throws {
-		try! await buildTrie()
-		let terms = ["h", "j", "s", "2", "heavysob", "hs", "asjasdklf", "a", "w", "t", "h", "z", "b", "c", "m", "n"]
-		for term in terms {
-			let _ = hoarder.trie.search(prefix: term)
-		}
 	}
 	
 	@Test func testIsLocal() async throws {
@@ -151,5 +129,42 @@ struct PerformanceTests {
 		for emoji in hoarder.emojis {
 			let x = hoarder.downloadedStickers.contains(emoji.name)
 		}
+	}
+	
+	@Test func testSearching() async throws {
+		try await testSearchingExactly()
+		try await testSearchingFor()
+		try await testSearchingPrefixes()
+	}
+	@Test func testSearchingFor() async throws {
+		let queries = hoarder.emojis.choose(10_000).map { $0.name }
+		for query in queries {
+			let _ = hoarder.trie.search(for: query)
+		}
+	}
+	@Test func testSearchingExactly() async throws {
+		let queries = hoarder.emojis.choose(10_000).map { $0.name }
+		for query in queries {
+			let _ = hoarder.trie.search(exactly: query)
+		}
+	}
+	@Test func testSearchingPrefixes() async throws {
+		let queries = hoarder.emojis.choose(10_000).map { $0.name }
+		for query in queries {
+			let _ = hoarder.trie.search(prefix: query)
+		}
+	}
+}
+
+extension Array {
+	func choose(_ x: Int) -> Self {
+		var x = x
+		var result: Self = []
+		while x != 0 {
+			guard let randElement = self.randomElement() else { continue }
+			result.append(randElement)
+			x-=1
+		}
+		return result
 	}
 }

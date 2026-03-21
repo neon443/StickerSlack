@@ -119,6 +119,8 @@
 		A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */; };
 		A9EB724F2EB94A6B00658CEB /* TrieTestingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */; };
 		A9EB72502EB94FAD00658CEB /* EmojiPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9773C2E2EA54AF000F3B753 /* EmojiPreview.swift */; };
+		A9EC46AD2F6D9E4600E066E6 /* Hoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30FD2F5FA47100A57668 /* Hoarder.swift */; };
+		A9EC46AE2F6D9E5800E066E6 /* StickerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BE30EB2F5AFE1E00A57668 /* StickerType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -689,6 +691,7 @@
 				A9A7A4402F6835F800BB84C6 /* Trending.swift in Sources */,
 				A9BE30F72F5B011A00A57668 /* StickerProtocol.swift in Sources */,
 				A9BE30FC2F5B03F400A57668 /* Sticker.swift in Sources */,
+				A9EC46AE2F6D9E5800E066E6 /* StickerType.swift in Sources */,
 				A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */,
 				A9CD6C3B2EDDE6B500B7F421 /* EmojiPack.swift in Sources */,
 				A921C2E32ED071C900E57B1A /* ListRow.swift in Sources */,
@@ -698,6 +701,7 @@
 				A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
 				A9BBC51A2EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A955B3ED2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
+				A9EC46AD2F6D9E4600E066E6 /* Hoarder.swift in Sources */,
 				A9A7A4682F6AA17C00BB84C6 /* Int.swift in Sources */,
 				A9C172DC2EB8C9AC008A7885 /* Trie.swift in Sources */,
 				A957C1752ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
