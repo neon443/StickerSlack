@@ -15,8 +15,8 @@ struct BrowseView: View {
     var body: some View {
 		List {
 			Picker("", selection: $browseWhat) {
-				ForEach(StickerType.allCases, id: \.self) { type in
-					Text(type.description)
+				ForEach(StickerType.allCases) { type in
+					Text(type.description).tag(type)
 				}
 			}
 			.pickerStyle(.segmented)
