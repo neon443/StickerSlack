@@ -34,10 +34,14 @@ struct StickerRow<T: Hoarder>: View {
 					Button {
 						showTooltip.toggle()
 					} label: {
-						Image("slack.logo")
-							.resizable().scaledToFit()
-							.frame(width: 20, height: 20)
-							.foregroundStyle(.gray)
+						if type(of: emoji) == Emoji.self {
+							Image("slack.logo")
+								.resizable().scaledToFit()
+								.frame(width: 20, height: 20)
+								.foregroundStyle(.gray)
+						} else if type(of: emoji) == Gif.self {
+							Text("G")
+						}
 					}
 					.buttonStyle(.borderless)
 					.alert("From Slack", isPresented: $showTooltip) {

@@ -29,6 +29,7 @@ struct BrowseView: View {
 			case .giphyGifs:
 				ForEach(gifHoarder.trendingGifs) { gif in
 					StickerRow(hoarder: emojiHoarder, emoji: gif)
+						.listRowSeparator(.hidden)
 				}
 			}
 		}
