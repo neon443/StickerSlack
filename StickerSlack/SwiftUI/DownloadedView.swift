@@ -25,6 +25,18 @@ struct DownloadedView: View {
 	}
 	
 	var body: some View {
+		if emojiHoarder.downloadedStickers.isEmpty && gifHoarder.downloadedStickers.isEmpty {
+			VStack(alignment: .center) {
+				Image(systemName: "questionmark.app.dashed")
+					.resizable().scaledToFit()
+					.frame(width: 75, height: 75)
+				Text("No Downloaded Stickers")
+					.font(.title)
+					.bold()
+				Text("Download some Slack Emojis or GIFs to use in iMessage!")
+					.foregroundStyle(.gray)
+			}
+		}
 		GeometryReader { geo in
 			ScrollView {
 				let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
