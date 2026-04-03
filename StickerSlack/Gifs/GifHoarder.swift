@@ -34,7 +34,7 @@ class GifHoarder: Hoarder, ObservableObject {
 		var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false)
 		components?.queryItems = [
 			URLQueryItem(name: "api_key", value: GifHoarder.apiKey),
-			URLQueryItem(name: "limit", value: "100")
+			URLQueryItem(name: "limit", value: "500")
 		]
 		Task {
 			do {
