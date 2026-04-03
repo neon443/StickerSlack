@@ -30,27 +30,25 @@ struct StickerRow<T: Hoarder>: View {
 					.foregroundColor(isDownloaded ? .green : .primary)
 					.lineLimit(nil)
 					.multilineTextAlignment(.leading)
-				HStack(spacing: 5) {
-					Button {
-						showTooltip.toggle()
-					} label: {
-						Image(sticker.typeGlyph)
-							.resizable().scaledToFit()
-							.frame(maxHeight: 20)
-							.foregroundStyle(.gray)
-					}
-					.buttonStyle(.borderless)
-					.alert("From Slack", isPresented: $showTooltip) {
-						Button("Done") {}
-					}
-					if isDownloaded {
-						Image(systemName: "arrow.down.circle.fill")
-							.resizable().scaledToFit()
-							.frame(width: 20, height: 20)
-							.symbolRenderingMode(.hierarchical)
-							.foregroundStyle(.gray)
-							.transition(.scale)
-					}
+				Button {
+					showTooltip.toggle()
+				} label: {
+					Image(sticker.typeGlyph)
+						.resizable().scaledToFit()
+						.frame(maxHeight: 20)
+						.foregroundStyle(.gray)
+				}
+				.buttonStyle(.borderless)
+				.alert("From Slack", isPresented: $showTooltip) {
+					Button("Done") {}
+				}
+				if isDownloaded {
+					Image(systemName: "arrow.down.circle.fill")
+						.resizable().scaledToFit()
+						.frame(width: 20, height: 20)
+						.symbolRenderingMode(.hierarchical)
+						.foregroundStyle(.gray)
+						.transition(.scale)
 				}
 			}
 			.padding(5)

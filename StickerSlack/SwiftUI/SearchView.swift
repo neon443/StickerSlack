@@ -47,7 +47,7 @@ struct SearchView: View {
 			guard !searchTerm.isEmpty else {
 				currentSearch?.cancel()
 				searchResult = []
-				previousSearches.append(searchTerm)
+				previousSearches = []
 				return
 			}
 			currentSearch = Task.detached {
