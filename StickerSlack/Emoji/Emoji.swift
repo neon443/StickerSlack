@@ -14,6 +14,7 @@ import UniformTypeIdentifiers
 struct Emoji: StickerProtocol {
 	var id: String
 	var name: String
+	var typeGlyph: String = "slack.logo"
 	var localImageURLString: String {
 		let urlString = remoteImageURL.absoluteString
 		let split = urlString.split(separator: ".")

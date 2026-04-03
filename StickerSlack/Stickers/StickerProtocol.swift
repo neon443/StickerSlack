@@ -12,6 +12,8 @@ protocol StickerProtocol: Codable, Identifiable, Hashable {
 	var id: String { get set }
 	var name: String { get set }
 	
+	var typeGlyph: String { get }
+	
 	var localImageURL: URL { get }
 	var localImageURLString: String { get }
 	var remoteImageURL: URL { get set }

@@ -57,7 +57,7 @@ extension StickerProtocol {
 		return
 	}
 	
-	func resize(image: UIImage, to targetSize: CGSize) -> UIImage {
+ 	func resize(image: UIImage, to targetSize: CGSize) -> UIImage {
 		let oldSize = image.size
 		let ratio: (x: CGFloat, y: CGFloat)
 		ratio.x = targetSize.width / oldSize.width
