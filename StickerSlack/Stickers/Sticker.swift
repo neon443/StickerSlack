@@ -13,12 +13,8 @@ extension StickerProtocol {
 		return URL(string: localImageURLString)!
 	}
 	
-	var isLocal: Bool {
-		return (try? Data(contentsOf: localImageURL)) != nil
-	}
-	
 	var msSticker: MSSticker? {
-		guard isLocal else {
+		guard FileManager.default.fileExists(atPath: localImageURLString) else {
 			return nil
 		}
 		return try? MSSticker(contentsOfFileURL: localImageURL, localizedDescription: name)

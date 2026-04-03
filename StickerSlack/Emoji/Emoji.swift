@@ -19,7 +19,7 @@ struct Emoji: StickerProtocol {
 		let urlString = remoteImageURL.absoluteString
 		let split = urlString.split(separator: ".")
 		let fileExtension = ".\(split.last ?? "png")"
-		return EmojiHoarder.container.absoluteString+id+fileExtension
+		return EmojiHoarder.container.path()+name+"."+id+fileExtension
 	}
 	var remoteImageURL: URL
 	

@@ -141,7 +141,7 @@ class EmojiHoarder: Hoarder, ObservableObject {
 //		}
 //		self.trie.root = decoded
 		
-		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrieDict.path) else { return }
+		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrieDict.path()) else { return }
 		guard let dataDict = try? Data(contentsOf: EmojiHoarder.localTrieDict) else { return }
 		guard let decodedDict = try? decoder.decode([String:Emoji].self, from: dataDict) else {
 			fatalError("failed to decode dict")
@@ -167,18 +167,21 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		buildDownloadedEmojis()
 	}
 	
-	private func buildDownloadedEmojis() {
-		downloadedStickers = []
-		downloadedEmojisArr = []
+	func buildDownloadedEmojis() {
 		downloadedEmojisArr = (try? decoder.decode([String].self, from: UserDefaults.standard.data(forKey: "downloadedEmojisArr") ?? Data())) ?? []
 		downloadedStickers = (try? decoder.decode(Set<String>.self, from: UserDefaults.standard.data(forKey: "downloadedEmojis") ?? Data())) ?? []
 		
-		if downloadedStickers.isEmpty || downloadedEmojisArr.isEmpty {
-			for emoji in emojis {
-				guard emoji.isLocal else { continue }
-				downloadedStickers.insert(emoji.name)
-				downloadedEmojisArr.append(emoji.name)
+		guard !downloadedStickers.isEmpty && !downloadedEmojisArr.isEmpty else {
+			downloadedStickers = []
+			downloadedEmojisArr = []
+			if let files = try? FileManager.default.contentsOfDirectory(atPath: EmojiHoarder.container.path) {
+				for file in files {
+					let name = String(file.split(separator: ".")[0])
+					downloadedStickers.insert(name)
+					downloadedEmojisArr.append(name)
+				}
 			}
+			return
 		}
 	}
 	

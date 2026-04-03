@@ -13,7 +13,7 @@ struct StickerRow<T: Hoarder>: View {
 	@State var sticker: any StickerProtocol
 	@State var showTooltip: Bool = false
 	
-	var isLocal: Bool {
+	var isDownloaded: Bool {
 		return hoarder.downloadedStickers.contains(sticker.name)
 	}
 	
@@ -26,8 +26,8 @@ struct StickerRow<T: Hoarder>: View {
 			VStack(alignment: .leading, spacing: 5) {
 				Text(sticker.name)
 					.font(.caption)
-					.bold(isLocal)
-					.foregroundColor(isLocal ? .green : .primary)
+					.bold(isDownloaded)
+					.foregroundColor(isDownloaded ? .green : .primary)
 					.lineLimit(nil)
 					.multilineTextAlignment(.leading)
 				HStack(spacing: 5) {
@@ -43,7 +43,7 @@ struct StickerRow<T: Hoarder>: View {
 					.alert("From Slack", isPresented: $showTooltip) {
 						Button("Done") {}
 					}
-					if isLocal {
+					if isDownloaded {
 						Image(systemName: "arrow.down.circle.fill")
 							.resizable().scaledToFit()
 							.frame(width: 20, height: 20)
@@ -62,7 +62,7 @@ struct StickerRow<T: Hoarder>: View {
 			
 			Spacer()
 			
-			if isLocal {
+			if isDownloaded {
 				Button("", systemImage: "trash") {
 					hoarder.delete(emoji: sticker, skipStoreIndex: false)
 				}

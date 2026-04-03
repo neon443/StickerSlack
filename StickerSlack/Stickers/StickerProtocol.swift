@@ -18,8 +18,6 @@ protocol StickerProtocol: Codable, Identifiable, Hashable {
 	var localImageURLString: String { get }
 	var remoteImageURL: URL { get set }
 	
-	var isLocal: Bool { get }
-	
 	var msSticker: MSSticker? { get }
 	var image: UIImage? { get }
 	
