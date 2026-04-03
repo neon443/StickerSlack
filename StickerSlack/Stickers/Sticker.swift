@@ -10,7 +10,7 @@ import Messages
 
 extension StickerProtocol {
 	var localImageURL: URL {
-		return URL(string: localImageURLString)!
+		return URL(filePath: localImageURLString)
 	}
 	
 	var msSticker: MSSticker? {
