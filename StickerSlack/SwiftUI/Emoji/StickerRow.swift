@@ -10,21 +10,21 @@ import Haptics
 
 struct StickerRow<T: Hoarder>: View {
 	@ObservedObject var hoarder: T
-	@State var emoji: any StickerProtocol
+	@State var sticker: any StickerProtocol
 	@State var showTooltip: Bool = false
 	
 	var isLocal: Bool {
-		return hoarder.downloadedStickers.contains(emoji.name)
+		return hoarder.downloadedStickers.contains(sticker.name)
 	}
 	
 	var body: some View {
 		HStack {
-			StickerPreview(emoji: emoji)
+			StickerPreview(sticker: sticker)
 				.frame(width: 100, height: 100)
 				.transition(.scale)
 			
 			VStack(alignment: .leading, spacing: 5) {
-				Text(emoji.name)
+				Text(sticker.name)
 					.font(.caption)
 					.bold(isLocal)
 					.foregroundColor(isLocal ? .green : .primary)
@@ -34,12 +34,12 @@ struct StickerRow<T: Hoarder>: View {
 					Button {
 						showTooltip.toggle()
 					} label: {
-						if type(of: emoji) == Emoji.self {
+						if type(of: sticker) == Emoji.self {
 							Image("slack.logo")
 								.resizable().scaledToFit()
 								.frame(width: 20, height: 20)
 								.foregroundStyle(.gray)
-						} else if type(of: emoji) == Gif.self {
+						} else if type(of: sticker) == Gif.self {
 							Text("G")
 						}
 					}
@@ -68,14 +68,14 @@ struct StickerRow<T: Hoarder>: View {
 			
 			if isLocal {
 				Button("", systemImage: "trash") {
-					hoarder.delete(emoji: emoji, skipStoreIndex: false)
+					hoarder.delete(emoji: sticker, skipStoreIndex: false)
 				}
 				.buttonStyle(.plain)
 				.transition(.scale)
 			} else {
 				Button("", systemImage: "arrow.down.circle") {
 					Task.detached {
-						await hoarder.download(emoji: emoji, skipStoreIndex: false)
+						await hoarder.download(emoji: sticker, skipStoreIndex: false)
 					}
 				}
 				.buttonStyle(.plain)
@@ -91,20 +91,20 @@ struct StickerRow<T: Hoarder>: View {
 #Preview {
 	@Previewable var hoarder = EmojiHoarder(localOnly: true)
 	List {
-		StickerRow(hoarder: hoarder, emoji: Emoji.test)
-		StickerRow(hoarder: hoarder, emoji: Emoji.testLongName)
-		StickerRow(hoarder: hoarder, emoji: Gif.test)
-		StickerRow(hoarder: hoarder, emoji: Emoji(name: "a", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, emoji: Emoji(name: "ab", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abc", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abcd", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abcde", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abcdef", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abcdefg", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, emoji: Emoji(name: "abcdefgh", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, sticker: Emoji.test)
+		StickerRow(hoarder: hoarder, sticker: Emoji.testLongName)
+		StickerRow(hoarder: hoarder, sticker: Gif.test)
+		StickerRow(hoarder: hoarder, sticker: Emoji(name: "a", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, sticker: Emoji(name: "ab", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abc", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcd", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcde", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdef", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefg", url: Emoji.test.remoteImageURL))
+		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefgh", url: Emoji.test.remoteImageURL))
 		ForEach(hoarder.downloadedEmojisArr, id: \.self) { name in
 			if let emoji = hoarder.trie.dict[name] {
-				StickerRow(hoarder: hoarder, emoji: emoji)
+				StickerRow(hoarder: hoarder, sticker: emoji)
 			}
 		}
 	}

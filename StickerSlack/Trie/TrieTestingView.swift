@@ -118,7 +118,7 @@ struct TrieTestingView: View {
 					.animation(.snappy, value: searchResults)
 			} else {
 				List(searchResults, id: \.self) { item in
-					StickerRow(hoarder: hoarder, emoji: hoarder.trie.dict[item]!)
+					StickerRow(hoarder: hoarder, sticker: hoarder.trie.dict[item]!)
 				}
 				.animation(.snappy, value: searchResults)
 			}

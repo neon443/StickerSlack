@@ -139,7 +139,7 @@ struct PerformanceTests {
 	@Test func testSearchingFor() async throws {
 		let queries = hoarder.emojis.choose(10_000).map { $0.name }
 		for query in queries {
-			let _ = hoarder.trie.search(for: query)
+			let _ = hoarder.trie.search(for: query, previousQuery: nil, previousResult: nil)
 		}
 	}
 	@Test func testSearchingExactly() async throws {

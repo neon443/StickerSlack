@@ -31,7 +31,7 @@ struct SearchView: View {
 					Text("\(searchResult.count) Result\(searchResult.count.plural)")
 						.contentTransition(.numericText())
 					ForEach(searchResult, id: \.self) { name in
-						StickerRow(hoarder: hoarder, emoji: hoarder.trie.dict[name]!)
+						StickerRow(hoarder: hoarder, sticker: hoarder.trie.dict[name]!)
 					}
 				}
 				.fixedSize()

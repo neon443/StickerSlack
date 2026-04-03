@@ -31,6 +31,11 @@ struct GifObject: Codable, Identifiable {
 	var is_low_contrast: Bool
 	
 	var toGif: Gif {
-		return Gif(name: self.title, url: URL(string: self.images.fixed_width.url)!, id: self.id)
+		return Gif(
+			name: self.title,
+			url: URL(string: self.images.fixed_width.url)!,
+			giphyImages: images,
+			id: self.id
+		)
 	}
 }

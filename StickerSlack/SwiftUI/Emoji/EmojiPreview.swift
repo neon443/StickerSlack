@@ -9,15 +9,19 @@ import SwiftUI
 import Haptics
 
 struct StickerPreview: View {
-	@State var emoji: any StickerProtocol
+	@State var sticker: any StickerProtocol
 	
 	@State var gifImage: Image?
 
 	var body: some View {
-		if let image = emoji.image {
-			GifView(url: emoji.localImageURL)
+		if type(of: sticker) == Emoji.self {
+			if sticker.image != nil {
+				GifView(url: sticker.localImageURL)
+			} else {
+				GifView(url: sticker.remoteImageURL)
+			}
 		} else {
-			GifView(url: emoji.remoteImageURL)
+			GifView(url: URL(string: (sticker as! Gif).giphyImages!.preview_gif!.url)!)
 		}
 	}
 }
@@ -34,6 +38,6 @@ struct ImageErrorView: View {
 
 #Preview {
 	StickerPreview(
-		emoji: Emoji.test
+		sticker: Emoji.test
 	)
 }

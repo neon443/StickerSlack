@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GiphyImages: Codable {
+struct GiphyImages: Codable, Equatable, Hashable {
 	//fixed height of 200px
 	var fixed_height: motion
 	//fixed height of 200px still
@@ -54,7 +54,7 @@ struct GiphyImages: Codable {
 	var preview_gif: still?
 	
 	
-	struct motion: Codable {
+	struct motion: Codable, Equatable, Hashable {
 		var url: String
 		var width: String
 		var height: String
@@ -64,12 +64,12 @@ struct GiphyImages: Codable {
 		var webp: String
 		var webp_size: String
 	}
-	struct still: Codable {
+	struct still: Codable, Equatable, Hashable {
 		var url: String
 		var width: String
 		var height: String
 	}
-	struct downsampled: Codable {
+	struct downsampled: Codable, Equatable, Hashable {
 		var url: String
 		var width: String
 		var height: String
@@ -77,16 +77,16 @@ struct GiphyImages: Codable {
 		var webp: String
 		var webp_size: String
 	}
-	struct downsized: Codable {
+	struct downsized: Codable, Equatable, Hashable {
 		var url: String
 		var width: String
 		var height: String
 		var size: String
 	}
-	struct looping: Codable {
+	struct looping: Codable, Equatable, Hashable {
 		var mp4: String
 	}
-	struct video: Codable {
+	struct video: Codable, Equatable, Hashable {
 		var mp4: String
 		var mp4_size: String
 		var width: String

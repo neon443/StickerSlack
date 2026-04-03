@@ -47,7 +47,7 @@ struct DownloadedView: View {
 							ZStack {
 								Rectangle()
 									.foregroundStyle(isDark ? .black : .white)
-								StickerPreview(emoji: emoji)
+								StickerPreview(sticker: emoji)
 								RoundedRectangle(cornerRadius: 15)
 									.stroke(.gray, lineWidth: 1)
 							}
