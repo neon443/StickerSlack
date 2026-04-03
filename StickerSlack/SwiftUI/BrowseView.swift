@@ -12,8 +12,8 @@ struct BrowseView: View {
 	@ObservedObject var emojiHoarder: EmojiHoarder
 	@ObservedObject var gifHoarder: GifHoarder
 	
-    var body: some View {
-		List {
+	var body: some View {
+		VStack {
 			Picker("", selection: $browseWhat) {
 				ForEach(StickerType.allCases) { type in
 					Text(type.description).tag(type)
@@ -22,18 +22,22 @@ struct BrowseView: View {
 			.pickerStyle(.segmented)
 			switch browseWhat {
 			case .slackEmoji:
-				ForEach(emojiHoarder.emojis, id: \.self) { emoji in
-					StickerRow(hoarder: emojiHoarder, sticker: emoji)
-						.listRowSeparator(.hidden)
-				}
+				EmojiCollectionView(
+					hoarder: emojiHoarder,
+					items: emojiHoarder.emojis.map { $0.name }
+				)
+				.ignoresSafeArea(.container, edges: .bottom)
+				.id(emojiHoarder.emojis)
 			case .giphyGifs:
-				ForEach(gifHoarder.trendingGifs) { gif in
-					StickerRow(hoarder: emojiHoarder, sticker: gif)
-						.listRowSeparator(.hidden)
+				ScrollView {
+					ForEach(gifHoarder.trendingGifs) { gif in
+						StickerRow(hoarder: emojiHoarder, sticker: gif)
+							.listRowSeparator(.hidden)
+					}
 				}
 			}
 		}
-    }
+	}
 }
 
 #Preview {

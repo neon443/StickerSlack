@@ -27,14 +27,6 @@ struct SearchView: View {
 			.pickerStyle(.segmented)
 			switch stickerType {
 			case .slackEmoji:
-				List {
-					Text("\(searchResult.count) Result\(searchResult.count.plural)")
-						.contentTransition(.numericText())
-					ForEach(searchResult, id: \.self) { name in
-						StickerRow(hoarder: hoarder, sticker: hoarder.trie.dict[name]!)
-					}
-				}
-				.fixedSize()
 				EmojiCollectionView(hoarder: hoarder, items: searchResult)
 					.id(searchResult)
 			case .giphyGifs:

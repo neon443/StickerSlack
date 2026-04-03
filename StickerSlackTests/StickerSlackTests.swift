@@ -119,12 +119,6 @@ struct PerformanceTests {
 		hoarder.buildTrie()
 	}
 	
-	@Test func testIsLocal() async throws {
-		for emoji in hoarder.emojis {
-			let x = emoji.isLocal
-		}
-	}
-	
 	@Test func testDownloadedEmojis() async throws {
 		for emoji in hoarder.emojis {
 			let x = hoarder.downloadedStickers.contains(emoji.name)
