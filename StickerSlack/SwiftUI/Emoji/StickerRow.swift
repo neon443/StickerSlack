@@ -96,7 +96,7 @@ struct StickerRow<T: Hoarder>: View {
 		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdef", url: Emoji.test.remoteImageURL))
 		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefg", url: Emoji.test.remoteImageURL))
 		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefgh", url: Emoji.test.remoteImageURL))
-		ForEach(hoarder.downloadedEmojisArr, id: \.self) { name in
+		ForEach(hoarder.downloadedStickers.sorted(), id: \.self) { name in
 			if let emoji = hoarder.trie.dict[name] {
 				StickerRow(hoarder: hoarder, sticker: emoji)
 			}

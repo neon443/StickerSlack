@@ -23,7 +23,6 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	
 	@Published var trie: Trie = Trie()
 	@Published var downloadedStickers: Set<String> = []
-	@Published var downloadedEmojisArr: [String] = []
 	
 	@Published var letterStats: [EmojiHoarder.LetterStat] = []
 	@Published var letterStatsSorting: EmojiHoarder.LetterStatSorting = .init(by: .letter, ascending: true)
@@ -44,7 +43,7 @@ class EmojiHoarder: Hoarder, ObservableObject {
 			await self.loadRemoteDB()
 			print("end")
 			if !skipIndex {
-				await self.buildTrie()
+				self.buildTrie()
 			}
 		}
 	}
@@ -53,7 +52,6 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	func downloadAllStickers() async {
 		let start: Date = .now
 		
-		downloadedEmojisArr = []
 		
 		let cores = ProcessInfo.processInfo.processorCount-1
 		var ranges: [Range<Int>] = []
@@ -71,11 +69,10 @@ class EmojiHoarder: Hoarder, ObservableObject {
 			for range in ranges {
 				group.addTask {
 					for i in range {
-						await MainActor.run { self.downloadedEmojisArr.append(self.emojis[i].name) }
-						guard !self.downloadedStickers.contains(await self.emojis[i].name) else { continue }
-						Task { await self.download(emoji: self.emojis[i], skipStoreIndex: true) }
-						await MainActor.run { self.downloadedStickers.insert(self.emojis[i].name) }
-						if i == self.emojis.count {
+						guard await !self.downloadedStickers.contains(await self.emojis[i].name) else { continue }
+						await self.download(emoji: self.emojis[i], skipStoreIndex: true)
+						let _ = await MainActor.run { self.downloadedStickers.insert(self.emojis[i].name) }
+						if await i == self.emojis.count {
 							Task { @MainActor in
 								self.storeDownloadedIndexes()
 							}
@@ -95,7 +92,6 @@ class EmojiHoarder: Hoarder, ObservableObject {
 			delete(emoji: emojis[i], skipStoreIndex: true)
 		}
 		downloadedStickers = []
-		downloadedEmojisArr = []
 		storeDownloadedIndexes()
 	}
 	
@@ -112,9 +108,7 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		try? FileManager.default.removeItem(at: EmojiHoarder.localTrieDict)
 		
 		downloadedStickers = []
-		downloadedEmojisArr = []
 		UserDefaults.standard.removeObject(forKey: "downloadedEmojis")
-		UserDefaults.standard.removeObject(forKey: "downloadedEmojisArr")
 		letterStats = []
 	}
 	
@@ -168,17 +162,15 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	}
 	
 	func buildDownloadedEmojis() {
-		downloadedEmojisArr = (try? decoder.decode([String].self, from: UserDefaults.standard.data(forKey: "downloadedEmojisArr") ?? Data())) ?? []
-		downloadedStickers = (try? decoder.decode(Set<String>.self, from: UserDefaults.standard.data(forKey: "downloadedEmojis") ?? Data())) ?? []
-		
-		guard !downloadedStickers.isEmpty && !downloadedEmojisArr.isEmpty else {
+		if let data = UserDefaults.standard.data(forKey: "downloadedEmojis"),
+		   let decoded = try? decoder.decode(Set<String>.self, from: data) {
+			downloadedStickers = decoded
+		} else {
 			downloadedStickers = []
-			downloadedEmojisArr = []
 			if let files = try? FileManager.default.contentsOfDirectory(atPath: EmojiHoarder.container.path) {
 				for file in files {
 					let name = String(file.split(separator: ".")[0])
 					downloadedStickers.insert(name)
-					downloadedEmojisArr.append(name)
 				}
 			}
 			return
@@ -187,10 +179,9 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	
 	func storeDownloadedIndexes() {
 		UserDefaults.standard.set(try! encoder.encode(downloadedStickers), forKey: "downloadedEmojis")
-		UserDefaults.standard.set(try! encoder.encode(downloadedEmojisArr), forKey: "downloadedEmojisArr")
 	}
 	
-	nonisolated
+//	nonisolated
 	private func loadLocalDB() -> [Emoji] {
 		if let localEmojiDB = try? Data(contentsOf: EmojiHoarder.localEmojiDB) {
 			let decoded = try! decoder.decode([Emoji].self, from: localEmojiDB)
@@ -210,8 +201,7 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	private func fetchRemoteDB() async -> [Emoji]? {
 		do {
 			async let (data, _) = try URLSession.shared.data(from: endpoint)
-			decoder.dateDecodingStrategy = .iso8601
-			let decoded: [SlackResponse] = try decoder.decode([SlackResponse].self, from: await data)
+			let decoded: [SlackResponse] = try await decoder.decode([SlackResponse].self, from: await data)
 			try await storeDB(data: await data)
 			return await SlackResponse.toEmojis(from: decoded)
 		} catch {
@@ -235,13 +225,12 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		}
 	}
 	
-	nonisolated func download(emoji: StickerProtocol, skipStoreIndex: Bool = false) async {
+	nonisolated func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
 		try? await emoji.downloadImage()
 		await MainActor.run {
 			if !skipStoreIndex {
-				withAnimation(.snappy) {
+				let _ = withAnimation(.snappy) {
 					self.downloadedStickers.insert(emoji.name)
-					self.downloadedEmojisArr.append(emoji.name)
 				}
 				self.storeDownloadedIndexes()
 			}
@@ -250,12 +239,11 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	}
 	
 	@MainActor
-	func delete(emoji: StickerProtocol, skipStoreIndex: Bool = false) {
+	func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
 		emoji.deleteImage()
 		if !skipStoreIndex {
-			withAnimation(.snappy) {
+			let _ = withAnimation(.snappy) {
 				downloadedStickers.remove(emoji.name)
-				downloadedEmojisArr.removeAll(where: { $0 == emoji.name })
 			}
 			storeDownloadedIndexes()
 		}

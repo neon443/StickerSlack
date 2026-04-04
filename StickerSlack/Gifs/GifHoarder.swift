@@ -36,10 +36,12 @@ class GifHoarder: Hoarder, ObservableObject {
 			URLQueryItem(name: "api_key", value: GifHoarder.apiKey),
 			URLQueryItem(name: "limit", value: "500")
 		]
+		guard let finalURL = components?.url else { fatalError("invalid URL for request for trending gifs") }
+		
 		Task {
 			do {
-				async let (data, _) = try URLSession.shared.data(from: components!.url!)
-				let object: Trending = try JSONDecoder().decode(Trending.self, from: await data)
+				let (data, _) = try await URLSession.shared.data(from: finalURL)
+				let object: Trending = try JSONDecoder().decode(Trending.self, from: data)
 				guard object.meta.status == 200 else {
 					fatalError("non ok status code")
 				}
