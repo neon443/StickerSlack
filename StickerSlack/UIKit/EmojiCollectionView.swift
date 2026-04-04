@@ -15,10 +15,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 	let items: [String]
 	
 	func makeUIView(context: Context) -> UITableView {
-		let tableView = UITableView()
-		tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-		tableView.dataSource = context.coordinator
-		return tableView
+		let tableView = context.coordinator as UITableViewController
+		tableView.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+		tableView.tableView.dataSource = context.coordinator
+		tableView.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
+		tableView.tableView.separatorStyle = .none
+		return tableView.tableView
 	}
 	
 	func updateUIView(_ uiView: UITableView, context: Context) {
@@ -31,29 +33,48 @@ struct EmojiCollectionView: UIViewRepresentable {
 		Coordinator(hoarder: hoarder, items: items)
 	}
 	
-	final class Coordinator: NSObject, UITableViewDataSource {
+	final class Coordinator: UITableViewController {
 		var hoarder: EmojiHoarder
 		var items: [String]
 		
 		init(hoarder: EmojiHoarder, items: [String]) {
 			self.hoarder = hoarder
 			self.items = items
+			super.init(style: .insetGrouped)
 		}
 		
-		func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		required init?(coder: NSCoder) {
+			fatalError("init(coder:) has not been implemented")
+		}
+		
+		override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 			return items.count
 		}
 		
-		func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 			let emojiName = items[indexPath.row]
 			let emoji = hoarder.trie.dict[emojiName]!
 			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 			
+			cell.selectedBackgroundView = nil
+			cell.selectionStyle = .none
 			cell.contentConfiguration = UIHostingConfiguration {
 				StickerRow(hoarder: hoarder, sticker: emoji)
 					.id(emoji)
 			}
 			return cell
+		}
+		
+		override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//			<#code#>
+		}
+		
+		override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+//			<#code#>
+		}
+		
+		override func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+			return true
 		}
 	}
 }
