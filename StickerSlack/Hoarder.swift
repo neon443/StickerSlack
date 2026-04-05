@@ -9,11 +9,10 @@ import Foundation
 import SwiftUI
 import Combine
 import UniformTypeIdentifiers
+import Haptics
 
 protocol Hoarder: ObservableObject {
 	static var library: URL { get }
-	static var container: URL { get }
-	var endpoint: URL { get }
 	var downloadedStickers: Set<String> { get set }
 	var encoder: JSONEncoder { get }
 	var decoder: JSONDecoder { get }
@@ -22,7 +21,25 @@ protocol Hoarder: ObservableObject {
 	func delete(emoji: any StickerProtocol, skipStoreIndex: Bool)
 }
 
-extension Hoarder {
-	var encoder: JSONEncoder { JSONEncoder() }
-	var decoder: JSONDecoder { JSONDecoder() }
+class BaseHoarder: Hoarder {
+	
+	static let library: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
+	
+	@Published var downloadedStickers: Set<String> = []
+
+	var encoder: JSONEncoder = JSONEncoder()
+	var decoder: JSONDecoder = JSONDecoder()
+
+	func download(emoji: any StickerProtocol, skipStoreIndex: Bool) async {
+		try? await emoji.downloadImage()
+		await MainActor.run {
+			Haptic.success.trigger()
+		}
+	}
+	
+	func delete(emoji: any StickerProtocol, skipStoreIndex: Bool) {
+		emoji.deleteImage()
+	}
+	
+	init() { }
 }

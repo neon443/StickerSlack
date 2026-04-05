@@ -14,7 +14,7 @@ struct StickerRow<T: Hoarder>: View {
 	@State var showTooltip: Bool = false
 	
 	var isDownloaded: Bool {
-		return hoarder.downloadedStickers.contains(sticker.name)
+		return FileManager.default.fileExists(atPath: sticker.localImageURLString)
 	}
 	
 	var body: some View {

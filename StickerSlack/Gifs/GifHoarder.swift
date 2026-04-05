@@ -10,8 +10,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 import Combine
 
-class GifHoarder: Hoarder, ObservableObject {
-	static let library: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
+class GifHoarder: BaseHoarder {
 	static let container: URL = library.appendingPathComponent("giphy", conformingTo: .directory)
 	
 	static var apiKey: String = "a2mFsDTpX5blodY8ltkG6Q1xy5NgFSbc"
@@ -20,22 +19,26 @@ class GifHoarder: Hoarder, ObservableObject {
 	
 	@Published var searchTerm: String = ""
 	@Published var trendingGifs: [Gif] = []
-	@Published var downloadedStickers: Set<String> = []
+	//	@Published override var downloadedStickers: Set<String> = []
 	
 	
-	func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
-//		<#code#>
+	override func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
+		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
 	}
 	
-	func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
-//		<#code#>
+	override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
+		super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
 	}
 	
 	init(localOnly: Bool = false) {
+		super.init()
 		if !FileManager.default.fileExists(atPath: GifHoarder.container.path()) {
 			try! FileManager.default.createDirectory(at: GifHoarder.container, withIntermediateDirectories: true)
 		}
-		
+		startLoadingTrending()
+	}
+	
+	func startLoadingTrending() {
 		var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false)
 		components?.queryItems = [
 			URLQueryItem(name: "api_key", value: GifHoarder.apiKey),

@@ -33,7 +33,7 @@ struct BrowseView: View {
 				case .giphyGifs:
 					ScrollView {
 						ForEach(gifHoarder.trendingGifs) { gif in
-							StickerRow(hoarder: emojiHoarder, sticker: gif)
+							StickerRow(hoarder: gifHoarder, sticker: gif)
 								.listRowSeparator(.hidden)
 						}
 					}

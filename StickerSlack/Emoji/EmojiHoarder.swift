@@ -11,8 +11,7 @@ import Combine
 import UniformTypeIdentifiers
 import Haptics
 
-class EmojiHoarder: Hoarder, ObservableObject {
-	static let library: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
+class EmojiHoarder: BaseHoarder {
 	static let container: URL = library.appendingPathComponent("slack", conformingTo: .directory)
 	nonisolated static let localEmojiDB: URL = EmojiHoarder.library.appendingPathComponent("_____localEmojiDB.json", conformingTo: .fileURL)
 	nonisolated static let localTrieDict: URL = EmojiHoarder.library.appendingPathComponent("_____localTrieDict.json", conformingTo: .fileURL)
@@ -22,7 +21,7 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	@Published var emojiPacks: [EmojiPack] = []
 	
 	@Published var trie: Trie = Trie()
-	@Published var downloadedStickers: Set<String> = []
+//	@Published var downloadedStickers: Set<String> = []
 	
 	@Published var letterStats: [EmojiHoarder.LetterStat] = []
 	@Published var letterStatsSorting: EmojiHoarder.LetterStatSorting = .init(by: .letter, ascending: true)
@@ -30,6 +29,7 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	@Published var showWelcome: Bool = false
 	
 	init(localOnly: Bool = false, skipIndex: Bool = false) {
+		super.init()
 		self.showWelcome = !UserDefaults.standard.bool(forKey: "showWelcome")
 		
 		if !FileManager.default.fileExists(atPath: EmojiHoarder.container.path()) {
@@ -228,8 +228,10 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		await buildTrie()
 	}
 	
-	nonisolated func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
-		try? await emoji.downloadImage()
+	override nonisolated func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
+		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
+		
+//		try? await emoji.downloadImage()
 		await MainActor.run {
 			if !skipStoreIndex {
 				let _ = withAnimation(.snappy) {
@@ -237,20 +239,18 @@ class EmojiHoarder: Hoarder, ObservableObject {
 				}
 				self.storeDownloadedIndexes()
 			}
-			if !skipStoreIndex { Haptic.success.trigger() }
 		}
 	}
 	
-	@MainActor
-	func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
-		emoji.deleteImage()
+	override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
+		super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
+//		emoji.deleteImage()
 		if !skipStoreIndex {
 			let _ = withAnimation(.snappy) {
 				downloadedStickers.remove(emoji.name)
 			}
 			storeDownloadedIndexes()
 		}
-		if !skipStoreIndex { Haptic.heavy.trigger() }
 	}
 	
 	func setShowWelcome(to newValue: Bool) {
