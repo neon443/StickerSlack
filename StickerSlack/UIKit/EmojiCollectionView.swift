@@ -60,6 +60,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 				spinner.frame = cell.frame
 				spinner.autoresizingMask = .flexibleWidth
 				cell.addSubview(spinner)
+				tableView.reloadData()
 				return cell
 			}
 			let emojiName = items[indexPath.row]
