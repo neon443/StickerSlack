@@ -38,12 +38,12 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		if !skipIndex { buildTrie() }
 		
 		guard !localOnly else { return }
-		Task {
+		Task.detached {
 			print("start loading remote db")
 			await self.loadRemoteDB()
 			print("end")
 			if !skipIndex {
-				self.buildTrie()
+				await self.buildTrie()
 			}
 		}
 	}
@@ -112,14 +112,7 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		letterStats = []
 	}
 	
-	//cl i disabled ts cos its quicker to rebuild it then to load ts
 	private func saveTrie() {
-//		return
-//		guard let data = try? encoder.encode(trie.root) else {
-//			fatalError("failed to encode trie")
-//		}
-//		try! data.write(to: EmojiHoarder.localTrie)
-		
 		guard let dataDict = try? encoder.encode(trie.dict) else {
 			fatalError("failed to encode trie dict")
 		}
@@ -127,14 +120,6 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	}
 	
 	private func loadTrie() {
-//		return
-//		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrie.path) else { return }
-//		guard let data = try? Data(contentsOf: EmojiHoarder.localTrie) else { return }
-//		guard let decoded = try? decoder.decode(TrieNode.self, from: data) else {
-//			fatalError("failed to decode trie")
-//		}
-//		self.trie.root = decoded
-		
 		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrieDict.path()) else { return }
 		guard let dataDict = try? Data(contentsOf: EmojiHoarder.localTrieDict) else { return }
 		guard let decodedDict = try? decoder.decode([String:Emoji].self, from: dataDict) else {
@@ -146,19 +131,13 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	func buildTrie() {
 		let start = Date().timeIntervalSince1970
 		for emoji in emojis {
-			trie.insert(word: emoji.name)
-		}
-		buildTrieDict()
-		saveTrie()
-		generateLetterStats()
-		print("done building trie in", Date().timeIntervalSince1970-start)
-	}
-	
-	private func buildTrieDict() {
-		for emoji in emojis {
+//			trie.insewrt(word: emoji.name)
 			trie.dict[emoji.name] = emoji
 		}
 		buildDownloadedEmojis()
+		saveTrie()
+		generateLetterStats()
+		print("done building trie in", Date().timeIntervalSince1970-start)
 	}
 	
 	func buildDownloadedEmojis() {
@@ -190,10 +169,13 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		return []
 	}
 	
+	nonisolated
 	private func loadRemoteDB() async {
 		async let fetched = self.fetchRemoteDB()
 		if let fetched = await fetched {
-			withAnimation(.snappy) { self.emojis = fetched }
+			await MainActor.run {
+				withAnimation(.snappy) { self.emojis = fetched }
+			}
 		}
 	}
 	

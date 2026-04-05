@@ -9,11 +9,13 @@ import Foundation
 import SwiftUI
 import Combine
 
+nonisolated
 class TrieNode: Codable {
 	var children: [String: TrieNode] = [:]
 	var isEndOfWord: Bool = false
 }
 
+nonisolated
 class Trie: ObservableObject {
 	var root: TrieNode = TrieNode()
 	var dict: [String:Emoji] = [:]

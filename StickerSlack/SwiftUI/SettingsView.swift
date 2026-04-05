@@ -51,40 +51,43 @@ struct SettingsView: View {
 						Text("🎉")
 							.font(.largeTitle)
 					}
-					NavigationLink {
-						List {
-							Picker(selection: $hoarder.letterStatsSorting.by) {
-								ForEach(EmojiHoarder.SortLetterStatsBy.allCases, id: \.self) { sortType in
-									Text(sortType.rawValue).tag(sortType)
-								}
-							} label: {
-								Label("Sort by", systemImage: "arrow.up.arrow.down")
-							}
-							.onChange(of: hoarder.letterStatsSorting.by) { _ in
-								hoarder.sortLetterStats(by: hoarder.letterStatsSorting)
-							}
-							
-							Picker(selection: $hoarder.letterStatsSorting.ascending) {
-									Text("Ascending").tag(true)
-									Text("Descending").tag(false)
-							} label: {
-								Label("Order", systemImage: "greaterthan")
-							}
-							.onChange(of: hoarder.letterStatsSorting.ascending) { _ in
-								hoarder.sortLetterStats(by: hoarder.letterStatsSorting)
-							}
-							
-							ForEach(hoarder.letterStats, id: \.self) { stat in
-								HStack {
-									Text("\(stat.char)")
-									Spacer()
-									Text("\(stat.count)")
-								}
-							}
-						}
-					} label: {
-						Label("Letter Stats", systemImage: "textformat")
-					}
+//					NavigationLink {
+//						List {
+//							Picker(selection: $hoarder.letterStatsSorting.by) {
+//								ForEach(EmojiHoarder.SortLetterStatsBy.allCases, id: \.self) { sortType in
+//									Text(sortType.rawValue).tag(sortType)
+//								}
+//							} label: {
+//								Label("Sort by", systemImage: "arrow.up.arrow.down")
+//							}
+//							.onChange(of: hoarder.letterStatsSorting.by) { _ in
+//								hoarder.sortLetterStats(by: hoarder.letterStatsSorting)
+//							}
+//							
+//							Picker(selection: $hoarder.letterStatsSorting.ascending) {
+//									Text("Ascending").tag(true)
+//									Text("Descending").tag(false)
+//							} label: {
+//								Label("Order", systemImage: "greaterthan")
+//							}
+//							.onChange(of: hoarder.letterStatsSorting.ascending) { _ in
+//								hoarder.sortLetterStats(by: hoarder.letterStatsSorting)
+//							}
+//							
+//							ForEach(hoarder.letterStats, id: \.self) { stat in
+//								HStack {
+//									Text("\(stat.char)")
+//									Spacer()
+//									Text("\(stat.count)")
+//								}
+//							}
+//						}
+//						.onAppear {
+//							hoarder.generateLetterStats()
+//						}
+//					} label: {
+//						Label("Letter Stats", systemImage: "textformat")
+//					}
 				}
 				
 				Button("Show Welcome", systemImage: "arrow.trianglehead.clockwise") {
