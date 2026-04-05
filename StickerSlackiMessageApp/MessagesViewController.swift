@@ -7,6 +7,7 @@
 
 import UIKit
 import Messages
+import SwiftUI
 
 class MessagesViewController: MSMessagesAppViewController {
 	let dataSource: StickerBrowserDataSource = StickerBrowserDataSource()
@@ -24,6 +25,37 @@ class MessagesViewController: MSMessagesAppViewController {
 		stickerBrowser.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
 		stickerBrowser.dataSource = dataSource
 		stickerBrowser.autoresizingMask = [.flexibleWidth]
+		
+		guard stickerBrowser.dataSource?.numberOfStickers(in: stickerBrowser) != 0 else {
+			let swiftUIView = NoStickersView()
+			let hostingController = UIHostingController(rootView: swiftUIView)
+			addChild(hostingController)
+			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+			view.addSubview(hostingController.view)
+			hostingController.didMove(toParent: self)
+			
+			let link = UIButton()
+			link.setTitle("Open StickerSlack", for: .normal)
+			link.setImage(UIImage(systemName: "arrow.up.right.square"), for: .normal)
+			link.setTitleColor(.systemBlue, for: .normal)
+			link.frame = view.frame
+			link.translatesAutoresizingMaskIntoConstraints = false
+			link.addTarget(self, action: #selector(openStickerSlack), for: .touchUpInside)
+			view.addSubview(link)
+
+			NSLayoutConstraint.activate([
+				hostingController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+				hostingController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+				hostingController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+				hostingController.view.heightAnchor.constraint(equalTo: view.heightAnchor),
+				link.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+				link.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+				link.heightAnchor.constraint(equalToConstant: 50)
+			])
+
+			return
+		}
+		
 		view.addSubview(stickerBrowser)
 		stickerBrowser.reloadData()
 		view.bringSubviewToFront(stickerBrowser)
@@ -73,4 +105,12 @@ class MessagesViewController: MSMessagesAppViewController {
 		// Use this method to finalize any behaviors associated with the change in presentation style.
 	}
 	
+	@objc
+	func openStickerSlack() {
+		if let url = URL(string: "stickerslack://") {
+			self.extensionContext?.open(url) { success in
+				print("open url: \(success)")
+			}
+		}
+	}
 }

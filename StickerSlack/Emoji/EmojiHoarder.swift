@@ -12,10 +12,10 @@ import UniformTypeIdentifiers
 import Haptics
 
 class EmojiHoarder: Hoarder, ObservableObject {
-	static let container: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
-	nonisolated static let localEmojiDB: URL = EmojiHoarder.container.appendingPathComponent("_____localEmojiDB.json", conformingTo: .fileURL)
-	nonisolated static let localTrie: URL = EmojiHoarder.container.appendingPathComponent("_____localTrie.json", conformingTo: .fileURL)
-	nonisolated static let localTrieDict: URL = EmojiHoarder.container.appendingPathComponent("_____localTrieDict.json", conformingTo: .fileURL)
+	static let library: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
+	static let container: URL = library.appendingPathComponent("slack", conformingTo: .directory)
+	nonisolated static let localEmojiDB: URL = EmojiHoarder.library.appendingPathComponent("_____localEmojiDB.json", conformingTo: .fileURL)
+	nonisolated static let localTrieDict: URL = EmojiHoarder.library.appendingPathComponent("_____localTrieDict.json", conformingTo: .fileURL)
 	let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	
 	@Published var emojis: [Emoji] = []
@@ -32,16 +32,26 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	init(localOnly: Bool = false, skipIndex: Bool = false) {
 		self.showWelcome = !UserDefaults.standard.bool(forKey: "showWelcome")
 		
-		let localDB = loadLocalDB()
-		withAnimation(.snappy) { self.emojis = localDB }
-		loadTrie()
-		if !skipIndex { buildTrie() }
+		if !FileManager.default.fileExists(atPath: EmojiHoarder.container.path()) {
+			try! FileManager.default.createDirectory(at: EmojiHoarder.container, withIntermediateDirectories: true)
+		}
 		
-		guard !localOnly else { return }
+		self.emojis = loadLocalDB()
+		loadTrie()
+		
+		startLoading(localOnly: localOnly, skipIndex: skipIndex)
+	}
+	
+	func startLoading(localOnly: Bool, skipIndex: Bool) {
 		Task.detached {
+			if !skipIndex { await self.buildTrie() }
+			
+			guard !localOnly else { return }
+			
 			print("start loading remote db")
 			await self.loadRemoteDB()
 			print("end")
+			
 			if !skipIndex {
 				await self.buildTrie()
 			}
@@ -51,8 +61,6 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	@MainActor
 	func downloadAllStickers() async {
 		let start: Date = .now
-		
-		
 		let cores = ProcessInfo.processInfo.processorCount-1
 		var ranges: [Range<Int>] = []
 		for i in 0..<cores {
@@ -104,7 +112,6 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		trie.dict = [:]
 		trie.wordlist = []
 		try? FileManager.default.removeItem(at: EmojiHoarder.localEmojiDB)
-		try? FileManager.default.removeItem(at: EmojiHoarder.localTrie)
 		try? FileManager.default.removeItem(at: EmojiHoarder.localTrieDict)
 		
 		downloadedStickers = []
@@ -128,30 +135,43 @@ class EmojiHoarder: Hoarder, ObservableObject {
 		self.trie.dict = decodedDict
 	}
 	
-	func buildTrie() {
+	nonisolated
+	func buildTrie() async {
 		let start = Date().timeIntervalSince1970
-		for emoji in emojis {
+		var wordlist = await trie.wordlist
+		var dict = await trie.dict
+		for emoji in await emojis {
 //			trie.insert(word: emoji.name)
-			trie.wordlist.insert(emoji.name)
-			trie.dict[emoji.name] = emoji
+			wordlist.insert(emoji.name)
+			dict[emoji.name] = emoji
 		}
-		buildDownloadedEmojis()
-		saveTrie()
-		generateLetterStats()
+		await trie.wordlist = wordlist
+		await trie.dict = dict
+		
+		await buildDownloadedEmojis()
+		await saveTrie()
 		print("done building trie in", Date().timeIntervalSince1970-start)
 	}
 	
-	func buildDownloadedEmojis() {
+	nonisolated
+	func buildDownloadedEmojis() async {
 		if let data = UserDefaults.standard.data(forKey: "downloadedEmojis"),
-		   let decoded = try? decoder.decode(Set<String>.self, from: data) {
-			downloadedStickers = decoded
+		   let decoded = try? await decoder.decode(Set<String>.self, from: data) {
+			await MainActor.run {
+				downloadedStickers = decoded
+			}
 		} else {
-			downloadedStickers = []
-			if let files = try? FileManager.default.contentsOfDirectory(atPath: EmojiHoarder.container.path) {
+			var newDownloadedStickers: Set<String> = []
+			if let files = try? await FileManager.default.contentsOfDirectory(atPath: EmojiHoarder.container.path) {
 				for file in files {
 					let name = String(file.split(separator: ".")[0])
-					downloadedStickers.insert(name)
+					newDownloadedStickers.insert(name)
 				}
+			}
+			newDownloadedStickers.remove("DS_Store")
+			await MainActor.run {
+				downloadedStickers = []
+				downloadedStickers = newDownloadedStickers
 			}
 			return
 		}
@@ -198,14 +218,14 @@ class EmojiHoarder: Hoarder, ObservableObject {
 			let local = loadLocalDB()
 			await MainActor.run {
 				emojis = local
-				buildTrie()
 			}
+			await buildTrie()
 			return
 		}
 		await MainActor.run {
 			withAnimation(.snappy) { self.emojis = fetched }
-			buildTrie()
 		}
+		await buildTrie()
 	}
 	
 	nonisolated func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {

@@ -14,6 +14,13 @@ struct BrowseView: View {
 	
 	var body: some View {
 		VStack {
+			Picker("", selection: $browseWhat) {
+				ForEach(StickerType.allCases) { type in
+					Text(type.description).tag(type)
+				}
+			}
+			.pickerStyle(.segmented)
+			.padding(.horizontal)
 			Group {
 				switch browseWhat {
 				case .slackEmoji:
@@ -31,15 +38,6 @@ struct BrowseView: View {
 						}
 					}
 				}
-			}
-			.overlay(alignment: .top) {
-				Picker("", selection: $browseWhat) {
-					ForEach(StickerType.allCases) { type in
-						Text(type.description).tag(type)
-					}
-				}
-				.pickerStyle(.segmented)
-				.padding(.horizontal)
 			}
 		}
 	}

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Haptics
 
 struct SettingsView: View {
 	@ObservedObject var hoarder: EmojiHoarder
@@ -50,6 +51,9 @@ struct SettingsView: View {
 					if hoarder.downloadedStickers.count == hoarder.emojis.count {
 						Text("🎉")
 							.font(.largeTitle)
+							.onTapGesture {
+								Haptic.rigid.trigger()
+							}
 					}
 //					NavigationLink {
 //						List {
@@ -122,7 +126,9 @@ struct SettingsView: View {
 					
 					Button("Reindex", systemImage: "list.bullet.clipboard", role: .destructive) {
 						hoarder.resetAllIndexes()
-						hoarder.buildTrie()
+						Task {
+							await hoarder.buildTrie()
+						}
 					}
 					.foregroundStyle(.red)
 				}

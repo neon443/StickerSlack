@@ -11,6 +11,7 @@ import Combine
 import UniformTypeIdentifiers
 
 protocol Hoarder: ObservableObject {
+	static var library: URL { get }
 	static var container: URL { get }
 	var endpoint: URL { get }
 	var downloadedStickers: Set<String> { get set }

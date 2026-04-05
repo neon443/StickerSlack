@@ -18,7 +18,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 		let tableView = context.coordinator as UITableViewController
 		tableView.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 		tableView.tableView.dataSource = context.coordinator
-		tableView.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
+		tableView.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
 		tableView.tableView.separatorStyle = .none
 		return tableView.tableView
 	}
@@ -52,6 +52,16 @@ struct EmojiCollectionView: UIViewRepresentable {
 		}
 		
 		override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+			guard !hoarder.trie.dict.isEmpty else {
+				let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+				let spinner = UIActivityIndicatorView()
+				spinner.startAnimating()
+				spinner.style = .large
+				spinner.frame = cell.frame
+				spinner.autoresizingMask = .flexibleWidth
+				cell.addSubview(spinner)
+				return cell
+			}
 			let emojiName = items[indexPath.row]
 			let emoji = hoarder.trie.dict[emojiName]!
 			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)

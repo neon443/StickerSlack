@@ -9,14 +9,26 @@ import SwiftUI
 
 struct WelcomeView: View {
 	@Environment(\.dismiss) var dismiss
+	@Environment(\.colorScheme) var colourScheme
+	var isDark: Bool {
+		return colourScheme == .dark
+	}
 	
 	var body: some View {
-		VStack {
-			Text("StickerSlack")
-				.bold()
-				.font(.largeTitle)
-				.monospaced()
-				.padding()
+		VStack(spacing: 0) {
+			HStack {
+				Image("icon\(isDark ? "-dark" : "")")
+					.resizable().scaledToFit()
+					.frame(maxWidth: 75)
+				Spacer()
+				Text("StickerSlack")
+					.bold()
+					.font(.largeTitle)
+					.monospaced()
+				Spacer()
+			}
+			.padding(.top, 20)
+			.padding(.leading, 20)
 			List {
 				Section("How to use") {
 					ListRow(number: 1, text: "Browse or search for an emoji")
@@ -29,28 +41,34 @@ struct WelcomeView: View {
 			}
 			.scrollContentBackground(.hidden)
 			Spacer()
-			if #available(iOS 19, *) {
-				Button() {
-					dismiss()
-				} label: {
-					Text("Continue")
-						.font(.title)
-						.bold()
+			Group {
+				if #available(iOS 19, *) {
+					Button() {
+						dismiss()
+					} label: {
+						ContinueButtonView()
+					}
+					.buttonStyle(.glassProminent)
+				} else {
+					Button() {
+						dismiss()
+					} label: {
+						ContinueButtonView()
+					}
+					.buttonStyle(.borderedProminent)
 				}
-				.buttonStyle(.glassProminent)
-				.padding(.bottom)
-			} else {
-				Button() {
-					dismiss()
-				} label: {
-					Text("Continue")
-						.font(.title)
-						.bold()
-				}
-				.buttonStyle(.borderedProminent)
-				.padding(.bottom)
 			}
+			.padding(.bottom)
+			.tint(.purple)
 		}
+	}
+}
+
+fileprivate struct ContinueButtonView: View {
+	var body: some View {
+		Text("Continue")
+			.font(.title)
+			.bold()
 	}
 }
 

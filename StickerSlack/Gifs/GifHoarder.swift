@@ -11,7 +11,8 @@ import UniformTypeIdentifiers
 import Combine
 
 class GifHoarder: Hoarder, ObservableObject {
-	static let container: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
+	static let library: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
+	static let container: URL = library.appendingPathComponent("giphy", conformingTo: .directory)
 	
 	static var apiKey: String = "a2mFsDTpX5blodY8ltkG6Q1xy5NgFSbc"
 	var endpoint: URL = URL(string: "https://api.giphy.com/v1/gifs/trending")!
@@ -31,6 +32,10 @@ class GifHoarder: Hoarder, ObservableObject {
 	}
 	
 	init(localOnly: Bool = false) {
+		if !FileManager.default.fileExists(atPath: GifHoarder.container.path()) {
+			try! FileManager.default.createDirectory(at: GifHoarder.container, withIntermediateDirectories: true)
+		}
+		
 		var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false)
 		components?.queryItems = [
 			URLQueryItem(name: "api_key", value: GifHoarder.apiKey),

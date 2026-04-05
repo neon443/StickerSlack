@@ -50,7 +50,7 @@ struct SearchView: View {
 					previousResult: Set(searchResult)
 				)
 				await MainActor.run {
-					withAnimation {
+					withAnimation(.interactiveSpring) {
 						searchResult = result
 						previousSearches.append(searchTerm)
 					}

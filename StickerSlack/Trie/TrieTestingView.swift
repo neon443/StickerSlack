@@ -62,7 +62,9 @@ struct TrieTestingView: View {
 				}
 				Spacer()
 				Button("add emojis!") {
-					hoarder.buildTrie()
+					Task {
+						await hoarder.buildTrie()
+					}
 				}
 				.buttonStyle(.borderedProminent)
 			}
