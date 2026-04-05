@@ -131,7 +131,8 @@ class EmojiHoarder: Hoarder, ObservableObject {
 	func buildTrie() {
 		let start = Date().timeIntervalSince1970
 		for emoji in emojis {
-//			trie.insewrt(word: emoji.name)
+//			trie.insert(word: emoji.name)
+			trie.wordlist.insert(emoji.name)
 			trie.dict[emoji.name] = emoji
 		}
 		buildDownloadedEmojis()

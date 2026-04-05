@@ -14,27 +14,32 @@ struct BrowseView: View {
 	
 	var body: some View {
 		VStack {
-			Picker("", selection: $browseWhat) {
-				ForEach(StickerType.allCases) { type in
-					Text(type.description).tag(type)
-				}
-			}
-			.pickerStyle(.segmented)
-			switch browseWhat {
-			case .slackEmoji:
-				EmojiCollectionView(
-					hoarder: emojiHoarder,
-					items: emojiHoarder.emojis.map { $0.name }
-				)
-				.ignoresSafeArea(.container, edges: .bottom)
-				.id(emojiHoarder.emojis)
-			case .giphyGifs:
-				ScrollView {
-					ForEach(gifHoarder.trendingGifs) { gif in
-						StickerRow(hoarder: emojiHoarder, sticker: gif)
-							.listRowSeparator(.hidden)
+			Group {
+				switch browseWhat {
+				case .slackEmoji:
+					EmojiCollectionView(
+						hoarder: emojiHoarder,
+						items: emojiHoarder.emojis.map { $0.name }
+					)
+					.ignoresSafeArea(.container, edges: .bottom)
+					.id(emojiHoarder.emojis)
+				case .giphyGifs:
+					ScrollView {
+						ForEach(gifHoarder.trendingGifs) { gif in
+							StickerRow(hoarder: emojiHoarder, sticker: gif)
+								.listRowSeparator(.hidden)
+						}
 					}
 				}
+			}
+			.overlay(alignment: .top) {
+				Picker("", selection: $browseWhat) {
+					ForEach(StickerType.allCases) { type in
+						Text(type.description).tag(type)
+					}
+				}
+				.pickerStyle(.segmented)
+				.padding(.horizontal)
 			}
 		}
 	}

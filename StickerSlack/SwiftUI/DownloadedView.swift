@@ -42,7 +42,7 @@ struct DownloadedView: View {
 				let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
 				let layout = Array(repeating: col, count: columns)
 				LazyVGrid(columns: layout, spacing: spacing) {
-					ForEach(emojiHoarder.downloadedStickers.sorted(), id: \.self) { name in
+					ForEach(Array(emojiHoarder.downloadedStickers), id: \.self) { name in
 						if let emoji = emojiHoarder.trie.dict[name] {
 							ZStack {
 								Rectangle()
