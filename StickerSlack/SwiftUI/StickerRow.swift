@@ -14,7 +14,7 @@ struct StickerRow<T: Hoarder>: View {
 	@State var showTooltip: Bool = false
 	
 	var isDownloaded: Bool {
-		return FileManager.default.fileExists(atPath: sticker.localImageURLString)
+		return hoarder.downloadedStickers.contains(sticker.name)
 	}
 	
 	var body: some View {
@@ -30,32 +30,33 @@ struct StickerRow<T: Hoarder>: View {
 					.foregroundColor(isDownloaded ? .green : .primary)
 					.lineLimit(nil)
 					.multilineTextAlignment(.leading)
-				Button {
-					showTooltip.toggle()
-				} label: {
-					Image(sticker.typeGlyph)
-						.resizable().scaledToFit()
-						.frame(maxHeight: 20)
-						.foregroundStyle(.gray)
-				}
-				.buttonStyle(.borderless)
-				.alert("From Slack", isPresented: $showTooltip) {
-					Button("Done") {}
-				}
-				if isDownloaded {
-					Image(systemName: "arrow.down.circle.fill")
-						.resizable().scaledToFit()
-						.frame(width: 20, height: 20)
-						.symbolRenderingMode(.hierarchical)
-						.foregroundStyle(.gray)
-						.transition(.scale)
+				VStack(alignment: .leading, spacing: 5) {
+					Button {
+						showTooltip.toggle()
+					} label: {
+						Image(sticker.typeGlyph)
+							.resizable().scaledToFit()
+							.frame(maxHeight: 20)
+							.foregroundStyle(.gray)
+					}
+					.buttonStyle(.borderless)
+					.alert("From Slack", isPresented: $showTooltip) {
+						Button("Done") {}
+					}
+					if isDownloaded {
+						Image(systemName: "arrow.down.circle.fill")
+							.resizable().scaledToFit()
+							.frame(width: 20, height: 20)
+							.symbolRenderingMode(.hierarchical)
+							.foregroundStyle(.gray)
+							.transition(.scale)
+					}
 				}
 			}
 			.padding(5)
 			.background(
 				RoundedRectangle(cornerRadius: 15)
-					.foregroundStyle(.gray.opacity(0.1))
-					.shadow(radius: 2)
+					.foregroundStyle(.gray.opacity(0.2))
 			)
 			
 			Spacer()
@@ -96,10 +97,6 @@ struct StickerRow<T: Hoarder>: View {
 		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdef", url: Emoji.test.remoteImageURL))
 		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefg", url: Emoji.test.remoteImageURL))
 		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefgh", url: Emoji.test.remoteImageURL))
-		ForEach(hoarder.downloadedStickers.sorted(), id: \.self) { name in
-			if let emoji = hoarder.trie.dict[name] {
-				StickerRow(hoarder: hoarder, sticker: emoji)
-			}
-		}
 	}
+	.listStyle(.plain)
 }

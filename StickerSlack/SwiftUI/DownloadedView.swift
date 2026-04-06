@@ -13,6 +13,7 @@ struct DownloadedView: View {
 	
 	@Environment(\.colorScheme) var colorScheme
 	var isDark: Bool { colorScheme == .dark }
+	@State var browseWhat: StickerType = .slackEmoji
 	
 	var minColWidth: CGFloat { 75 }
 	var spacing: CGFloat { 5 }
@@ -25,6 +26,13 @@ struct DownloadedView: View {
 	}
 	
 	var body: some View {
+		Picker("", selection: $browseWhat) {
+			ForEach(StickerType.allCases) { type in
+				Text(type.description)
+					.tag(type)
+			}
+		}
+		.pickerStyle(.segmented)
 		if emojiHoarder.downloadedStickers.isEmpty && gifHoarder.downloadedStickers.isEmpty {
 			NoStickersView()
 		}

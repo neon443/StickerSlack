@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 import Haptics
 
 class EmojiHoarder: BaseHoarder {
-	static let container: URL = library.appendingPathComponent("slack", conformingTo: .directory)
+	static let container: URL = library.appendingPathComponent("Emojis", conformingTo: .directory)
 	nonisolated static let localEmojiDB: URL = EmojiHoarder.library.appendingPathComponent("_____localEmojiDB.json", conformingTo: .fileURL)
 	nonisolated static let localTrieDict: URL = EmojiHoarder.library.appendingPathComponent("_____localTrieDict.json", conformingTo: .fileURL)
 	let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
@@ -148,33 +148,13 @@ class EmojiHoarder: BaseHoarder {
 		await trie.wordlist = wordlist
 		await trie.dict = dict
 		
-		await buildDownloadedEmojis()
+		await buildDownloadedStickers()
 		await saveTrie()
 		print("done building trie in", Date().timeIntervalSince1970-start)
 	}
 	
-	nonisolated
-	func buildDownloadedEmojis() async {
-		if let data = UserDefaults.standard.data(forKey: "downloadedEmojis"),
-		   let decoded = try? await decoder.decode(Set<String>.self, from: data) {
-			await MainActor.run {
-				downloadedStickers = decoded
-			}
-		} else {
-			var newDownloadedStickers: Set<String> = []
-			if let files = try? await FileManager.default.contentsOfDirectory(atPath: EmojiHoarder.container.path) {
-				for file in files {
-					let name = String(file.split(separator: ".")[0])
-					newDownloadedStickers.insert(name)
-				}
-			}
-			newDownloadedStickers.remove("DS_Store")
-			await MainActor.run {
-				downloadedStickers = []
-				downloadedStickers = newDownloadedStickers
-			}
-			return
-		}
+	override func buildDownloadedStickers(for stickerType: String = "Emojis") async {
+		await super.buildDownloadedStickers(for: stickerType)
 	}
 	
 	func storeDownloadedIndexes() {

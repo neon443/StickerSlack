@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 import Combine
 
 class GifHoarder: BaseHoarder {
-	static let container: URL = library.appendingPathComponent("giphy", conformingTo: .directory)
+	static let container: URL = library.appendingPathComponent("Gifs", conformingTo: .directory)
 	
 	static var apiKey: String = "a2mFsDTpX5blodY8ltkG6Q1xy5NgFSbc"
 	var endpoint: URL = URL(string: "https://api.giphy.com/v1/gifs/trending")!
@@ -21,15 +21,6 @@ class GifHoarder: BaseHoarder {
 	@Published var trendingGifs: [Gif] = []
 	//	@Published override var downloadedStickers: Set<String> = []
 	
-	
-	override func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
-		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
-	}
-	
-	override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
-		super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
-	}
-	
 	init(localOnly: Bool = false) {
 		super.init()
 		if !FileManager.default.fileExists(atPath: GifHoarder.container.path()) {
@@ -37,7 +28,7 @@ class GifHoarder: BaseHoarder {
 		}
 		startLoadingTrending()
 	}
-	
+
 	func startLoadingTrending() {
 		var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false)
 		components?.queryItems = [
@@ -58,5 +49,23 @@ class GifHoarder: BaseHoarder {
 				print(error)
 			}
 		}
+	}
+	
+	override func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
+		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
+		let _ = withAnimation(.snappy) {
+			downloadedStickers.insert(emoji.name)
+		}
+	}
+	
+	override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
+		super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
+		let _ = withAnimation(.snappy) {
+			downloadedStickers.remove(emoji.name)
+		}
+	}
+	
+	override func buildDownloadedStickers(for stickerType: String = "Gifs") async {
+		await super.buildDownloadedStickers(for: stickerType)
 	}
 }
