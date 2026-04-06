@@ -48,6 +48,7 @@ class GifHoarder: BaseHoarder {
 			} catch {
 				print(error)
 			}
+			await buildDownloadedStickers()
 		}
 	}
 	
