@@ -117,10 +117,10 @@
 		A9CD6C3B2EDDE6B500B7F421 /* EmojiPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D15B892EB1142C00404792 /* EmojiPack.swift */; };
 		A9D15B8B2EB1142C00404792 /* EmojiPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D15B892EB1142C00404792 /* EmojiPack.swift */; };
 		A9D6A8212F7014AE00F198FB /* TestStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995D95A2F6EBBDD0043E5F5 /* TestStructures.swift */; };
-		A9EB72392EB93FDB00658CEB /* EmojiCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72382EB93FDB00658CEB /* EmojiCollectionView.swift */; };
+		A9EB72392EB93FDB00658CEB /* EmojiTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72382EB93FDB00658CEB /* EmojiTableView.swift */; };
 		A9EB72472EB948C400658CEB /* StickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72462EB948C400658CEB /* StickerRow.swift */; };
 		A9EB72492EB948C400658CEB /* StickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72462EB948C400658CEB /* StickerRow.swift */; };
-		A9EB724A2EB948E000658CEB /* EmojiCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72382EB93FDB00658CEB /* EmojiCollectionView.swift */; };
+		A9EB724A2EB948E000658CEB /* EmojiTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72382EB93FDB00658CEB /* EmojiTableView.swift */; };
 		A9EB724B2EB94A5700658CEB /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C172DB2EB8C9AC008A7885 /* Trie.swift */; };
 		A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */; };
 		A9EB724F2EB94A6B00658CEB /* TrieTestingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */; };
@@ -217,7 +217,7 @@
 		A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackManager.swift; sourceTree = "<group>"; };
 		A9D15B892EB1142C00404792 /* EmojiPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPack.swift; sourceTree = "<group>"; };
 		A9E2ECD72EB74CE00038B2D6 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		A9EB72382EB93FDB00658CEB /* EmojiCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionView.swift; sourceTree = "<group>"; };
+		A9EB72382EB93FDB00658CEB /* EmojiTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTableView.swift; sourceTree = "<group>"; };
 		A9EB72462EB948C400658CEB /* StickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerRow.swift; sourceTree = "<group>"; };
 		A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrieTestingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -323,7 +323,7 @@
 		A91C098E2EBBD7C700210C34 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				A9EB72382EB93FDB00658CEB /* EmojiCollectionView.swift */,
+				A9EB72382EB93FDB00658CEB /* EmojiTableView.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -631,7 +631,7 @@
 				A957C17F2ECFAA1100EA3EE9 /* GifView.swift in Sources */,
 				A957C1742ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
 				A9A7A44B2F6837A800BB84C6 /* GiphyUser.swift in Sources */,
-				A9EB72392EB93FDB00658CEB /* EmojiCollectionView.swift in Sources */,
+				A9EB72392EB93FDB00658CEB /* EmojiTableView.swift in Sources */,
 				A955B3EE2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
 				A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */,
 				A957C17A2ECE542D00EA3EE9 /* GifManager.swift in Sources */,
@@ -713,7 +713,7 @@
 				A921C2E32ED071C900E57B1A /* ListRow.swift in Sources */,
 				A9BE30EF2F5B004800A57668 /* GifHoarder.swift in Sources */,
 				A9A7A4492F68361200BB84C6 /* Meta.swift in Sources */,
-				A9EB724A2EB948E000658CEB /* EmojiCollectionView.swift in Sources */,
+				A9EB724A2EB948E000658CEB /* EmojiTableView.swift in Sources */,
 				A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
 				A9BBC51A2EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A995D95B2F6EBBDD0043E5F5 /* TestStructures.swift in Sources */,

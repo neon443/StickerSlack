@@ -11,10 +11,10 @@ struct EmojiPackManager: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	
 	var body: some View {
-		ForEach(hoarder.emojiPacks) { pack in
-			EmojiPackDetailView(hoarder: hoarder, pack: pack)
+		ForEach($hoarder.emojiPacks) { $pack in
+			EmojiPackDetailView(hoarder: hoarder, pack: $pack)
 		}
-		EmojiPackDetailView(hoarder: hoarder, pack: .test)
+		EmojiPackDetailView(hoarder: hoarder, pack: .constant(.test))
 	}
 }
 

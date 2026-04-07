@@ -1,5 +1,5 @@
 //
-//  EmojiCollectionView.swift
+//  EmojiTableView.swift
 //  StickerSlack
 //
 //  Created by neon443 on 03/11/2025.
@@ -10,7 +10,7 @@ import UIKit
 import SwiftUI
 import Haptics
 
-struct EmojiCollectionView: UIViewRepresentable {
+struct EmojiTableView: UIViewRepresentable {
 	let hoarder: EmojiHoarder
 	let items: [String]
 	

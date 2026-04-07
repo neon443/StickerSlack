@@ -116,7 +116,7 @@ struct TrieTestingView: View {
 			}
 				
 			if uikit {
-				EmojiCollectionView(hoarder: hoarder, items: searchResults)
+				EmojiTableView(hoarder: hoarder, items: searchResults)
 					.animation(.snappy, value: searchResults)
 			} else {
 				List(searchResults, id: \.self) { item in

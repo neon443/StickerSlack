@@ -9,8 +9,11 @@ import SwiftUI
 
 struct EmojiPackDetailView: View {
 	@ObservedObject var hoarder: EmojiHoarder
-	@State var pack: EmojiPack
+	@Binding var pack: EmojiPack
 	@State var edit: Bool = true
+	@State var editName: Bool = false
+	@State var editDescription: Bool = false
+	@State var showAdder: Bool = true
 	
 	var minColWidth: CGFloat { 75 }
 	var spacing: CGFloat { 10 }
@@ -21,28 +24,35 @@ struct EmojiPackDetailView: View {
 			alignment: .center
 		)
 	}
+	@Environment(\.dismiss) var dismiss
+	
 	var body: some View {
 		NavigationStack {
 			GeometryReader { geo in
 				VStack {
-					if #unavailable(iOS 19) {
-						Button() {
-							
-						} label: {
-							Text(pack.name)
-								.bold()
-								.foregroundStyle(edit ? .blue : .primary)
-								.font(.title)
-						}
-						.disabled(!edit)
-					}
 					Button() {
-						
+						editName.toggle()
+					} label: {
+						Text(pack.name)
+							.bold()
+							.foregroundStyle(edit ? .blue : .primary)
+							.font(.title)
+					}
+					.disabled(!edit)
+					.alert("Edit Name", isPresented: $editName) {
+						TextField("", text: $pack.name)
+					}
+					
+					Button() {
+						editDescription.toggle()
 					} label: {
 						Text(pack.description)
 							.foregroundStyle(edit ? .blue : .primary)
 					}
 					.disabled(!edit)
+					.alert("Edit Description", isPresented: $editDescription) {
+						TextField("", text: $pack.description)
+					}
 					
 					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
 					let layout = Array(repeating: col, count: columns)
@@ -55,6 +65,40 @@ struct EmojiPackDetailView: View {
 									.multilineTextAlignment(.center)
 									.font(.caption)
 							}
+							.overlay(alignment: .topLeading) {
+								if edit {
+									Button(role: .destructive) {
+										withAnimation {
+											pack.emojiNames.removeAll { $0 == name }
+										}
+									} label: {
+										Image(systemName: "minus.circle.fill")
+											.resizable().scaledToFit()
+									}
+									.frame(maxWidth: 25)
+									.padding(-10)
+								}
+							}
+						}
+						if edit {
+							Button() {
+								showAdder.toggle()
+							} label: {
+								VStack {
+									Image(systemName: "plus.square.dashed")
+										.resizable().scaledToFit()
+										.foregroundStyle(.green.opacity(0.5))
+									Text("Add")
+										.multilineTextAlignment(.center)
+										.font(.caption)
+										.foregroundStyle(.green.opacity(0.5))
+								}
+							}
+							.sheet(isPresented: $showAdder) {
+								SearchView(hoarder: hoarder, fromPackEditor: true) {
+									print($0)
+								}
+							}
 						}
 					}
 					.padding(.vertical)
@@ -64,7 +108,7 @@ struct EmojiPackDetailView: View {
 						.multilineTextAlignment(.center)
 				}
 				.padding()
-				.navigationTitle(edit ? "Editing" : pack.name)
+				.navigationTitle(edit ? "Editing" : "Pack Details")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
 					ToolbarItem() {
@@ -91,9 +135,11 @@ struct EmojiPackDetailView: View {
 	}
 }
 
+@available(iOS 17, *)
 #Preview {
+	@Previewable @State var pack: EmojiPack = .test
 	EmojiPackDetailView(
-		hoarder: EmojiHoarder(localOnly: true, skipIndex: true),
-		pack: .test
+		hoarder: EmojiHoarder(localOnly: true, skipIndex: false),
+		pack: $pack
 	)
 }

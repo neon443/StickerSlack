@@ -24,7 +24,7 @@ struct BrowseView: View {
 			Group {
 				switch browseWhat {
 				case .slackEmoji:
-					EmojiCollectionView(
+					EmojiTableView(
 						hoarder: emojiHoarder,
 						items: emojiHoarder.emojis.map { $0.name }
 					)

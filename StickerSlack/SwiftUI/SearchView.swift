@@ -17,21 +17,49 @@ struct SearchView: View {
 	
 	@State var stickerType: StickerType = .slackEmoji
 	
+	@State var fromPackEditor: Bool = false
+	@State var callback: ((String) -> Void) = { _ in }
+	var minColWidth: CGFloat { 75 }
+	var spacing: CGFloat { 10 }
+	var col: GridItem {
+		GridItem(
+			.flexible(minimum: minColWidth, maximum: 100),
+			spacing: spacing,
+			alignment: .center
+		)
+	}
+	
 	var body: some View {
 		NavigationStack {
-			Picker("", selection: $stickerType) {
-				ForEach(StickerType.allCases) { type in
-					Text(type.description).tag(type)
+			if fromPackEditor {
+				GeometryReader { geo in
+					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
+					let layout = Array(repeating: col, count: columns)
+					LazyVGrid(columns: layout, spacing: spacing) {
+						ForEach(searchResult, id: \.self) { name in
+							let emoji = hoarder.trie.dict[name] ?? .test
+							StickerPreview(sticker: emoji)
+								.onTapGesture {
+									callback(emoji.name)
+								}
+						}
+					}
 				}
-			}
-			.pickerStyle(.segmented)
-			switch stickerType {
-			case .slackEmoji:
-				EmojiCollectionView(hoarder: hoarder, items: searchResult)
-					.id(searchResult)
-					.ignoresSafeArea(edges: .bottom)
-			case .giphyGifs:
-				Text("uhh")
+			} else {
+				Picker("", selection: $stickerType) {
+					ForEach(StickerType.allCases) { type in
+						Text(type.description).tag(type)
+					}
+				}
+				.pickerStyle(.segmented)
+				switch stickerType {
+				case .slackEmoji:
+					EmojiTableView(hoarder: hoarder, items: searchResult)
+						.id(searchResult)
+						.ignoresSafeArea(edges: .bottom)
+				case .giphyGifs:
+					Text("uhh")
+				}
 			}
 		}
 		.searchable(text: $searchTerm)
@@ -50,7 +78,7 @@ struct SearchView: View {
 					previousResult: Set(searchResult)
 				)
 				await MainActor.run {
-					withAnimation(.interactiveSpring) {
+					withAnimation(.snappy) {
 						searchResult = result
 						previousSearches.append(searchTerm)
 					}
@@ -61,5 +89,8 @@ struct SearchView: View {
 }
 
 #Preview {
-	SearchView(hoarder: EmojiHoarder(localOnly: true))
+	SearchView(
+		hoarder: EmojiHoarder(localOnly: true),
+		fromPackEditor: true
+	)
 }
