@@ -12,8 +12,9 @@ struct EmojiPackManager: View {
 	
 	var body: some View {
 		ForEach(hoarder.emojiPacks) { pack in
-			EmojiPackView(hoarder: hoarder, pack: pack)
+			EmojiPackDetailView(hoarder: hoarder, pack: pack)
 		}
+		EmojiPackDetailView(hoarder: hoarder, pack: .test)
 	}
 }
 

@@ -20,6 +20,10 @@ struct ContentView: View {
 						BrowseView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
 					}
 					
+					Tab("Packs", systemImage: "square.stack.3d.up.fill") {
+						EmojiPackManager(hoarder: emojiHoarder)
+					}
+					
 					Tab("Downloaded", systemImage: "arrow.down.circle.fill") {
 						DownloadedView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
 					}
@@ -37,6 +41,10 @@ struct ContentView: View {
 					BrowseView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
 						.tabItem {
 							Label("Browse", systemImage: "square.grid.2x2.fill")
+						}
+					EmojiPackManager(hoarder: emojiHoarder)
+						.tabItem {
+							Label("Packs", systemImage: "square.stack.3d.up.fill")
 						}
 					DownloadedView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
 						.tabItem {

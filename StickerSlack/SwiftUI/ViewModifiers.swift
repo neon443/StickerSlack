@@ -27,3 +27,23 @@ struct tabViewActivationSearchActivation: ViewModifier {
 		}
 	}
 }
+
+struct glassButtonIfAv: ViewModifier {
+	var enabled: Bool
+	
+	init(_ enabled: Bool) {
+		self.enabled = enabled
+	}
+	
+	func body(content: Content) -> some View {
+		if enabled {
+			if #available(iOS 19, *) {
+				content.buttonStyle(.glassProminent)
+			} else {
+				content.buttonStyle(.borderedProminent)
+			}
+		} else {
+			content
+		}
+	}
+}

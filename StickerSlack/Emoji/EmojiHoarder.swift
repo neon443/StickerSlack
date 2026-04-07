@@ -22,6 +22,7 @@ class EmojiHoarder: BaseHoarder {
 	
 	@Published var trie: Trie = Trie()
 //	@Published var downloadedStickers: Set<String> = []
+	var downloadedStickersArr: [String] = []
 	
 	@Published var letterStats: [EmojiHoarder.LetterStat] = []
 	@Published var letterStatsSorting: EmojiHoarder.LetterStatSorting = .init(by: .letter, ascending: true)
@@ -155,6 +156,7 @@ class EmojiHoarder: BaseHoarder {
 	
 	override func buildDownloadedStickers(for stickerType: String = "Emojis") async {
 		await super.buildDownloadedStickers(for: stickerType)
+		downloadedStickersArr = Array(downloadedStickers).sorted()
 	}
 	
 	func storeDownloadedIndexes() {
@@ -216,6 +218,7 @@ class EmojiHoarder: BaseHoarder {
 			if !skipStoreIndex {
 				let _ = withAnimation(.snappy) {
 					self.downloadedStickers.insert(emoji.name)
+					self.downloadedStickersArr.append(emoji.name)
 				}
 				self.storeDownloadedIndexes()
 			}
@@ -228,6 +231,7 @@ class EmojiHoarder: BaseHoarder {
 		if !skipStoreIndex {
 			let _ = withAnimation(.snappy) {
 				downloadedStickers.remove(emoji.name)
+				downloadedStickersArr.removeAll(where: { $0 == emoji.name })
 			}
 			storeDownloadedIndexes()
 		}
