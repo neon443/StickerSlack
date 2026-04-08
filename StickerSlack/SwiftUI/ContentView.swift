@@ -33,7 +33,9 @@ struct ContentView: View {
 					}
 					
 					Tab(role: .search) {
-						SearchView(hoarder: emojiHoarder)
+						NavigationStack {
+							SearchView(hoarder: emojiHoarder)
+						}
 					}
 				}
 			} else {
@@ -54,10 +56,12 @@ struct ContentView: View {
 						.tabItem {
 							Label("Setings", systemImage: "gear")
 						}
-					SearchView(hoarder: emojiHoarder)
-						.tabItem {
-							Label("Search", systemImage: "magnifyingglass")
-						}
+					NavigationStack {
+						SearchView(hoarder: emojiHoarder)
+					}
+					.tabItem {
+						Label("Search", systemImage: "magnifyingglass")
+					}
 				}
 			}
 		}
@@ -66,7 +70,7 @@ struct ContentView: View {
 		} content: {
 			WelcomeView()
 		}
-
+		
 	}
 }
 

@@ -32,7 +32,7 @@ struct SearchView: View {
 	@Environment(\.dismiss) var dismiss
 	
 	var body: some View {
-		NavigationStack {
+		VStack {
 			if fromPackEditor {
 				GeometryReader { geo in
 					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))

@@ -14,6 +14,7 @@ struct EmojiPackDetailView: View {
 	@State var editName: Bool = false
 	@State var editDescription: Bool = false
 	@State var showAdder: Bool = false
+	@State var searchTerm: String = ""
 	
 	var minColWidth: CGFloat { 75 }
 	var spacing: CGFloat { 10 }
@@ -29,7 +30,7 @@ struct EmojiPackDetailView: View {
 	var body: some View {
 		NavigationStack {
 			GeometryReader { geo in
-				VStack {
+				ScrollView {
 					Button() {
 						editName.toggle()
 					} label: {
@@ -125,26 +126,33 @@ struct EmojiPackDetailView: View {
 								}
 							}
 							.sheet(isPresented: $showAdder) {
-								SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
-									print(selection)
-									withAnimation {
-										guard let id = UUID(uuidString: selection.id) else {
-											fatalError("bruh what happened to ur uuid")
+								NavigationStack {
+									SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
+										print(selection)
+										withAnimation {
+											pack.items.append(selection.name)
 										}
-										pack.items.append(selection.name)
+									}
+									.navigationTitle("Search Emojis")
+									.navigationBarTitleDisplayMode(.inline)
+									.presentationDragIndicator(.visible)
+									.presentationDetents([.large, .medium])
+									.toolbar {
+										Button("", systemImage: "xmark") {
+											showAdder.toggle()
+										}
 									}
 								}
 							}
 						}
 					}
 					.animation(.spring, value: pack.items)
-					.padding(.vertical)
+					.padding()
 					
 					Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
 						.bold()
 						.multilineTextAlignment(.center)
 				}
-				.padding()
 				.navigationTitle(edit ? "Editing" : "Pack Details")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
@@ -177,7 +185,7 @@ struct EmojiPackDetailView: View {
 
 @available(iOS 17, *)
 #Preview {
-	@Previewable @State var pack: EmojiPack = .new()
+	@Previewable @State var pack: EmojiPack = .test
 	EmojiPackDetailView(
 		hoarder: EmojiHoarder(localOnly: true, skipIndex: false),
 		pack: $pack
