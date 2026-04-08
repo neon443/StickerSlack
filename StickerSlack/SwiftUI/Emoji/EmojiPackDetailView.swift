@@ -54,7 +54,7 @@ struct EmojiPackDetailView: View {
 						TextField("", text: $pack.description)
 					}
 					
-					if pack.emojiNames.isEmpty {
+					if pack.items.isEmpty {
 						VStack(alignment: .center) {
 							HStack {
 								Image(systemName: "exclamationmark.triangle.fill")
@@ -63,7 +63,7 @@ struct EmojiPackDetailView: View {
 								Image(systemName: "exclamationmark.triangle.fill")
 							}
 							.foregroundStyle(.yellow)
-							Text("This pack contians no emojis 😭")
+							Text("This pack contians no emojis")
 								.padding(.vertical, 5)
 								.foregroundStyle(.foreground)
 							Text("Add emojis to this pack by editing it using the pencil button in the toolbar.")
@@ -80,14 +80,13 @@ struct EmojiPackDetailView: View {
 								.blur(radius: 5)
 								.shadow(color: .purple, radius: 5)
 						}
-						//							.padding(.vertical)
 					}
 					
 					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
 					let layout = Array(repeating: col, count: columns)
 					LazyVGrid(columns: layout, spacing: spacing) {
-						ForEach(pack.emojiNames, id: \.self) { name in
-							let emoji = hoarder.trie.dict[name] ?? .test
+						ForEach(pack.items) { item in
+							let emoji = hoarder.trie.dict[item.name] ?? .test
 							VStack {
 								StickerPreview(sticker: emoji)
 								Spacer()
@@ -98,8 +97,8 @@ struct EmojiPackDetailView: View {
 							.overlay(alignment: .topLeading) {
 								if edit {
 									Button(role: .destructive) {
-										withAnimation {
-											pack.emojiNames.removeAll { $0 == name }
+										withAnimation(.spring) {
+											pack.items.removeAll { $0.id == item.id }
 										}
 									} label: {
 										Image(systemName: "minus.circle.fill")
@@ -129,15 +128,21 @@ struct EmojiPackDetailView: View {
 								SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
 									print(selection)
 									withAnimation {
-										pack.emojiNames.append(selection)
+										guard let id = UUID(uuidString: selection.id) else {
+											fatalError("bruh what happened to ur uuid")
+										}
+										pack.items.append(
+											EmojiPack.Item(id: id, name: selection.name)
+										)
 									}
 								}
 							}
 						}
 					}
+					.animation(.spring, value: pack.items)
 					.padding(.vertical)
 					
-					Text("\(pack.emojiNames.count) Emoji\(pack.emojiNames.count.plural)")
+					Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
 						.bold()
 						.multilineTextAlignment(.center)
 				}

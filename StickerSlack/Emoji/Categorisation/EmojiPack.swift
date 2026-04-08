@@ -11,7 +11,12 @@ struct EmojiPack: Identifiable, Codable {
 	var id: UUID
 	var name: String
 	var description: String
-	var emojiNames: [String]
+	var items: [EmojiPack.Item]
+	
+	struct Item: Identifiable, Codable, Equatable {
+		var id: UUID
+		var name: String
+	}
 }
 
 extension EmojiPack {
@@ -20,7 +25,7 @@ extension EmojiPack {
 			id: UUID(),
 			name: "New Pack",
 			description: "Created on \(Date().formatted())",
-			emojiNames: []
+			items: []
 		)
 	}
 }

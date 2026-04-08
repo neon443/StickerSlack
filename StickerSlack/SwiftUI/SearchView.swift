@@ -18,7 +18,7 @@ struct SearchView: View {
 	@State var stickerType: StickerType = .slackEmoji
 	
 	@State var fromPackEditor: Bool = false
-	@State var callback: ((String) -> Void) = { _ in }
+	@State var callback: ((Emoji) -> Void) = { _ in }
 	var minColWidth: CGFloat { 75 }
 	var spacing: CGFloat { 10 }
 	var col: GridItem {
@@ -43,7 +43,7 @@ struct SearchView: View {
 								let emoji = hoarder.trie.dict[name] ?? .test
 								StickerPreview(sticker: emoji)
 									.onTapGesture {
-										callback(emoji.name)
+										callback(emoji)
 										dismiss()
 									}
 							}

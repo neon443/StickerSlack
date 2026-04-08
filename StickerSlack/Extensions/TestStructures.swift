@@ -126,15 +126,15 @@ extension EmojiPack {
 			id: UUID(),
 			name: "test pack",
 			description: "neon443's debug emoji pack",
-			emojiNames: [
-				"pf",
-				"heavysob",
-				"yay",
-				"skulk",
-				"loll",
-				"bleh",
-				"uhh",
-				"communist"
+			items: [
+				Item(id: UUID(uuidString: "06b65aee-8831-466a-b003-1feed53695ec")!, name: "pf"),
+				Item(id: UUID(uuidString: "b93f296b-6fd9-4aeb-8345-159d11f448c4")!, name: "heavysob"),
+				Item(id: UUID(uuidString: "ce03516a-61cf-429d-85e8-fe439e95b3dd")!, name: "yay"),
+				Item(id: UUID(uuidString: "c0bd5d04-c71f-40b3-ab8d-f49b07518f74")!, name: "skulk"),
+				Item(id: UUID(uuidString: "f6c0d4e0-5bf7-4d23-89fb-f415c132519a")!, name: "loll"),
+				Item(id: UUID(uuidString: "263dc294-6d98-4a85-bf82-f40602855e2b")!, name: "bleh"),
+				Item(id: UUID(uuidString: "df504b1d-f9bc-4b2c-b092-491b5850e508")!, name: "uhh"),
+				Item(id: UUID(uuidString: "896efcce-3021-4a3f-9847-e0f8fdd64d9a")!, name: "communist")
 			]
 		)
 	}
