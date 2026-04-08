@@ -12,9 +12,9 @@ import UniformTypeIdentifiers
 struct Gif: StickerProtocol {
 	var id: String
 	var name: String
+	var UIName: String
 	var typeGlyph: String = "giphy.logo"
 	var remoteImageURL: URL
-	
 	var giphyImages: GiphyImages?
 	
 	//	enum CodingKeys: String, CodingKey {
@@ -23,12 +23,14 @@ struct Gif: StickerProtocol {
 	
 	init(
 		name: String,
+		UIName: String,
 		url: URL,
 		giphyImages: GiphyImages?,
 		id: String = UUID().uuidString
 	) {
 		self.id = id
 		self.name = name
+		self.UIName = UIName
 		self.giphyImages = giphyImages
 		self.remoteImageURL = url
 	}

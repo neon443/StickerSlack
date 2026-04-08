@@ -19,7 +19,7 @@ struct StickerPreview: View {
 		} else if type == Gif.self {
 			return .giphyGifs
 		} else {
-			fatalError()
+			fatalError("sticker type unrecognisedd")
 		}
 	}
 	var body: some View {

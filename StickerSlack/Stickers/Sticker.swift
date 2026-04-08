@@ -10,10 +10,18 @@ import Messages
 
 extension StickerProtocol {
 	var localImageURLString: String {
+		let containerPath: String
+		if type(of: self) == Emoji.self {
+			containerPath = EmojiHoarder.container.path()
+		} else if type(of: self) == Gif.self {
+			containerPath = GifHoarder.container.path()
+		} else {
+			fatalError("sticker type unrecogniesd")
+		}
 		let urlString = remoteImageURL.absoluteString
 		let split = urlString.split(separator: ".")
-		let fileExtension = ".\(split.last ?? "png")"
-		return EmojiHoarder.container.path()+name+"."+id+fileExtension
+		let fileExtension = ".\(split.last!)"
+		return containerPath+name+"."+id+fileExtension
 	}
 	
 	var localImageURL: URL {

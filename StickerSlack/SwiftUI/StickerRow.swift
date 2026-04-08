@@ -24,7 +24,7 @@ struct StickerRow<T: Hoarder>: View {
 				.transition(.scale)
 			
 			VStack(alignment: .leading, spacing: 5) {
-				Text(sticker.name)
+				Text(sticker.UIName)
 					.font(.caption)
 					.bold(isDownloaded)
 					.foregroundColor(isDownloaded ? .green : .primary)

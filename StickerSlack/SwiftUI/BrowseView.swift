@@ -31,12 +31,24 @@ struct BrowseView: View {
 					.ignoresSafeArea(.container, edges: .bottom)
 					.id(emojiHoarder.emojis)
 				case .giphyGifs:
-					ScrollView {
-						ForEach(gifHoarder.trendingGifs) { gif in
-							StickerRow(hoarder: gifHoarder, sticker: gif)
-								.listRowSeparator(.hidden)
+					Button("download all") {
+						Task {
+							for gif in gifHoarder.trendingGifs {
+								await gifHoarder.download(emoji: gif)
+							}
 						}
 					}
+					Button("del all") {
+						for gif in gifHoarder.trendingGifs {
+							gifHoarder.delete(emoji: gif)
+						}
+					}
+					List {
+						ForEach(gifHoarder.trendingGifs) { gif in
+							StickerRow(hoarder: gifHoarder, sticker: gif)
+						}
+					}
+					.listRowSeparator(.hidden)
 				}
 			}
 		}

@@ -61,7 +61,7 @@ struct EmojiPackDetailView: View {
 							let emoji = hoarder.trie.dict[name] ?? .test
 							VStack {
 								StickerPreview(sticker: emoji)
-								Text(emoji.name)
+								Text(emoji.UIName)
 									.multilineTextAlignment(.center)
 									.font(.caption)
 								Spacer()

@@ -11,6 +11,7 @@ import Messages
 protocol StickerProtocol: Codable, Identifiable, Hashable {
 	var id: String { get set }
 	var name: String { get set }
+	var UIName: String { get set }
 	
 	var typeGlyph: String { get }
 	

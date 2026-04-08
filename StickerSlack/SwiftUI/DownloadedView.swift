@@ -54,9 +54,9 @@ struct DownloadedView: View {
 							.aspectRatio(1, contentMode: .fit)
 							.clipShape(RoundedRectangle(cornerRadius: 15))
 							.contextMenu {
-								Text(emoji.name)
+								Text(emoji.UIName)
 								Button("Copy Name", systemImage: "doc.on.clipboard") {
-									UIPasteboard.general.string = emoji.name
+									UIPasteboard.general.string = emoji.UIName
 								}
 								Button("Copy Image", systemImage: "photo.fill.on.rectangle.fill") {
 									UIPasteboard.general.image = emoji.image

@@ -32,8 +32,9 @@ struct GifObject: Codable, Identifiable {
 	
 	var toGif: Gif {
 		return Gif(
-			name: self.title,
-			url: URL(string: self.images.fixed_width.url)!,
+			name: self.slug,
+			UIName: self.title,
+			url: URL(string: self.images.original.url)!,
 			giphyImages: images,
 			id: self.id
 		)
