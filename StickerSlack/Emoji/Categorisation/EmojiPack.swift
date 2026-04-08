@@ -19,7 +19,7 @@ extension EmojiPack {
 		EmojiPack(
 			id: UUID(),
 			name: "New Pack",
-			description: "Emoji Pack at \(Date().formatted())",
+			description: "Created on \(Date().formatted())",
 			emojiNames: []
 		)
 	}

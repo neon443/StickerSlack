@@ -33,7 +33,7 @@ struct EmojiPackDetailView: View {
 					Button() {
 						editName.toggle()
 					} label: {
-						Text(pack.name)
+						Text(pack.name.isEmpty ? "Name" : pack.name)
 							.bold()
 							.foregroundStyle(edit ? .blue : .primary)
 							.font(.title)
@@ -46,12 +46,41 @@ struct EmojiPackDetailView: View {
 					Button() {
 						editDescription.toggle()
 					} label: {
-						Text(pack.description)
+						Text(pack.description.isEmpty ? "Description" : pack.description)
 							.foregroundStyle(edit ? .blue : .primary)
 					}
 					.disabled(!edit)
 					.alert("Edit Description", isPresented: $editDescription) {
 						TextField("", text: $pack.description)
+					}
+					
+					if pack.emojiNames.isEmpty {
+						VStack(alignment: .center) {
+							HStack {
+								Image(systemName: "exclamationmark.triangle.fill")
+								Text("No Emoji")
+									.bold()
+								Image(systemName: "exclamationmark.triangle.fill")
+							}
+							.foregroundStyle(.yellow)
+							Text("This pack contians no emojis 😭")
+								.padding(.vertical, 5)
+								.foregroundStyle(.foreground)
+							Text("Add emojis to this pack by editing it using the pencil button in the toolbar.")
+							Text("You can also change the name and description by tapping it in edit mode.")
+								.padding(.vertical, 5)
+						}
+						.foregroundStyle(.gray)
+						.multilineTextAlignment(.center)
+						.frame(maxWidth: .infinity)
+						.padding()
+						.background {
+							Color.purple.opacity(0.2)
+								.clipShape(RoundedRectangle(cornerRadius: 10))
+								.blur(radius: 5)
+								.shadow(color: .purple, radius: 5)
+						}
+						//							.padding(.vertical)
 					}
 					
 					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
@@ -145,7 +174,7 @@ struct EmojiPackDetailView: View {
 
 @available(iOS 17, *)
 #Preview {
-	@Previewable @State var pack: EmojiPack = .test
+	@Previewable @State var pack: EmojiPack = .new()
 	EmojiPackDetailView(
 		hoarder: EmojiHoarder(localOnly: true, skipIndex: false),
 		pack: $pack
