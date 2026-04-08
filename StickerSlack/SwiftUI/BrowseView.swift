@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Haptics
 
 struct BrowseView: View {
 	@State private var browseWhat: StickerType = .slackEmoji
@@ -32,16 +33,18 @@ struct BrowseView: View {
 					.id(emojiHoarder.emojis)
 				case .giphyGifs:
 					Button("download all") {
-						Task {
-							for gif in gifHoarder.trendingGifs {
+						for gif in gifHoarder.trendingGifs {
+							Task {
 								await gifHoarder.download(emoji: gif)
 							}
 						}
+						Haptic.success.trigger()
 					}
 					Button("del all") {
 						for gif in gifHoarder.trendingGifs {
 							gifHoarder.delete(emoji: gif)
 						}
+						Haptic.rigid.trigger()
 					}
 					List {
 						ForEach(gifHoarder.trendingGifs) { gif in
