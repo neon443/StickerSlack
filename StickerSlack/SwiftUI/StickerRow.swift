@@ -12,6 +12,7 @@ struct StickerRow<T: Hoarder>: View {
 	@ObservedObject var hoarder: T
 	@State var sticker: any StickerProtocol
 	@State var showTooltip: Bool = false
+	@State var downloading: Bool = false
 	
 	var isDownloaded: Bool {
 		return hoarder.downloadedStickers.contains(sticker.name)
@@ -64,16 +65,22 @@ struct StickerRow<T: Hoarder>: View {
 			if isDownloaded {
 				Button("", systemImage: "trash") {
 					hoarder.delete(emoji: sticker, skipStoreIndex: false)
+					downloading = false
 				}
-				.buttonStyle(.plain)
 				.transition(.scale)
+			} else if downloading {
+				ProgressView()
+					.transition(.scale)
+					.padding(.trailing)
 			} else {
 				Button("", systemImage: "arrow.down.circle") {
+					withAnimation(.snappy) {
+						downloading = true
+					}
 					Task.detached {
 						await hoarder.download(emoji: sticker, skipStoreIndex: false)
 					}
 				}
-				.buttonStyle(.plain)
 				.transition(.scale)
 			}
 		}
@@ -84,7 +91,7 @@ struct StickerRow<T: Hoarder>: View {
 
 @available(iOS 17, *)
 #Preview {
-	@Previewable var hoarder = EmojiHoarder(localOnly: true)
+	@Previewable var hoarder = GifHoarder()
 	List {
 		StickerRow(hoarder: hoarder, sticker: Emoji.test)
 		StickerRow(hoarder: hoarder, sticker: Emoji.testLongName)
@@ -98,5 +105,4 @@ struct StickerRow<T: Hoarder>: View {
 		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefg", url: Emoji.test.remoteImageURL))
 		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefgh", url: Emoji.test.remoteImageURL))
 	}
-	.listStyle(.plain)
 }
