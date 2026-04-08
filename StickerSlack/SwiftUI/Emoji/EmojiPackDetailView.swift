@@ -85,8 +85,8 @@ struct EmojiPackDetailView: View {
 					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
 					let layout = Array(repeating: col, count: columns)
 					LazyVGrid(columns: layout, spacing: spacing) {
-						ForEach(pack.items) { item in
-							let emoji = hoarder.trie.dict[item.name] ?? .test
+						ForEach(pack.items, id: \.self) { name in
+							let emoji = hoarder.trie.dict[name] ?? .test
 							VStack {
 								StickerPreview(sticker: emoji)
 								Spacer()
@@ -98,7 +98,7 @@ struct EmojiPackDetailView: View {
 								if edit {
 									Button(role: .destructive) {
 										withAnimation(.spring) {
-											pack.items.removeAll { $0.id == item.id }
+											pack.items.removeAll { $0 == name }
 										}
 									} label: {
 										Image(systemName: "minus.circle.fill")
@@ -131,9 +131,7 @@ struct EmojiPackDetailView: View {
 										guard let id = UUID(uuidString: selection.id) else {
 											fatalError("bruh what happened to ur uuid")
 										}
-										pack.items.append(
-											EmojiPack.Item(id: id, name: selection.name)
-										)
+										pack.items.append(selection.name)
 									}
 								}
 							}

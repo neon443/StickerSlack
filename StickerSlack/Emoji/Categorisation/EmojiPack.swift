@@ -11,12 +11,13 @@ struct EmojiPack: Identifiable, Codable {
 	var id: UUID
 	var name: String
 	var description: String
-	var items: [EmojiPack.Item]
+	var items: [String]
+//	var items: [EmojiPack.Item]
 	
-	struct Item: Identifiable, Codable, Equatable {
-		var id: UUID
-		var name: String
-	}
+//	struct Item: Identifiable, Codable, Equatable {
+//		var id: UUID
+//		var name: String
+//	}
 }
 
 extension EmojiPack {
