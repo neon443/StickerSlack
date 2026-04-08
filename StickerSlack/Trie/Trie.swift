@@ -16,7 +16,7 @@ class TrieNode: Codable {
 }
 
 //nonisolated
-actor Trie: ObservableObject {
+class Trie: ObservableObject {
 	var root: TrieNode = TrieNode()
 	var dict: [String:Emoji] = [:]
 
