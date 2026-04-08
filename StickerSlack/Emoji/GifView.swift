@@ -16,8 +16,6 @@ struct GifView: View {
 	@State var currentI: Int = 0
 	
 	@State var timer: Timer?
-	@State var error: Error?
-	@State var failed: Bool = false
 	
 	func run() async {
 		do {
@@ -28,15 +26,11 @@ struct GifView: View {
 				}
 			}
 		} catch {
-			self.error = error
-		}
-		guard self.error == nil && !self.gif.isEmpty else {
+			print(error)
+			print(error.localizedDescription)
 			print("falied loading or empty gif")
-			withAnimation(.spring) { self.failed = true }
 			return
 		}
-		guard gif.count > 0 else { return }
-		
 		if timer != nil {
 			timer!.invalidate()
 			timer = nil
@@ -56,16 +50,10 @@ struct GifView: View {
 //		/*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
 		TimelineView(.animation) { tl in
 			VStack {
-				if gif.isEmpty && error == nil {
+				if gif.isEmpty {
 					ProgressView()
 						.controlSize(.large)
 						.frame(maxWidth: .infinity, maxHeight: .infinity)
-				} else if failed {
-					Image(systemName: "xmark")
-						.resizable().scaledToFit()
-						.padding()
-						.padding()
-						.background(.red)
 				} else {
 					if currentI < gif.count {
 						let image = Image(uiImage: .init(cgImage: gif[currentI].frame))
@@ -80,8 +68,10 @@ struct GifView: View {
 			timer?.invalidate()
 			timer = nil
 		}
-		.task {
-			await run()
+		.onAppear {
+			Task {
+				await run()
+			}
 		}
 	}
 }

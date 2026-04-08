@@ -30,6 +30,7 @@ struct EmojiPackManager: View {
 						.tint(.red)
 					}
 				}
+				Spacer()
 				NavigationLink {
 					EmojiPackDetailView(hoarder: hoarder, pack: .constant(.test))
 				} label: {
@@ -50,7 +51,6 @@ struct EmojiPackManager: View {
 				}
 			}
 		}
-		Divider()
 	}
 }
 
