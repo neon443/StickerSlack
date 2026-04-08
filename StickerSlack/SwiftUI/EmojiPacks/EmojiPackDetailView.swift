@@ -98,9 +98,7 @@ struct EmojiPackDetailView: View {
 							.overlay(alignment: .topLeading) {
 								if edit {
 									Button(role: .destructive) {
-										withAnimation(.spring) {
-											pack.items.removeAll { $0 == name }
-										}
+										pack.remove(name)
 									} label: {
 										Image(systemName: "minus.circle.fill")
 											.resizable().scaledToFit()
@@ -128,10 +126,7 @@ struct EmojiPackDetailView: View {
 							.sheet(isPresented: $showAdder) {
 								NavigationStack {
 									SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
-										print(selection)
-										withAnimation {
-											pack.items.append(selection.name)
-										}
+										pack.add(selection.name)
 									}
 									.navigationTitle("Search Emojis")
 									.navigationBarTitleDisplayMode(.inline)

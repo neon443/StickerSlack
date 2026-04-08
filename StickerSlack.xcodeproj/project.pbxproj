@@ -286,36 +286,32 @@
 			isa = PBXGroup;
 			children = (
 				A9D15B892EB1142C00404792 /* EmojiPack.swift */,
-				A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */,
 				A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */,
 			);
 			path = Categorisation;
 			sourceTree = "<group>";
 		};
-		A91C098C2EBBD7AB00210C34 /* Emoji */ = {
+		A91C098C2EBBD7AB00210C34 /* EmojiPacks */ = {
 			isa = PBXGroup;
 			children = (
 				A9CD6C342EDDE22800B7F421 /* EmojiPackDetailView.swift */,
+				A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */,
 			);
-			path = Emoji;
+			path = EmojiPacks;
 			sourceTree = "<group>";
 		};
 		A91C098D2EBBD7C100210C34 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				A9A7A4602F69597000BB84C6 /* Gifs */,
 				A949B1F02EA04E8200215164 /* ContentView.swift */,
-				A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */,
-				A91C098C2EBBD7AB00210C34 /* Emoji */,
-				A921C2E12ED071C900E57B1A /* ListRow.swift */,
+				A91C098C2EBBD7AB00210C34 /* EmojiPacks */,
+				A9F423C32F87229100C0BE3B /* Shared */,
+				A9F423C42F8722AA00C0BE3B /* Misc */,
 				A921C2DE2ED067BB00E57B1A /* WelcomeView.swift */,
-				A9EB72462EB948C400658CEB /* StickerRow.swift */,
+				A955B3F02EC22E9700E1732D /* BrowseView.swift */,
+				A955B3EC2EC22C4A00E1732D /* DownloadedView.swift */,
 				A957C1732ECCE2CE00EA3EE9 /* SettingsView.swift */,
 				A955B3F42EC22EE900E1732D /* SearchView.swift */,
-				A955B3F02EC22E9700E1732D /* BrowseView.swift */,
-				A9BDEADD2F82BC93002798DF /* NoStickersView.swift */,
-				A955B3EC2EC22C4A00E1732D /* DownloadedView.swift */,
-				A9773C2E2EA54AF000F3B753 /* StickerPreview.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -434,13 +430,6 @@
 			path = Cachet;
 			sourceTree = "<group>";
 		};
-		A9A7A4602F69597000BB84C6 /* Gifs */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Gifs;
-			sourceTree = "<group>";
-		};
 		A9B9A82D2EB2CCBE004C9245 /* StickerSlackTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -466,6 +455,25 @@
 				A9BE30F92F5B03F400A57668 /* Sticker.swift */,
 			);
 			path = Stickers;
+			sourceTree = "<group>";
+		};
+		A9F423C32F87229100C0BE3B /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A9EB72462EB948C400658CEB /* StickerRow.swift */,
+				A9773C2E2EA54AF000F3B753 /* StickerPreview.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A9F423C42F8722AA00C0BE3B /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */,
+				A9BDEADD2F82BC93002798DF /* NoStickersView.swift */,
+				A921C2E12ED071C900E57B1A /* ListRow.swift */,
+			);
+			path = Misc;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
