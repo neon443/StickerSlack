@@ -97,10 +97,10 @@ struct EmojiPackDetailView: View {
 								}
 							}
 							.sheet(isPresented: $showAdder) {
-								SearchView(hoarder: hoarder, fromPackEditor: true) {
-									print($0)
+								SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
+									print(selection)
 									withAnimation {
-										pack.emojiNames.append($0)
+										pack.emojiNames.append(selection)
 									}
 								}
 							}
