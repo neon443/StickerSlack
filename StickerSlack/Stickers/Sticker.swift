@@ -9,6 +9,13 @@ import Foundation
 import Messages
 
 extension StickerProtocol {
+	var localImageURLString: String {
+		let urlString = remoteImageURL.absoluteString
+		let split = urlString.split(separator: ".")
+		let fileExtension = ".\(split.last ?? "png")"
+		return EmojiHoarder.container.path()+name+"."+id+fileExtension
+	}
+	
 	var localImageURL: URL {
 		return URL(filePath: localImageURLString)
 	}

@@ -15,12 +15,6 @@ struct Emoji: StickerProtocol {
 	var id: String
 	var name: String
 	var typeGlyph: String = "slack.logo"
-	var localImageURLString: String {
-		let urlString = remoteImageURL.absoluteString
-		let split = urlString.split(separator: ".")
-		let fileExtension = ".\(split.last ?? "png")"
-		return EmojiHoarder.container.path()+name+"."+id+fileExtension
-	}
 	var remoteImageURL: URL
 	
 	enum CodingKeys: String, CodingKey {

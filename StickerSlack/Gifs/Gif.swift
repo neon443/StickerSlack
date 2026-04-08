@@ -13,14 +13,6 @@ struct Gif: StickerProtocol {
 	var id: String
 	var name: String
 	var typeGlyph: String = "giphy.logo"
-	
-	var localImageURLString: String {
-		let urlString = remoteImageURL.absoluteString
-		let split = urlString.split(separator: ".")
-		let fileExtension = ".\(split.last ?? "png")"
-		
-		return GifHoarder.container.path()+name+"."+id+fileExtension
-	}
 	var remoteImageURL: URL
 	
 	var giphyImages: GiphyImages?
