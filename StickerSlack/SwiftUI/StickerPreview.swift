@@ -11,36 +11,43 @@ import Haptics
 struct StickerPreview: View {
 	@State var sticker: any StickerProtocol
 	@State var gifImage: Image?
-
+	
+	var type: StickerType {
+		let type = Swift.type(of: sticker)
+		if type == Emoji.self {
+			return .slackEmoji
+		} else if type == Gif.self {
+			return .giphyGifs
+		} else {
+			fatalError()
+		}
+	}
 	var body: some View {
-		if type(of: sticker) == Emoji.self {
-			if sticker.image != nil {
-				GifView(url: sticker.localImageURL)
-			} else {
+		if sticker.image != nil {
+			//local
+			GifView(url: sticker.localImageURL)
+		} else {
+			//remote
+			if type == .slackEmoji {
 				GifView(url: sticker.remoteImageURL)
-			}
-		} else if type(of: sticker) == Gif.self {
-			let gif = sticker as! Gif
-			if let giphyImages = gif.giphyImages,
-			   let preview_gif = giphyImages.preview_gif,
-			   let url = URL(string: preview_gif.url) {
-				GifView(url: url)
 			} else {
-				GifView(url: gif.remoteImageURL)
-					.overlay {
-						Image(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left")
+				let gif = sticker as! Gif
+				if let giphyImages = gif.giphyImages,
+				   let preview_gif = giphyImages.preview_gif,
+				   let url = URL(string: preview_gif.url) {
+					GifView(url: url)
+				} else {
+					GifView(url: gif.remoteImageURL)
+						.overlay {
+							Image(systemName:
+									"square.arrowtriangle.4.outward")
 							.resizable().scaledToFit()
 							.foregroundStyle(.red)
-							.padding(1)
 							.background(.black)
-							.aspectRatio(1, contentMode: .fit)
 							.padding()
-					}
+						}
+				}
 			}
-		} else {
-			Image(systemName: "xmark.app.fill")
-				.resizable().scaledToFit()
-				.foregroundStyle(.red)
 		}
 	}
 }

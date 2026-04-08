@@ -27,7 +27,7 @@ struct WelcomeView: View {
 					.monospaced()
 				Spacer()
 			}
-			.padding(.top, 20)
+			.padding(.vertical, 20)
 			.padding(.leading, 20)
 			List {
 				Section("How to use") {
@@ -60,6 +60,7 @@ struct WelcomeView: View {
 			}
 			.padding(.bottom)
 			.tint(.purple)
+			.interactiveDismissDisabled()
 		}
 	}
 }

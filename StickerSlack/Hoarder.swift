@@ -48,17 +48,19 @@ class BaseHoarder: Hoarder {
 				downloadedStickers = decoded
 			}
 		} else {
-			var newDownloadedStickers: Set<String> = []
-			if let files = try? await FileManager.default.contentsOfDirectory(atPath: BaseHoarder.library.appendingPathComponent(stickerType, conformingTo: .directory).path()) {
+			var newSet: Set<String> = []
+			let url = await BaseHoarder.library.appendingPathComponent(stickerType, conformingTo: .directory)
+			if let files = try? FileManager.default.contentsOfDirectory(atPath: url.path()) {
 				for file in files {
 					let name = String(file.split(separator: ".")[0])
-					newDownloadedStickers.insert(name)
+					newSet.insert(name)
 				}
 			}
-			newDownloadedStickers.remove("DS_Store")
+			newSet.remove("DS_Store")
+			let immutable = newSet
 			await MainActor.run {
-				downloadedStickers = []
-				downloadedStickers = newDownloadedStickers
+				self.downloadedStickers = []
+				self.downloadedStickers = immutable
 			}
 			return
 		}

@@ -21,7 +21,8 @@ extension StickerProtocol {
 	}
 	
 	var image: UIImage? {
-		if let data = try? Data(contentsOf: localImageURL),
+		if FileManager.default.fileExists(atPath: localImageURLString),
+		   let data = try? Data(contentsOf: localImageURL),
 		   let img = UIImage(data: data) {
 			return img
 		} else {

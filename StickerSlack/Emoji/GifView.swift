@@ -16,47 +16,81 @@ struct GifView: View {
 	@State var currentI: Int = 0
 	
 	@State var timer: Timer?
+	@State var error: Error?
+	@State var failed: Bool = false
+	
+	func run() async {
+		do {
+			if gif.isEmpty {
+				let frames = try await GifManager.gifFrom(url: url)
+				withAnimation(.spring) {
+					self.gif = frames
+				}
+			}
+		} catch {
+			self.error = error
+		}
+		guard self.error == nil && !self.gif.isEmpty else {
+			print("falied loading or empty gif")
+			withAnimation(.spring) { self.failed = true }
+			return
+		}
+		guard gif.count > 0 else { return }
+		
+		if timer != nil {
+			timer!.invalidate()
+			timer = nil
+		}
+		
+		timer = Timer(timeInterval: gif[0].showFor, repeats: true) { timer in
+			if currentI == (gif.count-1) {
+				currentI = 0
+			} else {
+				currentI += 1
+			}
+		}
+		RunLoop.main.add(timer!, forMode: .common)
+	}
 	
 	var body: some View {
 //		/*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
 		TimelineView(.animation) { tl in
 			VStack {
-				if currentI < gif.count {
-					let image = Image(uiImage: .init(cgImage: gif[currentI].frame))
-					image
+				if gif.isEmpty && error == nil {
+					ProgressView()
+						.controlSize(.large)
+						.frame(maxWidth: .infinity, maxHeight: .infinity)
+				} else if failed {
+					Image(systemName: "xmark")
 						.resizable().scaledToFit()
+						.padding()
+						.padding()
+						.background(.red)
+				} else {
+					if currentI < gif.count {
+						let image = Image(uiImage: .init(cgImage: gif[currentI].frame))
+						image
+							.resizable().scaledToFit()
+					}
 				}
 			}
+			.transition(.scale)
 		}
 		.onDisappear {
 			timer?.invalidate()
 			timer = nil
 		}
 		.task {
-			if gif.isEmpty {
-				self.gif = await GifManager.gifFrom(url: url)
-			}
-			guard gif.count > 0 else { return }
-			
-			if timer != nil {
-				timer!.invalidate()
-				timer = nil
-			}
-			
-			timer = Timer(timeInterval: gif[0].showFor, repeats: true) { timer in
-				if currentI == (gif.count-1) {
-					currentI = 0
-				} else {
-					currentI += 1
-				}
-			}
-			RunLoop.main.add(timer!, forMode: .common)
+			await run()
 		}
 	}
 }
 
 #Preview {
 	GifView(
-		url: URL(string: "https://emoji.slack-edge.com/T0266FRGM/clockrun/ec33c513d30a6ed8.gif")!
+		url: URL(string: "https://emoji.slack-edge.com/T09V59WQY1E/clockrun/f6641714fa6748ac.gif")!
 	)
+	GifView(url: Emoji.test.remoteImageURL)
+	GifView(url: Emoji.testLongName.localImageURL)
+	GifView(url: Gif.test.remoteImageURL)
 }
