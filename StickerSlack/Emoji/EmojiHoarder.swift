@@ -165,11 +165,15 @@ class EmojiHoarder: BaseHoarder {
 	
 //	nonisolated
 	private func loadLocalDB() -> [Emoji] {
-		if let localEmojiDB = try? Data(contentsOf: EmojiHoarder.localEmojiDB) {
-			let decoded = try! decoder.decode([Emoji].self, from: localEmojiDB)
+		do {
+			let localEmojiDB = try Data(contentsOf: EmojiHoarder.localEmojiDB)
+			let decoded = try decoder.decode([Emoji].self, from: localEmojiDB)
 			return decoded
+		} catch {
+			print(error)
+			print(error.localizedDescription)
+			return []
 		}
-		return []
 	}
 	
 	nonisolated
