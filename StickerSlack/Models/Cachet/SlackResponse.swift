@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 struct SlackResponse: Identifiable, Codable {
 	var type: String
 	var id: String

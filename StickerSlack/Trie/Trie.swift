@@ -15,8 +15,8 @@ class TrieNode: Codable {
 	var isEndOfWord: Bool = false
 }
 
-nonisolated
-class Trie: ObservableObject {
+//nonisolated
+actor Trie: ObservableObject {
 	var root: TrieNode = TrieNode()
 	var dict: [String:Emoji] = [:]
 

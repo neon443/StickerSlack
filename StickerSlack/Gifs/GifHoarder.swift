@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 import Combine
 
 class GifHoarder: BaseHoarder {
-	static let container: URL = library.appendingPathComponent("Gifs", conformingTo: .directory)
+	nonisolated static let container: URL = library.appendingPathComponent("Gifs", conformingTo: .directory)
 	
 	static var apiKey: String = "a2mFsDTpX5blodY8ltkG6Q1xy5NgFSbc"
 	var endpoint: URL = URL(string: "https://api.giphy.com/v1/gifs/trending")!

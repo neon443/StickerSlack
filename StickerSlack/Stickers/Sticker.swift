@@ -8,31 +8,23 @@
 import Foundation
 import Messages
 
+nonisolated
 extension StickerProtocol {
-	var localImageURL: URL {
+	nonisolated var localImageURLString: String {
+		let urlString = remoteImageURL.absoluteString
+		let split = urlString.split(separator: ".")
+		let fileExtension = ".\(split.last ?? "png")"
+		
+		return GifHoarder.container.path()+name+"."+id+fileExtension
+	}
+	
+	nonisolated var localImageURL: URL {
 		return URL(filePath: localImageURLString)
-	}
-	
-	var msSticker: MSSticker? {
-		guard FileManager.default.fileExists(atPath: localImageURLString) else {
-			return nil
-		}
-		return try? MSSticker(contentsOfFileURL: localImageURL, localizedDescription: name)
-	}
-	
-	var image: UIImage? {
-		if FileManager.default.fileExists(atPath: localImageURLString),
-		   let data = try? Data(contentsOf: localImageURL),
-		   let img = UIImage(data: data) {
-			return img
-		} else {
-			return nil
-		}
 	}
 	
 	nonisolated
 	func downloadImage() async throws {
-		if let data = try? await Data(contentsOf: localImageURL),
+		if let data = try? Data(contentsOf: localImageURL),
 		   let _ = UIImage(data: data) {
 			return
 		}
@@ -41,20 +33,24 @@ extension StickerProtocol {
 		
 		if let uiImage = UIImage(data: data),
 		   let cgImage = uiImage.cgImage,
-		   await !self.localImageURLString.contains(".gif"),
+		   !self.localImageURLString.contains(".gif"),
 		   cgImage.width < 300 || cgImage.height < 300 {
-			data = await resize(image: uiImage, to: CGSize(width: 300, height: 300)).pngData()!
+			data = resize(image: uiImage, to: CGSize(width: 300, height: 300)).pngData()!
 		}
-		try! await data.write(to: localImageURL)
+		try! data.write(to: localImageURL)
 		return
 	}
 	
+	nonisolated
 	func deleteImage() {
 		try? FileManager.default.removeItem(at: localImageURL)
 		return
 	}
-	
- 	func resize(image: UIImage, to targetSize: CGSize) -> UIImage {
+}
+
+@MainActor
+extension StickerProtocol {
+	func resize(image: UIImage, to targetSize: CGSize) -> UIImage {
 		let oldSize = image.size
 		let ratio: (x: CGFloat, y: CGFloat)
 		ratio.x = targetSize.width / oldSize.width
@@ -83,5 +79,22 @@ extension StickerProtocol {
 		UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
 		image.draw(in: rect)
 		return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+	}
+	
+	/*nonisolated*/ var msSticker: MSSticker? {
+		guard FileManager.default.fileExists(atPath: localImageURLString) else {
+			return nil
+		}
+		return try? MSSticker(contentsOfFileURL: localImageURL, localizedDescription: name)
+	}
+	
+	/*nonisolated*/ var image: UIImage? {
+		if FileManager.default.fileExists(atPath: localImageURLString),
+		   let data = try? Data(contentsOf: localImageURL),
+		   let img = UIImage(data: data) {
+			return img
+		} else {
+			return nil
+		}
 	}
 }

@@ -22,8 +22,7 @@ protocol Hoarder: ObservableObject {
 }
 
 class BaseHoarder: Hoarder {
-	
-	static let library: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
+	nonisolated static let library: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
 	
 	@Published var downloadedStickers: Set<String> = []
 
@@ -49,7 +48,7 @@ class BaseHoarder: Hoarder {
 			}
 		} else {
 			var newSet: Set<String> = []
-			let url = await BaseHoarder.library.appendingPathComponent(stickerType, conformingTo: .directory)
+			let url = BaseHoarder.library.appendingPathComponent(stickerType, conformingTo: .directory)
 			if let files = try? FileManager.default.contentsOfDirectory(atPath: url.path()) {
 				for file in files {
 					let name = String(file.split(separator: ".")[0])

@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 import Haptics
 
 class EmojiHoarder: BaseHoarder {
-	static let container: URL = library.appendingPathComponent("Emojis", conformingTo: .directory)
+	nonisolated static let container: URL = library.appendingPathComponent("Emojis", conformingTo: .directory)
 	nonisolated static let localEmojiDB: URL = EmojiHoarder.library.appendingPathComponent("_____localEmojiDB.json", conformingTo: .fileURL)
 	nonisolated static let localTrieDict: URL = EmojiHoarder.library.appendingPathComponent("_____localTrieDict.json", conformingTo: .fileURL)
 	let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!

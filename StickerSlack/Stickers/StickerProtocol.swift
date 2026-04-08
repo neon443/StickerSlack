@@ -8,21 +8,22 @@
 import Foundation
 import Messages
 
+nonisolated
 protocol StickerProtocol: Codable, Identifiable, Hashable {
-	var id: String { get set }
-	var name: String { get set }
+	nonisolated var id: String { get set }
+	nonisolated var name: String { get set }
 	
-	var typeGlyph: String { get }
+	nonisolated var typeGlyph: String { get }
 	
-	var localImageURL: URL { get }
-	var localImageURLString: String { get }
-	var remoteImageURL: URL { get set }
+	nonisolated var localImageURL: URL { get }
+	nonisolated var localImageURLString: String { get }
+	nonisolated var remoteImageURL: URL { get set }
 	
-	var msSticker: MSSticker? { get }
-	var image: UIImage? { get }
+	nonisolated var msSticker: MSSticker? { get }
+	nonisolated var image: UIImage? { get }
 	
-	func downloadImage() async throws
-	func deleteImage()
-	func resize(image: UIImage, to targetSize: CGSize) -> UIImage
-	static var test: Self { get }
+	nonisolated func downloadImage() async throws
+	nonisolated func deleteImage()
+	nonisolated func resize(image: UIImage, to targetSize: CGSize) -> UIImage
+	nonisolated static var test: Self { get }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 struct GifObject: Codable, Identifiable {
 	var type: String
 	var id: String

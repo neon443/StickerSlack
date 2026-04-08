@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 extension Emoji {
 	static var test: Emoji = Emoji(
 		name: "a test slack emoji",
@@ -19,6 +20,7 @@ extension Emoji {
 	)
 }
 
+@MainActor
 extension Gif {
 	static var test: Gif = GifObject(
 			type: "gif",
@@ -120,6 +122,7 @@ extension Gif {
 		).toGif
 }
 
+@MainActor
 extension EmojiPack {
 	static var test: EmojiPack {
 		EmojiPack(
