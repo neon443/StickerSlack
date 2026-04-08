@@ -31,7 +31,7 @@ struct tabViewActivationSearchActivation: ViewModifier {
 struct glassButtonIfAv: ViewModifier {
 	var enabled: Bool
 	
-	init(_ enabled: Bool) {
+	init(_ enabled: Bool = true) {
 		self.enabled = enabled
 	}
 	

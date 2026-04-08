@@ -13,3 +13,14 @@ struct EmojiPack: Identifiable, Codable {
 	var description: String
 	var emojiNames: [String]
 }
+
+extension EmojiPack {
+	static func new() -> EmojiPack {
+		EmojiPack(
+			id: UUID(),
+			name: "New Pack",
+			description: "Emoji Pack at \(Date().formatted())",
+			emojiNames: []
+		)
+	}
+}

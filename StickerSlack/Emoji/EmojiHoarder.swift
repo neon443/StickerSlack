@@ -18,7 +18,7 @@ class EmojiHoarder: BaseHoarder {
 	let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	
 	@Published var emojis: [Emoji] = []
-	@Published var emojiPacks: [EmojiPack] = []
+	@Published var emojiPacks: [EmojiPack] = [.test]
 	
 	@Published var trie: Trie = Trie()
 //	@Published var downloadedStickers: Set<String> = []

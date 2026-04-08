@@ -11,7 +11,7 @@
 			<string>com.neon443.stickerslack</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>stickerslack://</string>
+				<string>stickerslack</string>
 			</array>
 		</dict>
 	</array>

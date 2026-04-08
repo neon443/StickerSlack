@@ -29,20 +29,26 @@ struct SearchView: View {
 		)
 	}
 	
+	@Environment(\.dismiss) var dismiss
+	
 	var body: some View {
 		NavigationStack {
 			if fromPackEditor {
 				GeometryReader { geo in
 					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
 					let layout = Array(repeating: col, count: columns)
-					LazyVGrid(columns: layout, spacing: spacing) {
-						ForEach(searchResult, id: \.self) { name in
-							let emoji = hoarder.trie.dict[name] ?? .test
-							StickerPreview(sticker: emoji)
-								.onTapGesture {
-									callback(emoji.name)
-								}
+					ScrollView {
+						LazyVGrid(columns: layout, spacing: spacing) {
+							ForEach(searchResult, id: \.self) { name in
+								let emoji = hoarder.trie.dict[name] ?? .test
+								StickerPreview(sticker: emoji)
+									.onTapGesture {
+										callback(emoji.name)
+										dismiss()
+									}
+							}
 						}
+						.padding()
 					}
 				}
 			} else {
@@ -92,5 +98,7 @@ struct SearchView: View {
 	SearchView(
 		hoarder: EmojiHoarder(localOnly: true),
 		fromPackEditor: true
-	)
+	) {
+		print($0)
+	}
 }

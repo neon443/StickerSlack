@@ -10,10 +10,10 @@ import SwiftUI
 struct EmojiPackDetailView: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	@Binding var pack: EmojiPack
-	@State var edit: Bool = true
+	@State var edit: Bool = false
 	@State var editName: Bool = false
 	@State var editDescription: Bool = false
-	@State var showAdder: Bool = true
+	@State var showAdder: Bool = false
 	
 	var minColWidth: CGFloat { 75 }
 	var spacing: CGFloat { 10 }
@@ -64,6 +64,7 @@ struct EmojiPackDetailView: View {
 								Text(emoji.name)
 									.multilineTextAlignment(.center)
 									.font(.caption)
+								Spacer()
 							}
 							.overlay(alignment: .topLeading) {
 								if edit {
@@ -92,11 +93,15 @@ struct EmojiPackDetailView: View {
 										.multilineTextAlignment(.center)
 										.font(.caption)
 										.foregroundStyle(.green.opacity(0.5))
+									Spacer()
 								}
 							}
 							.sheet(isPresented: $showAdder) {
 								SearchView(hoarder: hoarder, fromPackEditor: true) {
 									print($0)
+									withAnimation {
+										pack.emojiNames.append($0)
+									}
 								}
 							}
 						}
@@ -129,6 +134,9 @@ struct EmojiPackDetailView: View {
 							Image(systemName: "square.and.arrow.up")
 						}
 					}
+				}
+				.onDisappear {
+					print("disappear")
 				}
 			}
 		}
