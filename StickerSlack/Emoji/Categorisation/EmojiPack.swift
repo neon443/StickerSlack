@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct EmojiPack: Identifiable, Codable {
 	var id: UUID
@@ -34,6 +35,22 @@ struct EmojiPack: Identifiable, Codable {
 		let _ = withAnimation {
 			self.items.remove(at: index)
 		}
+	}
+	
+	func shareLink() -> URL {
+		let scheme = URL(string: "stickerslack://")!
+		var url: URL = scheme.appendingPathComponent("pack", conformingTo: .directory)
+		
+		let data = try! JSONEncoder().encode(items)
+		let queries: [URLQueryItem] = [
+			.init(name: "id", value: id.uuidString),
+			.init(name: "name", value: name),
+			.init(name: "description", value: description),
+			.init(name: "items", value: data.base64EncodedString())
+		]
+		url = url.appending(queryItems: queries)
+		print(url.path(percentEncoded: true))
+		return url
 	}
 }
 

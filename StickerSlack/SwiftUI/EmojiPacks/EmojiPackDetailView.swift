@@ -165,7 +165,7 @@ struct EmojiPackDetailView: View {
 						ToolbarSpacer()
 					}
 					ToolbarItem() {
-						ShareLink(item: URL(string: "stickerslack://")!) {
+						ShareLink(item: pack.shareLink()) {
 							Image(systemName: "square.and.arrow.up")
 						}
 					}
