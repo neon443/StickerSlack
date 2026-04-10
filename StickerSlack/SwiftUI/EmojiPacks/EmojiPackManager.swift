@@ -42,7 +42,9 @@ struct EmojiPackManager: View {
 			.toolbar {
 				ToolbarItem {
 					Button {
-						hoarder.emojiPacks.append(.new())
+						withAnimation {
+							hoarder.emojiPacks.append(.new())
+						}
 					} label: {
 						Image(systemName: "plus")
 					}

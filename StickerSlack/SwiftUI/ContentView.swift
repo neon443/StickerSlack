@@ -9,8 +9,8 @@ import SwiftUI
 import Haptics
 
 struct ContentView: View {
-	@ObservedObject var emojiHoarder: EmojiHoarder = EmojiHoarder()
-	@ObservedObject var gifhoarder: GifHoarder = GifHoarder()
+	@ObservedObject var emojiHoarder: EmojiHoarder
+	@ObservedObject var gifhoarder: GifHoarder
 	
 	var body: some View {
 		Group {
@@ -75,5 +75,5 @@ struct ContentView: View {
 }
 
 #Preview {
-	ContentView(emojiHoarder: EmojiHoarder(localOnly: false))
+	ContentView(emojiHoarder: EmojiHoarder(localOnly: false), gifhoarder: GifHoarder(localOnly: false))
 }
