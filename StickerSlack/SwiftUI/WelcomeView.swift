@@ -59,7 +59,7 @@ struct WelcomeView: View {
 				}
 			}
 			.padding(.bottom)
-			.tint(.purple)
+			.tint(.accentColor)
 			.interactiveDismissDisabled()
 		}
 	}

@@ -38,7 +38,7 @@ struct EmojiPackImporterView: View {
 				}
 				.modifier(glassButtonIfAv())
 				.padding(.trailing)
-				.tint(.purple)
+				.tint(.accentColor)
 			}
     }
 }

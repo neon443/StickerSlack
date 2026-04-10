@@ -76,10 +76,10 @@ struct EmojiPackDetailView: View {
 						.frame(maxWidth: .infinity)
 						.padding()
 						.background {
-							Color.purple.opacity(0.2)
+							Color.accentColor.opacity(0.2)
 								.clipShape(RoundedRectangle(cornerRadius: 10))
 								.blur(radius: 5)
-								.shadow(color: .purple, radius: 5)
+								.shadow(color: .accentColor, radius: 5)
 						}
 						.padding()
 					}
@@ -153,7 +153,7 @@ struct EmojiPackDetailView: View {
 				.navigationTitle(edit ? "Editing" : "Pack Details")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
-					ToolbarItem() {
+					ToolbarItem(placement: .topBarLeading) {
 						Button(
 							"",
 							systemImage: edit ? "checkmark" : "pencil"
@@ -166,7 +166,7 @@ struct EmojiPackDetailView: View {
 					if #available(iOS 19, *) {
 						ToolbarSpacer()
 					}
-					ToolbarItem() {
+					ToolbarItem(placement: .topBarTrailing) {
 						ShareLink(item: pack.shareLink()) {
 							Image(systemName: "square.and.arrow.up")
 						}

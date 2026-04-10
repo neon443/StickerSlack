@@ -24,8 +24,8 @@ struct SettingsView: View {
 							.resizable().scaledToFit()
 							.frame(width: 100, height: 100)
 							.clipShape(RoundedRectangle(cornerRadius: 24))
-							.foregroundStyle(.purple)
-							.shadow(color: isDark ? .black : .purple, radius: 5)
+							.foregroundStyle(Color.accentColor)
+							.shadow(color: isDark ? .black : .accentColor, radius: 5)
 							.padding(.leading, -1)
 							.padding(.trailing, 10)
 						VStack(alignment: .leading) {

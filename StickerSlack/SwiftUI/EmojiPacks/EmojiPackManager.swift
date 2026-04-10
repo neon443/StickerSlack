@@ -13,6 +13,13 @@ struct EmojiPackManager: View {
 	var body: some View {
 		NavigationStack {
 			List {
+				if hoarder.emojiPacks.isEmpty {
+					EmptyCollectionView(
+						title: "No Emoji Packs",
+						details: "Create one using the button in the toolbar.",
+						systemImage: "square.stack.3d.up.slash"
+					)
+				}
 				ForEach($hoarder.emojiPacks) { $pack in
 					NavigationLink {
 						EmojiPackDetailView(hoarder: hoarder, pack: $pack)
@@ -27,12 +34,6 @@ struct EmojiPackManager: View {
 						}
 						.tint(.red)
 					}
-				}
-				Spacer()
-				NavigationLink {
-					EmojiPackDetailView(hoarder: hoarder, pack: .constant(.test))
-				} label: {
-					Text("test")
 				}
 			}
 			.navigationTitle("Emoji Packs")
