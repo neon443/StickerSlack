@@ -173,7 +173,7 @@ struct EmojiPackDetailView: View {
 					}
 				}
 				.onDisappear {
-					hoarder.
+					hoarder.saveEmojiPacks()
 				}
 			}
 		}

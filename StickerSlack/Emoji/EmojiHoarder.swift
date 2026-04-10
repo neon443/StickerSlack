@@ -13,15 +13,16 @@ import Haptics
 
 class EmojiHoarder: BaseHoarder {
 	static let container: URL = library.appendingPathComponent("Emojis", conformingTo: .directory)
-	nonisolated static let localEmojiDB: URL = EmojiHoarder.library.appendingPathComponent("_____localEmojiDB.json", conformingTo: .fileURL)
-	nonisolated static let localTrieDict: URL = EmojiHoarder.library.appendingPathComponent("_____localTrieDict.json", conformingTo: .fileURL)
+	nonisolated static let localEmojiDB: URL = EmojiHoarder.library.appendingPathComponent("localEmojiDB.json", conformingTo: .fileURL)
+	nonisolated static let localTrieDict: URL = EmojiHoarder.library.appendingPathComponent("localTrieDict.json", conformingTo: .fileURL)
+	nonisolated static let packStore: URL = EmojiHoarder.library.appendingPathComponent("packStore.json", conformingTo: .fileURL)
 	let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	
 	@Published var emojis: [Emoji] = []
 	@Published var emojiPacks: [EmojiPack] = [.test]
 	
 	@Published var trie: Trie = Trie()
-//	@Published var downloadedStickers: Set<String> = []
+	//	@Published var downloadedStickers: Set<String> = []
 	var downloadedStickersArr: [String] = []
 	
 	@Published var letterStats: [EmojiHoarder.LetterStat] = []
@@ -36,6 +37,8 @@ class EmojiHoarder: BaseHoarder {
 		if !FileManager.default.fileExists(atPath: EmojiHoarder.container.path()) {
 			try! FileManager.default.createDirectory(at: EmojiHoarder.container, withIntermediateDirectories: true)
 		}
+		
+		loadEmojiPacks()
 		
 		self.emojis = loadLocalDB()
 		loadTrie()
@@ -142,7 +145,7 @@ class EmojiHoarder: BaseHoarder {
 		var wordlist = await trie.wordlist
 		var dict = await trie.dict
 		for emoji in await emojis {
-//			trie.insert(word: emoji.name)
+			//			trie.insert(word: emoji.name)
 			wordlist.insert(emoji.name)
 			dict[emoji.name] = emoji
 		}
@@ -163,7 +166,7 @@ class EmojiHoarder: BaseHoarder {
 		UserDefaults.standard.set(try! encoder.encode(downloadedStickers), forKey: "downloadedEmojis")
 	}
 	
-//	nonisolated
+	//	nonisolated
 	private func loadLocalDB() -> [Emoji] {
 		do {
 			let localEmojiDB = try Data(contentsOf: EmojiHoarder.localEmojiDB)
@@ -217,7 +220,7 @@ class EmojiHoarder: BaseHoarder {
 	override nonisolated func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
 		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		
-//		try? await emoji.downloadImage()
+		//		try? await emoji.downloadImage()
 		await MainActor.run {
 			if !skipStoreIndex {
 				let _ = withAnimation(.snappy) {
@@ -231,7 +234,7 @@ class EmojiHoarder: BaseHoarder {
 	
 	override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
 		super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
-//		emoji.deleteImage()
+		//		emoji.deleteImage()
 		if !skipStoreIndex {
 			let _ = withAnimation(.snappy) {
 				downloadedStickers.remove(emoji.name)
@@ -247,7 +250,9 @@ class EmojiHoarder: BaseHoarder {
 	}
 	
 	func loadEmojiPacks() {
-		
+		guard let data = try? Data(contentsOf: Self.packStore),
+			  let decoded = try? decoder.decode([URL].self, from: data) else { return }
+		self.emojiPacks = decoded.map { EmojiPack(fromShareLink: $0) }
 	}
 	
 	func saveEmojiPacks() {
@@ -255,8 +260,26 @@ class EmojiHoarder: BaseHoarder {
 		for pack in emojiPacks {
 			toStore.append(pack.shareLink())
 		}
-		guard let encoded = try? JSONEncoder().encode(toStore) else { return }
-		
+		guard let encoded = try? encoder.encode(toStore) else { return }
+		try? encoded.write(to: Self.packStore)
+	}
+	
+	func newEmojiPack() {
+		addEmojiPack(.new())
+	}
+	
+	func addEmojiPack(_ packToAdd: EmojiPack) {
+		withAnimation {
+			emojiPacks.append(packToAdd)
+		}
+		saveEmojiPacks()
+	}
+	
+	func removeEmojiPack(_ packToRemove: EmojiPack) {
+		withAnimation {
+			emojiPacks.removeAll { $0.id == packToRemove.id }
+		}
+		saveEmojiPacks()
 	}
 	
 	func generateLetterStats() {

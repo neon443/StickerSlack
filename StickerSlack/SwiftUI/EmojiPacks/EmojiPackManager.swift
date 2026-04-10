@@ -21,9 +21,7 @@ struct EmojiPackManager: View {
 					}
 					.swipeActions(edge: .trailing) {
 						Button {
-							withAnimation {
-								hoarder.emojiPacks.removeAll { $0.id == pack.id }
-							}
+							hoarder.removeEmojiPack(pack)
 						} label: {
 							Label("Delete", systemImage: "trash")
 						}
@@ -42,9 +40,7 @@ struct EmojiPackManager: View {
 			.toolbar {
 				ToolbarItem {
 					Button {
-						withAnimation {
-							hoarder.emojiPacks.append(.new())
-						}
+						hoarder.newEmojiPack()
 					} label: {
 						Image(systemName: "plus")
 					}

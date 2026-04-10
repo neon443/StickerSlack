@@ -16,10 +16,7 @@ struct EmojiPackImporterView: View {
 		EmojiPackDetailView(hoarder: emojiHoarder, pack: $pack)
 			.overlay(alignment: .bottomLeading) {
 				Button {
-					withAnimation {
-						emojiHoarder.emojiPacks.append(pack)
-						dismiss()
-					}
+					dismiss()
 				} label: {
 					Text("Cancel")
 						.font(.title3)
@@ -31,10 +28,8 @@ struct EmojiPackImporterView: View {
 			}
 			.overlay(alignment: .bottomTrailing) {
 				Button {
-					withAnimation {
-						emojiHoarder.emojiPacks.append(pack)
-						dismiss()
-					}
+					emojiHoarder.addEmojiPack(pack)
+					dismiss()
 				} label: {
 					Text("Add")
 						.font(.title3)
