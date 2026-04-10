@@ -62,7 +62,7 @@ struct SearchView: View {
 				case .slackEmoji:
 					EmojiTableView(hoarder: hoarder, items: searchResult)
 						.id(searchResult)
-						.ignoresSafeArea(edges: .bottom)
+						.padding(.bottom, 10)
 				case .giphyGifs:
 					Text("uhh")
 				}

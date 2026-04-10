@@ -29,7 +29,7 @@ struct BrowseView: View {
 						hoarder: emojiHoarder,
 						items: emojiHoarder.emojis.map { $0.name }
 					)
-					.ignoresSafeArea(.container, edges: .bottom)
+					.padding(.bottom, 10)
 					.id(emojiHoarder.emojis)
 				case .giphyGifs:
 					Button("download all") {

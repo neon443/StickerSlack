@@ -39,6 +39,7 @@ struct StickerRow<T: Hoarder>: View {
 							.frame(maxHeight: 20)
 							.foregroundStyle(.gray)
 					}
+					.tint(isDownloaded ? .red : .accent)
 					.buttonStyle(.borderless)
 					.alert("From Slack", isPresented: $showTooltip) {
 						Button("Done") {}
@@ -83,8 +84,9 @@ struct StickerRow<T: Hoarder>: View {
 				.transition(.scale)
 			}
 		}
-		.padding(.leading, -1)
-		.padding(.trailing, -9)
+		.background(.clear)
+//		.padding(.leading, -1)
+//		.padding(.trailing, -9)
 	}
 }
 

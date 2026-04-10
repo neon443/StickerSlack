@@ -16,6 +16,8 @@ class EmojiCell: UITableViewCell {
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		
+		backgroundColor = .systemGroupedBackground
+		contentView.backgroundColor = .clear
 		spinner.startAnimating()
 		spinner.frame = frame
 		contentView.addSubview(spinner)
@@ -44,6 +46,7 @@ class EmojiCell: UITableViewCell {
 			hostingController = controller
 			contentView.addSubview(controller.view)
 			
+			controller.view.backgroundColor = .clear
 			controller.view.translatesAutoresizingMaskIntoConstraints = false
 			NSLayoutConstraint.activate([
 				controller.view.topAnchor.constraint(equalTo: contentView.topAnchor),

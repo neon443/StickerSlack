@@ -18,8 +18,6 @@ struct EmojiTableView: UIViewRepresentable {
 		let tableView = context.coordinator as UITableViewController
 		tableView.tableView.register(EmojiCell.self, forCellReuseIdentifier: "cell")
 		tableView.tableView.dataSource = context.coordinator
-		tableView.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-		tableView.tableView.separatorStyle = .none
 		return tableView.tableView
 	}
 	
@@ -40,7 +38,7 @@ struct EmojiTableView: UIViewRepresentable {
 		init(hoarder: EmojiHoarder, items: [String]) {
 			self.hoarder = hoarder
 			self.items = items
-			super.init(style: .insetGrouped)
+			super.init(style: .plain)
 		}
 		
 		required init?(coder: NSCoder) {
