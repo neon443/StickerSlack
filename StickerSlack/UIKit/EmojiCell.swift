@@ -18,7 +18,7 @@ class EmojiCell: UITableViewCell {
 		
 		spinner.startAnimating()
 		spinner.frame = frame
-		addSubview(spinner)
+		contentView.addSubview(spinner)
 		
 		spinner.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate([
@@ -55,7 +55,13 @@ class EmojiCell: UITableViewCell {
 	}
 	
 	override func prepareForReuse() {
-		spinner.removeFromSuperview()
 		super.prepareForReuse()
+		
+		hostingController?.view.removeFromSuperview()
+		hostingController = nil
+		if spinner.superview == nil {
+				contentView.addSubview(spinner)
+		}
+		spinner.startAnimating()
 	}
 }
