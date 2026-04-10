@@ -47,3 +47,75 @@ struct glassButtonIfAv: ViewModifier {
 		}
 	}
 }
+
+struct NavigationView2<T: View>: View {
+	@ViewBuilder var contents: T
+	
+	var body: some View {
+		if #available(iOS 16, *) {
+			NavigationStack {
+				contents
+			}
+		} else {
+			NavigationView {
+				contents
+			}
+		}
+	}
+}
+
+struct presentationHalfAndFullIfAv: ViewModifier {
+	func body(content: Content) -> some View {
+		if #available(iOS 16, *) {
+			content
+				.presentationDetents([.medium, .large])
+				.presentationDragIndicator(.visible)
+		} else {
+			content
+		}
+	}
+}
+
+struct BoldSafe: ViewModifier {
+	var isEnabled: Bool = true
+	var style: Font.TextStyle = .body
+	
+	func body(content: Content) -> some View {
+		if #available(iOS 16, *) {
+			content.bold(isEnabled)
+		} else {
+			if isEnabled {
+				content.font(.system(style).bold())
+			} else {
+				content.font(.system(style))
+			}
+		}
+	}
+}
+
+struct MonospacedSafe: ViewModifier {
+	var isEnabled: Bool = true
+	var style: Font.TextStyle = .body
+	
+	func body(content: Content) -> some View {
+		if #available(iOS 16, *) {
+			content.monospaced(isEnabled)
+		} else {
+			if isEnabled {
+				content.font(.system(style).monospaced())
+			} else {
+				content.font(.system(style))
+			}
+		}
+	}
+}
+
+struct ScrollContentBackgroundHidden: ViewModifier {
+	func body(content: Content) -> some View {
+		if #available(iOS 16, *) {
+			content.scrollContentBackground(.hidden)
+		} else {
+			content
+		}
+	}
+}

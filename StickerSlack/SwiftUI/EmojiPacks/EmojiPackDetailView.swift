@@ -29,7 +29,7 @@ struct EmojiPackDetailView: View {
 	@Environment(\.dismiss) var dismiss
 	
 	var body: some View {
-		NavigationStack {
+		NavigationView2 {
 			GeometryReader { geo in
 				ScrollView {
 					Button() {
@@ -110,11 +110,16 @@ struct EmojiPackDetailView: View {
 										.padding(-10)
 									}
 								}
-								.rotationEffect(
-									.degrees(
-										edit ? sin(initDate.timeIntervalSinceNow*20)*4 : 0
-									)
-								)
+//								.distortionEffect(
+//									ShaderLibrary.wiggle(.float(initDate.timeIntervalSinceNow)),
+//									maxSampleOffset: .zero,
+//									isEnabled: edit
+//								)
+//								.rotationEffect(
+//									.degrees(
+//										edit ? sin(initDate.timeIntervalSinceNow*20)*4 : 0
+//									)
+//								)
 							}
 						}
 						if edit {
@@ -133,14 +138,13 @@ struct EmojiPackDetailView: View {
 								}
 							}
 							.sheet(isPresented: $showAdder) {
-								NavigationStack {
+								NavigationView2 {
 									SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
 										pack.add(selection.name)
 									}
 									.navigationTitle("Search Emojis")
 									.navigationBarTitleDisplayMode(.inline)
-									.presentationDragIndicator(.visible)
-									.presentationDetents([.large, .medium])
+									.modifier(presentationHalfAndFullIfAv())
 									.toolbar {
 										Button("", systemImage: "xmark") {
 											showAdder.toggle()
@@ -171,13 +175,19 @@ struct EmojiPackDetailView: View {
 						.modifier(glassButtonIfAv(edit))
 						.tint(edit ? Color.accentColor : .primary)
 					}
-					if #available(iOS 19, *) {
-						ToolbarSpacer()
-					}
+//					if #available(iOS 19, *) {
+//						ToolbarSpacer()
+//					}
 					ToolbarItem {
-						ShareLink(item: pack.shareLink()) {
-							Image(systemName: "square.and.arrow.up")
+						Button("", systemImage: "square.and.arrow.up") {
+							
 						}
+						.sheet(isPresented: .constant(true)) {
+							ShareSheet(activityItems: [pack.shareLink()])
+						}
+//						ShareLink(item: pack.shareLink()) {
+//							Image(systemName: "square.and.arrow.up")
+//						}
 					}
 				}
 				.onDisappear {

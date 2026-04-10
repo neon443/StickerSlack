@@ -26,8 +26,7 @@ struct StickerRow<T: Hoarder>: View {
 			
 			VStack(alignment: .leading, spacing: 5) {
 				Text(sticker.UIName)
-					.font(.caption)
-					.bold(isDownloaded)
+					.font(.caption.bold())
 					.foregroundColor(isDownloaded ? .green : .primary)
 					.lineLimit(nil)
 					.multilineTextAlignment(.leading)

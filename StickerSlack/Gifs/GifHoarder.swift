@@ -23,7 +23,7 @@ class GifHoarder: BaseHoarder {
 	
 	init(localOnly: Bool = false) {
 		super.init()
-		if !FileManager.default.fileExists(atPath: GifHoarder.container.path()) {
+		if !FileManager.default.fileExists(atPath: GifHoarder.container.safePath) {
 			try! FileManager.default.createDirectory(at: GifHoarder.container, withIntermediateDirectories: true)
 		}
 		startLoadingTrending()

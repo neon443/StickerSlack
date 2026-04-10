@@ -56,7 +56,7 @@ struct ContentView: View {
 						.tabItem {
 							Label("Setings", systemImage: "gear")
 						}
-					NavigationStack {
+					NavigationView2 {
 						SearchView(hoarder: emojiHoarder)
 					}
 					.tabItem {

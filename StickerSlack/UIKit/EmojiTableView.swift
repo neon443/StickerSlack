@@ -60,7 +60,6 @@ struct EmojiTableView: UIViewRepresentable {
 				spinner.frame = cell.frame
 				spinner.autoresizingMask = .flexibleWidth
 				cell.addSubview(spinner)
-				tableView.reloadData()
 				return cell
 			}
 			let emojiName = items[indexPath.row]
@@ -69,10 +68,13 @@ struct EmojiTableView: UIViewRepresentable {
 			
 			cell.selectedBackgroundView = nil
 			cell.selectionStyle = .none
-			cell.contentConfiguration = UIHostingConfiguration {
-				StickerRow(hoarder: hoarder, sticker: emoji)
-					.id(emoji)
-			}
+			
+			let swiftUIView = StickerRow(hoarder: hoarder, sticker: emoji).id(emoji)
+			let hostingController = UIHostingController(rootView: swiftUIView)
+			hostingController.view.frame = cell.frame
+			hostingController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+			cell.addSubview(hostingController.view)
+			
 			return cell
 		}
 		

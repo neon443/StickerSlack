@@ -11,7 +11,7 @@ struct EmojiPackManager: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	
 	var body: some View {
-		NavigationStack {
+		NavigationView2 {
 			List {
 				if hoarder.emojiPacks.isEmpty {
 					EmptyCollectionView(

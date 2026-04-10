@@ -23,8 +23,7 @@ struct WelcomeView: View {
 				Spacer()
 				Text("StickerSlack")
 					.bold()
-					.font(.largeTitle)
-					.monospaced()
+					.font(.largeTitle.monospaced())
 				Spacer()
 			}
 			.padding(.vertical, 20)
@@ -39,7 +38,7 @@ struct WelcomeView: View {
 					ListRow(number: 6, text: "Tap an emoji to use it!")
 				}
 			}
-			.scrollContentBackground(.hidden)
+			.modifier(ScrollContentBackgroundHidden())
 			Spacer()
 			Group {
 				if #available(iOS 19, *) {

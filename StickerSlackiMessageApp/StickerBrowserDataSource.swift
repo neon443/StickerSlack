@@ -17,7 +17,7 @@ class StickerBrowserDataSource: NSObject, MSStickerBrowserViewDataSource {
 	override init() {
 		super.init()
 		msStickers = []
-		guard let files = try? FileManager.default.contentsOfDirectory(atPath: EmojiHoarder.container.path()) else { return }
+		guard let files = try? FileManager.default.contentsOfDirectory(atPath: EmojiHoarder.container.safePath) else { return }
 		
 		for file in files {
 			guard file.contains(".png") ||

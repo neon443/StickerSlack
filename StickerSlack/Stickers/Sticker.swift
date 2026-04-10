@@ -12,9 +12,9 @@ extension StickerProtocol {
 	var localImageURLString: String {
 		let containerPath: String
 		if type(of: self) == Emoji.self {
-			containerPath = EmojiHoarder.container.path()
+			containerPath = EmojiHoarder.container.safePath
 		} else if type(of: self) == Gif.self {
-			containerPath = GifHoarder.container.path()
+			containerPath = GifHoarder.container.safePath
 		} else {
 			fatalError("sticker type unrecogniesd")
 		}
@@ -25,7 +25,11 @@ extension StickerProtocol {
 	}
 	
 	var localImageURL: URL {
-		return URL(filePath: localImageURLString)
+		if #available(iOS 16, *) {
+			return URL(filePath: localImageURLString)
+		} else {
+			return URL(fileURLWithPath: localImageURLString)
+		}
 	}
 	
 	var msSticker: MSSticker? {

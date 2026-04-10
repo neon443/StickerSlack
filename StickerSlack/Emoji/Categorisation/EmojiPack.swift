@@ -23,7 +23,7 @@ struct EmojiPack: Identifiable, Codable {
 	}
 	
 	init(fromShareLink url: URL) {
-		guard url.scheme == "stickerslack" && url.host() == "shared.pack" else { fatalError("invalid share url") }
+		guard url.scheme == "stickerslack" && url.safeHost == "shared.pack" else { fatalError("invalid share url") }
 		guard let components = URLComponents(string: url.absoluteString),
 			  let queryItems = components.queryItems else { fatalError("no query items or components") }
 		
@@ -81,7 +81,10 @@ struct EmojiPack: Identifiable, Codable {
 			.init(name: "description", value: description),
 			.init(name: "items", value: data.base64EncodedString())
 		]
-		url = url.appending(queryItems: queries)
+		
+		var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+		components!.queryItems = queries
+		url = components!.url!
 		return url
 	}
 }

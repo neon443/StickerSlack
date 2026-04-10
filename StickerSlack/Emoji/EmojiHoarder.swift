@@ -34,7 +34,7 @@ class EmojiHoarder: BaseHoarder {
 		super.init()
 		self.showWelcome = !UserDefaults.standard.bool(forKey: "showWelcome")
 		
-		if !FileManager.default.fileExists(atPath: EmojiHoarder.container.path()) {
+		if !FileManager.default.fileExists(atPath: EmojiHoarder.container.safePath) {
 			try! FileManager.default.createDirectory(at: EmojiHoarder.container, withIntermediateDirectories: true)
 		}
 		
@@ -131,7 +131,7 @@ class EmojiHoarder: BaseHoarder {
 	}
 	
 	private func loadTrie() {
-		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrieDict.path()) else { return }
+		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrieDict.safePath) else { return }
 		guard let dataDict = try? Data(contentsOf: EmojiHoarder.localTrieDict) else { return }
 		guard let decodedDict = try? decoder.decode([String:Emoji].self, from: dataDict) else {
 			fatalError("failed to decode dict")

@@ -50,7 +50,8 @@ class BaseHoarder: Hoarder {
 		} else {
 			var newSet: Set<String> = []
 			let url = await BaseHoarder.library.appendingPathComponent(stickerType, conformingTo: .directory)
-			if let files = try? FileManager.default.contentsOfDirectory(atPath: url.path()) {
+			
+			if let files = try? FileManager.default.contentsOfDirectory(atPath: url.safePath) {
 				for file in files {
 					let name = String(file.split(separator: ".")[0])
 					newSet.insert(name)

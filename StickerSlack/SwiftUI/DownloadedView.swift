@@ -62,7 +62,7 @@ struct DownloadedView: View {
 									UIPasteboard.general.image = emoji.image
 								}
 								Divider()
-								ShareLink("Share", item: emoji.remoteImageURL, subject: nil, message: nil)
+//								ShareLink("Share", item: emoji.remoteImageURL, subject: nil, message: nil)
 								Divider()
 								Button("Delete", systemImage: "trash.fill", role: .destructive) {
 									emojiHoarder.delete(emoji: emoji)

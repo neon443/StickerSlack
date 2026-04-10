@@ -16,7 +16,7 @@ struct SettingsView: View {
 		return colorScheme == .dark
 	}
 	var body: some View {
-		NavigationStack {
+		NavigationView2 {
 			List {
 				Section {
 					HStack {
@@ -30,9 +30,7 @@ struct SettingsView: View {
 							.padding(.trailing, 10)
 						VStack(alignment: .leading) {
 							Text("StickerSlack")
-								.font(.title2)
-								.monospaced()
-								.bold()
+								.font(.title2.monospaced().bold())
 							HStack(alignment: .center, spacing: 5) {
 								Text(Bundle.main.appVersion)
 									.bold()
