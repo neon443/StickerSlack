@@ -14,12 +14,6 @@ struct EmojiPack: Identifiable, Codable {
 	var name: String
 	var description: String
 	var items: [String]
-	//	var items: [EmojiPack.Item]
-	
-	//	struct Item: Identifiable, Codable, Equatable {
-	//		var id: UUID
-	//		var name: String
-	//	}
 	
 	init(id: UUID, name: String, description: String, items: [String]) {
 		self.id = id
@@ -29,22 +23,36 @@ struct EmojiPack: Identifiable, Codable {
 	}
 	
 	init(fromShareLink url: URL) {
-		guard var querySplit =  url.query()?.split(separator: "&") else { fatalError() }
-		var queries: [String] = []
-		for split in querySplit {
-			if split.contains("%") {
-				queries.append(split.removingPercentEncoding!)
-			} else {
-				queries.append(String(split))
-			}
-		}
-		for query in queries {
-			print(query)
-		}
+		guard url.scheme == "stickerslack" && url.host() == "shared.pack" else { fatalError("invalid share url") }
+		guard let components = URLComponents(string: url.absoluteString),
+			  let queryItems = components.queryItems else { fatalError("no query items or components") }
+		
 		self.id = UUID()
 		self.name = ""
 		self.description = ""
 		self.items = []
+
+		for item in queryItems {
+			guard let value = item.value else { fatalError("nil value for param \(item.name)") }
+			
+			switch item.name {
+			case "id":
+				if let uuid = UUID(uuidString: value) {
+					self.id = uuid
+				}
+			case "name":
+				self.name = value
+			case "description":
+				self.description = value
+			case "items":
+				if let data = Data(base64Encoded: value),
+				   let decoded = try? JSONDecoder().decode([String].self, from: data) {
+					self.items = decoded
+				}
+			default:
+				fatalError("unrecognised parameter in share link")
+			}
+		}
 	}
 	
 	mutating func add(_ newItem: String) {
@@ -74,8 +82,6 @@ struct EmojiPack: Identifiable, Codable {
 			.init(name: "items", value: data.base64EncodedString())
 		]
 		url = url.appending(queryItems: queries)
-		print(url.path(percentEncoded: true))
-		let _ = Self.init(fromShareLink: url)
 		return url
 	}
 }

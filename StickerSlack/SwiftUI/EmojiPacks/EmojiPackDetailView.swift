@@ -147,6 +147,7 @@ struct EmojiPackDetailView: View {
 					Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
 						.bold()
 						.multilineTextAlignment(.center)
+						.padding(.bottom)
 				}
 				.navigationTitle(edit ? "Editing" : "Pack Details")
 				.navigationBarTitleDisplayMode(.inline)

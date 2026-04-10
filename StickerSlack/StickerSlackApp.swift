@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct StickerSlackApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
+	var body: some Scene {
+		WindowGroup {
+			ContentView()
+				.onOpenURL { url in
+					print(EmojiPack(fromShareLink: url))
+				}
+		}
+	}
 }
