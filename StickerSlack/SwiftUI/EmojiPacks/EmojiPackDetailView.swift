@@ -15,6 +15,7 @@ struct EmojiPackDetailView: View {
 	@State var editDescription: Bool = false
 	@State var showAdder: Bool = false
 	@State var searchTerm: String = ""
+	@State var initDate: Date = .now
 	
 	var minColWidth: CGFloat { 75 }
 	var spacing: CGFloat { 10 }
@@ -36,7 +37,7 @@ struct EmojiPackDetailView: View {
 					} label: {
 						Text(pack.name.isEmpty ? "Name" : pack.name)
 							.bold()
-							.foregroundStyle(edit ? .blue : .primary)
+							.foregroundStyle(edit ? Color.accentColor : .primary)
 							.font(.title)
 					}
 					.disabled(!edit)
@@ -48,7 +49,7 @@ struct EmojiPackDetailView: View {
 						editDescription.toggle()
 					} label: {
 						Text(pack.description.isEmpty ? "Description" : pack.description)
-							.foregroundStyle(edit ? .blue : .primary)
+							.foregroundStyle(edit ? Color.accentColor : .primary)
 					}
 					.disabled(!edit)
 					.alert("Edit Description", isPresented: $editDescription) {
@@ -88,25 +89,32 @@ struct EmojiPackDetailView: View {
 					let layout = Array(repeating: col, count: columns)
 					LazyVGrid(columns: layout, spacing: spacing) {
 						ForEach(pack.items, id: \.self) { name in
-							let emoji = hoarder.trie.dict[name] ?? .test
-							VStack {
-								StickerPreview(sticker: emoji)
-								Spacer()
-								Text(emoji.UIName)
-									.multilineTextAlignment(.center)
-									.font(.caption)
-							}
-							.overlay(alignment: .topLeading) {
-								if edit {
-									Button(role: .destructive) {
-										pack.remove(name)
-									} label: {
-										Image(systemName: "minus.circle.fill")
-											.resizable().scaledToFit()
-									}
-									.frame(maxWidth: 25)
-									.padding(-10)
+							TimelineView(.animation) { tl in
+								let emoji = hoarder.trie.dict[name] ?? .test
+								VStack {
+									StickerPreview(sticker: emoji)
+									Spacer()
+									Text(emoji.UIName)
+										.multilineTextAlignment(.center)
+										.font(.caption)
 								}
+								.overlay(alignment: .topLeading) {
+									if edit {
+										Button(role: .destructive) {
+											pack.remove(name)
+										} label: {
+											Image(systemName: "minus.circle.fill")
+												.resizable().scaledToFit()
+										}
+										.frame(maxWidth: 25)
+										.padding(-10)
+									}
+								}
+								.rotationEffect(
+									.degrees(
+										edit ? sin(initDate.timeIntervalSinceNow*20)*4 : 0
+									)
+								)
 							}
 						}
 						if edit {
@@ -153,7 +161,7 @@ struct EmojiPackDetailView: View {
 				.navigationTitle(edit ? "Editing" : "Pack Details")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
-					ToolbarItem(placement: .topBarLeading) {
+					ToolbarItem {
 						Button(
 							"",
 							systemImage: edit ? "checkmark" : "pencil"
@@ -161,12 +169,12 @@ struct EmojiPackDetailView: View {
 							withAnimation { edit.toggle() }
 						}
 						.modifier(glassButtonIfAv(edit))
-						.tint(edit ? .blue : .primary)
+						.tint(edit ? Color.accentColor : .primary)
 					}
 					if #available(iOS 19, *) {
 						ToolbarSpacer()
 					}
-					ToolbarItem(placement: .topBarTrailing) {
+					ToolbarItem {
 						ShareLink(item: pack.shareLink()) {
 							Image(systemName: "square.and.arrow.up")
 						}
