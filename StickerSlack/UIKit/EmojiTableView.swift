@@ -16,7 +16,7 @@ struct EmojiTableView: UIViewRepresentable {
 	
 	func makeUIView(context: Context) -> UITableView {
 		let tableView = context.coordinator as UITableViewController
-		tableView.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+		tableView.tableView.register(EmojiCell.self, forCellReuseIdentifier: "cell")
 		tableView.tableView.dataSource = context.coordinator
 		tableView.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
 		tableView.tableView.separatorStyle = .none
@@ -52,29 +52,17 @@ struct EmojiTableView: UIViewRepresentable {
 		}
 		
 		override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-			guard !hoarder.trie.dict.isEmpty else {
-				let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-				let spinner = UIActivityIndicatorView()
-				spinner.startAnimating()
-				spinner.style = .large
-				spinner.frame = cell.frame
-				spinner.autoresizingMask = .flexibleWidth
-				cell.addSubview(spinner)
-				return cell
-			}
-			let emojiName = items[indexPath.row]
-			let emoji = hoarder.trie.dict[emojiName]!
-			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-			
-			cell.selectedBackgroundView = nil
+			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! EmojiCell
 			cell.selectionStyle = .none
 			
-			let swiftUIView = StickerRow(hoarder: hoarder, sticker: emoji).id(emoji)
-			let hostingController = UIHostingController(rootView: swiftUIView)
-			hostingController.view.frame = cell.frame
-			hostingController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-			cell.addSubview(hostingController.view)
+			guard !hoarder.trie.dict.isEmpty else {
+				return cell
+			}
 			
+			let emojiName = items[indexPath.row]
+			let emoji = hoarder.trie.dict[emojiName]!
+			
+			cell.configure(with: hoarder, emoji: emoji)
 			return cell
 		}
 		
@@ -91,15 +79,3 @@ struct EmojiTableView: UIViewRepresentable {
 		}
 	}
 }
-//
-//class EmojiCell: UITableViewCell {
-//	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-//		let l = UILabel()
-//		l.text = "ifosa"
-//		self.view = l
-//	}
-//	
-//	required init?(coder: NSCoder) {
-//		fatalError("init(coder:) has not been implemented")
-//	}
-//}

@@ -119,6 +119,8 @@
 		A9C52F752F89A93D00078588 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C52F742F89A93D00078588 /* URL.swift */; };
 		A9C52F762F89A93D00078588 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C52F742F89A93D00078588 /* URL.swift */; };
 		A9C52F772F89A9BF00078588 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C52F742F89A93D00078588 /* URL.swift */; };
+		A9C52F792F89BB0800078588 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C52F782F89BB0800078588 /* EmojiCell.swift */; };
+		A9C52F7A2F89BB0800078588 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C52F782F89BB0800078588 /* EmojiCell.swift */; };
 		A9CD6C352EDDE22800B7F421 /* EmojiPackDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CD6C342EDDE22800B7F421 /* EmojiPackDetailView.swift */; };
 		A9CD6C362EDDE22800B7F421 /* EmojiPackDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CD6C342EDDE22800B7F421 /* EmojiPackDetailView.swift */; };
 		A9CD6C382EDDE37500B7F421 /* EmojiPackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */; };
@@ -229,6 +231,7 @@
 		A9C52F6E2F89A22000078588 /* Wiggle.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Wiggle.metal; sourceTree = "<group>"; };
 		A9C52F712F89A85F00078588 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		A9C52F742F89A93D00078588 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		A9C52F782F89BB0800078588 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		A9CD6C342EDDE22800B7F421 /* EmojiPackDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackDetailView.swift; sourceTree = "<group>"; };
 		A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackManager.swift; sourceTree = "<group>"; };
 		A9D15B892EB1142C00404792 /* EmojiPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPack.swift; sourceTree = "<group>"; };
@@ -341,6 +344,7 @@
 			children = (
 				A9EB72382EB93FDB00658CEB /* EmojiTableView.swift */,
 				A9C52F712F89A85F00078588 /* ShareSheet.swift */,
+				A9C52F782F89BB0800078588 /* EmojiCell.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -694,6 +698,7 @@
 				A9A7A4482F68361200BB84C6 /* Meta.swift in Sources */,
 				A995D95C2F6EBBDD0043E5F5 /* TestStructures.swift in Sources */,
 				A9BE30FE2F5FA47100A57668 /* Hoarder.swift in Sources */,
+				A9C52F792F89BB0800078588 /* EmojiCell.swift in Sources */,
 				A9C52F722F89A85F00078588 /* ShareSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -763,6 +768,7 @@
 				A9EC46AD2F6D9E4600E066E6 /* Hoarder.swift in Sources */,
 				A9A7A4682F6AA17C00BB84C6 /* Int.swift in Sources */,
 				A9C172DC2EB8C9AC008A7885 /* Trie.swift in Sources */,
+				A9C52F7A2F89BB0800078588 /* EmojiCell.swift in Sources */,
 				A957C1752ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
 				A9CD6C362EDDE22800B7F421 /* EmojiPackDetailView.swift in Sources */,
 				A9EB72472EB948C400658CEB /* StickerRow.swift in Sources */,
