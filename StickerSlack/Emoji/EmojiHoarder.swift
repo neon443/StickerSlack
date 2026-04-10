@@ -246,6 +246,19 @@ class EmojiHoarder: BaseHoarder {
 		self.showWelcome = newValue
 	}
 	
+	func loadEmojiPacks() {
+		
+	}
+	
+	func saveEmojiPacks() {
+		var toStore: [URL] = []
+		for pack in emojiPacks {
+			toStore.append(pack.shareLink())
+		}
+		guard let encoded = try? JSONEncoder().encode(toStore) else { return }
+		
+	}
+	
 	func generateLetterStats() {
 		var result: [EmojiHoarder.LetterStat] = []
 		for child in trie.root.children {

@@ -18,6 +18,17 @@ struct GifView: View {
 	@State var timer: Timer?
 	
 	func run() async {
+		guard url.pathExtension == "gif" else {
+			if let data = try? await URLSession.shared.data(from: url).0,
+			   let uiImage = UIImage(data: data),
+			   let cgImage = uiImage.cgImage {
+				withAnimation(.spring) {
+					self.gif = [(cgImage, 1)]
+				}
+			}
+			return
+		}
+		
 		do {
 			if gif.isEmpty {
 				let frames = try await GifManager.gifFrom(url: url)
@@ -48,26 +59,30 @@ struct GifView: View {
 	
 	var body: some View {
 //		/*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
-		TimelineView(.animation) { tl in
-			VStack {
-				if gif.isEmpty {
-					ProgressView()
-						.controlSize(.large)
-						.frame(maxWidth: .infinity, maxHeight: .infinity)
-				} else {
+		Group {
+			if gif.isEmpty {
+				ProgressView()
+					.controlSize(.large)
+					.frame(maxWidth: .infinity, maxHeight: .infinity)
+			} else if url.pathExtension == "gif" {
+				TimelineView(.animation) { tl in
 					if currentI < gif.count {
-						let image = Image(uiImage: .init(cgImage: gif[currentI].frame))
-						image
+						Image(uiImage: .init(cgImage: gif[currentI].frame))
 							.resizable().scaledToFit()
 					}
 				}
+				.onDisappear {
+					timer?.invalidate()
+					timer = nil
+				}
+			} else {
+				if let frame = gif.first {
+					Image(uiImage: .init(cgImage: frame.frame))
+						.resizable().scaledToFit()
+				}
 			}
-			.transition(.scale)
 		}
-		.onDisappear {
-			timer?.invalidate()
-			timer = nil
-		}
+		.transition(.scale)
 		.onAppear {
 			Task {
 				await run()

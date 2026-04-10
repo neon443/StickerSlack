@@ -81,6 +81,7 @@ struct EmojiPackDetailView: View {
 								.blur(radius: 5)
 								.shadow(color: .purple, radius: 5)
 						}
+						.padding()
 					}
 					
 					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
@@ -172,7 +173,7 @@ struct EmojiPackDetailView: View {
 					}
 				}
 				.onDisappear {
-					print("disappear")
+					hoarder.
 				}
 			}
 		}
