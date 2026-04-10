@@ -14,12 +14,38 @@ struct EmojiPack: Identifiable, Codable {
 	var name: String
 	var description: String
 	var items: [String]
-//	var items: [EmojiPack.Item]
+	//	var items: [EmojiPack.Item]
 	
-//	struct Item: Identifiable, Codable, Equatable {
-//		var id: UUID
-//		var name: String
-//	}
+	//	struct Item: Identifiable, Codable, Equatable {
+	//		var id: UUID
+	//		var name: String
+	//	}
+	
+	init(id: UUID, name: String, description: String, items: [String]) {
+		self.id = id
+		self.name = name
+		self.description = description
+		self.items = items
+	}
+	
+	init(fromShareLink url: URL) {
+		guard var querySplit =  url.query()?.split(separator: "&") else { fatalError() }
+		var queries: [String] = []
+		for split in querySplit {
+			if split.contains("%") {
+				queries.append(split.removingPercentEncoding!)
+			} else {
+				queries.append(String(split))
+			}
+		}
+		for query in queries {
+			print(query)
+		}
+		self.id = UUID()
+		self.name = ""
+		self.description = ""
+		self.items = []
+	}
 	
 	mutating func add(_ newItem: String) {
 		guard !items.contains(newItem) else { return }
@@ -38,8 +64,7 @@ struct EmojiPack: Identifiable, Codable {
 	}
 	
 	func shareLink() -> URL {
-		let scheme = URL(string: "stickerslack://")!
-		var url: URL = scheme.appendingPathComponent("pack", conformingTo: .directory)
+		var url = URL(string: "stickerslack://shared.pack/")!
 		
 		let data = try! JSONEncoder().encode(items)
 		let queries: [URLQueryItem] = [
@@ -50,6 +75,7 @@ struct EmojiPack: Identifiable, Codable {
 		]
 		url = url.appending(queryItems: queries)
 		print(url.path(percentEncoded: true))
+		let _ = Self.init(fromShareLink: url)
 		return url
 	}
 }
