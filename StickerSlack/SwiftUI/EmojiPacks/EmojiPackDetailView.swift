@@ -10,12 +10,16 @@ import SwiftUI
 struct EmojiPackDetailView: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	@Binding var pack: EmojiPack
-	@State var edit: Bool = false
+	
+	@State var edit: Bool = true
 	@State var editName: Bool = false
 	@State var editDescription: Bool = false
+	@State var initDate: Date = .now
+	
 	@State var showAdder: Bool = false
 	@State var searchTerm: String = ""
-	@State var initDate: Date = .now
+	
+	@State var showShare: Bool = false
 	
 	var minColWidth: CGFloat { 75 }
 	var spacing: CGFloat { 10 }
@@ -72,6 +76,7 @@ struct EmojiPackDetailView: View {
 							Text("You can also change the name and description by tapping it in edit mode.")
 								.padding(.vertical, 5)
 						}
+						.transition(.scale)
 						.foregroundStyle(.gray)
 						.multilineTextAlignment(.center)
 						.frame(maxWidth: .infinity)
@@ -101,7 +106,9 @@ struct EmojiPackDetailView: View {
 								.overlay(alignment: .topLeading) {
 									if edit {
 										Button(role: .destructive) {
-											pack.remove(name)
+											withAnimation(.spring) {
+												pack.remove(name)
+											}
 										} label: {
 											Image(systemName: "minus.circle.fill")
 												.resizable().scaledToFit()
@@ -115,11 +122,11 @@ struct EmojiPackDetailView: View {
 //									maxSampleOffset: .zero,
 //									isEnabled: edit
 //								)
-//								.rotationEffect(
-//									.degrees(
-//										edit ? sin(initDate.timeIntervalSinceNow*20)*4 : 0
-//									)
-//								)
+								.rotationEffect(
+									.degrees(
+										edit ? sin(initDate.timeIntervalSinceNow*20)*4 : 0
+									)
+								)
 							}
 						}
 						if edit {
@@ -140,7 +147,9 @@ struct EmojiPackDetailView: View {
 							.sheet(isPresented: $showAdder) {
 								NavigationView2 {
 									SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
-										pack.add(selection.name)
+										withAnimation(.spring) {
+											pack.add(selection.name)
+										}
 									}
 									.navigationTitle("Search Emojis")
 									.navigationBarTitleDisplayMode(.inline)
@@ -162,10 +171,11 @@ struct EmojiPackDetailView: View {
 						.multilineTextAlignment(.center)
 						.padding(.bottom)
 				}
+				.transition(.scale)
 				.navigationTitle(edit ? "Editing" : "Pack Details")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
-					ToolbarItem {
+					ToolbarItem(placement: .topBarLeading) {
 						Button(
 							"",
 							systemImage: edit ? "checkmark" : "pencil"
@@ -175,19 +185,13 @@ struct EmojiPackDetailView: View {
 						.modifier(glassButtonIfAv(edit))
 						.tint(edit ? Color.accentColor : .primary)
 					}
-//					if #available(iOS 19, *) {
-//						ToolbarSpacer()
-//					}
-					ToolbarItem {
+					ToolbarItem(placement: .topBarTrailing) {
 						Button("", systemImage: "square.and.arrow.up") {
-							
+							showShare.toggle()
 						}
-						.sheet(isPresented: .constant(true)) {
+						.sheet(isPresented: $showShare) {
 							ShareSheet(activityItems: [pack.shareLink()])
 						}
-//						ShareLink(item: pack.shareLink()) {
-//							Image(systemName: "square.and.arrow.up")
-//						}
 					}
 				}
 				.onDisappear {
@@ -200,9 +204,13 @@ struct EmojiPackDetailView: View {
 
 @available(iOS 17, *)
 #Preview {
-	@Previewable @State var pack: EmojiPack = .test
+	@Previewable @State var hoarder = EmojiHoarder(localOnly: true, skipIndex: false)
+	@Previewable @State var pack: EmojiPack = .new()
 	EmojiPackDetailView(
-		hoarder: EmojiHoarder(localOnly: true, skipIndex: false),
+		hoarder: hoarder,
 		pack: $pack
 	)
+	.onAppear {
+		pack.add(hoarder.emojis.first!.name)
+	}
 }
