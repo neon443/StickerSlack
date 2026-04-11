@@ -343,8 +343,8 @@
 			isa = PBXGroup;
 			children = (
 				A9EB72382EB93FDB00658CEB /* EmojiTableView.swift */,
-				A9C52F712F89A85F00078588 /* ShareSheet.swift */,
 				A9C52F782F89BB0800078588 /* EmojiCell.swift */,
+				A9C52F712F89A85F00078588 /* ShareSheet.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";

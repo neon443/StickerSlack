@@ -11,7 +11,7 @@ struct EmojiPackDetailView: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	@Binding var pack: EmojiPack
 	
-	@State var edit: Bool = true
+	@State var edit: Bool = false
 	@State var editName: Bool = false
 	@State var editDescription: Bool = false
 	@State var initDate: Date = .now
@@ -186,11 +186,17 @@ struct EmojiPackDetailView: View {
 						.tint(edit ? Color.accentColor : .primary)
 					}
 					ToolbarItem(placement: .topBarTrailing) {
-						Button("", systemImage: "square.and.arrow.up") {
-							showShare.toggle()
-						}
-						.sheet(isPresented: $showShare) {
-							ShareSheet(activityItems: [pack.shareLink()])
+						if #available(iOS 16, *) {
+							ShareLink(item: pack.shareLink()) {
+								Image(systemName: "square.and.arrow.up")
+							}
+						} else {
+							Button("", systemImage: "square.and.arrow.up") {
+								showShare.toggle()
+							}
+							.sheet(isPresented: $showShare) {
+								ShareSheet(activityItems: [pack.shareLink()])
+							}
 						}
 					}
 				}
@@ -205,12 +211,9 @@ struct EmojiPackDetailView: View {
 @available(iOS 17, *)
 #Preview {
 	@Previewable @State var hoarder = EmojiHoarder(localOnly: true, skipIndex: false)
-	@Previewable @State var pack: EmojiPack = .new()
+	@Previewable @State var pack: EmojiPack = .test
 	EmojiPackDetailView(
 		hoarder: hoarder,
 		pack: $pack
 	)
-	.onAppear {
-		pack.add(hoarder.emojis.first!.name)
-	}
 }

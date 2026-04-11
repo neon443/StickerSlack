@@ -15,6 +15,8 @@ struct DownloadedView: View {
 	var isDark: Bool { colorScheme == .dark }
 	@State var browseWhat: StickerType = .slackEmoji
 	
+	@State var showShare: Bool = false
+	
 	var minColWidth: CGFloat { 75 }
 	var spacing: CGFloat { 5 }
 	var col: GridItem {
@@ -62,7 +64,18 @@ struct DownloadedView: View {
 									UIPasteboard.general.image = emoji.image
 								}
 								Divider()
-//								ShareLink("Share", item: emoji.remoteImageURL, subject: nil, message: nil)
+								if #available(iOS 16, *) {
+									ShareLink(item: emoji.remoteImageURL) {
+										Label("Share", systemImage: "square.and.arrow.up")
+									}
+								} else {
+									Button("Share", systemImage: "square.and.arrow.up") {
+										showShare.toggle()
+									}
+									.sheet(isPresented: $showShare) {
+										ShareSheet(activityItems: [emoji.remoteImageURL])
+									}
+								}
 								Divider()
 								Button("Delete", systemImage: "trash.fill", role: .destructive) {
 									emojiHoarder.delete(emoji: emoji)
