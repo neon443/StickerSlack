@@ -17,7 +17,7 @@ struct GifView: View {
 	
 	@State var timer: Timer?
 	
-	func run() async {
+	nonisolated func run() async {
 		guard url.pathExtension == "gif" else {
 			if let data = try? await URLSession.shared.data(from: url).0,
 			   let uiImage = UIImage(data: data),

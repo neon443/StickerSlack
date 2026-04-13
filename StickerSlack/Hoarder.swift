@@ -30,10 +30,12 @@ class BaseHoarder: Hoarder {
 	var encoder: JSONEncoder = JSONEncoder()
 	var decoder: JSONDecoder = JSONDecoder()
 
-	func download(emoji: any StickerProtocol, skipStoreIndex: Bool) async {
+	nonisolated func download(emoji: any StickerProtocol, skipStoreIndex: Bool) async {
 		try? await emoji.downloadImage()
-		await MainActor.run {
-			Haptic.success.trigger()
+		if !skipStoreIndex {
+			await MainActor.run {
+				Haptic.success.trigger()
+			}
 		}
 	}
 	

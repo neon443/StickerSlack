@@ -21,6 +21,13 @@ struct EmojiPackDetailView: View {
 	
 	@State var showShare: Bool = false
 	
+	var allDownloaded: Bool {
+		let date = Date.now
+		let result = Set(pack.items).isSubset(of: hoarder.downloadedStickers)
+		print("hit \(Date.now.timeIntervalSince(date)) \(UUID())")
+		return result
+	}
+	
 	var minColWidth: CGFloat { 75 }
 	var spacing: CGFloat { 10 }
 	var col: GridItem {
@@ -184,6 +191,18 @@ struct EmojiPackDetailView: View {
 						}
 						.modifier(glassButtonIfAv(edit))
 						.tint(edit ? Color.accentColor : .primary)
+					}
+					ToolbarItem(placement: .topBarTrailing) {
+						Button("", systemImage: allDownloaded ? "checkmark" : "arrow.down") {
+							if allDownloaded {
+								pack.deleteAll(hoarder: hoarder)
+							} else {
+								Task {
+									await pack.downloadAll(hoarder: hoarder)
+								}
+							}
+						}
+						.tint(allDownloaded ? .red : .accentColor)
 					}
 					ToolbarItem(placement: .topBarTrailing) {
 						if #available(iOS 16, *) {

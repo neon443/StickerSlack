@@ -14,6 +14,7 @@ struct EmojiPack: Identifiable, Codable {
 	var name: String
 	var description: String
 	var items: [String]
+	var allDownloaded: Bool = false
 	
 	init(id: UUID, name: String, description: String, items: [String]) {
 		self.id = id
@@ -65,6 +66,24 @@ struct EmojiPack: Identifiable, Codable {
 			return
 		}
 		self.items.remove(at: index)
+	}
+	
+	nonisolated func downloadAll(hoarder: EmojiHoarder) async {
+		let dict = await hoarder.trie.dict
+		var emojis: [Emoji] = []
+		for item in items {
+			if let foundEmoji = dict[item] {
+				emojis.append(foundEmoji)
+			}
+		}
+		await hoarder.batchDownload(emojis: emojis)
+	}
+	
+	func deleteAll(hoarder: EmojiHoarder) {
+		for item in items {
+			guard let emoji = hoarder.trie.dict[item] else { continue }
+			hoarder.delete(emoji: emoji)
+		}
 	}
 	
 	func shareLink() -> URL {

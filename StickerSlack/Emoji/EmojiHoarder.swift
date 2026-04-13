@@ -41,7 +41,7 @@ class EmojiHoarder: BaseHoarder {
 		loadEmojiPacks()
 		
 		self.emojis = loadLocalDB()
-		loadTrie()
+		self.trie.dict = loadTrieDict()
 		
 		startLoading(localOnly: localOnly, skipIndex: skipIndex)
 	}
@@ -58,6 +58,7 @@ class EmojiHoarder: BaseHoarder {
 			
 			if !skipIndex {
 				await self.buildTrie()
+				await self.saveTrieDict()
 			}
 		}
 	}
@@ -123,20 +124,20 @@ class EmojiHoarder: BaseHoarder {
 		letterStats = []
 	}
 	
-	private func saveTrie() {
-		guard let dataDict = try? encoder.encode(trie.dict) else {
+	nonisolated private func saveTrieDict() async {
+		guard let dataDict = try? await encoder.encode(trie.dict) else {
 			fatalError("failed to encode trie dict")
 		}
 		try! dataDict.write(to: EmojiHoarder.localTrieDict)
 	}
 	
-	private func loadTrie() {
-		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrieDict.safePath) else { return }
-		guard let dataDict = try? Data(contentsOf: EmojiHoarder.localTrieDict) else { return }
+	private func loadTrieDict() -> [String: Emoji] {
+		guard FileManager.default.fileExists(atPath: EmojiHoarder.localTrieDict.safePath) else { return [:] }
+		guard let dataDict = try? Data(contentsOf: EmojiHoarder.localTrieDict) else { return [:] }
 		guard let decodedDict = try? decoder.decode([String:Emoji].self, from: dataDict) else {
 			fatalError("failed to decode dict")
 		}
-		self.trie.dict = decodedDict
+		return decodedDict
 	}
 	
 	nonisolated
@@ -153,7 +154,6 @@ class EmojiHoarder: BaseHoarder {
 		await trie.dict = dict
 		
 		await buildDownloadedStickers()
-		await saveTrie()
 		print("done building trie in", Date().timeIntervalSince1970-start)
 	}
 	
@@ -217,10 +217,24 @@ class EmojiHoarder: BaseHoarder {
 		await buildTrie()
 	}
 	
+	nonisolated func batchDownload(emojis emojisToDownload: [any StickerProtocol]) async {
+		let emojiNames = emojisToDownload.map { $0.name }
+		for emoji in emojisToDownload {
+			await download(emoji: emoji, skipStoreIndex: false)
+			
+		}
+		await MainActor.run {
+			let _ = withAnimation(.snappy) {
+				self.downloadedStickers.formUnion(emojiNames)
+				self.downloadedStickersArr.append(contentsOf: emojiNames)
+			}
+			self.storeDownloadedIndexes()
+		}
+	}
+	
 	override nonisolated func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
 		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		
-		//		try? await emoji.downloadImage()
 		await MainActor.run {
 			if !skipStoreIndex {
 				let _ = withAnimation(.snappy) {
@@ -269,6 +283,10 @@ class EmojiHoarder: BaseHoarder {
 	}
 	
 	func addEmojiPack(_ packToAdd: EmojiPack) {
+		var packToAdd = packToAdd
+		if emojiPacks.contains(where: { $0.id == packToAdd.id }) {
+			packToAdd.id = UUID()
+		}
 		withAnimation {
 			emojiPacks.append(packToAdd)
 		}

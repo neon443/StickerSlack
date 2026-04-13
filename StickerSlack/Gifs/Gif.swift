@@ -35,7 +35,7 @@ struct Gif: StickerProtocol {
 		self.remoteImageURL = url
 	}
 	
-	func downloadImage() async throws {
+	nonisolated func downloadImage() async throws {
 		if let data = try? Data(contentsOf: localImageURL),
 		   let _ = UIImage(data: data) {
 			return

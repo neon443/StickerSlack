@@ -22,7 +22,7 @@ protocol StickerProtocol: Codable, Identifiable, Hashable {
 	var msSticker: MSSticker? { get }
 	var image: UIImage? { get }
 	
-	func downloadImage() async throws
+	nonisolated func downloadImage() async throws
 	func deleteImage()
 	func resize(image: UIImage, to targetSize: CGSize) -> UIImage
 	static var test: Self { get }
