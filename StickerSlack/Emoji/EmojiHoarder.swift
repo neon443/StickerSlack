@@ -264,8 +264,8 @@ class EmojiHoarder: BaseHoarder {
 	nonisolated override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
 		await super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		
-		await MainActor.run {
-			if !skipStoreIndex {
+		if !skipStoreIndex {
+			await MainActor.run {
 				let _ = withAnimation(.snappy) {
 					downloadedStickers.remove(emoji.name)
 					downloadedStickersArr.removeAll(where: { $0 == emoji.name })
