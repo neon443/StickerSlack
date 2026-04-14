@@ -11,6 +11,9 @@ struct EmojiPackImporterView: View {
 	@ObservedObject var emojiHoarder: EmojiHoarder
 	@Binding var pack: EmojiPack
 	@Environment(\.dismiss) var dismiss
+	var isiPhone: Bool {
+		return UIDevice().userInterfaceIdiom == .phone
+	}
 	
     var body: some View {
 		EmojiPackDetailView(hoarder: emojiHoarder, pack: $pack)
@@ -24,6 +27,7 @@ struct EmojiPackImporterView: View {
 				}
 				.modifier(glassButtonIfAv())
 				.padding(.leading)
+				.padding(.bottom, isiPhone ? 0 : 16)
 				.tint(.gray)
 			}
 			.overlay(alignment: .bottomTrailing) {
@@ -38,6 +42,7 @@ struct EmojiPackImporterView: View {
 				}
 				.modifier(glassButtonIfAv())
 				.padding(.trailing)
+				.padding(.bottom, isiPhone ? 0 : 16)
 				.tint(.accentColor)
 			}
     }

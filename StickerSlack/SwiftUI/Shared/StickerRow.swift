@@ -41,7 +41,7 @@ struct StickerRow<T: Hoarder>: View {
 					}
 					.tint(isDownloaded ? .red : .accent)
 					.buttonStyle(.borderless)
-					.alert("From Slack", isPresented: $showTooltip) {
+					.alert("From \(sticker.type.fromAppName)", isPresented: $showTooltip) {
 						Button("Done") {}
 					}
 					if isDownloaded {

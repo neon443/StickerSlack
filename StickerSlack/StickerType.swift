@@ -21,4 +21,13 @@ enum StickerType: CustomStringConvertible, CaseIterable, Identifiable {
 			return "Giphy GIFs"
 		}
 	}
+	
+	var fromAppName: String {
+		switch self {
+		case .slackEmoji:
+			return "Slack"
+		case .giphyGifs:
+			return "Giphy"
+		}
+	}
 }

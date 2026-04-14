@@ -26,8 +26,8 @@ struct WelcomeView: View {
 					.font(.largeTitle.monospaced())
 				Spacer()
 			}
-			.padding(.vertical, 20)
-			.padding(.leading, 20)
+			.padding(.vertical, 16)
+			.padding(.leading, 16)
 			List {
 				Section("How to use") {
 					ListRow(number: 1, text: "Browse or search for an emoji")

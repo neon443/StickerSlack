@@ -142,7 +142,7 @@ struct TrieNodeView: View {
 				.foregroundStyle(node.isEndOfWord ? .red : .primary)
 				.frame(width: 20, height: 20)
 			TrieNodeView(trie: trie, trieNode: node)
-				.padding(.leading, 20)
+				.padding(.leading, 16)
 		}
 	}
 }

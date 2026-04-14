@@ -105,10 +105,10 @@ struct EmojiPackDetailView: View {
 								let emoji = hoarder.trie.dict[name] ?? .test
 								VStack {
 									StickerPreview(sticker: emoji)
-									Spacer()
 									Text(emoji.UIName)
 										.multilineTextAlignment(.center)
 										.font(.caption)
+									Spacer()
 								}
 								.overlay(alignment: .topLeading) {
 									if edit {
@@ -124,11 +124,6 @@ struct EmojiPackDetailView: View {
 										.padding(-10)
 									}
 								}
-//								.distortionEffect(
-//									ShaderLibrary.wiggle(.float(initDate.timeIntervalSinceNow)),
-//									maxSampleOffset: .zero,
-//									isEnabled: edit
-//								)
 								.rotationEffect(
 									.degrees(
 										edit ? sin(initDate.timeIntervalSinceNow*20)*4 : 0
@@ -172,15 +167,21 @@ struct EmojiPackDetailView: View {
 					}
 					.animation(.spring, value: pack.items)
 					.padding()
-					
-					Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
-						.bold()
-						.multilineTextAlignment(.center)
-						.padding(.bottom)
+					.padding(.bottom, 32)
 				}
 				.transition(.scale)
 				.navigationTitle(edit ? "Editing" : "Pack Details")
 				.navigationBarTitleDisplayMode(.inline)
+				.overlay(alignment: .bottom) {
+					Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
+						.bold()
+						.multilineTextAlignment(.center)
+						.shadow(radius: 5)
+						.padding(.bottom)
+				}
+				.onDisappear {
+					hoarder.saveEmojiPacks()
+				}
 				.toolbar {
 					ToolbarItem(placement: .topBarLeading) {
 						Button(
@@ -218,9 +219,6 @@ struct EmojiPackDetailView: View {
 							}
 						}
 					}
-				}
-				.onDisappear {
-					hoarder.saveEmojiPacks()
 				}
 			}
 		}

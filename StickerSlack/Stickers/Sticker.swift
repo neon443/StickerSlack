@@ -11,12 +11,11 @@ import Messages
 extension StickerProtocol {
 	var localImageURLString: String {
 		let containerPath: String
-		if type(of: self) == Emoji.self {
+		switch type {
+		case .slackEmoji:
 			containerPath = EmojiHoarder.container.safePath
-		} else if type(of: self) == Gif.self {
+		case .giphyGifs:
 			containerPath = GifHoarder.container.safePath
-		} else {
-			fatalError("sticker type unrecogniesd")
 		}
 		let urlString = remoteImageURL.absoluteString
 		let split = urlString.split(separator: ".")
@@ -46,6 +45,17 @@ extension StickerProtocol {
 			return img
 		} else {
 			return nil
+		}
+	}
+	
+	var type: StickerType {
+		let typeOfSelf = Swift.type(of: self)
+		if typeOfSelf == Emoji.self {
+			return .slackEmoji
+		} else if typeOfSelf == Gif.self {
+			return .giphyGifs
+		} else {
+			fatalError("unrecognised sticker type get crashed lmfao")
 		}
 	}
 	

@@ -12,23 +12,13 @@ struct StickerPreview: View {
 	@State var sticker: any StickerProtocol
 	@State var gifImage: Image?
 	
-	var type: StickerType {
-		let type = Swift.type(of: sticker)
-		if type == Emoji.self {
-			return .slackEmoji
-		} else if type == Gif.self {
-			return .giphyGifs
-		} else {
-			fatalError("sticker type unrecognisedd")
-		}
-	}
 	var body: some View {
 		if sticker.image != nil {
 			//local
 			GifView(url: sticker.localImageURL)
 		} else {
 			//remote
-			if type == .slackEmoji {
+			if sticker.type == .slackEmoji {
 				GifView(url: sticker.remoteImageURL)
 			} else {
 				let gif = sticker as! Gif
