@@ -41,10 +41,12 @@ struct BrowseView: View {
 						Haptic.success.trigger()
 					}
 					Button("del all") {
-						for gif in gifHoarder.trendingGifs {
-							gifHoarder.delete(emoji: gif)
+						Task {
+							for gif in gifHoarder.trendingGifs {
+								await gifHoarder.delete(emoji: gif)
+							}
+							Haptic.rigid.trigger()
 						}
-						Haptic.rigid.trigger()
 					}
 					List {
 						ForEach(gifHoarder.trendingGifs) { gif in

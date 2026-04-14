@@ -78,7 +78,9 @@ struct DownloadedView: View {
 								}
 								Divider()
 								Button("Delete", systemImage: "trash.fill", role: .destructive) {
-									emojiHoarder.delete(emoji: emoji)
+									Task {
+										await emojiHoarder.delete(emoji: emoji)
+									}
 								}
 							}
 						}

@@ -194,10 +194,10 @@ struct EmojiPackDetailView: View {
 					}
 					ToolbarItem(placement: .topBarTrailing) {
 						Button("", systemImage: allDownloaded ? "checkmark" : "arrow.down") {
-							if allDownloaded {
-								pack.deleteAll(hoarder: hoarder)
-							} else {
-								Task {
+							Task {
+								if allDownloaded {
+									await pack.deleteAll(hoarder: hoarder)
+								} else {
 									await pack.downloadAll(hoarder: hoarder)
 								}
 							}

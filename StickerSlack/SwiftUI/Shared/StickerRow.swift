@@ -64,8 +64,10 @@ struct StickerRow<T: Hoarder>: View {
 			
 			if isDownloaded {
 				Button("", systemImage: "trash") {
-					hoarder.delete(emoji: sticker, skipStoreIndex: false)
-					downloading = false
+					Task {
+						await hoarder.delete(emoji: sticker, skipStoreIndex: false)
+						downloading = false
+					}
 				}
 				.transition(.scale)
 			} else if downloading {

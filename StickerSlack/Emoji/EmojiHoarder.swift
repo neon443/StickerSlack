@@ -98,14 +98,19 @@ class EmojiHoarder: BaseHoarder {
 		print(Date.now.timeIntervalSince(start))
 	}
 	
-	@MainActor
-	func deleteAllStickers() {
-		for i in emojis.indices {
-			guard downloadedStickers.contains(emojis[i].name) else { continue }
-			delete(emoji: emojis[i], skipStoreIndex: true)
+	func deleteAllStickers() async {
+		await withTaskGroup { group in
+			for i in emojis.indices {
+				group.addTask {
+					guard await self.downloadedStickers.contains(self.emojis[i].name) else { return }
+					await self.delete(emoji: self.emojis[i], skipStoreIndex: true)
+				}
+			}
 		}
-		downloadedStickers = []
-		storeDownloadedIndexes()
+		await MainActor.run {
+			downloadedStickers = []
+			storeDownloadedIndexes()
+		}
 	}
 	
 	private func storeDB(data: Data) {
@@ -220,14 +225,12 @@ class EmojiHoarder: BaseHoarder {
 	nonisolated func batchDownload(emojis emojisToDownload: [any StickerProtocol]) async {
 		let emojiNames = emojisToDownload.map { $0.name }
 		for emoji in emojisToDownload {
-			await download(emoji: emoji, skipStoreIndex: false)
+			await download(emoji: emoji, skipStoreIndex: true)
 			
 		}
+		
+		await buildDownloadedStickers()
 		await MainActor.run {
-			let _ = withAnimation(.snappy) {
-				self.downloadedStickers.formUnion(emojiNames)
-				self.downloadedStickersArr.append(contentsOf: emojiNames)
-			}
 			self.storeDownloadedIndexes()
 		}
 	}
@@ -246,15 +249,29 @@ class EmojiHoarder: BaseHoarder {
 		}
 	}
 	
-	override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
-		super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
-		//		emoji.deleteImage()
-		if !skipStoreIndex {
-			let _ = withAnimation(.snappy) {
-				downloadedStickers.remove(emoji.name)
-				downloadedStickersArr.removeAll(where: { $0 == emoji.name })
-			}
+	nonisolated func batchDelete(emojis emojisToDelete: [any StickerProtocol]) async {
+		let emojiNames = emojisToDelete.map { $0.name }
+		for emoji in emojisToDelete {
+			await delete(emoji: emoji, skipStoreIndex: true)
+		}
+		await buildDownloadedStickers()
+		
+		await MainActor.run {
 			storeDownloadedIndexes()
+		}
+	}
+	
+	nonisolated override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
+		await super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
+		
+		await MainActor.run {
+			if !skipStoreIndex {
+				let _ = withAnimation(.snappy) {
+					downloadedStickers.remove(emoji.name)
+					downloadedStickersArr.removeAll(where: { $0 == emoji.name })
+				}
+				storeDownloadedIndexes()
+			}
 		}
 	}
 	

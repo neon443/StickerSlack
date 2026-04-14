@@ -17,8 +17,8 @@ protocol Hoarder: ObservableObject {
 	var encoder: JSONEncoder { get }
 	var decoder: JSONDecoder { get }
 	
-	func download(emoji: any StickerProtocol, skipStoreIndex: Bool) async
-	func delete(emoji: any StickerProtocol, skipStoreIndex: Bool)
+	nonisolated func download(emoji: any StickerProtocol, skipStoreIndex: Bool) async
+	nonisolated func delete(emoji: any StickerProtocol, skipStoreIndex: Bool) async
 }
 
 class BaseHoarder: Hoarder {
@@ -39,8 +39,8 @@ class BaseHoarder: Hoarder {
 		}
 	}
 	
-	func delete(emoji: any StickerProtocol, skipStoreIndex: Bool) {
-		emoji.deleteImage()
+	nonisolated func delete(emoji: any StickerProtocol, skipStoreIndex: Bool) async {
+		await emoji.deleteImage()
 	}
 	
 	nonisolated func buildDownloadedStickers(for stickerType: String) async {

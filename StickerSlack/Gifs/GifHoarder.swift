@@ -59,8 +59,8 @@ class GifHoarder: BaseHoarder {
 		}
 	}
 	
-	override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) {
-		super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
+	override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
+		await super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		let _ = withAnimation(.snappy) {
 			downloadedStickers.remove(emoji.name)
 		}

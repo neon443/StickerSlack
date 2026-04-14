@@ -104,7 +104,9 @@ struct SettingsView: View {
 					}
 					.foregroundStyle(.red)
 					Button("Delete all", systemImage: "trash.circle", role: .destructive) {
-						hoarder.deleteAllStickers()
+						Task {
+							await hoarder.deleteAllStickers()
+						}
 					}
 					.foregroundStyle(.red)
 				}

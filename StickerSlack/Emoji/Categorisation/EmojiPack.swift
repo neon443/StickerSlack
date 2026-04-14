@@ -79,10 +79,10 @@ struct EmojiPack: Identifiable, Codable {
 		await hoarder.batchDownload(emojis: emojis)
 	}
 	
-	func deleteAll(hoarder: EmojiHoarder) {
+	nonisolated func deleteAll(hoarder: EmojiHoarder) async {
 		for item in items {
-			guard let emoji = hoarder.trie.dict[item] else { continue }
-			hoarder.delete(emoji: emoji)
+			guard let emoji = await hoarder.trie.dict[item] else { continue }
+			await hoarder.delete(emoji: emoji)
 		}
 	}
 	
