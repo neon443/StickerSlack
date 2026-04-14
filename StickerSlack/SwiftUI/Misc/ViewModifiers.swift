@@ -119,3 +119,26 @@ struct ScrollContentBackgroundHidden: ViewModifier {
 		}
 	}
 }
+
+struct TabViewBottomAcceessorySafe<T: View>: ViewModifier {
+	var isEnabled: Bool
+	@ViewBuilder var contents: () -> T
+	
+	func body(content: Content) -> some View where Content: View {
+		if #available(iOS 26.1, *) {
+			content
+				.tabViewBottomAccessory(isEnabled: isEnabled, content: contents)
+		} else {
+			content
+		}
+	}
+}
+
+extension View {
+	func tabViewBottomAccessorySafe<Content: View>(
+		isEnabled: Bool = true,
+		@ViewBuilder content: @escaping () -> Content
+	) -> some View {
+		modifier(TabViewBottomAcceessorySafe(isEnabled: isEnabled, contents: content))
+	}
+}

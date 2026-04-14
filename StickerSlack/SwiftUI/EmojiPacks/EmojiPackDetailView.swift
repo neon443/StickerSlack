@@ -167,18 +167,16 @@ struct EmojiPackDetailView: View {
 					}
 					.animation(.spring, value: pack.items)
 					.padding()
-					.padding(.bottom, 32)
-				}
-				.transition(.scale)
-				.navigationTitle(edit ? "Editing" : "Pack Details")
-				.navigationBarTitleDisplayMode(.inline)
-				.overlay(alignment: .bottom) {
+					
 					Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
 						.bold()
 						.multilineTextAlignment(.center)
 						.shadow(radius: 5)
 						.padding(.bottom)
 				}
+				.transition(.scale)
+				.navigationTitle(edit ? "Editing" : "Pack Details")
+				.navigationBarTitleDisplayMode(.inline)
 				.onDisappear {
 					hoarder.saveEmojiPacks()
 				}
