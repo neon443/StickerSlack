@@ -23,37 +23,74 @@ struct EmojiPack: Identifiable, Codable {
 		self.items = items
 	}
 	
-	init(fromShareLink url: URL) {
-		guard url.scheme == "stickerslack" && url.safeHost == "shared.pack" else { fatalError("invalid share url") }
-		guard let components = URLComponents(string: url.absoluteString),
-			  let queryItems = components.queryItems else { fatalError("no query items or components") }
+	init?(fromShareLink url: URL) {
+		guard url.safeHost == "shared.pack" ||
+						url.safeHost == "stickerslack.neon443.xyz" ||
+						url.safeHost == "stickerslack.nihaals.me" else {
+					return nil
+				}
+//		switch url.safeHost {
+//		case "shared.pack":
+//			<#code#>
+//		case "stickerslack.neon443.xyz":
+//			<#code#>
+//		case "stickerslack.nihaals.me":
+//			<#code#>
+//		default:
+//			return nil
+//		}
+		guard let created = EmojiPack.createFrom(url: url) else {
+			return nil
+		}
+		self = created
+	}
+	
+	static func createFrom(url: URL) -> EmojiPack? {
+		var pack: EmojiPack = .new()
 		
-		self.id = UUID()
-		self.name = ""
-		self.description = ""
-		self.items = []
-
+//		switch type {
+//		case .stickerslack:
+//			<#code#>
+//		case .neon443:
+//			<#code#>
+//		case .nihaals:
+//			<#code#>
+//		}
+		guard let components = URLComponents(string: url.absoluteString),
+			  let queryItems = components.queryItems else {
+			print("no query items or components")
+			return nil
+		}
+		
 		for item in queryItems {
 			guard let value = item.value else { fatalError("nil value for param \(item.name)") }
 			
 			switch item.name {
 			case "id":
 				if let uuid = UUID(uuidString: value) {
-					self.id = uuid
+					pack.id = uuid
 				}
 			case "name":
-				self.name = value
+				pack.name = value
 			case "description":
-				self.description = value
+				pack.description = value
 			case "items":
 				if let data = Data(base64Encoded: value),
 				   let decoded = try? JSONDecoder().decode([String].self, from: data) {
-					self.items = decoded
+					pack.items = decoded
 				}
 			default:
-				fatalError("unrecognised parameter in share link")
+				print("unrecognised parameter in share link")
+				return nil
 			}
 		}
+		return pack
+	}
+	
+	enum ShareURLTypes {
+		case stickerslack
+		case neon443
+		case nihaals
 	}
 	
 	mutating func add(_ newItem: String) {
@@ -87,7 +124,8 @@ struct EmojiPack: Identifiable, Codable {
 	}
 	
 	func shareLink() -> URL {
-		var url = URL(string: "stickerslack://shared.pack/")!
+//		var url = URL(string: "stickerslack://shared.pack/")!
+		var url = URL(string: "https://stickerslack.neon443.xyz/share/")!
 		
 		let data = try! JSONEncoder().encode(items)
 		let queries: [URLQueryItem] = [

@@ -283,7 +283,9 @@ class EmojiHoarder: BaseHoarder {
 	func loadEmojiPacks() {
 		guard let data = try? Data(contentsOf: Self.packStore),
 			  let decoded = try? decoder.decode([URL].self, from: data) else { return }
-		self.emojiPacks = decoded.map { EmojiPack(fromShareLink: $0) }
+		self.emojiPacks = decoded.map {
+			EmojiPack(fromShareLink: $0) ?? .new()
+		}
 	}
 	
 	func saveEmojiPacks() {

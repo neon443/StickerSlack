@@ -19,17 +19,14 @@ struct StickerSlackApp: App {
 		WindowGroup {
 			ContentView(emojiHoarder: emojiHoarder, gifhoarder: gifhoarder)
 				.onOpenURL { url in
+					if let imported = EmojiPack(fromShareLink: url) {
+						pack = imported
+					}
 					importingEmojiPack = true
-					pack = EmojiPack(fromShareLink: url)
-					NotificationCenter.default.post(name: .didImportPack, object: pack)
 				}
 				.sheet(isPresented: $importingEmojiPack) {
 					EmojiPackImporterView(emojiHoarder: emojiHoarder, pack: $pack)
 				}
 		}
 	}
-}
-
-extension Notification.Name {
-	static let didImportPack = Self("didImportNote")
 }
