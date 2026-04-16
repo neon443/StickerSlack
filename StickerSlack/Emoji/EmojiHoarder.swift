@@ -47,14 +47,15 @@ class EmojiHoarder: BaseHoarder {
 	}
 	
 	func startLoading(localOnly: Bool, skipIndex: Bool) {
-		Task.detached {
+		Task {
+			print(localOnly)
 			if !skipIndex { await self.buildTrie() }
 			
-			guard !localOnly else { return }
-			
-			print("start loading remote db")
-			await self.loadRemoteDB()
-			print("end")
+			if !localOnly {
+				print("start loading remote db")
+				await self.loadRemoteDB()
+				print("end")
+			}
 			
 			if !skipIndex {
 				await self.buildTrie()
@@ -190,6 +191,7 @@ class EmojiHoarder: BaseHoarder {
 		if let fetched = await fetched {
 			await MainActor.run {
 				withAnimation(.snappy) { self.emojis = fetched }
+				print(EmojiHoarder.container)
 			}
 		}
 	}
