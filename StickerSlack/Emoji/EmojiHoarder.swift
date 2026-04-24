@@ -47,7 +47,7 @@ class EmojiHoarder: BaseHoarder {
 	}
 	
 	func startLoading(localOnly: Bool, skipIndex: Bool) {
-		Task {
+		Task.detached {
 			print(localOnly)
 			if !skipIndex { await self.buildTrie() }
 			
@@ -173,8 +173,7 @@ class EmojiHoarder: BaseHoarder {
 		}
 	}
 	
-	nonisolated
-	private func loadRemoteDB() async {
+	nonisolated private func loadRemoteDB() async {
 		async let fetched = self.fetchRemoteDB()
 		if let fetched = await fetched,
 		   await fetched != self.emojis {
@@ -184,8 +183,7 @@ class EmojiHoarder: BaseHoarder {
 		}
 	}
 	
-	nonisolated
-	private func fetchRemoteDB() async -> [Emoji]? {
+	nonisolated private func fetchRemoteDB() async -> [Emoji]? {
 		do {
 			async let (data, _) = try URLSession.shared.data(from: endpoint)
 			let decoded: [SlackResponse] = try await decoder.decode([SlackResponse].self, from: await data)
