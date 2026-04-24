@@ -16,7 +16,7 @@ struct EmojiTableView: UIViewRepresentable {
 	
 	func makeUIView(context: Context) -> UITableView {
 		let tableView = context.coordinator as UITableViewController
-		tableView.tableView.register(EmojiCell.self, forCellReuseIdentifier: "cell")
+		tableView.tableView.register(EmojiTableViewCell.self, forCellReuseIdentifier: "cell")
 		tableView.tableView.dataSource = context.coordinator
 		return tableView.tableView
 	}
@@ -50,7 +50,7 @@ struct EmojiTableView: UIViewRepresentable {
 		}
 		
 		override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! EmojiCell
+			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! EmojiTableViewCell
 			cell.selectionStyle = .none
 			
 			guard !hoarder.trie.dict.isEmpty else {

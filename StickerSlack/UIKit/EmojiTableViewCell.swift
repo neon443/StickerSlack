@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SwiftUI
 
-class EmojiCell: UITableViewCell {
+class EmojiTableViewCell: UITableViewCell {
 	private var spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .large)
 	private var hostingController: UIHostingController<StickerRow<EmojiHoarder>>?
 	
