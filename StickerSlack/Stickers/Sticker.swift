@@ -71,8 +71,12 @@ extension StickerProtocol {
 		if let uiImage = UIImage(data: data),
 		   let cgImage = uiImage.cgImage,
 		   await !self.localImageURLString.contains(".gif"),
-		   cgImage.width < 300 || cgImage.height < 300 {
-			data = await resize(image: uiImage, to: CGSize(width: 300, height: 300)).pngData()!
+		   cgImage.width < 500 || cgImage.height < 500 {
+			if await self.localImageURLString.suffix(4) == ".gif" {
+				
+			} else {
+				data = await resize(image: uiImage, to: CGSize(width: 500, height: 500)).pngData()!
+			}
 		}
 		try! await data.write(to: localImageURL)
 		return

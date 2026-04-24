@@ -20,9 +20,9 @@ struct StickerSlackApp: App {
 			ContentView(emojiHoarder: emojiHoarder, gifhoarder: gifhoarder)
 				.onOpenURL { url in
 					if let imported = EmojiPack(fromShareLink: url) {
+						importingEmojiPack = true
 						pack = imported
 					}
-					importingEmojiPack = true
 				}
 				.sheet(isPresented: $importingEmojiPack) {
 					EmojiPackImporterView(emojiHoarder: emojiHoarder, pack: $pack)
