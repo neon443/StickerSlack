@@ -86,11 +86,6 @@ class EmojiHoarder: BaseHoarder {
 						guard await !self.downloadedStickers.contains(await self.emojis[i].name) else { continue }
 						await self.download(emoji: self.emojis[i], skipStoreIndex: true)
 						let _ = await MainActor.run { self.downloadedStickers.insert(self.emojis[i].name) }
-						if await i == self.emojis.count {
-							Task { @MainActor in
-								self.storeDownloadedIndexes()
-							}
-						}
 					}
 				}
 			}
@@ -110,7 +105,6 @@ class EmojiHoarder: BaseHoarder {
 		}
 		await MainActor.run {
 			downloadedStickers = []
-			storeDownloadedIndexes()
 		}
 	}
 	
@@ -126,7 +120,6 @@ class EmojiHoarder: BaseHoarder {
 		try? FileManager.default.removeItem(at: EmojiHoarder.localTrieDict)
 		
 		downloadedStickers = []
-		UserDefaults.standard.removeObject(forKey: "downloadedEmojis")
 		letterStats = []
 	}
 	
@@ -167,12 +160,7 @@ class EmojiHoarder: BaseHoarder {
 		await super.buildDownloadedStickers(for: stickerType)
 		downloadedStickersArr = await Array(downloadedStickers).sorted()
 	}
-	
-	func storeDownloadedIndexes() {
-		UserDefaults.standard.set(try! encoder.encode(downloadedStickers), forKey: "downloadedEmojis")
-	}
-	
-	//	nonisolated
+
 	private func loadLocalDB() -> [Emoji] {
 		do {
 			let localEmojiDB = try Data(contentsOf: EmojiHoarder.localEmojiDB)
@@ -217,9 +205,6 @@ class EmojiHoarder: BaseHoarder {
 		}
 		
 		await buildDownloadedStickers()
-		await MainActor.run {
-			self.storeDownloadedIndexes()
-		}
 	}
 	
 	override nonisolated func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
@@ -231,7 +216,6 @@ class EmojiHoarder: BaseHoarder {
 					self.downloadedStickers.insert(emoji.name)
 					self.downloadedStickersArr.append(emoji.name)
 				}
-				self.storeDownloadedIndexes()
 			}
 		}
 	}
@@ -242,10 +226,6 @@ class EmojiHoarder: BaseHoarder {
 			await delete(emoji: emoji, skipStoreIndex: true)
 		}
 		await buildDownloadedStickers()
-		
-		await MainActor.run {
-			storeDownloadedIndexes()
-		}
 	}
 	
 	nonisolated override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
@@ -257,7 +237,6 @@ class EmojiHoarder: BaseHoarder {
 					downloadedStickers.remove(emoji.name)
 					downloadedStickersArr.removeAll(where: { $0 == emoji.name })
 				}
-				storeDownloadedIndexes()
 			}
 		}
 	}
