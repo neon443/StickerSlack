@@ -44,12 +44,12 @@ class BaseHoarder: Hoarder {
 	}
 	
 	nonisolated func buildDownloadedStickers(for stickerType: String) async {
-		if let data = UserDefaults.standard.data(forKey: "downloaded\(stickerType)"),
-		   let decoded = try? await decoder.decode(Set<String>.self, from: data) {
-			await MainActor.run {
-				downloadedStickers = decoded
-			}
-		} else {
+//		if let data = UserDefaults.standard.data(forKey: "downloaded\(stickerType)"),
+//		   let decoded = try? await decoder.decode(Set<String>.self, from: data) {
+//			await MainActor.run {
+//				downloadedStickers = decoded
+//			}
+//		} else {
 			var newSet: Set<String> = []
 			let url = await BaseHoarder.library.appendingPathComponent(stickerType, conformingTo: .directory)
 			
@@ -66,8 +66,8 @@ class BaseHoarder: Hoarder {
 				self.downloadedStickers = immutable
 			}
 			return
-		}
+//		}
 	}
 	
-	init() { }
+	init() {}
 }

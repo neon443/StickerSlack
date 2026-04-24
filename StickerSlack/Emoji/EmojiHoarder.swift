@@ -163,9 +163,9 @@ class EmojiHoarder: BaseHoarder {
 		print("done building trie in", Date().timeIntervalSince1970-start)
 	}
 	
-	override func buildDownloadedStickers(for stickerType: String = "Emojis") async {
+	nonisolated override func buildDownloadedStickers(for stickerType: String = "Emojis") async {
 		await super.buildDownloadedStickers(for: stickerType)
-		downloadedStickersArr = Array(downloadedStickers).sorted()
+		downloadedStickersArr = await Array(downloadedStickers).sorted()
 	}
 	
 	func storeDownloadedIndexes() {
