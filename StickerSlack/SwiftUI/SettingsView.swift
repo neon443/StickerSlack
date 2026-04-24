@@ -112,6 +112,15 @@ struct SettingsView: View {
 				}
 				
 				Section("Debug") {
+					NavigationLink {
+						EmojiCollectionView(
+							hoarder: hoarder,
+							items: hoarder.emojis.prefix(50).map { $0.name }
+						)
+					} label: {
+						Label("", systemImage: "square.grid.2x2.fill")
+					}
+					
 					Button("Refresh", systemImage: "arrow.clockwise", role: .destructive) {
 						hoarder.startLoading(localOnly: false, skipIndex: false)
 					}
