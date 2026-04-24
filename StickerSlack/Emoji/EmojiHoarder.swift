@@ -188,10 +188,10 @@ class EmojiHoarder: BaseHoarder {
 	nonisolated
 	private func loadRemoteDB() async {
 		async let fetched = self.fetchRemoteDB()
-		if let fetched = await fetched {
+		if let fetched = await fetched,
+		   await fetched != self.emojis {
 			await MainActor.run {
 				withAnimation(.snappy) { self.emojis = fetched }
-				print(EmojiHoarder.container)
 			}
 		}
 	}
@@ -207,21 +207,6 @@ class EmojiHoarder: BaseHoarder {
 			print(error.localizedDescription)
 			return nil
 		}
-	}
-	
-	private func refreshDB() async {
-		guard let fetched = await self.fetchRemoteDB() else {
-			let local = loadLocalDB()
-			await MainActor.run {
-				emojis = local
-			}
-			await buildTrie()
-			return
-		}
-		await MainActor.run {
-			withAnimation(.snappy) { self.emojis = fetched }
-		}
-		await buildTrie()
 	}
 	
 	nonisolated func batchDownload(emojis emojisToDownload: [any StickerProtocol]) async {

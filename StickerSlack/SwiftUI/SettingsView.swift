@@ -112,6 +112,10 @@ struct SettingsView: View {
 				}
 				
 				Section("Debug") {
+					Button("Refresh", systemImage: "arrow.clockwise", role: .destructive) {
+						hoarder.startLoading(localOnly: false, skipIndex: false)
+					}
+					
 					NavigationLink {
 						TrieTestingView(hoarder: hoarder)
 					} label: {

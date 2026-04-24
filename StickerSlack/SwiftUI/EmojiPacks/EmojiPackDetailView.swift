@@ -21,6 +21,8 @@ struct EmojiPackDetailView: View {
 	
 	@State var showShare: Bool = false
 	
+	@State var showNotFoundAlert: Bool = false
+	
 	var allDownloaded: Bool {
 		let date = Date.now
 		let result = Set(pack.items).isSubset(of: hoarder.downloadedStickers)
@@ -102,13 +104,38 @@ struct EmojiPackDetailView: View {
 					LazyVGrid(columns: layout, spacing: spacing) {
 						ForEach(pack.items, id: \.self) { name in
 							TimelineView(.animation) { tl in
-								let emoji = hoarder.trie.dict[name] ?? .test
-								VStack {
-									StickerPreview(sticker: emoji)
-									Text(emoji.UIName)
-										.multilineTextAlignment(.center)
-										.font(.caption)
-									Spacer()
+								Group {
+									VStack {
+										if let emoji = hoarder.trie.dict[name] {
+											StickerPreview(sticker: emoji)
+											Text(emoji.UIName)
+												.multilineTextAlignment(.center)
+												.font(.caption)
+										} else {
+											Image(systemName: "questionmark.circle.dashed")
+												.resizable().scaledToFit()
+												.foregroundStyle(.gray.opacity(0.5))
+												.overlay(alignment: .topTrailing) {
+													Button {
+														showNotFoundAlert.toggle()
+													} label: {
+														Image(systemName: "info")
+															.font(.title3.bold())
+													}
+												}
+											Text(name)
+												.multilineTextAlignment(.center)
+												.font(.caption)
+										}
+										Spacer()
+									}
+									.alert("This emoji was not found", isPresented: $showNotFoundAlert) {
+										Button("OK") {
+											showNotFoundAlert.toggle()
+										}
+									} message: {
+										Text("Try reopening the app with an Internet connection to refresh the emoji database.")
+									}
 								}
 								.overlay(alignment: .topLeading) {
 									if edit {
