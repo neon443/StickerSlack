@@ -18,8 +18,15 @@ class EmojiTableViewCell: UITableViewCell {
 		
 		backgroundColor = .systemGroupedBackground
 		contentView.backgroundColor = .clear
-		spinner.startAnimating()
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
+	func configureSkeleton() {
 		spinner.frame = frame
+		spinner.startAnimating()
 		contentView.addSubview(spinner)
 		
 		spinner.translatesAutoresizingMaskIntoConstraints = false
@@ -29,10 +36,7 @@ class EmojiTableViewCell: UITableViewCell {
 			spinner.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			spinner.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
 		])
-	}
-	
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+
 	}
 	
 	func configure(with hoarder: EmojiHoarder, emoji: Emoji) {
@@ -63,8 +67,7 @@ class EmojiTableViewCell: UITableViewCell {
 		hostingController?.view.removeFromSuperview()
 		hostingController = nil
 		if spinner.superview == nil {
-				contentView.addSubview(spinner)
+				configureSkeleton()
 		}
-		spinner.startAnimating()
 	}
 }

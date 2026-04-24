@@ -115,10 +115,10 @@ struct SettingsView: View {
 					NavigationLink {
 						EmojiCollectionView(
 							hoarder: hoarder,
-							items: hoarder.emojis.prefix(50).map { $0.name }
+							items: hoarder.emojis.prefix(100).map { $0.name }
 						)
 					} label: {
-						Label("", systemImage: "square.grid.2x2.fill")
+						Label("grid view", systemImage: "square.grid.2x2.fill")
 					}
 					
 					Button("Refresh", systemImage: "arrow.clockwise", role: .destructive) {

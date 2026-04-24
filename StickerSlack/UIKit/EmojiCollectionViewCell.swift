@@ -10,13 +10,23 @@ import UIKit
 import SwiftUI
 
 class EmojiCollectionViewCell: UICollectionViewCell {
+	let spinner = UIActivityIndicatorView()
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		
-		let spinner = UIActivityIndicatorView()
+		configure()
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
+	func configure() {
 		spinner.frame = frame
 		spinner.startAnimating()
 		self.contentView.addSubview(spinner)
+		
 		spinner.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate([
 			spinner.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -26,7 +36,12 @@ class EmojiCollectionViewCell: UICollectionViewCell {
 		])
 	}
 	
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		
+		spinner.removeFromSuperview()
+		if spinner.superview == nil {
+			configure()
+		}
 	}
 }
