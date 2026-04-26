@@ -53,12 +53,10 @@ struct EmojiTableView: UIViewRepresentable {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! EmojiTableViewCell
 			cell.selectionStyle = .none
 			
-			guard !hoarder.trie.dict.isEmpty else {
-				return cell
-			}
+			guard !hoarder.trie.dict.isEmpty else { return cell }
 			
 			let emojiName = items[indexPath.row]
-			let emoji = hoarder.trie.dict[emojiName]!
+			guard let emoji = hoarder.trie.dict[emojiName] else { return cell }
 			
 			cell.configure(with: hoarder, emoji: emoji)
 			return cell

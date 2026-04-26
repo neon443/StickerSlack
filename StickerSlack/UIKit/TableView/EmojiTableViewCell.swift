@@ -69,5 +69,6 @@ class EmojiTableViewCell: UITableViewCell {
 		if spinner.superview == nil {
 				configureSkeleton()
 		}
+		spinner.startAnimating()
 	}
 }

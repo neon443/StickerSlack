@@ -61,51 +61,107 @@ struct StickerRow<T: Hoarder>: View {
 			)
 			
 			Spacer()
-			
-			if isDownloaded {
-				Button("", systemImage: "trash") {
-					Task {
-						await hoarder.delete(emoji: sticker, skipStoreIndex: false)
-						downloading = false
-					}
+				
+			Group {
+				if sticker.type == .slackEmoji {
+					AddToPackMenuView(
+						emojiHoarder: hoarder as! EmojiHoarder,
+						sticker: sticker as! Emoji
+					)
+					.padding(.trailing, -8)
 				}
-				.transition(.scale)
-			} else if downloading {
-				ProgressView()
+				
+				if isDownloaded {
+					Button {
+						Task {
+							await hoarder.delete(emoji: sticker, skipStoreIndex: false)
+							downloading = false
+						}
+					} label: {
+						Image(systemName: "trash")
+							.resizable().scaledToFit()
+					}
 					.transition(.scale)
-					.padding(.trailing)
-			} else {
-				Button("", systemImage: "arrow.down.circle") {
-					withAnimation(.snappy) {
-						downloading = true
+				} else if downloading {
+					ProgressView()
+						.transition(.scale)
+						.padding(.trailing)
+				} else {
+					Button {
+						withAnimation(.snappy) {
+							downloading = true
+						}
+						Task.detached {
+							await hoarder.download(emoji: sticker, skipStoreIndex: false)
+						}
+					} label: {
+						Image(systemName: "arrow.down.circle")
+							.resizable().scaledToFit()
 					}
-					Task.detached {
-						await hoarder.download(emoji: sticker, skipStoreIndex: false)
-					}
+					.transition(.scale)
 				}
-				.transition(.scale)
 			}
+			.frame(width: 24, height: 24)
+			.padding(.trailing)
 		}
-		.background(.clear)
-//		.padding(.leading, -1)
-//		.padding(.trailing, -9)
+	}
+}
+
+struct AddToPackMenuView: View {
+	@ObservedObject var emojiHoarder: EmojiHoarder
+	@State var sticker: Emoji
+	
+	var body: some View {
+		Menu {
+			Button("Create new", systemImage: "plus") {
+				var newPack = EmojiPack.new()
+				newPack.add(sticker.name)
+				emojiHoarder.emojiPacks.append(newPack)
+			}
+			Divider()
+			if emojiHoarder.emojiPacks.isEmpty {
+				Label("No Packs", systemImage: "questionmark.app.dashed")
+			} else {
+				Label("Add to Pack", systemImage: "square.stack.3d.up.fill")
+			}
+			ForEach($emojiHoarder.emojiPacks) { $pack in
+				Button() {
+					pack.add(sticker.name)
+				} label: {
+					Text(pack.name)
+					Text("\(pack.description)\n\(pack.items.count) item\(pack.items.count.plural)")
+				}
+			}
+		} label: {
+			Image(systemName: "plus")
+				.resizable().scaledToFit()
+		}
 	}
 }
 
 @available(iOS 17, *)
 #Preview {
-	@Previewable var hoarder = GifHoarder()
+	@Previewable var hoarder = EmojiHoarder()
 	List {
-		StickerRow(hoarder: hoarder, sticker: Emoji.test)
-		StickerRow(hoarder: hoarder, sticker: Emoji.testLongName)
-		StickerRow(hoarder: hoarder, sticker: Gif.test)
-		StickerRow(hoarder: hoarder, sticker: Emoji(name: "a", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, sticker: Emoji(name: "ab", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abc", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcd", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcde", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdef", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefg", url: Emoji.test.remoteImageURL))
-		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefgh", url: Emoji.test.remoteImageURL))
+		ForEach(hoarder.emojis.prefix(10)) { emoji in
+			StickerRow(hoarder: hoarder, sticker: emoji)
+		}
+//		EmojiTableView(
+//			hoarder: hoarder,
+//			items: hoarder.emojis.prefix(10).map({ <#Emoji#> in
+//				<#code#>
+//			})
+//		)
+//		StickerRow(hoarder: hoarder, sticker: Emoji.test)
+//		StickerRow(hoarder: hoarder, sticker: Emoji.testLongName)
+//		StickerRow(hoarder: hoarder, sticker: Gif.test)
+//		StickerRow(hoarder: hoarder, sticker: Emoji(name: "a", url: Emoji.test.remoteImageURL))
+//		StickerRow(hoarder: hoarder, sticker: Emoji(name: "ab", url: Emoji.test.remoteImageURL))
+//		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abc", url: Emoji.test.remoteImageURL))
+//		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcd", url: Emoji.test.remoteImageURL))
+//		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcde", url: Emoji.test.remoteImageURL))
+//		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdef", url: Emoji.test.remoteImageURL))
+//		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefg", url: Emoji.test.remoteImageURL))
+//		StickerRow(hoarder: hoarder, sticker: Emoji(name: "abcdefgh", url: Emoji.test.remoteImageURL))
 	}
 }

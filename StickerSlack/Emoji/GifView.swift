@@ -62,7 +62,7 @@ struct GifView: View {
 		Group {
 			if gif.isEmpty {
 				ProgressView()
-					.controlSize(.large)
+//					.controlSize(.large)
 					.frame(maxWidth: .infinity, maxHeight: .infinity)
 			} else if url.pathExtension == "gif" {
 				TimelineView(.animation) { tl in
