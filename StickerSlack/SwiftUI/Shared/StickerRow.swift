@@ -126,10 +126,13 @@ struct AddToPackMenuView: View {
 			}
 			ForEach($emojiHoarder.emojiPacks) { $pack in
 				Button() {
-					pack.add(sticker.name)
+					pack.addRemove(sticker.name)
 				} label: {
+					if pack.items.contains(sticker.name) {
+						Image(systemName: "checkmark")
+					}
 					Text(pack.name)
-					Text("\(pack.description)\n\(pack.items.count) item\(pack.items.count.plural)")
+					Text("\(pack.items.count) item"+pack.items.count.plural)
 				}
 			}
 		} label: {

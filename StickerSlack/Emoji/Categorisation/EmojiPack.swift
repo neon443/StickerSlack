@@ -105,6 +105,14 @@ struct EmojiPack: Identifiable, Codable {
 		self.items.remove(at: index)
 	}
 	
+	mutating func addRemove(_ item: String) {
+		if items.contains(item) {
+			self.remove(item)
+		} else {
+			self.add(item)
+		}
+	}
+	
 	nonisolated func downloadAll(hoarder: EmojiHoarder) async {
 		let dict = await hoarder.trie.dict
 		var emojis: [Emoji] = []
@@ -117,10 +125,14 @@ struct EmojiPack: Identifiable, Codable {
 	}
 	
 	nonisolated func deleteAll(hoarder: EmojiHoarder) async {
+		let dict = await hoarder.trie.dict
+		var emojis: [Emoji] = []
 		for item in items {
-			guard let emoji = await hoarder.trie.dict[item] else { continue }
-			await hoarder.delete(emoji: emoji)
+			if let foundEmoji = dict[item] {
+				emojis.append(foundEmoji)
+			}
 		}
+		await hoarder.batchDelete(emojis: emojis)
 	}
 	
 	func shareLink() -> URL {

@@ -196,7 +196,6 @@ class EmojiHoarder: BaseHoarder {
 	}
 	
 	nonisolated func batchDownload(emojis emojisToDownload: [any StickerProtocol]) async {
-		let emojiNames = emojisToDownload.map { $0.name }
 		for emoji in emojisToDownload {
 			await download(emoji: emoji, skipStoreIndex: true)
 			
@@ -219,7 +218,6 @@ class EmojiHoarder: BaseHoarder {
 	}
 	
 	nonisolated func batchDelete(emojis emojisToDelete: [any StickerProtocol]) async {
-		let emojiNames = emojisToDelete.map { $0.name }
 		for emoji in emojisToDelete {
 			await delete(emoji: emoji, skipStoreIndex: true)
 		}

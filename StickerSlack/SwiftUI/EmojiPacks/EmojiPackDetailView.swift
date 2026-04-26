@@ -43,158 +43,142 @@ struct EmojiPackDetailView: View {
 	
 	var body: some View {
 		NavigationView2 {
-			GeometryReader { geo in
-				ScrollView {
-					Button() {
-						editName.toggle()
-					} label: {
-						Text(pack.name.isEmpty ? "Name" : pack.name)
-							.bold()
-							.foregroundStyle(edit ? Color.accentColor : .primary)
-							.font(.title)
-					}
-					.disabled(!edit)
-					.alert("Edit Name", isPresented: $editName) {
-						TextField("", text: $pack.name)
-					}
-					
-					Button() {
-						editDescription.toggle()
-					} label: {
-						Text(pack.description.isEmpty ? "Description" : pack.description)
-							.foregroundStyle(edit ? Color.accentColor : .primary)
-					}
-					.disabled(!edit)
-					.alert("Edit Description", isPresented: $editDescription) {
-						TextField("", text: $pack.description)
-					}
-					
-					if pack.items.isEmpty {
-						VStack(alignment: .center) {
-							HStack {
-								Image(systemName: "exclamationmark.triangle.fill")
-								Text("No Emoji")
-									.bold()
-								Image(systemName: "exclamationmark.triangle.fill")
-							}
-							.foregroundStyle(.yellow)
-							Text("This pack contians no emojis")
-								.padding(.vertical, 5)
-								.foregroundStyle(.foreground)
-							Text("Add emojis to this pack by editing it using the pencil button in the toolbar.")
-							Text("You can also change the name and description by tapping it in edit mode.")
-								.padding(.vertical, 5)
-						}
-						.transition(.scale)
-						.foregroundStyle(.gray)
-						.multilineTextAlignment(.center)
-						.frame(maxWidth: .infinity)
-						.padding()
-						.background {
-							Color.accentColor.opacity(0.2)
-								.clipShape(RoundedRectangle(cornerRadius: 10))
-								.blur(radius: 5)
-								.shadow(color: .accentColor, radius: 5)
-						}
-						.padding()
-					}
-					
+//			GeometryReader { geo in
+			VStack {
+				Button() {
+					editName.toggle()
+				} label: {
+					Text(pack.name.isEmpty ? "Name" : pack.name)
+						.bold()
+						.foregroundStyle(edit ? Color.accentColor : .primary)
+						.font(.title)
+				}
+				.disabled(!edit)
+				.alert("Edit Name", isPresented: $editName) {
+					TextField("", text: $pack.name)
+				}
+				
+				Button() {
+					editDescription.toggle()
+				} label: {
+					Text(pack.description.isEmpty ? "Description" : pack.description)
+						.foregroundStyle(edit ? Color.accentColor : .primary)
+				}
+				.disabled(!edit)
+				.alert("Edit Description", isPresented: $editDescription) {
+					TextField("", text: $pack.description)
+				}
+				
+				if pack.items.isEmpty {
+					EmptyEmojiPackView()
+				}
+				
+				EmojiCollectionView(
+					hoarder: hoarder,
+					pack: pack,
+					width: 80
+				)
+				
+				GeometryReader { geo in
 					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
 					let layout = Array(repeating: col, count: columns)
-					LazyVGrid(columns: layout, spacing: spacing) {
-						ForEach(pack.items, id: \.self) { name in
-							TimelineView(.animation) { tl in
-								Group {
-									VStack {
-										if let emoji = hoarder.trie.dict[name] {
-											StickerPreview(sticker: emoji)
-											Text(emoji.UIName)
-												.multilineTextAlignment(.center)
-												.font(.caption)
-										} else {
-											Image(systemName: "questionmark.circle.dashed")
-												.resizable().scaledToFit()
-												.foregroundStyle(.gray.opacity(0.5))
-												.overlay(alignment: .topTrailing) {
-													Button {
-														showNotFoundAlert.toggle()
-													} label: {
-														Image(systemName: "info")
-															.font(.title3.bold())
+					ScrollView {
+						LazyVGrid(columns: layout, spacing: spacing) {
+							ForEach(pack.items, id: \.self) { name in
+								TimelineView(.animation) { tl in
+									Group {
+										VStack {
+											if let emoji = hoarder.trie.dict[name] {
+												StickerPreview(sticker: emoji)
+												Text(emoji.UIName)
+													.multilineTextAlignment(.center)
+													.font(.caption)
+											} else {
+												Image(systemName: "questionmark.circle.dashed")
+													.resizable().scaledToFit()
+													.foregroundStyle(.gray.opacity(0.5))
+													.overlay(alignment: .topTrailing) {
+														Button {
+															showNotFoundAlert.toggle()
+														} label: {
+															Image(systemName: "info")
+																.font(.title3.bold())
+														}
 													}
-												}
-											Text(name)
-												.multilineTextAlignment(.center)
-												.font(.caption)
+												Text(name)
+													.multilineTextAlignment(.center)
+													.font(.caption)
+											}
+											Spacer()
 										}
+										.alert("This emoji was not found", isPresented: $showNotFoundAlert) {
+											Button("OK") {
+												showNotFoundAlert.toggle()
+											}
+										} message: {
+											Text("Try reopening the app with an Internet connection to refresh the emoji database.")
+										}
+									}
+									.overlay(alignment: .topLeading) {
+										if edit {
+											Button(role: .destructive) {
+												withAnimation(.spring) {
+													pack.remove(name)
+												}
+											} label: {
+												Image(systemName: "minus.circle.fill")
+													.resizable().scaledToFit()
+											}
+											.frame(maxWidth: 25)
+											.padding(-10)
+										}
+									}
+									.rotationEffect(
+										.degrees(
+											edit ? sin(initDate.timeIntervalSinceNow*20)*4 : 0
+										)
+									)
+								}
+							}
+							if edit {
+								Button() {
+									showAdder.toggle()
+								} label: {
+									VStack {
+										Image(systemName: "plus.square.dashed")
+											.resizable().scaledToFit()
+											.foregroundStyle(.green.opacity(0.5))
+										Text("Add")
+											.multilineTextAlignment(.center)
+											.font(.caption)
+											.foregroundStyle(.green.opacity(0.5))
 										Spacer()
 									}
-									.alert("This emoji was not found", isPresented: $showNotFoundAlert) {
-										Button("OK") {
-											showNotFoundAlert.toggle()
-										}
-									} message: {
-										Text("Try reopening the app with an Internet connection to refresh the emoji database.")
-									}
 								}
-								.overlay(alignment: .topLeading) {
-									if edit {
-										Button(role: .destructive) {
+								.sheet(isPresented: $showAdder) {
+									NavigationView2 {
+										SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
 											withAnimation(.spring) {
-												pack.remove(name)
+												pack.add(selection.name)
 											}
-										} label: {
-											Image(systemName: "minus.circle.fill")
-												.resizable().scaledToFit()
 										}
-										.frame(maxWidth: 25)
-										.padding(-10)
-									}
-								}
-								.rotationEffect(
-									.degrees(
-										edit ? sin(initDate.timeIntervalSinceNow*20)*4 : 0
-									)
-								)
-							}
-						}
-						if edit {
-							Button() {
-								showAdder.toggle()
-							} label: {
-								VStack {
-									Image(systemName: "plus.square.dashed")
-										.resizable().scaledToFit()
-										.foregroundStyle(.green.opacity(0.5))
-									Text("Add")
-										.multilineTextAlignment(.center)
-										.font(.caption)
-										.foregroundStyle(.green.opacity(0.5))
-									Spacer()
-								}
-							}
-							.sheet(isPresented: $showAdder) {
-								NavigationView2 {
-									SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
-										withAnimation(.spring) {
-											pack.add(selection.name)
-										}
-									}
-									.navigationTitle("Search Emojis")
-									.navigationBarTitleDisplayMode(.inline)
-									.modifier(presentationHalfAndFullIfAv())
-									.toolbar {
-										Button("", systemImage: "xmark") {
-											showAdder.toggle()
+										.navigationTitle("Search Emojis")
+										.navigationBarTitleDisplayMode(.inline)
+										.modifier(presentationHalfAndFullIfAv())
+										.toolbar {
+											Button("", systemImage: "xmark") {
+												showAdder.toggle()
+											}
 										}
 									}
 								}
 							}
 						}
+						.animation(.spring, value: pack.items)
+						.padding()
 					}
-					.animation(.spring, value: pack.items)
-					.padding()
-					
+				}
+				
 					Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
 						.bold()
 						.multilineTextAlignment(.center)
@@ -213,7 +197,7 @@ struct EmojiPackDetailView: View {
 							"",
 							systemImage: edit ? "checkmark" : "pencil"
 						) {
-							withAnimation { edit.toggle() }
+							withAnimation(.spring) { edit.toggle() }
 						}
 						.modifier(glassButtonIfAv(edit))
 						.tint(edit ? Color.accentColor : .primary)
@@ -245,7 +229,7 @@ struct EmojiPackDetailView: View {
 						}
 					}
 				}
-			}
+//			}
 		}
 	}
 }

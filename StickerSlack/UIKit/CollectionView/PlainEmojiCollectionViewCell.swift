@@ -11,6 +11,7 @@ import SwiftUI
 
 class PlainEmojiCollectionViewCell: UICollectionViewCell {
 	let spinner = UIActivityIndicatorView()
+	var hostingController: UIHostingController<StickerPreview>?
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -37,24 +38,32 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 	
 	func configure(with: EmojiHoarder, emoji: Emoji) {
 		let swiftUIView = StickerPreview(sticker: emoji)
-		let hostingController = UIHostingController(rootView: swiftUIView)
-		self.contentView.addSubview(hostingController.view)
 		
-		hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-		NSLayoutConstraint.activate([
-			hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor),
-			hostingController.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			hostingController.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-			hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-		])
+		if let hostingController {
+			hostingController.rootView = swiftUIView
+		} else {
+			let hostingController = UIHostingController(rootView: swiftUIView)
+			self.hostingController = hostingController
+			self.contentView.addSubview(hostingController.view)
+			
+			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+			NSLayoutConstraint.activate([
+				hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor),
+				hostingController.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+				hostingController.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+				hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+			])
+		}
 	}
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		
-		spinner.removeFromSuperview()
+		hostingController?.view.removeFromSuperview()
+		hostingController = nil
 		if spinner.superview == nil {
 			configureSkeleton()
 		}
+		spinner.startAnimating()
 	}
 }
