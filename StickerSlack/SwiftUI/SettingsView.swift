@@ -116,7 +116,8 @@ struct SettingsView: View {
 						EmojiCollectionView(
 							hoarder: hoarder,
 							pack: .test,
-							width: 50
+							width: 50,
+							style: .plain
 						)
 					} label: {
 						Label("grid view", systemImage: "square.grid.2x2.fill")

@@ -14,11 +14,14 @@ struct EmojiCollectionView: UIViewRepresentable {
 	let pack: EmojiPack
 	let width: CGFloat
 	let spacing: CGFloat = 16
+	let style: EmojiCollectionView.Style
 	
 	func makeUIView(context: Context) -> UICollectionView {
 		let collectionView = context.coordinator as UICollectionViewController
-		collectionView.collectionView.register(PlainEmojiCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+		collectionView.collectionView.register(PlainEmojiCollectionViewCell.self, forCellWithReuseIdentifier: "plainCell")
+		collectionView.collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
 		collectionView.collectionView.dataSource = context.coordinator
+		collectionView.collectionView.delegate = context.coordinator
 		return collectionView.collectionView
 	}
 	
@@ -29,21 +32,41 @@ struct EmojiCollectionView: UIViewRepresentable {
 	}
 	
 	func makeCoordinator() -> Coordinator {
-		Coordinator(hoarder: hoarder, pack: pack, width: width, spacing: spacing)
+		Coordinator(
+			hoarder: hoarder,
+			pack: pack,
+			width: width,
+			spacing: spacing,
+			style: style
+		)
 	}
 	
-	final class Coordinator: UICollectionViewController {
+	enum Style {
+		case plain
+		case full
+	}
+	
+	final class Coordinator: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 		var hoarder: EmojiHoarder
 		var pack: EmojiPack
 		var width: CGFloat
 		var spacing: CGFloat
+		var style: EmojiCollectionView.Style
+		
 		var layout = UICollectionViewFlowLayout()
 		
-		init(hoarder: EmojiHoarder, pack: EmojiPack, width: CGFloat, spacing: CGFloat) {
+		init(
+			hoarder: EmojiHoarder,
+			pack: EmojiPack,
+			width: CGFloat,
+			spacing: CGFloat,
+			style: EmojiCollectionView.Style
+		) {
 			self.hoarder = hoarder
 			self.pack = pack
 			self.width = width
 			self.spacing = spacing
+			self.style = style
 			
 			layout.sectionInset.left = 16
 			layout.sectionInset.right = 16
@@ -69,17 +92,32 @@ struct EmojiCollectionView: UIViewRepresentable {
 		}
 		
 		override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-				let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! PlainEmojiCollectionViewCell
-				
+			let cell: PlainEmojiCollectionViewCell
+			switch style {
+			case .plain:
+				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plainCell", for: indexPath) as! PlainEmojiCollectionViewCell
+			case .full:
+				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! EmojiCollectionViewCell
+			}
+			
 			guard !hoarder.trie.dict.isEmpty else { return cell }
-			
 			let emojiName = pack.items[indexPath.item]
-			
 			guard let emoji = hoarder.trie.dict[emojiName] else { return cell }
 			
 			cell.configure(with: hoarder, emoji: emoji)
 			return cell
 		}
+		
+//		func collectionView(
+//			_ collectionView: UICollectionView,
+//			layout collectionViewLayout: UICollectionViewLayout,
+//			sizeForItemAt indexPath: IndexPath
+//		) -> CGSize {
+//			let defaultSize = CGSize(width: width, height: width)
+//			
+//			guard !hoarder.trie.dict.isEmpty else { return defaultSize }
+//			let emojiName = pack.items[indexPath.item]
+//		}
 	}
 }
 

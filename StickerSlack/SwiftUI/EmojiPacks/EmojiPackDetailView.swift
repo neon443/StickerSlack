@@ -76,7 +76,8 @@ struct EmojiPackDetailView: View {
 				EmojiCollectionView(
 					hoarder: hoarder,
 					pack: pack,
-					width: 80
+					width: 80,
+					style: .full
 				)
 				
 				GeometryReader { geo in
