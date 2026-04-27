@@ -10,13 +10,9 @@ import UIKit
 
 class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	let label = UILabel()
-	let spacer = UIView()
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		
-		contentView.addSubview(spacer)
-		spacer.translatesAutoresizingMaskIntoConstraints = false
 		
 		label.font = .preferredFont(forTextStyle: .caption1)
 		label.textAlignment = .center
@@ -25,11 +21,6 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		label.translatesAutoresizingMaskIntoConstraints = false
 		
 		NSLayoutConstraint.activate([
-			spacer.topAnchor.constraint(equalTo: topAnchor),
-			spacer.bottomAnchor.constraint(equalTo: label.topAnchor),
-			spacer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-			spacer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-			
 			label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 			label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
