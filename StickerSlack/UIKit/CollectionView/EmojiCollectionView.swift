@@ -18,8 +18,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 	
 	func makeUIView(context: Context) -> UICollectionView {
 		let collectionView = context.coordinator as UICollectionViewController
-		collectionView.collectionView.register(PlainEmojiCollectionViewCell.self, forCellWithReuseIdentifier: "plainCell")
-		collectionView.collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+		collectionView.collectionView.register(PlainEmojiCollectionViewCell.self, forCellWithReuseIdentifier: "plain")
+		collectionView.collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "plainWithMenu")
+		collectionView.collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "full")
 		collectionView.collectionView.dataSource = context.coordinator
 		collectionView.collectionView.delegate = context.coordinator
 		return collectionView.collectionView
@@ -43,6 +44,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 	
 	enum Style {
 		case plain
+		case plainWithMenu
 		case full
 	}
 	
@@ -95,9 +97,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 			let cell: PlainEmojiCollectionViewCell
 			switch style {
 			case .plain:
-				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plainCell", for: indexPath) as! PlainEmojiCollectionViewCell
+				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plain", for: indexPath) as! PlainEmojiCollectionViewCell
+			case .plainWithMenu:
+				fatalError()
+//				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plainWithMenu", for: <#T##IndexPath#>)
 			case .full:
-				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! EmojiCollectionViewCell
+				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "full", for: indexPath) as! EmojiCollectionViewCell
 			}
 			
 			guard !hoarder.trie.dict.isEmpty else { return cell }
@@ -127,6 +132,22 @@ struct EmojiCollectionView: UIViewRepresentable {
 			print(width+labelHeight)
 			
 			return CGSize(width: width, height: width+labelHeight)
+		}
+		
+		override func collectionView(
+			_ collectionView: UICollectionView,
+			contextMenuConfigurationForItemAt indexPath: IndexPath,
+			point: CGPoint
+		) -> UIContextMenuConfiguration? {
+			return UIContextMenuConfiguration(
+				identifier: nil,
+				previewProvider: nil) { suggestedActions in
+					let emojiName = self.pack.items[indexPath.row]
+					let label = UIAction(title: "idk", image: UIImage(systemName: "plus")) { action in
+						print("idk")
+					}
+					return UIMenu(title: emojiName, children: [label])
+				}
 		}
 	}
 }
