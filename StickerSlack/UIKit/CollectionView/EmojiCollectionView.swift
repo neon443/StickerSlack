@@ -11,7 +11,8 @@ import SwiftUI
 
 struct EmojiCollectionView: UIViewRepresentable {
 	let hoarder: EmojiHoarder
-	let pack: EmojiPack
+	let items: [String]
+	let pack: EmojiPack?
 	let width: CGFloat
 	let spacing: CGFloat = 16
 	let style: EmojiCollectionView.Style
@@ -28,6 +29,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 	
 	func updateUIView(_ uiView: UICollectionView, context: Context) {
 		context.coordinator.hoarder = hoarder
+		context.coordinator.items = items
 		context.coordinator.pack = pack
 		uiView.reloadData()
 	}
@@ -35,6 +37,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 	func makeCoordinator() -> Coordinator {
 		Coordinator(
 			hoarder: hoarder,
+			items: items,
 			pack: pack,
 			width: width,
 			spacing: spacing,
@@ -50,7 +53,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 	
 	final class Coordinator: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 		var hoarder: EmojiHoarder
-		var pack: EmojiPack
+		var items: [String]
+		var pack: EmojiPack?
 		var width: CGFloat
 		var spacing: CGFloat
 		var style: EmojiCollectionView.Style
@@ -59,13 +63,18 @@ struct EmojiCollectionView: UIViewRepresentable {
 		
 		init(
 			hoarder: EmojiHoarder,
-			pack: EmojiPack,
+			items: [String],
+			pack: EmojiPack?,
 			width: CGFloat,
 			spacing: CGFloat,
 			style: EmojiCollectionView.Style
 		) {
 			self.hoarder = hoarder
-			self.pack = pack
+			self.items = items
+			if let pack {
+				self.pack = pack
+				self.items = pack.items
+			}
 			self.width = width
 			self.spacing = spacing
 			self.style = style
@@ -90,23 +99,20 @@ struct EmojiCollectionView: UIViewRepresentable {
 		}
 		
 		override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-			return pack.items.count
+			return items.count
 		}
 		
 		override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 			let cell: PlainEmojiCollectionViewCell
 			switch style {
-			case .plain:
+			case .plain, .plainWithMenu:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plain", for: indexPath) as! PlainEmojiCollectionViewCell
-			case .plainWithMenu:
-				fatalError()
-//				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plainWithMenu", for: <#T##IndexPath#>)
 			case .full:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "full", for: indexPath) as! EmojiCollectionViewCell
 			}
 			
 			guard !hoarder.trie.dict.isEmpty else { return cell }
-			let emojiName = pack.items[indexPath.item]
+			let emojiName = items[indexPath.item]
 			guard let emoji = hoarder.trie.dict[emojiName] else { return cell }
 			
 			cell.configure(with: hoarder, emoji: emoji)
@@ -120,8 +126,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 		) -> CGSize {
 			let defaultSize = CGSize(width: width, height: width)
 			
+			guard self.style == .full else { return defaultSize }
 			guard !hoarder.trie.dict.isEmpty else { return defaultSize }
-			let emojiName = pack.items[indexPath.item]
+			let emojiName = items[indexPath.item]
 			
 			let label = UILabel()
 			label.font = .preferredFont(forTextStyle: .caption1)
@@ -139,10 +146,11 @@ struct EmojiCollectionView: UIViewRepresentable {
 			contextMenuConfigurationForItemAt indexPath: IndexPath,
 			point: CGPoint
 		) -> UIContextMenuConfiguration? {
+			guard self.style == .plainWithMenu else { return nil }
 			return UIContextMenuConfiguration(
 				identifier: nil,
 				previewProvider: nil) { suggestedActions in
-					let emojiName = self.pack.items[indexPath.row]
+					let emojiName = self.items[indexPath.row]
 					let label = UIAction(title: "idk", image: UIImage(systemName: "plus")) { action in
 						print("idk")
 					}

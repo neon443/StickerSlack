@@ -39,56 +39,64 @@ struct DownloadedView: View {
 			NoStickersView()
 				.padding()
 		}
-		GeometryReader { geo in
-			ScrollView {
-				let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
-				let layout = Array(repeating: col, count: columns)
-				LazyVGrid(columns: layout, spacing: spacing) {
-					ForEach(emojiHoarder.downloadedStickersArr, id: \.self) { name in
-						if let emoji = emojiHoarder.trie.dict[name] {
-							ZStack {
-								Rectangle()
-									.foregroundStyle(isDark ? .black : .white)
-								StickerPreview(sticker: emoji)
-								RoundedRectangle(cornerRadius: 15)
-									.stroke(.gray, lineWidth: 1)
-							}
-							.aspectRatio(1, contentMode: .fit)
-							.clipShape(RoundedRectangle(cornerRadius: 15))
-							.contextMenu {
-								Text(emoji.UIName)
-								Button("Copy Name", systemImage: "doc.on.clipboard") {
-									UIPasteboard.general.string = emoji.UIName
-								}
-								Button("Copy Image", systemImage: "photo.fill.on.rectangle.fill") {
-									UIPasteboard.general.image = emoji.image
-								}
-								Divider()
-								if #available(iOS 16, *) {
-									ShareLink(item: emoji.remoteImageURL) {
-										Label("Share", systemImage: "square.and.arrow.up")
-									}
-								} else {
-									Button("Share", systemImage: "square.and.arrow.up") {
-										showShare.toggle()
-									}
-									.sheet(isPresented: $showShare) {
-										ShareSheet(activityItems: [emoji.remoteImageURL])
-									}
-								}
-								Divider()
-								Button("Delete", systemImage: "trash.fill", role: .destructive) {
-									Task {
-										await emojiHoarder.delete(emoji: emoji)
-									}
-								}
-							}
-						}
-					}
-				}
-				.padding(.horizontal, spacing)
-			}
-		}
+		
+		EmojiCollectionView(
+			hoarder: emojiHoarder,
+			items: emojiHoarder.downloadedStickersArr,
+			pack: nil,
+			width: 75,
+			style: .plainWithMenu
+		)
+//		GeometryReader { geo in
+//			ScrollView {
+//				let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
+//				let layout = Array(repeating: col, count: columns)
+//				LazyVGrid(columns: layout, spacing: spacing) {
+//					ForEach(emojiHoarder.downloadedStickersArr, id: \.self) { name in
+//						if let emoji = emojiHoarder.trie.dict[name] {
+//							ZStack {
+//								Rectangle()
+//									.foregroundStyle(isDark ? .black : .white)
+//								StickerPreview(sticker: emoji)
+//								RoundedRectangle(cornerRadius: 15)
+//									.stroke(.gray, lineWidth: 1)
+//							}
+//							.aspectRatio(1, contentMode: .fit)
+//							.clipShape(RoundedRectangle(cornerRadius: 15))
+//							.contextMenu {
+//								Text(emoji.UIName)
+//								Button("Copy Name", systemImage: "doc.on.clipboard") {
+//									UIPasteboard.general.string = emoji.UIName
+//								}
+//								Button("Copy Image", systemImage: "photo.fill.on.rectangle.fill") {
+//									UIPasteboard.general.image = emoji.image
+//								}
+//								Divider()
+//								if #available(iOS 16, *) {
+//									ShareLink(item: emoji.remoteImageURL) {
+//										Label("Share", systemImage: "square.and.arrow.up")
+//									}
+//								} else {
+//									Button("Share", systemImage: "square.and.arrow.up") {
+//										showShare.toggle()
+//									}
+//									.sheet(isPresented: $showShare) {
+//										ShareSheet(activityItems: [emoji.remoteImageURL])
+//									}
+//								}
+//								Divider()
+//								Button("Delete", systemImage: "trash.fill", role: .destructive) {
+//									Task {
+//										await emojiHoarder.delete(emoji: emoji)
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//				.padding(.horizontal, spacing)
+//			}
+//		}
 	}
 }
 

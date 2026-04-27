@@ -75,6 +75,7 @@ struct EmojiPackDetailView: View {
 				
 				EmojiCollectionView(
 					hoarder: hoarder,
+					items: pack.items,
 					pack: pack,
 					width: 80,
 					style: .full
