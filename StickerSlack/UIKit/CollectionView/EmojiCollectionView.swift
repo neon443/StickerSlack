@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import Haptics
 
 struct EmojiCollectionView: UIViewRepresentable {
 	let hoarder: EmojiHoarder
@@ -151,10 +152,23 @@ struct EmojiCollectionView: UIViewRepresentable {
 				identifier: nil,
 				previewProvider: nil) { suggestedActions in
 					let emojiName = self.items[indexPath.row]
-					let label = UIAction(title: "idk", image: UIImage(systemName: "plus")) { action in
-						print("idk")
+					let copyName = UIAction(title: "Copy Name", image: UIImage(systemName: "doc.on.clipboard")) { action in
+						UIPasteboard.general.string = emojiName
+						Haptic.success.trigger()
 					}
-					return UIMenu(title: emojiName, children: [label])
+					let copyImage = UIAction(title: "Copy Image", image: UIImage(systemName: "photo.fill.on.rectangle.fill")) { action in
+						UIPasteboard.general.image = self.hoarder.trie.dict[emojiName]?.image
+						Haptic.success.trigger()
+					}
+					let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { action in
+						
+					}
+					let delete = UIAction(title: "Delete", image: UIImage(systemName: "plus")) { action in
+						Task.detached {
+							await self.hoarder.delete(emoji: self.hoarder.trie.dict[emojiName])
+						}
+					}
+					return UIMenu(title: emojiName, children: [copyName, copyImage, share, delete])
 				}
 		}
 	}

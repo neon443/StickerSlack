@@ -204,7 +204,8 @@ class EmojiHoarder: BaseHoarder {
 		await buildDownloadedStickers()
 	}
 	
-	override nonisolated func download(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
+	override nonisolated func download(emoji: (any StickerProtocol)?, skipStoreIndex: Bool = false) async {
+		guard let emoji else { return }
 		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		
 		await MainActor.run {
@@ -224,7 +225,8 @@ class EmojiHoarder: BaseHoarder {
 		await buildDownloadedStickers()
 	}
 	
-	nonisolated override func delete(emoji: any StickerProtocol, skipStoreIndex: Bool = false) async {
+	nonisolated override func delete(emoji: (any StickerProtocol)?, skipStoreIndex: Bool = false) async {
+		guard let emoji else { return }
 		await super.delete(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		
 		if !skipStoreIndex {
