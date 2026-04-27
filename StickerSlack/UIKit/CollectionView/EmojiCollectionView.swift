@@ -108,16 +108,26 @@ struct EmojiCollectionView: UIViewRepresentable {
 			return cell
 		}
 		
-//		func collectionView(
-//			_ collectionView: UICollectionView,
-//			layout collectionViewLayout: UICollectionViewLayout,
-//			sizeForItemAt indexPath: IndexPath
-//		) -> CGSize {
-//			let defaultSize = CGSize(width: width, height: width)
-//			
-//			guard !hoarder.trie.dict.isEmpty else { return defaultSize }
-//			let emojiName = pack.items[indexPath.item]
-//		}
+		func collectionView(
+			_ collectionView: UICollectionView,
+			layout collectionViewLayout: UICollectionViewLayout,
+			sizeForItemAt indexPath: IndexPath
+		) -> CGSize {
+			let defaultSize = CGSize(width: width, height: width)
+			
+			guard !hoarder.trie.dict.isEmpty else { return defaultSize }
+			let emojiName = pack.items[indexPath.item]
+			
+			let label = UILabel()
+			label.font = .preferredFont(forTextStyle: .caption1)
+			label.numberOfLines = 0
+			label.text = emojiName
+			let labelHeight = label.sizeThatFits(CGSize(width: width, height: .infinity)).height
+			
+			print(width+labelHeight)
+			
+			return CGSize(width: width, height: width+labelHeight)
+		}
 	}
 }
 
