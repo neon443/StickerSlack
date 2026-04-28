@@ -21,7 +21,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 	func makeUIView(context: Context) -> UICollectionView {
 		let collectionView = context.coordinator as UICollectionViewController
 		collectionView.collectionView.register(PlainEmojiCollectionViewCell.self, forCellWithReuseIdentifier: "plain")
-			collectionView.collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "full")
+		collectionView.collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "full")
 		collectionView.collectionView.dataSource = context.coordinator
 		collectionView.collectionView.delegate = context.coordinator
 		return collectionView.collectionView

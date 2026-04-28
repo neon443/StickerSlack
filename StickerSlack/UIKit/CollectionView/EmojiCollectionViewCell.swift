@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	let label = UILabel()
@@ -38,7 +39,8 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	override func configure(with: EmojiHoarder, emoji: Emoji) {
 		super.configure(with: with, emoji: emoji)
 		label.text = emoji.UIName
-		setNeedsLayout()
+		stackView.addArrangedSubview(label)
+//		setNeedsLayout()
 	}
 	
 	override func prepareForReuse() {

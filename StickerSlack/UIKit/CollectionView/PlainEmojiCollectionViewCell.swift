@@ -10,6 +10,7 @@ import UIKit
 import SwiftUI
 
 class PlainEmojiCollectionViewCell: UICollectionViewCell {
+	let stackView = UIStackView()
 	let spinner = UIActivityIndicatorView()
 	var hostingController: UIHostingController<StickerPreview>?
 	
@@ -24,14 +25,15 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 	func configureSkeleton() {
 		spinner.frame = frame
 		spinner.startAnimating()
-		self.contentView.addSubview(spinner)
+		self.contentView.addSubview(stackView)
+		stackView.addArrangedSubview(spinner)
 		
-		spinner.translatesAutoresizingMaskIntoConstraints = false
+		stackView.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate([
-			spinner.topAnchor.constraint(equalTo: contentView.topAnchor),
-			spinner.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			spinner.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-			spinner.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+			stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+			stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+			stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+			stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
 		])
 		
 	}
@@ -44,14 +46,14 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 		} else {
 			let hostingController = UIHostingController(rootView: swiftUIView)
 			self.hostingController = hostingController
-			self.contentView.addSubview(hostingController.view)
+			self.stackView.addArrangedSubview(hostingController.view)
 			
 			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
 			NSLayoutConstraint.activate(
 				[
-					hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor),
-					hostingController.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-					hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+					hostingController.view.topAnchor.constraint(equalTo: stackView.topAnchor),
+					hostingController.view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+					hostingController.view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
 					hostingController.view.heightAnchor.constraint(equalTo: hostingController.view.widthAnchor)
 				]
 			)
