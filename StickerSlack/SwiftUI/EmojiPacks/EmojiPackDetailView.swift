@@ -43,7 +43,6 @@ struct EmojiPackDetailView: View {
 	
 	var body: some View {
 		NavigationView2 {
-//			GeometryReader { geo in
 			VStack {
 				Button() {
 					editName.toggle()
@@ -181,57 +180,56 @@ struct EmojiPackDetailView: View {
 					}
 				}
 				
-					Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
-						.bold()
-						.multilineTextAlignment(.center)
-						.shadow(radius: 5)
-						.padding(.bottom)
-				}
-				.transition(.scale)
-				.navigationTitle(edit ? "Editing" : "Pack Details")
-				.navigationBarTitleDisplayMode(.inline)
-				.onDisappear {
-					hoarder.saveEmojiPacks()
-				}
-				.toolbar {
-					ToolbarItem(placement: .topBarLeading) {
-						Button(
-							"",
-							systemImage: edit ? "checkmark" : "pencil"
-						) {
-							withAnimation(.spring) { edit.toggle() }
-						}
-						.modifier(glassButtonIfAv(edit))
-						.tint(edit ? Color.accentColor : .primary)
+				Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
+					.bold()
+					.multilineTextAlignment(.center)
+					.shadow(radius: 5)
+					.padding(.bottom)
+			}
+			.transition(.scale)
+			.navigationTitle(edit ? "Editing" : "Pack Details")
+			.navigationBarTitleDisplayMode(.inline)
+			.onDisappear {
+				hoarder.saveEmojiPacks()
+			}
+			.toolbar {
+				ToolbarItem(placement: .topBarLeading) {
+					Button(
+						"",
+						systemImage: edit ? "checkmark" : "pencil"
+					) {
+						withAnimation(.spring) { edit.toggle() }
 					}
-					ToolbarItem(placement: .topBarTrailing) {
-						Button("", systemImage: allDownloaded ? "checkmark" : "arrow.down") {
-							Task {
-								if allDownloaded {
-									await pack.deleteAll(hoarder: hoarder)
-								} else {
-									await pack.downloadAll(hoarder: hoarder)
-								}
-							}
-						}
-						.tint(allDownloaded ? .red : .accentColor)
-					}
-					ToolbarItem(placement: .topBarTrailing) {
-						if #available(iOS 16, *) {
-							ShareLink(item: pack.shareLink()) {
-								Image(systemName: "square.and.arrow.up")
-							}
-						} else {
-							Button("", systemImage: "square.and.arrow.up") {
-								showShare.toggle()
-							}
-							.sheet(isPresented: $showShare) {
-								ShareSheet(activityItems: [pack.shareLink()])
+					.modifier(glassButtonIfAv(edit))
+					.tint(edit ? Color.accentColor : .primary)
+				}
+				ToolbarItem(placement: .topBarTrailing) {
+					Button("", systemImage: allDownloaded ? "checkmark" : "arrow.down") {
+						Task {
+							if allDownloaded {
+								await pack.deleteAll(hoarder: hoarder)
+							} else {
+								await pack.downloadAll(hoarder: hoarder)
 							}
 						}
 					}
+					.tint(allDownloaded ? .red : .accentColor)
 				}
-//			}
+				ToolbarItem(placement: .topBarTrailing) {
+					if #available(iOS 16, *) {
+						ShareLink(item: pack.shareLink()) {
+							Image(systemName: "square.and.arrow.up")
+						}
+					} else {
+						Button("", systemImage: "square.and.arrow.up") {
+							showShare.toggle()
+						}
+						.sheet(isPresented: $showShare) {
+							ShareSheet(activityItems: [pack.shareLink()])
+						}
+					}
+				}
+			}
 		}
 	}
 }
