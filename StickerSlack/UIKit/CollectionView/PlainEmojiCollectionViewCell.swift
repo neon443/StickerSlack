@@ -50,7 +50,6 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 			NSLayoutConstraint.activate(
 				[
 					hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor),
-//					hostingController.view.bottomAnchor.constraint(equalTo: contentView.topAnchor, ),
 					hostingController.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 					hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 					hostingController.view.heightAnchor.constraint(equalTo: hostingController.view.widthAnchor)

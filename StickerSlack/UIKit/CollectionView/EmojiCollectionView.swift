@@ -21,8 +21,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 	func makeUIView(context: Context) -> UICollectionView {
 		let collectionView = context.coordinator as UICollectionViewController
 		collectionView.collectionView.register(PlainEmojiCollectionViewCell.self, forCellWithReuseIdentifier: "plain")
-		collectionView.collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "plainWithMenu")
-		collectionView.collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "full")
+			collectionView.collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "full")
 		collectionView.collectionView.dataSource = context.coordinator
 		collectionView.collectionView.delegate = context.coordinator
 		return collectionView.collectionView
@@ -163,11 +162,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 					let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { action in
 						
 					}
-					let delete = UIAction(title: "Delete", image: UIImage(systemName: "plus")) { action in
+					let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash")) { action in
 						Task.detached {
 							await self.hoarder.delete(emoji: self.hoarder.trie.dict[emojiName])
 						}
 					}
+					delete.attributes.update(with: .destructive)
 					return UIMenu(title: emojiName, children: [copyName, copyImage, share, delete])
 				}
 		}
