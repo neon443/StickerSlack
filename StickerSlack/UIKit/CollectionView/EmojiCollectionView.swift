@@ -102,7 +102,10 @@ struct EmojiCollectionView: UIViewRepresentable {
 			return items.count
 		}
 		
-		override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+		override func collectionView(
+			_ collectionView: UICollectionView,
+			cellForItemAt indexPath: IndexPath
+		) -> UICollectionViewCell {
 			let cell: PlainEmojiCollectionViewCell
 			switch style {
 			case .plain, .plainWithMenu:
@@ -136,9 +139,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 			label.text = emojiName
 			let labelHeight = label.sizeThatFits(CGSize(width: width, height: .infinity)).height
 			
-			print(width+labelHeight)
+			print(width+labelHeight+4)
 			
-			return CGSize(width: width, height: width+labelHeight)
+			return CGSize(width: width, height: width+labelHeight+4)
 		}
 		
 		override func collectionView(

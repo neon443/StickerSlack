@@ -16,18 +16,13 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-	}
-	
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-	
-	func configureSkeleton() {
-		spinner.frame = frame
-		spinner.startAnimating()
-		self.contentView.addSubview(stackView)
-		stackView.addArrangedSubview(spinner)
 		
+		stackView.axis = .vertical
+		stackView.alignment = .fill
+		stackView.distribution = .fill
+		stackView.spacing = 4
+		
+		contentView.addSubview(stackView)
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate([
 			stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -35,13 +30,26 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 			stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
 		])
-		
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
+	func configureSkeleton() {
+		spinner.startAnimating()
+		if spinner.superview == nil {
+			stackView.addArrangedSubview(spinner)
+		}
 	}
 	
 	func configure(with: EmojiHoarder, emoji: Emoji) {
+		spinner.stopAnimating()
+		spinner.removeFromSuperview()
 		let swiftUIView = StickerPreview(sticker: emoji)
 		
-		if let hostingController {
+		if let hostingController,
+		   hostingController.view.superview != nil {
 			hostingController.rootView = swiftUIView
 		} else {
 			let hostingController = UIHostingController(rootView: swiftUIView)
@@ -49,25 +57,22 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 			self.stackView.addArrangedSubview(hostingController.view)
 			
 			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-			NSLayoutConstraint.activate(
-				[
-					hostingController.view.topAnchor.constraint(equalTo: stackView.topAnchor),
-					hostingController.view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-					hostingController.view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-					hostingController.view.heightAnchor.constraint(equalTo: hostingController.view.widthAnchor)
-				]
-			)
+			NSLayoutConstraint.activate([
+				hostingController.view.heightAnchor.constraint(equalTo: hostingController.view.widthAnchor)
+			])
 		}
 	}
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		
-		hostingController?.view.removeFromSuperview()
-		hostingController = nil
-		if spinner.superview == nil {
-			configureSkeleton()
+		stackView.arrangedSubviews.forEach {
+			stackView.removeArrangedSubview($0)
+			$0.removeFromSuperview()
 		}
-		spinner.startAnimating()
+		
+		hostingController?.view.removeFromSuperview()
+		
+		configureSkeleton()
 	}
 }

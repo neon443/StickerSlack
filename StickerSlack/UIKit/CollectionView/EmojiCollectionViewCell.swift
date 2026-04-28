@@ -18,14 +18,7 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		label.font = .preferredFont(forTextStyle: .caption1)
 		label.textAlignment = .center
 		label.numberOfLines = 0
-		contentView.addSubview(label)
 		label.translatesAutoresizingMaskIntoConstraints = false
-		
-		NSLayoutConstraint.activate([
-			label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-			label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-		])
 	}
 	
 	required init?(coder: NSCoder) {
@@ -39,8 +32,10 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	override func configure(with: EmojiHoarder, emoji: Emoji) {
 		super.configure(with: with, emoji: emoji)
 		label.text = emoji.UIName
-		stackView.addArrangedSubview(label)
-//		setNeedsLayout()
+		
+		if label.superview == nil {
+			stackView.addArrangedSubview(label)
+		}
 	}
 	
 	override func prepareForReuse() {
