@@ -11,7 +11,7 @@ import SwiftUI
 
 class PlainEmojiCollectionViewCell: UICollectionViewCell {
 	let stackView = UIStackView()
-	let spinner = UIActivityIndicatorView()
+//	let spinner = UIActivityIndicatorView()
 	var hostingController: UIHostingController<StickerPreview>?
 	
 	override init(frame: CGRect) {
@@ -37,41 +37,40 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 	}
 	
 	func configureSkeleton() {
-		spinner.startAnimating()
-		if spinner.superview == nil {
-			stackView.addArrangedSubview(spinner)
-		}
+//		spinner.startAnimating()
+//		if spinner.superview == nil {
+//			stackView.addArrangedSubview(spinner)
+//		}
 	}
 	
 	func configure(with: EmojiHoarder, emoji: Emoji) {
-		spinner.stopAnimating()
-		spinner.removeFromSuperview()
+		hostingController?.view.removeFromSuperview()
 		let swiftUIView = StickerPreview(sticker: emoji)
 		
-		if let hostingController,
-		   hostingController.view.superview != nil {
-			hostingController.rootView = swiftUIView
-		} else {
+//		if let hostingController {
+//			hostingController.rootView = swiftUIView
+//		} else {
 			let hostingController = UIHostingController(rootView: swiftUIView)
 			self.hostingController = hostingController
-			self.stackView.addArrangedSubview(hostingController.view)
+			self.stackView.insertArrangedSubview(hostingController.view, at: 0)
 			
 			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
 			NSLayoutConstraint.activate([
 				hostingController.view.heightAnchor.constraint(equalTo: hostingController.view.widthAnchor)
 			])
-		}
+//		}
 	}
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		
-		stackView.arrangedSubviews.forEach {
-			stackView.removeArrangedSubview($0)
-			$0.removeFromSuperview()
-		}
+//		stackView.arrangedSubviews.forEach {
+//			stackView.removeArrangedSubview($0)
+//			$0.removeFromSuperview()
+//		}
 		
 		hostingController?.view.removeFromSuperview()
+		hostingController = nil
 		
 		configureSkeleton()
 	}
