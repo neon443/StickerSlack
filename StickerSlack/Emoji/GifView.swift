@@ -18,7 +18,7 @@ struct GifView: View {
 	@State var timer: Timer?
 	
 	nonisolated func run() async {
-		guard url.pathExtension == "gif" else {
+		guard await url.pathExtension == "gif" else {
 			if let data = try? await URLSession.shared.data(from: url).0,
 			   let uiImage = UIImage(data: data),
 			   let cgImage = uiImage.cgImage {
@@ -30,7 +30,7 @@ struct GifView: View {
 		}
 		
 		do {
-			if gif.isEmpty {
+			if await gif.isEmpty {
 				let frames = try await GifManager.gifFrom(url: url)
 				withAnimation(.spring) {
 					self.gif = frames
@@ -42,8 +42,8 @@ struct GifView: View {
 			print("falied loading or empty gif")
 			return
 		}
-		if timer != nil {
-			timer!.invalidate()
+		if await timer != nil {
+			await timer!.invalidate()
 			timer = nil
 		}
 		
@@ -54,7 +54,7 @@ struct GifView: View {
 				currentI += 1
 			}
 		}
-		RunLoop.main.add(timer!, forMode: .common)
+		await RunLoop.main.add(timer!, forMode: .common)
 	}
 	
 	var body: some View {
@@ -63,7 +63,6 @@ struct GifView: View {
 			if gif.isEmpty {
 				ProgressView()
 //					.controlSize(.large)
-					.frame(maxWidth: .infinity, maxHeight: .infinity)
 			} else if url.pathExtension == "gif" {
 				TimelineView(.animation) { tl in
 					if currentI < gif.count {
@@ -82,6 +81,7 @@ struct GifView: View {
 				}
 			}
 		}
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
 		.transition(.scale)
 		.onAppear {
 			Task {

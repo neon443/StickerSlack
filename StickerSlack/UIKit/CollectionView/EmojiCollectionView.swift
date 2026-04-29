@@ -15,7 +15,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 	let items: [String]
 	let pack: EmojiPack?
 	let width: CGFloat
-	let spacing: CGFloat = 16
 	let style: EmojiCollectionView.Style
 	
 	func makeUIView(context: Context) -> UICollectionView {
@@ -40,7 +39,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 			items: items,
 			pack: pack,
 			width: width,
-			spacing: spacing,
 			style: style
 		)
 	}
@@ -56,7 +54,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 		var items: [String]
 		var pack: EmojiPack?
 		var width: CGFloat
-		var spacing: CGFloat
 		var style: EmojiCollectionView.Style
 		
 		var layout = UICollectionViewFlowLayout()
@@ -66,7 +63,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 			items: [String],
 			pack: EmojiPack?,
 			width: CGFloat,
-			spacing: CGFloat,
 			style: EmojiCollectionView.Style
 		) {
 			self.hoarder = hoarder
@@ -76,15 +72,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 				self.items = pack.items
 			}
 			self.width = width
-			self.spacing = spacing
 			self.style = style
-			
-			layout.sectionInset.left = 16
-			layout.sectionInset.right = 16
 			
 			layout.itemSize = CGSize(width: width, height: width)
 			
 			super.init(collectionViewLayout: layout)
+			collectionView.contentInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
 		}
 		
 		required init?(coder: NSCoder) {
@@ -92,9 +85,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 		}
 		
 		override func viewDidLayoutSubviews() {
-			layout.sectionInset.left = 16
-			layout.sectionInset.right = 16
-			
 			layout.itemSize = CGSize(width: width, height: width)
 		}
 		
@@ -127,7 +117,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 			layout collectionViewLayout: UICollectionViewLayout,
 			sizeForItemAt indexPath: IndexPath
 		) -> CGSize {
-			let defaultSize = CGSize(width: width, height: width)
+			let totalWidth = collectionView.bounds.width
+			let availWidth = totalWidth-(collectionView.contentInset.left*2)
+			let cols = max(1, floor(availWidth/width))
+			let totalSpacing = 1 * (cols - 1)
+			let itemWidth = (availWidth-totalSpacing)/cols
+			let defaultSize = CGSize(width: itemWidth, height: itemWidth)
 			
 			guard self.style == .full else { return defaultSize }
 			guard !hoarder.trie.dict.isEmpty else { return defaultSize }
@@ -137,11 +132,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 			label.font = .preferredFont(forTextStyle: .caption1)
 			label.numberOfLines = 0
 			label.text = emojiName
-			let labelHeight = label.sizeThatFits(CGSize(width: width, height: .infinity)).height
+			let labelHeight = label.sizeThatFits(CGSize(width: itemWidth, height: .infinity)).height
 			
-			print(width, width+labelHeight+4)
-			
-			return CGSize(width: width, height: width+labelHeight+4)
+			return CGSize(width: itemWidth, height: itemWidth+labelHeight+4)
 		}
 		
 		override func collectionView(
