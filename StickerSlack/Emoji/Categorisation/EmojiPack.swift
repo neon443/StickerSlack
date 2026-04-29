@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct EmojiPack: Identifiable, Codable {
+struct EmojiPack: Identifiable, Codable, Equatable {
 	var id: UUID
 	var name: String
 	var description: String
@@ -29,16 +29,6 @@ struct EmojiPack: Identifiable, Codable {
 						url.safeHost == "stickerslack.nihaals.me" else {
 					return nil
 				}
-//		switch url.safeHost {
-//		case "shared.pack":
-//			<#code#>
-//		case "stickerslack.neon443.xyz":
-//			<#code#>
-//		case "stickerslack.nihaals.me":
-//			<#code#>
-//		default:
-//			return nil
-//		}
 		guard let created = EmojiPack.createFrom(url: url) else {
 			return nil
 		}
@@ -48,14 +38,6 @@ struct EmojiPack: Identifiable, Codable {
 	static func createFrom(url: URL) -> EmojiPack? {
 		var pack: EmojiPack = .new()
 		
-//		switch type {
-//		case .stickerslack:
-//			<#code#>
-//		case .neon443:
-//			<#code#>
-//		case .nihaals:
-//			<#code#>
-//		}
 		guard let components = URLComponents(string: url.absoluteString),
 			  let queryItems = components.queryItems else {
 			print("no query items or components")

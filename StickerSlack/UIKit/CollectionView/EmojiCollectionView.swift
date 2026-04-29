@@ -30,11 +30,13 @@ struct EmojiCollectionView: UIViewRepresentable {
 	
 	func updateUIView(_ uiView: UICollectionView, context: Context) {
 		context.coordinator.hoarder = hoarder
-		context.coordinator.items = items
-		context.coordinator.pack = pack
 		context.coordinator.edit = edit
 		context.coordinator.onRemove = onRemove
-		uiView.reloadData()
+		if items != context.coordinator.items || context.coordinator.pack != pack {
+			context.coordinator.items = items
+			context.coordinator.pack = pack
+			uiView.reloadData()
+		}
 	}
 	
 	func makeCoordinator() -> Coordinator {
