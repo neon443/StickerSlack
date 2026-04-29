@@ -16,6 +16,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 	let pack: EmojiPack?
 	let width: CGFloat
 	let style: EmojiCollectionView.Style
+	var edit: Bool
+	var onRemove: ((String) -> Void)?
 	
 	func makeUIView(context: Context) -> UICollectionView {
 		let collectionView = context.coordinator as UICollectionViewController
@@ -30,6 +32,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 		context.coordinator.hoarder = hoarder
 		context.coordinator.items = items
 		context.coordinator.pack = pack
+		context.coordinator.edit = edit
+		context.coordinator.onRemove = onRemove
 		uiView.reloadData()
 	}
 	
@@ -39,7 +43,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 			items: items,
 			pack: pack,
 			width: width,
-			style: style
+			style: style,
+			edit: edit,
+			onRemove: onRemove
 		)
 	}
 	
@@ -55,6 +61,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 		var pack: EmojiPack?
 		var width: CGFloat
 		var style: EmojiCollectionView.Style
+		var edit: Bool
+		var onRemove: ((String) -> Void)?
 		
 		var layout = UICollectionViewFlowLayout()
 		
@@ -63,7 +71,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 			items: [String],
 			pack: EmojiPack?,
 			width: CGFloat,
-			style: EmojiCollectionView.Style
+			style: EmojiCollectionView.Style,
+			edit: Bool,
+			onRemove: ((String) -> Void)?
 		) {
 			self.hoarder = hoarder
 			self.items = items
@@ -73,6 +83,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 			}
 			self.width = width
 			self.style = style
+			self.edit = edit
+			self.onRemove = onRemove
 			
 			layout.minimumInteritemSpacing = 8
 			
@@ -102,6 +114,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plain", for: indexPath) as! PlainEmojiCollectionViewCell
 			case .full:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "full", for: indexPath) as! EmojiCollectionViewCell
+				(cell as! EmojiCollectionViewCell).setEdit(to: edit)
 			}
 			
 			guard !hoarder.trie.dict.isEmpty else { return cell }
@@ -109,6 +122,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			guard let emoji = hoarder.trie.dict[emojiName] else { return cell }
 			
 			cell.configure(with: hoarder, emoji: emoji)
+			
 			return cell
 		}
 		

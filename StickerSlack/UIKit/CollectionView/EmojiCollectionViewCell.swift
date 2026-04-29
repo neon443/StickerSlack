@@ -11,6 +11,8 @@ import SwiftUI
 
 class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	let label = UILabel()
+	let deleteButton = UIButton(type: .custom)
+	var edit: Bool = false
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -25,6 +27,14 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 			label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 		])
+		
+		deleteButton.setImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
+		deleteButton.imageView?.contentMode = .scaleAspectFit
+		deleteButton.configuration = .plain()
+		contentView.addSubview(deleteButton)
+		deleteButton.tintColor = .systemRed
+		deleteButton.clipsToBounds = false
+		deleteButton.translatesAutoresizingMaskIntoConstraints = false
 	}
 	
 	required init?(coder: NSCoder) {
@@ -38,10 +48,18 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	override func configure(with: EmojiHoarder, emoji: Emoji) {
 		super.configure(with: with, emoji: emoji)
 		label.text = emoji.UIName
+		contentView.bringSubviewToFront(deleteButton)
 		
-		if label.superview == nil {
-			contentView.addSubview(label)
-		}
+		NSLayoutConstraint.activate([
+			deleteButton.topAnchor.constraint(equalTo: hostingController!.view.topAnchor, constant: -16),
+			deleteButton.leadingAnchor.constraint(equalTo: hostingController!.view.leadingAnchor, constant: -16),
+			deleteButton.heightAnchor.constraint(equalToConstant: 32),
+			deleteButton.widthAnchor.constraint(equalToConstant: 32)
+		])
+	}
+	
+	func setEdit(to newValue: Bool) {
+		self.edit = newValue
 	}
 	
 	override func prepareForReuse() {

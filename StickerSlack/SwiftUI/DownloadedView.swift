@@ -45,7 +45,8 @@ struct DownloadedView: View {
 			items: emojiHoarder.downloadedStickersArr,
 			pack: nil,
 			width: 75,
-			style: .plainWithMenu
+			style: .plainWithMenu,
+			edit: false
 		)
 //		GeometryReader { geo in
 //			ScrollView {
