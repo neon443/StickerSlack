@@ -10,25 +10,10 @@ import UIKit
 import SwiftUI
 
 class PlainEmojiCollectionViewCell: UICollectionViewCell {
-	let stackView = UIStackView()
 	var hostingController: UIHostingController<StickerPreview>?
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		
-		stackView.axis = .vertical
-		stackView.alignment = .fill
-		stackView.distribution = .fill
-		stackView.spacing = 4
-		
-		contentView.addSubview(stackView)
-		stackView.translatesAutoresizingMaskIntoConstraints = false
-		NSLayoutConstraint.activate([
-			stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-			stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-			stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-		])
 	}
 	
 	required init?(coder: NSCoder) {
@@ -44,11 +29,14 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 		
 		let hostingController = UIHostingController(rootView: swiftUIView)
 		self.hostingController = hostingController
-		self.stackView.insertArrangedSubview(hostingController.view, at: 0)
+		contentView.addSubview(hostingController.view)
 		
 		hostingController.view.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate([
-			hostingController.view.heightAnchor.constraint(equalTo: hostingController.view.widthAnchor)
+			hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor),
+			hostingController.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+			hostingController.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+			hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 		])
 	}
 	

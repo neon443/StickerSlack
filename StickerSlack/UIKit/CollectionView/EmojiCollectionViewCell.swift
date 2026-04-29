@@ -19,6 +19,12 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		label.textAlignment = .center
 		label.numberOfLines = 0
 		label.translatesAutoresizingMaskIntoConstraints = false
+		contentView.addSubview(label)
+		NSLayoutConstraint.activate([
+			label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+			label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+			label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+		])
 	}
 	
 	required init?(coder: NSCoder) {
@@ -34,7 +40,7 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		label.text = emoji.UIName
 		
 		if label.superview == nil {
-			stackView.addArrangedSubview(label)
+			contentView.addSubview(label)
 		}
 	}
 	

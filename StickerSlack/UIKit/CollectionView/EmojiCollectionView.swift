@@ -139,7 +139,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			label.text = emojiName
 			let labelHeight = label.sizeThatFits(CGSize(width: width, height: .infinity)).height
 			
-			print(width+labelHeight+4)
+			print(width, width+labelHeight+4)
 			
 			return CGSize(width: width, height: width+labelHeight+4)
 		}

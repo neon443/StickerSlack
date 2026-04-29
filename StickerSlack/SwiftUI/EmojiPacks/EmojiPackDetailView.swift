@@ -26,7 +26,7 @@ struct EmojiPackDetailView: View {
 	var allDownloaded: Bool {
 		let date = Date.now
 		let result = Set(pack.items).isSubset(of: hoarder.downloadedStickers)
-		print("hit \(Date.now.timeIntervalSince(date)) \(UUID())")
+//		print("hit \(Date.now.timeIntervalSince(date)) \(UUID())")
 		return result
 	}
 	
