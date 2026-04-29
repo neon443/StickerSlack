@@ -74,7 +74,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			self.width = width
 			self.style = style
 			
-			layout.itemSize = CGSize(width: width, height: width)
+			layout.minimumInteritemSpacing = 8
 			
 			super.init(collectionViewLayout: layout)
 			collectionView.contentInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
@@ -120,7 +120,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			let totalWidth = collectionView.bounds.width
 			let availWidth = totalWidth-(collectionView.contentInset.left*2)
 			let cols = max(1, floor(availWidth/width))
-			let totalSpacing = 1 * (cols - 1)
+			let totalSpacing = layout.minimumInteritemSpacing * (cols - 1)
 			let itemWidth = (availWidth-totalSpacing)/cols
 			let defaultSize = CGSize(width: itemWidth, height: itemWidth)
 			
