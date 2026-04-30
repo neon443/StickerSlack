@@ -32,7 +32,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 		context.coordinator.hoarder = hoarder
 		context.coordinator.edit = edit
 		if edit {
-			context.coordinator.spinAnimation()
+			context.coordinator.startAnimating()
+		} else {
+			context.coordinator.stopAnimating()
 		}
 		context.coordinator.onRemove = onRemove
 		if items != context.coordinator.items || context.coordinator.pack != pack {
@@ -71,6 +73,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 		
 		let initDate = Date.now
 		var layout = UICollectionViewFlowLayout()
+		var displayLink: CADisplayLink!
 		
 		init(
 			hoarder: EmojiHoarder,
@@ -152,26 +155,49 @@ struct EmojiCollectionView: UIViewRepresentable {
 		@objc
 		func deleteTapped() {
 			print(UUID())
-			spinAnimation()
 		}
 		
-		func spinAnimation() {
-			guard edit else {
-				UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
-					for cell in self.collectionView.visibleCells {
-						cell.transform = CGAffineTransform.identity
-					}
-				}
-				return
-			}
-			UIView.animate(withDuration: 0.1, delay: 0, options: [.curveLinear]) {
+		func startAnimating() {
+			displayLink = CADisplayLink(target: self, selector: #selector(update))
+			displayLink.add(to: .main, forMode: .common)
+		}
+		
+		func stopAnimating() {
+			displayLink?.invalidate()
+			UIView.animate(withDuration: 0.2) {
 				for cell in self.collectionView.visibleCells {
-					cell.transform = CGAffineTransform(rotationAngle: ((sin(self.initDate.timeIntervalSinceNow*20)*4)/360)*2*CGFloat.pi)
+					cell.transform = CGAffineTransform.identity
 				}
-			} completion: { _ in
-				self.spinAnimation()
 			}
 		}
+		
+		@objc
+		func update() {
+			let t = Date().timeIntervalSince(initDate)
+			let angle = ((sin(t*20)*4)/360)*2*CGFloat.pi
+			
+			for cell in collectionView.visibleCells {
+				cell.transform = CGAffineTransform(rotationAngle: angle)
+			}
+		}
+		
+//		func spinAnimation() {
+//			guard edit else {
+//				UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
+//					for cell in self.collectionView.visibleCells {
+//						cell.transform = CGAffineTransform.identity
+//					}
+//				}
+//				return
+//			}
+//			UIView.animate(withDuration: 0.1, delay: 0, options: [.curveLinear]) {
+//				for cell in self.collectionView.visibleCells {
+//					cell.transform = CGAffineTransform(rotationAngle: ((sin(self.initDate.timeIntervalSinceNow*20)*4)/360)*2*CGFloat.pi)
+//				}
+//			} completion: { _ in
+//				self.spinAnimation()
+//			}
+//		}
 		
 		func collectionView(
 			_ collectionView: UICollectionView,
