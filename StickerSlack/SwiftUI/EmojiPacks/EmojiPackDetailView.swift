@@ -79,7 +79,7 @@ struct EmojiPackDetailView: View {
 					width: 75,
 					style: .full,
 					edit: edit,
-					onRemove: { pack.remove($0) }
+					onRemoveSUI: { pack.remove($0) }
 				)
 				
 				GeometryReader { geo in

@@ -13,7 +13,7 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	let label = UILabel()
 	let button = UIButton(type: .custom)
 	var edit: Bool?
-	var onDelete: ((String) -> Void)?
+	var onRemove: ((String) -> Void)?
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -25,6 +25,7 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		contentView.addSubview(label)
 		
 		button.alpha = 0
+		button.isHidden = true
 		button.setImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
 		button.imageView?.contentMode = .scaleAspectFit
 		button.contentHorizontalAlignment = .fill
@@ -78,14 +79,10 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		}
 	}
 	
-	func setOnDelete(to newValue: ((String) -> Void)?) {
-		self.onDelete = newValue
-	}
-	
 	@objc
 	func deleteTapped() {
 		if let emojiName = label.text {
-			onDelete?(emojiName)
+			onRemove?(emojiName)
 		}
 	}
 	
@@ -106,5 +103,6 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		label.text = nil
+		setEdit(to: edit)
 	}
 }

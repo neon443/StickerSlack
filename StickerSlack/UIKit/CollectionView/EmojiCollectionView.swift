@@ -17,7 +17,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 	let width: CGFloat
 	let style: EmojiCollectionView.Style
 	var edit: Bool?
-	var onRemove: ((String) -> Void)?
+	var onRemoveSUI: ((String) -> Void)?
 	
 	func makeUIView(context: Context) -> UICollectionView {
 		let collectionView = context.coordinator as UICollectionViewController
@@ -30,7 +30,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 	
 	func updateUIView(_ uiView: UICollectionView, context: Context) {
 		context.coordinator.hoarder = hoarder
+		context.coordinator.onRemove = onRemoveSUI
 		
+		context.coordinator.edit = edit
 		if edit ?? false {
 			context.coordinator.startAnimating()
 		} else {
@@ -40,15 +42,20 @@ struct EmojiCollectionView: UIViewRepresentable {
 		for cell in uiView.visibleCells {
 			if let cell = cell as? EmojiCollectionViewCell {
 				cell.setEdit(to: edit)
-				cell.onDelete = onRemove
 			}
 		}
 		
-		if items != context.coordinator.items || context.coordinator.pack != pack {
-			context.coordinator.items = items
-			context.coordinator.pack = pack
-			uiView.reloadData()
-		}
+//		if items != context.coordinator.items || context.coordinator.pack != pack {
+//			context.coordinator.items = items
+//			context.coordinator.pack = pack
+//			uiView.reloadData()
+//		}
+		
+//		let oldItems = context.coordinator.items
+//		let newItems = items
+//		newItems.difference(from: oldItems)
+////		context.coordinator.items
+//		uiView.deleteItems(at: <#T##[IndexPath]#>)
 	}
 	
 	func makeCoordinator() -> Coordinator {
@@ -73,6 +80,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 		var pack: EmojiPack?
 		var width: CGFloat
 		var style: EmojiCollectionView.Style
+		var edit: Bool? = false
+		var onRemove: ((String) -> Void)?
 		
 		let initDate = Date.now
 		var layout = UICollectionViewFlowLayout()
@@ -104,10 +113,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 			fatalError("init(coder:) has not been implemented")
 		}
 		
-		override func viewDidLayoutSubviews() {
-			layout.itemSize = CGSize(width: width, height: width)
-		}
-		
 		override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 			return items.count
 		}
@@ -122,6 +127,15 @@ struct EmojiCollectionView: UIViewRepresentable {
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plain", for: indexPath) as! PlainEmojiCollectionViewCell
 			case .full:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "full", for: indexPath) as! EmojiCollectionViewCell
+				(cell as! EmojiCollectionViewCell).setEdit(to: edit)
+				(cell as! EmojiCollectionViewCell).onRemove = {
+					guard let index = self.items.firstIndex(of: $0) else { return }
+					self.items.remove(at: index)
+					collectionView.performBatchUpdates {
+						collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
+					}
+					self.onRemove?($0)
+				}
 			}
 			
 			guard !hoarder.trie.dict.isEmpty else { return cell }
@@ -133,7 +147,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 		}
 		
 		func startAnimating() {
-			displayLink = CADisplayLink(target: self, selector: #selector(update))
+			displayLink = CADisplayLink(target: self, selector: #selector(updateAnimation))
 			displayLink.add(to: .main, forMode: .common)
 		}
 		func stopAnimating() {
@@ -145,7 +159,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			}
 		}
 		@objc
-		func update() {
+		func updateAnimation() {
 			let t = Date().timeIntervalSince(initDate)
 			let angle = ((sin(t*20)*4)/360)*2*CGFloat.pi
 			
