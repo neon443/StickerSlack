@@ -77,6 +77,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 		var edit: Bool? = false
 		var onRemove: ((String) -> Void)?
 		
+		var labelHeightDict: [String: CGFloat] = [:]
+		
 		let initDate = Date.now
 		var layout = UICollectionViewFlowLayout()
 		var displayLink: CADisplayLink!
@@ -125,9 +127,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 				(cell as! EmojiCollectionViewCell).onRemove = {
 					guard let index = self.items.firstIndex(of: $0) else { return }
 					self.items.remove(at: index)
-					collectionView.performBatchUpdates {
-						collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
-					}
+					collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
 					self.onRemove?($0)
 				}
 			}
@@ -178,11 +178,17 @@ struct EmojiCollectionView: UIViewRepresentable {
 			guard !hoarder.trie.dict.isEmpty else { return defaultSize }
 			let emojiName = items[indexPath.item]
 			
-			let label = UILabel()
-			label.font = .preferredFont(forTextStyle: .caption1)
-			label.numberOfLines = 0
-			label.text = emojiName
-			let labelHeight = label.sizeThatFits(CGSize(width: itemWidth, height: .infinity)).height
+			let labelHeight: CGFloat
+			if let storedHeight = labelHeightDict[emojiName] {
+				labelHeight = storedHeight
+			} else {
+				let label = UILabel()
+				label.font = .preferredFont(forTextStyle: .caption1)
+				label.numberOfLines = 0
+				label.text = emojiName
+				labelHeight = label.sizeThatFits(CGSize(width: itemWidth, height: .infinity)).height
+				labelHeightDict[emojiName] = labelHeight
+			}
 			
 			return CGSize(width: itemWidth, height: itemWidth+labelHeight+4)
 		}
