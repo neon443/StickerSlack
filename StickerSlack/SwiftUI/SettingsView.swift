@@ -135,7 +135,10 @@ struct SettingsView: View {
 					}
 					
 					NavigationLink {
-						EmojiPackManager(hoarder: hoarder)
+						Text("<SwiftUI Grids>")
+							.foregroundStyle(.red)
+							.font(.title)
+						EmojiPackManager(hoarder: hoarder, useSwiftUIGrid: true)
 					} label: {
 						Label("packs wip", systemImage: "square.stack")
 					}

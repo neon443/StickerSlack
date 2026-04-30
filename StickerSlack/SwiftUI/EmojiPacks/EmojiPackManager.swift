@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EmojiPackManager: View {
 	@ObservedObject var hoarder: EmojiHoarder
+	@State var useSwiftUIGrid: Bool = false
 	
 	var body: some View {
 		NavigationView2 {
@@ -22,7 +23,7 @@ struct EmojiPackManager: View {
 				}
 				ForEach($hoarder.emojiPacks) { $pack in
 					NavigationLink {
-						EmojiPackDetailView(hoarder: hoarder, pack: $pack)
+						EmojiPackDetailView(hoarder: hoarder, pack: $pack, useSwiftUIGrid: useSwiftUIGrid)
 					} label: {
 						Text(pack.name)
 					}
