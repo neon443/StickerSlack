@@ -45,17 +45,11 @@ struct EmojiCollectionView: UIViewRepresentable {
 			}
 		}
 		
-//		if items != context.coordinator.items || context.coordinator.pack != pack {
-//			context.coordinator.items = items
-//			context.coordinator.pack = pack
-//			uiView.reloadData()
-//		}
-		
-//		let oldItems = context.coordinator.items
-//		let newItems = items
-//		newItems.difference(from: oldItems)
-////		context.coordinator.items
-//		uiView.deleteItems(at: <#T##[IndexPath]#>)
+		if items != context.coordinator.items || context.coordinator.pack != pack {
+			context.coordinator.items = items
+			context.coordinator.pack = pack
+			uiView.reloadData()
+		}
 	}
 	
 	func makeCoordinator() -> Coordinator {
@@ -217,6 +211,10 @@ struct EmojiCollectionView: UIViewRepresentable {
 					let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash")) { action in
 						Task.detached {
 							await self.hoarder.delete(emoji: self.hoarder.trie.dict[emojiName])
+						}
+						self.items.remove(at: indexPath.row)
+						collectionView.performBatchUpdates {
+							collectionView.deleteItems(at: [indexPath])
 						}
 					}
 					delete.attributes.update(with: .destructive)
