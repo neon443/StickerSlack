@@ -30,12 +30,19 @@ struct EmojiCollectionView: UIViewRepresentable {
 	
 	func updateUIView(_ uiView: UICollectionView, context: Context) {
 		context.coordinator.hoarder = hoarder
+		
 		context.coordinator.edit = edit
 		if edit {
 			context.coordinator.startAnimating()
 		} else {
 			context.coordinator.stopAnimating()
 		}
+		for cell in uiView.visibleCells {
+			if let cell = cell as? EmojiCollectionViewCell {
+				cell.setEdit(to: edit)
+			}
+		}
+		
 		context.coordinator.onRemove = onRemove
 		if items != context.coordinator.items || context.coordinator.pack != pack {
 			context.coordinator.items = items
@@ -123,25 +130,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plain", for: indexPath) as! PlainEmojiCollectionViewCell
 			case .full:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "full", for: indexPath) as! EmojiCollectionViewCell
-				(cell as! EmojiCollectionViewCell).setEdit(to: edit)
-				
-				let button = UIButton(type: .custom)
-				button.setImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
-				button.imageView?.contentMode = .scaleAspectFit
-				button.contentHorizontalAlignment = .fill
-				button.contentVerticalAlignment = .fill
-				button.addTarget(self, action: #selector(deleteTapped), for: .touchUpInside)
-				button.tintColor = .systemRed
-				button.clipsToBounds = false
-				button.translatesAutoresizingMaskIntoConstraints = false
-				collectionView.addSubview(button)
-				
-				NSLayoutConstraint.activate([
-					button.topAnchor.constraint(equalTo: cell.topAnchor, constant: -12),
-					button.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: -12),
-					button.heightAnchor.constraint(equalToConstant: 24),
-					button.widthAnchor.constraint(equalToConstant: 24)
-				])
 			}
 			
 			guard !hoarder.trie.dict.isEmpty else { return cell }
@@ -152,16 +140,10 @@ struct EmojiCollectionView: UIViewRepresentable {
 			return cell
 		}
 		
-		@objc
-		func deleteTapped() {
-			print(UUID())
-		}
-		
 		func startAnimating() {
 			displayLink = CADisplayLink(target: self, selector: #selector(update))
 			displayLink.add(to: .main, forMode: .common)
 		}
-		
 		func stopAnimating() {
 			displayLink?.invalidate()
 			UIView.animate(withDuration: 0.2) {
@@ -170,7 +152,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 				}
 			}
 		}
-		
 		@objc
 		func update() {
 			let t = Date().timeIntervalSince(initDate)
@@ -180,24 +161,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 				cell.transform = CGAffineTransform(rotationAngle: angle)
 			}
 		}
-		
-//		func spinAnimation() {
-//			guard edit else {
-//				UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
-//					for cell in self.collectionView.visibleCells {
-//						cell.transform = CGAffineTransform.identity
-//					}
-//				}
-//				return
-//			}
-//			UIView.animate(withDuration: 0.1, delay: 0, options: [.curveLinear]) {
-//				for cell in self.collectionView.visibleCells {
-//					cell.transform = CGAffineTransform(rotationAngle: ((sin(self.initDate.timeIntervalSinceNow*20)*4)/360)*2*CGFloat.pi)
-//				}
-//			} completion: { _ in
-//				self.spinAnimation()
-//			}
-//		}
 		
 		func collectionView(
 			_ collectionView: UICollectionView,
