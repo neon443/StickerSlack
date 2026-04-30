@@ -31,6 +31,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 	func updateUIView(_ uiView: UICollectionView, context: Context) {
 		context.coordinator.hoarder = hoarder
 		context.coordinator.edit = edit
+		if edit {
+			context.coordinator.spinAnimation()
+		}
 		context.coordinator.onRemove = onRemove
 		if items != context.coordinator.items || context.coordinator.pack != pack {
 			context.coordinator.items = items
@@ -66,6 +69,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 		var edit: Bool
 		var onRemove: ((String) -> Void)?
 		
+		let initDate = Date.now
 		var layout = UICollectionViewFlowLayout()
 		
 		init(
@@ -148,6 +152,25 @@ struct EmojiCollectionView: UIViewRepresentable {
 		@objc
 		func deleteTapped() {
 			print(UUID())
+			spinAnimation()
+		}
+		
+		func spinAnimation() {
+			guard edit else {
+				UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
+					for cell in self.collectionView.visibleCells {
+						cell.transform = CGAffineTransform.identity
+					}
+				}
+				return
+			}
+			UIView.animate(withDuration: 0.1, delay: 0, options: [.curveLinear]) {
+				for cell in self.collectionView.visibleCells {
+					cell.transform = CGAffineTransform(rotationAngle: ((sin(self.initDate.timeIntervalSinceNow*20)*4)/360)*2*CGFloat.pi)
+				}
+			} completion: { _ in
+				self.spinAnimation()
+			}
 		}
 		
 		func collectionView(
