@@ -16,7 +16,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 	let pack: EmojiPack?
 	let width: CGFloat
 	let style: EmojiCollectionView.Style
-	var edit: Bool
+	var edit: Bool?
 	var onRemove: ((String) -> Void)?
 	
 	func makeUIView(context: Context) -> UICollectionView {
@@ -31,19 +31,19 @@ struct EmojiCollectionView: UIViewRepresentable {
 	func updateUIView(_ uiView: UICollectionView, context: Context) {
 		context.coordinator.hoarder = hoarder
 		
-		context.coordinator.edit = edit
-		if edit {
+		if edit ?? false {
 			context.coordinator.startAnimating()
 		} else {
 			context.coordinator.stopAnimating()
 		}
+		
 		for cell in uiView.visibleCells {
 			if let cell = cell as? EmojiCollectionViewCell {
 				cell.setEdit(to: edit)
+				cell.onDelete = onRemove
 			}
 		}
 		
-		context.coordinator.onRemove = onRemove
 		if items != context.coordinator.items || context.coordinator.pack != pack {
 			context.coordinator.items = items
 			context.coordinator.pack = pack
@@ -57,9 +57,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			items: items,
 			pack: pack,
 			width: width,
-			style: style,
-			edit: edit,
-			onRemove: onRemove
+			style: style
 		)
 	}
 	
@@ -75,8 +73,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 		var pack: EmojiPack?
 		var width: CGFloat
 		var style: EmojiCollectionView.Style
-		var edit: Bool
-		var onRemove: ((String) -> Void)?
 		
 		let initDate = Date.now
 		var layout = UICollectionViewFlowLayout()
@@ -88,8 +84,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 			pack: EmojiPack?,
 			width: CGFloat,
 			style: EmojiCollectionView.Style,
-			edit: Bool,
-			onRemove: ((String) -> Void)?
 		) {
 			self.hoarder = hoarder
 			self.items = items
@@ -99,8 +93,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 			}
 			self.width = width
 			self.style = style
-			self.edit = edit
-			self.onRemove = onRemove
 			
 			layout.minimumInteritemSpacing = 8
 			
@@ -219,4 +211,3 @@ struct EmojiCollectionView: UIViewRepresentable {
 		}
 	}
 }
-

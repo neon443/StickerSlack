@@ -12,7 +12,7 @@ import SwiftUI
 class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	let label = UILabel()
 	let button = UIButton(type: .custom)
-	var edit: Bool = false
+	var edit: Bool?
 	var onDelete: ((String) -> Void)?
 	
 	override init(frame: CGRect) {
@@ -61,25 +61,20 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		contentView.bringSubviewToFront(button)
 	}
 	
-	func setEdit(to newValue: Bool) {
+	func setEdit(to newValue: Bool?) {
 		self.edit = newValue
-		if edit {
+		if edit ?? false {
 			contentView.bringSubviewToFront(button)
 			self.button.isHidden = false
 			UIView.animate(withDuration: 0.2) {
 				self.button.alpha = 1
-			} completion: { _ in
 			}
 		} else {
-//			UIView.animate(withDuration: 0.1) {
-//				self.button.transform = CGAffineTransform.identity
-//			} completion: { _ in
 			UIView.animate(withDuration: 0.2) {
-					self.button.alpha = 0
-				} completion: { _ in
-					self.button.isHidden = true
-				}
-//			}
+				self.button.alpha = 0
+			} completion: { _ in
+				self.button.isHidden = true
+			}
 		}
 	}
 	
@@ -89,8 +84,9 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	
 	@objc
 	func deleteTapped() {
-		onDelete?("")
-		print(UUID())
+		if let emojiName = label.text {
+			onDelete?(emojiName)
+		}
 	}
 	
 	override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {

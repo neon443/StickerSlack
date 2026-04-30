@@ -118,8 +118,7 @@ struct SettingsView: View {
 							items: hoarder.emojis.prefix(1000).map { $0.name },
 							pack: nil,
 							width: 50,
-							style: .plainWithMenu,
-							edit: false
+							style: .plainWithMenu
 						)
 					} label: {
 						Label("grid view", systemImage: "square.grid.2x2.fill")
