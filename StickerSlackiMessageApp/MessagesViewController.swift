@@ -29,7 +29,6 @@ class MessagesViewController: MSMessagesAppViewController {
 		guard stickerBrowser.dataSource?.numberOfStickers(in: stickerBrowser) != 0 else {
 			let swiftUIView = NoStickersView()
 			let hostingController = UIHostingController(rootView: swiftUIView)
-			addChild(hostingController)
 			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
 			view.addSubview(hostingController.view)
 			hostingController.didMove(toParent: self)
@@ -38,16 +37,15 @@ class MessagesViewController: MSMessagesAppViewController {
 			link.setTitle("Open StickerSlack", for: .normal)
 			link.setImage(UIImage(systemName: "arrow.up.right.square"), for: .normal)
 			link.setTitleColor(.systemBlue, for: .normal)
-			link.frame = view.frame
 			link.translatesAutoresizingMaskIntoConstraints = false
 			link.addTarget(self, action: #selector(openStickerSlack), for: .touchUpInside)
 			view.addSubview(link)
 
 			NSLayoutConstraint.activate([
-				hostingController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-				hostingController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-				hostingController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
-				hostingController.view.heightAnchor.constraint(equalTo: view.heightAnchor),
+				hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+				hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+				hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+				hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 				link.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 				link.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 				link.heightAnchor.constraint(equalToConstant: 50)

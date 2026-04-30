@@ -117,6 +117,24 @@ struct EmojiCollectionView: UIViewRepresentable {
 			case .full:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "full", for: indexPath) as! EmojiCollectionViewCell
 				(cell as! EmojiCollectionViewCell).setEdit(to: edit)
+				
+				let button = UIButton(type: .custom)
+				button.setImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
+				button.imageView?.contentMode = .scaleAspectFit
+				button.contentHorizontalAlignment = .fill
+				button.contentVerticalAlignment = .fill
+				button.addTarget(self, action: #selector(deleteTapped), for: .touchUpInside)
+				button.tintColor = .systemRed
+				button.clipsToBounds = false
+				button.translatesAutoresizingMaskIntoConstraints = false
+				collectionView.addSubview(button)
+				
+				NSLayoutConstraint.activate([
+					button.topAnchor.constraint(equalTo: cell.topAnchor, constant: -12),
+					button.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: -12),
+					button.heightAnchor.constraint(equalToConstant: 24),
+					button.widthAnchor.constraint(equalToConstant: 24)
+				])
 			}
 			
 			guard !hoarder.trie.dict.isEmpty else { return cell }
@@ -124,8 +142,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 			guard let emoji = hoarder.trie.dict[emojiName] else { return cell }
 			
 			cell.configure(with: hoarder, emoji: emoji)
-			
 			return cell
+		}
+		
+		@objc
+		func deleteTapped() {
+			print(UUID())
 		}
 		
 		func collectionView(
