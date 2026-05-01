@@ -77,6 +77,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 		var edit: Bool? = false
 		var onRemove: ((String) -> Void)?
 		
+		var dataSource: UICollectionViewDiffableDataSource<Int, String>!
+		
 		// [width: [label: height]]
 		static var labelSizeDict: [CGFloat: [String: CGFloat]] = [:]
 		
@@ -101,8 +103,13 @@ struct EmojiCollectionView: UIViewRepresentable {
 			self.style = style
 			
 			layout.minimumInteritemSpacing = 8
-			
 			super.init(collectionViewLayout: layout)
+			
+			self.dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: String) -> UICollectionViewCell? in
+				collectionView.cellForItem(at: indexPath)
+			}
+			collectionView.dataSource = dataSource
+			
 			collectionView.contentInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
 		}
 		

@@ -14,7 +14,6 @@ struct EmojiPack: Identifiable, Codable, Equatable {
 	var name: String
 	var description: String
 	var items: [String]
-	var allDownloaded: Bool = false
 	
 	init(id: UUID, name: String, description: String, items: [String]) {
 		self.id = id
@@ -134,15 +133,27 @@ struct EmojiPack: Identifiable, Codable, Equatable {
 		url = components!.url!
 		return url
 	}
+	
+	func allDownloaded(in hoarder: EmojiHoarder) -> Bool {
+		guard !items.isEmpty else { return false }
+		return Set(self.items).isSubset(of: hoarder.downloadedStickers)
+	}
+	
+	func downloadedFraction(in hoarder: EmojiHoarder) -> Double {
+		guard !items.isEmpty else { return 0 }
+		guard !allDownloaded(in: hoarder) else { return 1 }
+		let common = hoarder.downloadedStickers.intersection(items)
+		return Double(common.count)/Double(items.count)
+	}
 }
 
 extension EmojiPack {
-	static func new() -> EmojiPack {
+	static func new(withItems items: [String] = []) -> EmojiPack {
 		EmojiPack(
 			id: UUID(),
 			name: "New Pack",
 			description: "Created on \(Date().formatted())",
-			items: []
+			items: items
 		)
 	}
 }

@@ -199,7 +199,6 @@ class EmojiHoarder: BaseHoarder {
 	nonisolated func batchDownload(emojis emojisToDownload: [any StickerProtocol]) async {
 		for emoji in emojisToDownload {
 			await download(emoji: emoji, skipStoreIndex: true)
-			
 		}
 		
 		await buildDownloadedStickers()
@@ -210,7 +209,6 @@ class EmojiHoarder: BaseHoarder {
 		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		
 		await MainActor.run {
-			emojis.insert(.test, at: emojis.count-2)
 			if !skipStoreIndex {
 				let _ = withAnimation(.snappy) {
 					self.downloadedStickers.insert(emoji.name)
@@ -263,8 +261,8 @@ class EmojiHoarder: BaseHoarder {
 		try? encoded.write(to: Self.packStore)
 	}
 	
-	func newEmojiPack() {
-		addEmojiPack(.new())
+	func newEmojiPack(withItems items: [String] = []) {
+		addEmojiPack(.new(withItems: items))
 	}
 	
 	func addEmojiPack(_ packToAdd: EmojiPack) {

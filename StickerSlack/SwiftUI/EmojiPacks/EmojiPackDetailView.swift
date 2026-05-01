@@ -20,10 +20,10 @@ struct EmojiPackDetailView: View {
 	@State var useSwiftUIGrid: Bool = false
 	
 	var allDownloaded: Bool {
-		let date = Date.now
-		let result = Set(pack.items).isSubset(of: hoarder.downloadedStickers)
-//		print("hit \(Date.now.timeIntervalSince(date)) \(UUID())")
-		return result
+		pack.allDownloaded(in: hoarder)
+	}
+	var downloadedFraction: Double {
+		pack.downloadedFraction(in: hoarder)
 	}
 	
 	var body: some View {
@@ -88,6 +88,19 @@ struct EmojiPackDetailView: View {
 				hoarder.saveEmojiPacks()
 			}
 			.toolbar {
+				ToolbarItem(placement: .topBarLeading) {
+						Circle()
+						.trim(from: 0, to: pack.downloadedFraction(in: hoarder))
+						.stroke(
+							.foreground,
+							style: StrokeStyle(
+								lineWidth: 5,
+								lineCap: .round
+							)
+						)
+						.rotationEffect(.degrees(-90))
+						.padding(5)
+				}
 				ToolbarItem(placement: .topBarLeading) {
 					Button(
 						"",

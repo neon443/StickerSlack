@@ -28,10 +28,9 @@ struct EmojiTableView: UIViewRepresentable {
 		context.coordinator.items = items
 //		guard itemsBefore != itemsAfter else { return }
 		Task.detached {
-			if !(-10_000...10_000).contains(itemsBefore.count-itemsAfter.count) {
+			if !(-10_000...10_000).contains(itemsBefore.count-itemsAfter.count) ||
+				itemsAfter == itemsBefore {
 				//diff of more than 10k
-				await context.coordinator.instantApplySnapshot()
-			} else if itemsAfter == itemsBefore {
 				await context.coordinator.instantApplySnapshot()
 			} else {
 				await context.coordinator.applySnapshot(animated: true)
