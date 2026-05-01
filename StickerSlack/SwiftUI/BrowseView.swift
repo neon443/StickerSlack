@@ -30,7 +30,6 @@ struct BrowseView: View {
 						items: emojiHoarder.emojis.map { $0.name }
 					)
 					.padding(.bottom, 10)
-					.id(emojiHoarder.emojis)
 				case .giphyGifs:
 					Button("download all") {
 						for gif in gifHoarder.trendingGifs {

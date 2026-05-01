@@ -23,8 +23,19 @@ struct EmojiTableView: UIViewRepresentable {
 	
 	func updateUIView(_ uiView: UITableView, context: Context) {
 		context.coordinator.hoarder = hoarder
+		
+		let itemsBefore = context.coordinator.items
+		let itemsAfter = items
 		context.coordinator.items = items
-		uiView.reloadData()
+		if itemsAfter.count > itemsBefore.count {
+			var indexPaths: [IndexPath] = []
+			for i in (itemsBefore.count-1)...(itemsAfter.count-1) {
+				indexPaths.append(IndexPath(row: i, section: 0))
+			}
+			uiView.insertRows(at: indexPaths, with: .fade)
+		} else {
+			uiView.reloadData()
+		}
 	}
 	
 	func makeCoordinator() -> Coordinator {

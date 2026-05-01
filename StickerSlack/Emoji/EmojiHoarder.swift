@@ -105,6 +105,7 @@ class EmojiHoarder: BaseHoarder {
 		}
 		await MainActor.run {
 			downloadedStickers = []
+			downloadedStickersArr = []
 		}
 	}
 	
@@ -209,6 +210,7 @@ class EmojiHoarder: BaseHoarder {
 		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		
 		await MainActor.run {
+			emojis.insert(.test, at: emojis.count-2)
 			if !skipStoreIndex {
 				let _ = withAnimation(.snappy) {
 					self.downloadedStickers.insert(emoji.name)

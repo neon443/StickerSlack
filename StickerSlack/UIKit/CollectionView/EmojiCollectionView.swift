@@ -196,6 +196,13 @@ struct EmojiCollectionView: UIViewRepresentable {
 				}
 			}
 			
+			let font = UIFont.preferredFont(forTextStyle: .caption1)
+			let rect = (emojiName as NSString).boundingRect(
+				with: CGSize(width: itemWidth, height: .greatestFiniteMagnitude),
+				options: [.usesLineFragmentOrigin, .usesFontLeading],
+				attributes: [.font: font],
+				context: nil
+			)
 			return CGSize(width: itemWidth, height: itemWidth+labelHeight+4)
 		}
 		
