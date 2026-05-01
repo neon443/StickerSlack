@@ -26,13 +26,17 @@ struct EmojiTableView: UIViewRepresentable {
 		
 		let itemsBefore = context.coordinator.items
 		let itemsAfter = items
-		context.coordinator.items = items
+		context.coordinator.items = itemsAfter
+		
 		if itemsAfter.count > itemsBefore.count {
 			var indexPaths: [IndexPath] = []
-			for i in (itemsBefore.count-1)...(itemsAfter.count-1) {
+			for i in (itemsBefore.count-1)..<(itemsAfter.count-1) {
 				indexPaths.append(IndexPath(row: i, section: 0))
 			}
-			uiView.insertRows(at: indexPaths, with: .fade)
+//			uiView.performBatchUpdates {
+//				context.coordinator.items = itemsAfter
+				uiView.insertRows(at: indexPaths, with: .fade)
+//			}
 		} else {
 			uiView.reloadData()
 		}
