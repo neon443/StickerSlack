@@ -60,8 +60,8 @@ struct SearchView: View {
 				.pickerStyle(.segmented)
 				switch stickerType {
 				case .slackEmoji:
+					Text("\(searchResult.count)")
 					EmojiTableView(hoarder: hoarder, items: searchResult)
-						.id(searchResult)
 						.padding(.bottom, 10)
 				case .giphyGifs:
 					Text("uhh")

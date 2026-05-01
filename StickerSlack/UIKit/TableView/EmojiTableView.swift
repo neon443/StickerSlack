@@ -17,7 +17,6 @@ struct EmojiTableView: UIViewRepresentable {
 	func makeUIView(context: Context) -> UITableView {
 		let tableView = context.coordinator as UITableViewController
 		tableView.tableView.register(EmojiTableViewCell.self, forCellReuseIdentifier: "cell")
-		tableView.tableView.dataSource = context.coordinator
 		return tableView.tableView
 	}
 	
@@ -26,19 +25,13 @@ struct EmojiTableView: UIViewRepresentable {
 		
 		let itemsBefore = context.coordinator.items
 		let itemsAfter = items
-		context.coordinator.items = itemsAfter
-		
-		if itemsAfter.count > itemsBefore.count {
-			var indexPaths: [IndexPath] = []
-			for i in (itemsBefore.count-1)..<(itemsAfter.count-1) {
-				indexPaths.append(IndexPath(row: i, section: 0))
+		context.coordinator.items = items
+		Task.detached {
+			if itemsAfter.count == 0 {
+				await context.coordinator.instantApplySnapshot()
+			} else {
+				await context.coordinator.applySnapshot(animated: true)
 			}
-//			uiView.performBatchUpdates {
-//				context.coordinator.items = itemsAfter
-				uiView.insertRows(at: indexPaths, with: .fade)
-//			}
-		} else {
-			uiView.reloadData()
 		}
 	}
 	
@@ -47,6 +40,7 @@ struct EmojiTableView: UIViewRepresentable {
 	}
 	
 	final class Coordinator: UITableViewController {
+		var dataSource: UITableViewDiffableDataSource<Int, String>!
 		var hoarder: EmojiHoarder
 		var items: [String]
 		
@@ -54,27 +48,51 @@ struct EmojiTableView: UIViewRepresentable {
 			self.hoarder = hoarder
 			self.items = items
 			super.init(style: .plain)
+			self.dataSource = UITableViewDiffableDataSource<Int, String>(tableView: tableView) { (tableView: UITableView, indexPath: IndexPath, itemIdentifier: String) -> UITableViewCell? in
+				return self.cell(tableView, indexPath: indexPath, forItemIdentifier: itemIdentifier)
+			}
+			tableView.dataSource = dataSource
 		}
 		
 		required init?(coder: NSCoder) {
 			fatalError("init(coder:) has not been implemented")
 		}
 		
-		override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-			return items.count
+		func makeSnapshot() -> NSDiffableDataSourceSnapshot<Int, String> {
+			var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+			snapshot.appendSections([0])
+			snapshot.appendItems(items, toSection: 0)
+			return snapshot
 		}
 		
-		override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		func applySnapshot(animated: Bool) async {
+			let snapshot = makeSnapshot()
+			await (self.tableView.dataSource as! UITableViewDiffableDataSource).apply(snapshot, animatingDifferences: animated)
+		}
+		
+		func instantApplySnapshot() async {
+			let snapshot = makeSnapshot()
+			await (self.tableView.dataSource as! UITableViewDiffableDataSource).applySnapshotUsingReloadData(snapshot)
+		}
+		
+		func cell(
+			_ tableView: UITableView,
+			indexPath: IndexPath,
+			forItemIdentifier itemIdentifier: String
+		) -> UITableViewCell {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! EmojiTableViewCell
 			cell.selectionStyle = .none
 			
 			guard !hoarder.trie.dict.isEmpty else { return cell }
 			
-			let emojiName = items[indexPath.row]
-			guard let emoji = hoarder.trie.dict[emojiName] else { return cell }
+			guard let emoji = hoarder.trie.dict[itemIdentifier] else { return cell }
 			
 			cell.configure(with: hoarder, emoji: emoji)
 			return cell
+		}
+		
+		override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+			return items.count
 		}
 		
 		override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

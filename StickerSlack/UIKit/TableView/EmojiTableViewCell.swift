@@ -10,7 +10,6 @@ import UIKit
 import SwiftUI
 
 class EmojiTableViewCell: UITableViewCell {
-	private var spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .large)
 	private var hostingController: UIHostingController<StickerRow<EmojiHoarder>>?
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -25,23 +24,10 @@ class EmojiTableViewCell: UITableViewCell {
 	}
 	
 	func configureSkeleton() {
-		spinner.frame = frame
-		spinner.startAnimating()
-		contentView.addSubview(spinner)
-		
-		spinner.translatesAutoresizingMaskIntoConstraints = false
-		NSLayoutConstraint.activate([
-			spinner.topAnchor.constraint(equalTo: contentView.topAnchor),
-			spinner.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			spinner.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-			spinner.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-		])
-
 	}
 	
 	func configure(with hoarder: EmojiHoarder, emoji: Emoji) {
 		let swiftUIView = StickerRow(hoarder: hoarder, sticker: emoji)
-		spinner.removeFromSuperview()
 		
 		if let hostingController {
 			hostingController.rootView = swiftUIView
@@ -66,9 +52,5 @@ class EmojiTableViewCell: UITableViewCell {
 		
 		hostingController?.view.removeFromSuperview()
 		hostingController = nil
-		if spinner.superview == nil {
-				configureSkeleton()
-		}
-		spinner.startAnimating()
 	}
 }
