@@ -197,10 +197,18 @@ class EmojiHoarder: BaseHoarder {
 	}
 	
 	nonisolated func batchDownload(emojis emojisToDownload: [any StickerProtocol]) async {
-		for emoji in emojisToDownload {
-			await download(emoji: emoji, skipStoreIndex: true)
+		await withTaskGroup { group in
+			for emoji in emojisToDownload {
+				group.addTask {
+					await self.download(emoji: emoji, skipStoreIndex: true)
+					await MainActor.run {
+//					Task { @MainActor in
+						self.downloadedStickers.insert(emoji.name)
+						self.downloadedStickersArr.append(emoji.name)
+					}
+				}
+			}
 		}
-		
 		await buildDownloadedStickers()
 	}
 	
@@ -219,9 +227,16 @@ class EmojiHoarder: BaseHoarder {
 	}
 	
 	nonisolated func batchDelete(emojis emojisToDelete: [any StickerProtocol]) async {
-		for emoji in emojisToDelete {
-			await delete(emoji: emoji, skipStoreIndex: true)
+		await withTaskGroup { group in
+			for emoji in emojisToDelete {
+				group.addTask {
+					await self.delete(emoji: emoji, skipStoreIndex: true)
+				}
+			}
 		}
+//		for emoji in emojisToDelete {
+//			await delete(emoji: emoji, skipStoreIndex: true)
+//		}
 		await buildDownloadedStickers()
 	}
 	
