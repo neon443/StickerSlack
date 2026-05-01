@@ -142,3 +142,19 @@ extension View {
 		modifier(TabViewBottomAcceessorySafe(isEnabled: isEnabled, contents: content))
 	}
 }
+
+struct fadeIn: ViewModifier {
+	@State private var isVisible: Bool = false
+	
+	func body(content: Content) -> some View {
+		content
+			.opacity(isVisible ? 1 : 0)
+			.scaleEffect(isVisible ? 1 : 0)
+			.onAppear {
+				withAnimation { isVisible = true }
+			}
+			.onDisappear {
+				withAnimation { isVisible = false }
+			}
+	}
+}

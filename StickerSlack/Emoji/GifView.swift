@@ -14,6 +14,7 @@ struct GifView: View {
 	@State var url: URL
 	@State var gif: [(frame: CGImage, showFor: Double)] = []
 	@State var currentI: Int = 0
+	@State var isVisible: Bool = false
 	
 	@State var timer: Timer?
 	
@@ -62,7 +63,7 @@ struct GifView: View {
 		Group {
 			if gif.isEmpty {
 				ProgressView()
-//					.controlSize(.large)
+					.modifier(fadeIn())
 			} else if url.pathExtension == "gif" {
 				TimelineView(.animation) { tl in
 					if currentI < gif.count {
