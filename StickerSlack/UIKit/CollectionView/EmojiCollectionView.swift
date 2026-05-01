@@ -77,7 +77,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 		var edit: Bool? = false
 		var onRemove: ((String) -> Void)?
 		
-		var labelHeightDict: [String: CGFloat] = [:]
+		// [width: [label: height]]
+		static var labelSizeDict: [CGFloat: [String: CGFloat]] = [:]
 		
 		let initDate = Date.now
 		var layout = UICollectionViewFlowLayout()
@@ -179,7 +180,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 			let emojiName = items[indexPath.item]
 			
 			let labelHeight: CGFloat
-			if let storedHeight = labelHeightDict[emojiName] {
+			if let widthDict = EmojiCollectionView.Coordinator.labelSizeDict[itemWidth],
+			   let storedHeight = widthDict[emojiName] {
 				labelHeight = storedHeight
 			} else {
 				let label = UILabel()
@@ -187,7 +189,11 @@ struct EmojiCollectionView: UIViewRepresentable {
 				label.numberOfLines = 0
 				label.text = emojiName
 				labelHeight = label.sizeThatFits(CGSize(width: itemWidth, height: .infinity)).height
-				labelHeightDict[emojiName] = labelHeight
+				if EmojiCollectionView.Coordinator.labelSizeDict[itemWidth] != nil {
+					EmojiCollectionView.Coordinator.labelSizeDict[itemWidth]![emojiName] = labelHeight
+				} else {
+					EmojiCollectionView.Coordinator.labelSizeDict[itemWidth] = [emojiName: labelHeight]
+				}
 			}
 			
 			return CGSize(width: itemWidth, height: itemWidth+labelHeight+4)
