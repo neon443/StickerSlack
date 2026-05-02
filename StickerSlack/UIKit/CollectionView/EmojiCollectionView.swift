@@ -45,10 +45,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 			}
 		}
 		
-		if items != context.coordinator.items || context.coordinator.pack != pack {
+		if items != context.coordinator.items {
 			context.coordinator.items = items
-			context.coordinator.pack = pack
 			uiView.reloadData()
+		}
+		if pack != context.coordinator.pack {
+			context.coordinator.pack = pack
 		}
 	}
 	

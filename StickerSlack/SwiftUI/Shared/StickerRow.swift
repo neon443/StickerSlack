@@ -82,6 +82,9 @@ struct StickerRow<T: Hoarder>: View {
 							.resizable().scaledToFit()
 					}
 					.transition(.scale)
+					.onAppear {
+						downloading = false
+					}
 				} else if downloading {
 					ProgressView()
 						.transition(.scale)

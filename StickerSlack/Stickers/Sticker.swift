@@ -61,6 +61,7 @@ extension StickerProtocol {
 	
 	nonisolated
 	func downloadImage() async throws {
+		let targetSize = CGSize(width: 500, height: 500)
 		if let data = try? await Data(contentsOf: localImageURL),
 		   let _ = UIImage(data: data) {
 			return
@@ -68,15 +69,20 @@ extension StickerProtocol {
 		
 		var (data, _) = try await URLSession.shared.data(from: remoteImageURL)
 		
+		print(await GifManager.gifFrom(data: data).count)
+		
 		if let uiImage = UIImage(data: data),
-		   let cgImage = uiImage.cgImage,
-		   await !self.localImageURLString.contains(".gif"),
-		   cgImage.width < 500 || cgImage.height < 500 {
-			if await self.localImageURLString.suffix(4) == ".gif" {
-				
-			} else {
-				data = await resize(image: uiImage, to: CGSize(width: 500, height: 500)).pngData()!
+		   await GifManager.gifFrom(data: data).count == 1 {
+			data = await resize(image: uiImage, to: targetSize).pngData()!
+		} else {
+			var frames: [(frame: CGImage, showFor: Double)] = []
+			for frame in await GifManager.gifFrom(data: data) {
+				frames.append((
+					await resize(image: UIImage(cgImage: frame.frame), to: targetSize).cgImage!,
+					frame.showFor
+				))
 			}
+			data = await GifManager.dataFrom(frames: frames)!
 		}
 		try! await data.write(to: localImageURL)
 		return

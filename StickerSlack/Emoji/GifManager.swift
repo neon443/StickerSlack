@@ -37,4 +37,14 @@ class GifManager {
 		}
 		return result
 	}
+	
+	static func dataFrom(frames: [(frame: CGImage, showFor: Double)]) -> Data? {
+//		let cgImage = CGImageSourceCreateWithData(<#T##data: CFData##CFData#>, <#T##options: CFDictionary?##CFDictionary?#>)
+		return nil
+	}
+	
+	static func dataFrom(gif: CGImage) -> Data? {
+		
+		return nil
+	}
 }

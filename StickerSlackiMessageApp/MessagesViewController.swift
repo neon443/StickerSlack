@@ -22,9 +22,16 @@ class MessagesViewController: MSMessagesAppViewController {
 	
 	override func willBecomeActive(with conversation: MSConversation) {
 		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
-		stickerBrowser.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
 		stickerBrowser.dataSource = dataSource
-		stickerBrowser.autoresizingMask = [.flexibleWidth]
+
+		stickerBrowser.translatesAutoresizingMaskIntoConstraints = false
+		view.addSubview(stickerBrowser)
+		NSLayoutConstraint.activate([
+			stickerBrowser.topAnchor.constraint(equalTo: view.topAnchor),
+			stickerBrowser.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+			stickerBrowser.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			stickerBrowser.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+		])
 		
 		guard stickerBrowser.dataSource?.numberOfStickers(in: stickerBrowser) != 0 else {
 			let swiftUIView = NoStickersView()
@@ -54,9 +61,8 @@ class MessagesViewController: MSMessagesAppViewController {
 			return
 		}
 		
-		view.addSubview(stickerBrowser)
-		stickerBrowser.reloadData()
-		view.bringSubviewToFront(stickerBrowser)
+//		stickerBrowser.reloadData()
+//		view.bringSubviewToFront(stickerBrowser)
 		
 		// Called when the extension is about to move from the inactive to active state.
 		// This will happen when the extension is about to present UI.
