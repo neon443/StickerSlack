@@ -61,7 +61,6 @@ extension StickerProtocol {
 	
 	nonisolated
 	func downloadImage() async throws {
-		let targetSize = CGSize(width: 500, height: 500)
 		if let data = try? await Data(contentsOf: localImageURL),
 		   let _ = UIImage(data: data) {
 			return
@@ -69,23 +68,13 @@ extension StickerProtocol {
 		
 		var (data, _) = try await URLSession.shared.data(from: remoteImageURL)
 		
-		print(await GifManager.gifFrom(data: data).count)
-		
+		let targetSize = CGSize(width: 600, height: 600)
 		if let uiImage = UIImage(data: data),
-		   await GifManager.gifFrom(data: data).count == 1 {
+		   await localImageURLString.suffix(4) != ".gif" {
 			data = await resize(image: uiImage, to: targetSize).pngData()!
-		} else {
-			var frames: [(frame: CGImage, showFor: Double)] = []
-			for frame in await GifManager.gifFrom(data: data) {
-				frames.append((
-					await resize(image: UIImage(cgImage: frame.frame), to: targetSize).cgImage!,
-					frame.showFor
-				))
-			}
-			data = await GifManager.dataFrom(frames: frames)!
 		}
+		
 		try! await data.write(to: localImageURL)
-		return
 	}
 	
 	func deleteImage() {
@@ -93,34 +82,29 @@ extension StickerProtocol {
 		return
 	}
 	
- 	func resize(image: UIImage, to targetSize: CGSize) -> UIImage {
-		let oldSize = image.size
-		let ratio: (x: CGFloat, y: CGFloat)
-		ratio.x = targetSize.width / oldSize.width
-		ratio.y = targetSize.height / oldSize.height
-		
-		var newSize: CGSize
-		if ratio.x > ratio.y {
-			newSize = CGSize(width: oldSize.width * ratio.y, height: oldSize.height * ratio.y)
-		} else {
-			newSize = CGSize(width: oldSize.width * ratio.x, height: oldSize.height * ratio.x)
+	nonisolated func resize(image: UIImage, to targetSize: CGSize) async -> UIImage {
+		let renderer = UIGraphicsImageRenderer(size: targetSize)
+		let resizedImage = renderer.image { _ in
+			image.draw(in: CGRect(origin: .zero, size: targetSize))
 		}
+		return resizedImage
+	}
+	
+	nonisolated func resize(cgImage: CGImage, to targetSize: CGSize) -> CGImage? {
+		let width = Int(targetSize.width)
+		let height = Int(targetSize.height)
+		guard let context = CGContext(
+			data: nil,
+			width: width,
+			height: height,
+			bitsPerComponent: cgImage.bitsPerComponent,
+			bytesPerRow: cgImage.bytesPerRow,
+			space: cgImage.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
+			bitmapInfo: cgImage.bitmapInfo
+		) else { fatalError() }
 		
-		let rect = CGRect(origin: .zero, size: newSize)
-		
-		if let frames = image.images {
-			var result: [UIImage] = []
-			for frame in frames {
-				UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-				frame.draw(in: rect)
-				result.append(UIGraphicsGetImageFromCurrentImageContext() ?? UIImage())
-				UIGraphicsEndImageContext()
-			}
-			return UIImage.animatedImage(with: result, duration: image.duration) ?? UIImage()
-		}
-		
-		UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-		image.draw(in: rect)
-		return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+		context.interpolationQuality = .default
+		context.draw(cgImage, in: CGRect(origin: .zero, size: targetSize))
+		return context.makeImage()
 	}
 }

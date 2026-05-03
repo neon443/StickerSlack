@@ -15,6 +15,8 @@ struct EmojiPackDetailView: View {
 	@State var editName: Bool = false
 	@State var editDescription: Bool = false
 		
+	@State var downloading: Bool = false
+	
 	@State var showShare: Bool = false
 	
 	@State var useSwiftUIGrid: Bool = false
@@ -89,19 +91,6 @@ struct EmojiPackDetailView: View {
 			}
 			.toolbar {
 				ToolbarItem(placement: .topBarLeading) {
-						Circle()
-						.trim(from: 0, to: pack.downloadedFraction(in: hoarder))
-						.stroke(
-							.foreground,
-							style: StrokeStyle(
-								lineWidth: 5,
-								lineCap: .round
-							)
-						)
-						.rotationEffect(.degrees(-90))
-						.padding(5)
-				}
-				ToolbarItem(placement: .topBarLeading) {
 					Button(
 						"",
 						systemImage: edit ? "checkmark" : "pencil"
@@ -112,16 +101,31 @@ struct EmojiPackDetailView: View {
 					.tint(edit ? Color.accentColor : .primary)
 				}
 				ToolbarItem(placement: .topBarTrailing) {
-					Button("", systemImage: allDownloaded ? "checkmark" : "arrow.down") {
-						Task {
-							if allDownloaded {
-								await pack.deleteAll(hoarder: hoarder)
-							} else {
-								await pack.downloadAll(hoarder: hoarder)
+					if downloading {
+						ProgressView()
+							.onChange(of: allDownloaded) { newValue in
+								if newValue == true {
+									downloading = false
+								}
+							}
+					} else {
+						Button(
+							"",
+							systemImage: allDownloaded ? "checkmark" : "arrow.down"
+						) {
+							if !allDownloaded {
+								downloading = true
+							}
+							Task {
+								if allDownloaded {
+									await pack.deleteAll(hoarder: hoarder)
+								} else {
+									await pack.downloadAll(hoarder: hoarder)
+								}
 							}
 						}
+						.tint(allDownloaded ? .red : .accentColor)
 					}
-					.tint(allDownloaded ? .red : .accentColor)
 				}
 				ToolbarItem(placement: .topBarTrailing) {
 					if #available(iOS 16, *) {

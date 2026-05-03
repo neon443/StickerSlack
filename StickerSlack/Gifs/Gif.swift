@@ -47,7 +47,7 @@ struct Gif: StickerProtocol {
 		   let cgImage = uiImage.cgImage,
 		   !self.localImageURLString.contains(".gif"),
 		   cgImage.width < 300 || cgImage.height < 300 {
-			data = resize(image: uiImage, to: CGSize(width: 300, height: 300)).pngData()!
+			data = await resize(image: uiImage, to: CGSize(width: 300, height: 300)).pngData()!
 		}
 		
 		try! data.write(to: localImageURL)

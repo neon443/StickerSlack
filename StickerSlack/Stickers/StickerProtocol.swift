@@ -24,6 +24,6 @@ protocol StickerProtocol: Codable, Identifiable, Hashable {
 	
 	nonisolated func downloadImage() async throws
 	nonisolated func deleteImage() async
-	func resize(image: UIImage, to targetSize: CGSize) -> UIImage
+	nonisolated func resize(image: UIImage, to targetSize: CGSize) async -> UIImage
 	static var test: Self { get }
 }

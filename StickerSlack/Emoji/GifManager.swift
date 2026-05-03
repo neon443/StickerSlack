@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import UniformTypeIdentifiers
 
 class GifManager {
 	//from clock-run, 12 frames one second
@@ -39,12 +40,39 @@ class GifManager {
 	}
 	
 	static func dataFrom(frames: [(frame: CGImage, showFor: Double)]) -> Data? {
-//		let cgImage = CGImageSourceCreateWithData(<#T##data: CFData##CFData#>, <#T##options: CFDictionary?##CFDictionary?#>)
-		return nil
-	}
-	
-	static func dataFrom(gif: CGImage) -> Data? {
+		var data = NSMutableData()
 		
-		return nil
+		let fileProperties = [
+			kCGImagePropertyGIFDictionary: [
+				kCGImagePropertyGIFLoopCount: 0
+			]
+		]
+		
+		guard let destination = CGImageDestinationCreateWithData(
+			data,
+			UTType.gif.identifier as CFString,
+			frames.count,
+			nil
+		) else { fatalError() }
+		
+		CGImageDestinationSetProperties(destination, fileProperties as NSDictionary)
+		
+		for frame in frames {
+			autoreleasepool {
+				let frameProperties = [
+					kCGImagePropertyGIFDictionary: [
+						kCGImagePropertyGIFDelayTime: frame.showFor
+					]
+				]
+				CGImageDestinationAddImage(
+					destination,
+					frame.frame,
+					frameProperties as CFDictionary
+				)
+			}
+		}
+		
+		guard CGImageDestinationFinalize(destination) else { fatalError() }
+		return data as Data
 	}
 }

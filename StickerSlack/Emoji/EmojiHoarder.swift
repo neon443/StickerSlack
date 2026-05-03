@@ -201,11 +201,6 @@ class EmojiHoarder: BaseHoarder {
 			for emoji in emojisToDownload {
 				group.addTask {
 					await self.download(emoji: emoji, skipStoreIndex: true)
-					await MainActor.run {
-//					Task { @MainActor in
-						self.downloadedStickers.insert(emoji.name)
-						self.downloadedStickersArr.append(emoji.name)
-					}
 				}
 			}
 		}
