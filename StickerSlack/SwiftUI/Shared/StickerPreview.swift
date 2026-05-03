@@ -13,7 +13,7 @@ struct StickerPreview: View {
 	@State var gifImage: Image?
 	
 	var body: some View {
-		if sticker.image != nil {
+		if sticker.isLocal {
 			//local
 			GifView(url: sticker.localImageURL)
 		} else {

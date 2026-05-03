@@ -38,6 +38,10 @@ extension StickerProtocol {
 		return try? MSSticker(contentsOfFileURL: localImageURL, localizedDescription: name)
 	}
 	
+	var isLocal: Bool {
+		return FileManager.default.fileExists(atPath: localImageURLString)
+	}
+	
 	var image: UIImage? {
 		if FileManager.default.fileExists(atPath: localImageURLString),
 		   let data = try? Data(contentsOf: localImageURL),

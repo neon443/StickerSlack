@@ -209,6 +209,7 @@ class EmojiHoarder: BaseHoarder {
 	
 	override nonisolated func download(emoji: (any StickerProtocol)?, skipStoreIndex: Bool = false) async {
 		guard let emoji else { return }
+		guard !downloadedStickers.contains(emoji.name) else { return }
 		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		
 		await MainActor.run {

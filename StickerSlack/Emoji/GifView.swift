@@ -11,6 +11,7 @@ import SwiftUI
 import WebKit
 
 struct GifView: View {
+	@State var sticker: StickerProtocol?
 	@State var url: URL
 	@State var gif: [(frame: CGImage, showFor: Double)] = []
 	@State var currentI: Int = 0
@@ -18,22 +19,24 @@ struct GifView: View {
 	
 	@State var timer: Timer?
 	
-	nonisolated func run() async {
-		guard await url.pathExtension == "gif" else {
-			if let data = try? await URLSession.shared.data(from: url).0,
-			   let uiImage = UIImage(data: data),
-			   let cgImage = uiImage.cgImage {
-				withAnimation(.spring) {
-					self.gif = [(cgImage, 1)]
+	func run() async {
+		guard url.pathExtension == "gif" else {
+			Task.detached {
+				if let data = try? await URLSession.shared.data(from: url).0,
+				   let uiImage = UIImage(data: data),
+				   let cgImage = uiImage.cgImage {
+					withAnimation(.spring(duration: 0.2)) {
+						self.gif = [(cgImage, 1)]
+					}
 				}
 			}
 			return
 		}
 		
 		do {
-			if await gif.isEmpty {
+			if gif.isEmpty {
 				let frames = try await GifManager.gifFrom(url: url)
-				withAnimation(.spring) {
+				withAnimation(.spring(duration: 0.2)) {
 					self.gif = frames
 				}
 			}
@@ -43,8 +46,8 @@ struct GifView: View {
 			print("falied loading or empty gif")
 			return
 		}
-		if await timer != nil {
-			await timer!.invalidate()
+		if timer != nil {
+			timer!.invalidate()
 			timer = nil
 		}
 		
@@ -55,7 +58,7 @@ struct GifView: View {
 				currentI += 1
 			}
 		}
-		await RunLoop.main.add(timer!, forMode: .common)
+		RunLoop.main.add(timer!, forMode: .common)
 	}
 	
 	var body: some View {
@@ -65,15 +68,13 @@ struct GifView: View {
 				ProgressView()
 					.modifier(fadeIn())
 			} else if url.pathExtension == "gif" {
-				TimelineView(.animation) { tl in
-					if currentI < gif.count {
-						Image(uiImage: .init(cgImage: gif[currentI].frame))
-							.resizable().scaledToFit()
-					}
-				}
-				.onDisappear {
-					timer?.invalidate()
-					timer = nil
+				if currentI < gif.count {
+					Image(uiImage: .init(cgImage: gif[currentI].frame))
+						.resizable().scaledToFit()
+						.onDisappear {
+							timer?.invalidate()
+							timer = nil
+						}
 				}
 			} else {
 				if let frame = gif.first {
