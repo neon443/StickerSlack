@@ -68,6 +68,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 		case plain
 		case plainWithMenu
 		case full
+		case jumboMoji
 	}
 	
 	final class Coordinator: UICollectionViewController, UICollectionViewDelegateFlowLayout {
@@ -104,7 +105,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			self.width = width
 			self.style = style
 			
-			layout.minimumInteritemSpacing = 8
+			layout.minimumInteritemSpacing = style == .jumboMoji ? 0 : 8
 			super.init(collectionViewLayout: layout)
 			
 			self.dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: String) -> UICollectionViewCell? in
@@ -129,7 +130,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 		) -> UICollectionViewCell {
 			let cell: PlainEmojiCollectionViewCell
 			switch style {
-			case .plain, .plainWithMenu:
+			case .plain, .plainWithMenu, .jumboMoji:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plain", for: indexPath) as! PlainEmojiCollectionViewCell
 			case .full:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "full", for: indexPath) as! EmojiCollectionViewCell
@@ -179,7 +180,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 		) -> CGSize {
 			let totalWidth = collectionView.bounds.width
 			let availWidth = totalWidth-(collectionView.contentInset.left*2)
-			let cols = max(1, floor(availWidth/width))
+			let cols: CGFloat
+			if style == .jumboMoji {
+				cols = width
+			} else {
+				cols = max(1, floor(availWidth/width))
+			}
 			let totalSpacing = layout.minimumInteritemSpacing * (cols - 1)
 			let itemWidth = (availWidth-totalSpacing)/cols
 			let defaultSize = CGSize(width: itemWidth, height: itemWidth)
@@ -204,15 +210,14 @@ struct EmojiCollectionView: UIViewRepresentable {
 					EmojiCollectionView.Coordinator.labelSizeDict[itemWidth] = [emojiName: labelHeight]
 				}
 			}
-			
-			let font = UIFont.preferredFont(forTextStyle: .caption1)
-			let rect = (emojiName as NSString).boundingRect(
-				with: CGSize(width: itemWidth, height: .greatestFiniteMagnitude),
-				options: [.usesLineFragmentOrigin, .usesFontLeading],
-				attributes: [.font: font],
-				context: nil
-			)
 			return CGSize(width: itemWidth, height: itemWidth+labelHeight+4)
+//			let font = UIFont.preferredFont(forTextStyle: .caption1)
+//			let rect = (emojiName as NSString).boundingRect(
+//				with: CGSize(width: itemWidth, height: .greatestFiniteMagnitude),
+//				options: [.usesLineFragmentOrigin, .usesFontLeading],
+//				attributes: [.font: font],
+//				context: nil
+//			)
 		}
 		
 		override func collectionView(

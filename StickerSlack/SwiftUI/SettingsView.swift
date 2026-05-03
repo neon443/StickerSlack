@@ -115,6 +115,36 @@ struct SettingsView: View {
 					NavigationLink {
 						EmojiCollectionView(
 							hoarder: hoarder,
+							items: [
+								"btn-3kh0-1",
+								"btn-3kh0-2",
+								"btn-3kh0-3",
+								"btn-antinft-1",
+								"btn-antinft-2",
+								"btn-antinft-3",
+								"btn-bsky-1",
+								"btn-bsky-2",
+								"btn-bsky-3",
+								"btn-gideon-1",
+								"btn-gideon-2",
+								"btn-gideon-3",
+								"btn-macos-1",
+								"btn-macos-2",
+								"btn-macos-3",
+								"btn-microhate-1",
+								"btn-microhate-2",
+								"btn-microhate-3"
+							],
+							pack: nil,
+							width: 3,
+							style: .jumboMoji
+						)
+					} label: {
+						Label("jumbomoji", systemImage: "square.split.2x2")
+					}
+					NavigationLink {
+						EmojiCollectionView(
+							hoarder: hoarder,
 							items: hoarder.emojis.prefix(1000).map { $0.name },
 							pack: nil,
 							width: 50,
