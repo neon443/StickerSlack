@@ -38,41 +38,4 @@ class GifManager {
 		}
 		return result
 	}
-	
-	static func dataFrom(frames: [(frame: CGImage, showFor: Double)]) -> Data? {
-		var data = NSMutableData()
-		
-		let fileProperties = [
-			kCGImagePropertyGIFDictionary: [
-				kCGImagePropertyGIFLoopCount: 0
-			]
-		]
-		
-		guard let destination = CGImageDestinationCreateWithData(
-			data,
-			UTType.gif.identifier as CFString,
-			frames.count,
-			nil
-		) else { fatalError() }
-		
-		CGImageDestinationSetProperties(destination, fileProperties as NSDictionary)
-		
-		for frame in frames {
-			autoreleasepool {
-				let frameProperties = [
-					kCGImagePropertyGIFDictionary: [
-						kCGImagePropertyGIFDelayTime: frame.showFor
-					]
-				]
-				CGImageDestinationAddImage(
-					destination,
-					frame.frame,
-					frameProperties as CFDictionary
-				)
-			}
-		}
-		
-		guard CGImageDestinationFinalize(destination) else { fatalError() }
-		return data as Data
-	}
 }
