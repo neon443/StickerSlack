@@ -13,26 +13,18 @@ import WebKit
 struct GifView: View {
 	@State var sticker: StickerProtocol?
 	@State var url: URL
-	@State var gif: [(frame: CGImage, showFor: Double)] = []
+	@State var gif: [(frame: UIImage, showFor: Double)] = []
 	@State var currentI: Int = 0
 	@State var animate: Bool
 	
 	@State var timer: Timer?
+//	@State var timer: Task<Void, Never>?
 	
-	func run() async {
+	@MainActor func run() async {
 		guard url.pathExtension == "gif" else {
-			Task.detached {
-				if let data = try? await URLSession.shared.data(from: url).0,
-				   let uiImage = UIImage(data: data),
-				   let cgImage = uiImage.cgImage {
-					if animate {
-						withAnimation(.spring(duration: 0.2)) {
-							self.gif = [(cgImage, 1)]
-						}
-					} else {
-						self.gif = [(cgImage, 1)]
-					}
-				}
+			if let data = try? await URLSession.shared.data(from: url).0,
+			   let uiImage = UIImage(data: data) {
+				updateGif([(uiImage, 1)])
 			}
 			return
 		}
@@ -40,13 +32,7 @@ struct GifView: View {
 		do {
 			if gif.isEmpty {
 				let frames = try await GifManager.gifFrom(url: url)
-				if animate {
-					withAnimation(.spring(duration: 0.2)) {
-						self.gif = frames
-					}
-				} else {
-					self.gif = frames
-				}
+				updateGif(frames)
 			}
 		} catch {
 			print(error)
@@ -69,6 +55,17 @@ struct GifView: View {
 		RunLoop.main.add(timer!, forMode: .common)
 	}
 	
+	@MainActor
+	func updateGif(_ frames: [(UIImage, Double)]) {
+		if animate {
+			withAnimation(.spring(duration: 0.2)) {
+				self.gif = frames
+			}
+		} else {
+			self.gif = frames
+		}
+	}
+	
 	var body: some View {
 //		/*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
 		Group {
@@ -77,7 +74,7 @@ struct GifView: View {
 					.modifier(fadeIn(enabled: animate))
 			} else if url.pathExtension == "gif" {
 				if currentI < gif.count {
-					Image(uiImage: .init(cgImage: gif[currentI].frame))
+					Image(uiImage: gif[currentI].frame)
 						.resizable().scaledToFit()
 						.onDisappear {
 							timer?.invalidate()
@@ -86,7 +83,7 @@ struct GifView: View {
 				}
 			} else {
 				if let frame = gif.first {
-					Image(uiImage: .init(cgImage: frame.frame))
+					Image(uiImage: frame.frame)
 						.resizable().scaledToFit()
 				}
 			}

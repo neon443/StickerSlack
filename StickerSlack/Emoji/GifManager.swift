@@ -13,15 +13,15 @@ class GifManager {
 	//from clock-run, 12 frames one second
 	static let defaultDuration: Double = 0.083333333333333329
 	
-	static func gifFrom(url: URL) async throws -> [(frame: CGImage, showFor: Double)] {
+	static func gifFrom(url: URL) async throws -> [(frame: UIImage, showFor: Double)] {
 		let (data, _) = try await URLSession.shared.data(from: url)
 		return gifFrom(data: data)
 	}
 	
-	static func gifFrom(data: Data) -> [(frame: CGImage, showFor: Double)] {
+	static func gifFrom(data: Data) -> [(frame: UIImage, showFor: Double)] {
 		guard let source = CGImageSourceCreateWithData(data as NSData, nil) else { fatalError("couldnt create source") }
 		let frameCount = CGImageSourceGetCount(source)
-		var result: [(frame: CGImage, showFor: Double)] = []
+		var result: [(frame: UIImage, showFor: Double)] = []
 		
 		for i in 0..<frameCount {
 			guard let cgImage = CGImageSourceCreateImageAtIndex(source, i, nil) else {
@@ -31,9 +31,9 @@ class GifManager {
 			if let properties = CGImageSourceCopyPropertiesAtIndex(source, i, nil),
 			   let gifInfo = (properties as NSDictionary)[kCGImagePropertyGIFDictionary as String] as? NSDictionary,
 			   let frameDuration = (gifInfo[kCGImagePropertyGIFDelayTime as String] as? NSNumber) {
-				result.append((cgImage, frameDuration.doubleValue))
+				result.append((UIImage(cgImage: cgImage), frameDuration.doubleValue))
 			} else {
-				result.append((cgImage, defaultDuration))
+				result.append((UIImage(cgImage: cgImage), defaultDuration))
 			}
 		}
 		return result
