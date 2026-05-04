@@ -105,7 +105,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 			self.width = width
 			self.style = style
 			
-			layout.minimumInteritemSpacing = style == .jumboMoji ? 0 : 8
 			super.init(collectionViewLayout: layout)
 			
 			self.dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: String) -> UICollectionViewCell? in
@@ -113,7 +112,14 @@ struct EmojiCollectionView: UIViewRepresentable {
 			}
 			collectionView.dataSource = dataSource
 			
-			collectionView.contentInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+			if self.style == .jumboMoji {
+				self.layout.minimumInteritemSpacing = 0
+				self.layout.minimumLineSpacing = 0
+				collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+			} else {
+				self.layout.minimumInteritemSpacing = 8
+				collectionView.contentInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+			}
 		}
 		
 		required init?(coder: NSCoder) {

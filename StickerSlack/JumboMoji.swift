@@ -19,21 +19,6 @@ struct JumboMoji: CustomStringConvertible, Hashable {
 		self.baseName + " " + "\(width)x\(height)"
 	}
 	
-	init(baseName: String, items: [String]) {
-		fatalError()
-		let itemsBaseNameRemoved = items.map { String($0.dropFirst(baseName.count+1)) }
-		var coordinates: [(Int, Int)] = []
-		for item in itemsBaseNameRemoved {
-			let split = item.dropLast(item.split(separator: "-").last?.count ?? 0)
-			print(split)
-		}
-		self.width = 0
-		self.height = 0
-		self.baseName = baseName
-		self.type = .grid
-		self.items = items
-	}
-	
 	init?(components: [JumboMoji.Components]) {
 		guard components.allSatisfy({$0.baseName == components.first?.baseName}) else { return nil }
 		self.baseName = components.first!.baseName
@@ -45,7 +30,16 @@ struct JumboMoji: CustomStringConvertible, Hashable {
 		self.height = height
 		
 		self.type = .grid
-		self.items = components.map { "\($0.baseName)-\($0.coordinate)-\($0.id)-" }
+		
+		guard width*height == components.count else { return nil }
+		let sorted = components.sorted {
+			if $0.y != $1.y {
+				return $0.y < $1.y
+			} else {
+				return $0.x < $1.x
+			}
+		}
+		self.items = sorted.map { $0.name }
 	}
 	
 	enum Style {
@@ -123,6 +117,8 @@ struct JumboMoji: CustomStringConvertible, Hashable {
 	struct Components {
 		var baseName: String
 		var coordinate: String
+		var id: String
+		
 		var x: Int {
 			let split = coordinate.split(separator: "-").first ?? "0"
 			return Int(split) ?? 0
@@ -131,6 +127,9 @@ struct JumboMoji: CustomStringConvertible, Hashable {
 			let split = coordinate.split(separator: "-").last ?? "0"
 			return Int(split) ?? 0
 		}
-		var id: String
+		
+		var name: String {
+			return "\(self.baseName)-\(self.coordinate)-\(self.id)"
+		}
 	}
 }

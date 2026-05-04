@@ -13,7 +13,7 @@ struct JumboMojiTestView: View {
 	@State var searchResult: [String] = []
 	
     var body: some View {
-		ScrollView {
+		List {
 			TextField("search", text: $searchTerm)
 				.autocorrectionDisabled()
 				.onChange(of: searchTerm) { _ in
@@ -21,18 +21,19 @@ struct JumboMojiTestView: View {
 				}
 			ForEach(JumboMoji.from(names: searchResult), id: \.self) { jumboMoji in
 				VStack {
-					ForEach(0..<jumboMoji.height, id: \.self) { row in
-						ForEach(0..<jumboMoji.width, id: \.self) { col in
-							StickerPreview(sticker: hoarder.trie.dict[jumboMoji.items[row+col]] ?? .test)
-						}
-					}
-//					EmojiCollectionView(
-//						hoarder: hoarder,
-//						items: jumboMoji.items,
-//						pack: nil,
-//						width: CGFloat(jumboMoji.width),
-//						style: .jumboMoji
-//					)
+//					ForEach(0..<jumboMoji.height, id: \.self) { row in
+//						ForEach(0..<jumboMoji.width, id: \.self) { col in
+//							StickerPreview(sticker: hoarder.trie.dict[jumboMoji.items[row+col]] ?? .test)
+//						}
+//					}
+					EmojiCollectionView(
+						hoarder: hoarder,
+						items: jumboMoji.items,
+						pack: nil,
+						width: CGFloat(jumboMoji.width),
+						style: .jumboMoji
+					)
+					.frame(width: 100, height: 100)
 					Text(jumboMoji.description)
 				}
 			}
