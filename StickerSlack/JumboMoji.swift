@@ -46,7 +46,7 @@ struct JumboMoji: CustomStringConvertible, Hashable {
 		case btn
 	}
 	
-	static func from(names input: [String]) -> [JumboMoji] {
+	static nonisolated func from(names input: [String]) -> [JumboMoji] {
 		guard input.count > 0 else { return [] }
 		let input = input.sorted()
 		
@@ -71,7 +71,7 @@ struct JumboMoji: CustomStringConvertible, Hashable {
 		return result
 	}
 	
-	static func splitIntoComponents(string input: String) -> JumboMoji.Components? {
+	static nonisolated func splitIntoComponents(string input: String) -> JumboMoji.Components? {
 		var string = input
 		
 		var baseNameCount: Int = -1

@@ -11,21 +11,23 @@ struct JumboMojiTestView: View {
 	@State var hoarder: EmojiHoarder
 	@State var searchTerm: String = ""
 	@State var searchResult: [String] = []
+	@State var jumboMoji: [JumboMoji] = []
 	
     var body: some View {
 		List {
 			TextField("search", text: $searchTerm)
 				.autocorrectionDisabled()
-				.onChange(of: searchTerm) { _ in
-					searchResult = hoarder.trie.search(for: searchTerm, previousQuery: nil, previousResult: nil)
+				.onChange(of: searchTerm) { term in
+					Task.detached {
+						let res = await hoarder.trie.search(for: term, previousQuery: nil, previousResult: nil)
+						let moji = JumboMoji.from(names: res)
+						await MainActor.run {
+							self.jumboMoji = moji
+						}
+					}
 				}
-			ForEach(JumboMoji.from(names: searchResult), id: \.self) { jumboMoji in
-				VStack {
-//					ForEach(0..<jumboMoji.height, id: \.self) { row in
-//						ForEach(0..<jumboMoji.width, id: \.self) { col in
-//							StickerPreview(sticker: hoarder.trie.dict[jumboMoji.items[row+col]] ?? .test)
-//						}
-//					}
+			ForEach(jumboMoji, id: \.self) { jumboMoji in
+				HStack {
 					EmojiCollectionView(
 						hoarder: hoarder,
 						items: jumboMoji.items,
@@ -35,15 +37,12 @@ struct JumboMojiTestView: View {
 						animate: false
 					)
 					.frame(width: 100, height: 100)
-					Text(jumboMoji.description)
+					VStack(alignment: .leading) {
+						Text(jumboMoji.baseName)
+						Text("\(jumboMoji.width) x \(jumboMoji.height)")
+					}
 				}
 			}
-			Divider()
-//			ForEach(searchResult, id: \.self) { item in
-//				Text(item)
-//					.border(JumboMoji.splitIntoComponents(string: item) == nil ? .clear : .red)
-//					.foregroundStyle(.gray)
-//			}
 		}
     }
 }
