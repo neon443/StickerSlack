@@ -31,7 +31,8 @@ struct JumboMojiTestView: View {
 						items: jumboMoji.items,
 						pack: nil,
 						width: CGFloat(jumboMoji.width),
-						style: .jumboMoji
+						style: .jumboMoji,
+						animate: false
 					)
 					.frame(width: 100, height: 100)
 					Text(jumboMoji.description)

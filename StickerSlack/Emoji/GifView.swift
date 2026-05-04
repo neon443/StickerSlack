@@ -15,7 +15,7 @@ struct GifView: View {
 	@State var url: URL
 	@State var gif: [(frame: CGImage, showFor: Double)] = []
 	@State var currentI: Int = 0
-	@State var isVisible: Bool = false
+	@State var animate: Bool
 	
 	@State var timer: Timer?
 	
@@ -25,7 +25,11 @@ struct GifView: View {
 				if let data = try? await URLSession.shared.data(from: url).0,
 				   let uiImage = UIImage(data: data),
 				   let cgImage = uiImage.cgImage {
-					withAnimation(.spring(duration: 0.2)) {
+					if animate {
+						withAnimation(.spring(duration: 0.2)) {
+							self.gif = [(cgImage, 1)]
+						}
+					} else {
 						self.gif = [(cgImage, 1)]
 					}
 				}
@@ -36,7 +40,11 @@ struct GifView: View {
 		do {
 			if gif.isEmpty {
 				let frames = try await GifManager.gifFrom(url: url)
-				withAnimation(.spring(duration: 0.2)) {
+				if animate {
+					withAnimation(.spring(duration: 0.2)) {
+						self.gif = frames
+					}
+				} else {
 					self.gif = frames
 				}
 			}
@@ -66,7 +74,7 @@ struct GifView: View {
 		Group {
 			if gif.isEmpty {
 				ProgressView()
-					.modifier(fadeIn())
+					.modifier(fadeIn(enabled: animate))
 			} else if url.pathExtension == "gif" {
 				if currentI < gif.count {
 					Image(uiImage: .init(cgImage: gif[currentI].frame))
@@ -95,9 +103,10 @@ struct GifView: View {
 
 #Preview {
 	GifView(
-		url: URL(string: "https://emoji.slack-edge.com/T09V59WQY1E/clockrun/f6641714fa6748ac.gif")!
+		url: URL(string: "https://emoji.slack-edge.com/T09V59WQY1E/clockrun/f6641714fa6748ac.gif")!,
+		animate: true
 	)
-	GifView(url: Emoji.test.remoteImageURL)
-	GifView(url: Emoji.testLongName.localImageURL)
-	GifView(url: Gif.test.remoteImageURL)
+	GifView(url: Emoji.test.remoteImageURL, animate: true)
+	GifView(url: Emoji.testLongName.localImageURL, animate: true)
+	GifView(url: Gif.test.remoteImageURL, animate: true)
 }

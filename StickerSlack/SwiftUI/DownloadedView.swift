@@ -46,6 +46,7 @@ struct DownloadedView: View {
 			pack: nil,
 			width: 75,
 			style: .plainWithMenu,
+			animate: false,
 			edit: false
 		)
 //		GeometryReader { geo in

@@ -144,17 +144,26 @@ extension View {
 }
 
 struct fadeIn: ViewModifier {
+	@State private var enabled: Bool
 	@State private var isVisible: Bool = false
 	
+	init(enabled: Bool = true) {
+		self.enabled = enabled
+	}
+	
 	func body(content: Content) -> some View {
-		content
-			.opacity(isVisible ? 1 : 0)
-			.scaleEffect(isVisible ? 1 : 0)
-			.onAppear {
-				withAnimation { isVisible = true }
-			}
-			.onDisappear {
-				withAnimation { isVisible = false }
-			}
+		if enabled {
+			content
+				.opacity(isVisible ? 1 : 0)
+				.scaleEffect(isVisible ? 1 : 0)
+				.onAppear {
+					withAnimation { isVisible = true }
+				}
+				.onDisappear {
+					withAnimation { isVisible = false }
+				}
+		} else {
+			content
+		}
 	}
 }

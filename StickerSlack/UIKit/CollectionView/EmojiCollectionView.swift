@@ -16,6 +16,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 	let pack: EmojiPack?
 	let width: CGFloat
 	let style: EmojiCollectionView.Style
+	var animate: Bool = true
 	var edit: Bool?
 	var onRemoveSUI: ((String) -> Void)?
 	
@@ -32,6 +33,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 		context.coordinator.hoarder = hoarder
 		context.coordinator.onRemove = onRemoveSUI
 		
+		context.coordinator.animate = animate
 		context.coordinator.edit = edit
 		if edit ?? false {
 			context.coordinator.startAnimating()
@@ -77,6 +79,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 		var pack: EmojiPack?
 		var width: CGFloat
 		var style: EmojiCollectionView.Style
+		var animate: Bool = true
 		var edit: Bool? = false
 		var onRemove: ((String) -> Void)?
 		
@@ -153,6 +156,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			let emojiName = items[indexPath.item]
 			guard let emoji = hoarder.trie.dict[emojiName] else { return cell }
 			
+			cell.animate = animate
 			cell.configure(with: hoarder, emoji: emoji)
 			return cell
 		}

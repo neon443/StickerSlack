@@ -24,10 +24,9 @@ struct JumboMoji: CustomStringConvertible, Hashable {
 		self.baseName = components.first!.baseName
 		
 		let coords = components.map { CGPoint(x: $0.x, y: $0.y) }
-		guard let width = Int(coords.sorted { $0.x > $1.x }.first?.x.formatted() ?? "") else { return nil }
-		self.width = width
-		guard let height = Int(coords.sorted { $0.y > $1.y }.first?.y.formatted() ?? "") else { return nil }
-		self.height = height
+		self.width = Int(coords.map { $0.x }.max() ?? -1)
+		self.height = Int(coords.map { $0.y }.max() ?? -1)
+		guard width != -1 && height != -1 else { return nil }
 		
 		self.type = .grid
 		
