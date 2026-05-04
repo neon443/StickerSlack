@@ -113,6 +113,11 @@ struct SettingsView: View {
 				
 				Section("Debug") {
 					NavigationLink {
+						JumboMojiTestView(hoarder: hoarder)
+					} label: {
+						Label("jumbomoji search", systemImage: "text.page.badge.magnifyingglass")
+					}
+					NavigationLink {
 						EmojiCollectionView(
 							hoarder: hoarder,
 							items: [
