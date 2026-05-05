@@ -150,10 +150,10 @@ struct SettingsView: View {
 					NavigationLink {
 						EmojiCollectionView(
 							hoarder: hoarder,
-							items: hoarder.emojis.prefix(1000).map { $0.name },
+							items: hoarder.emojis.prefix(10000).map { $0.name },
 							pack: nil,
-							width: 50,
-							style: .plainWithMenu
+							width: 10,
+							style: .jumboMoji
 						)
 					} label: {
 						Label("grid view", systemImage: "square.grid.2x2.fill")

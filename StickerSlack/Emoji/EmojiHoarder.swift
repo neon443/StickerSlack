@@ -64,9 +64,23 @@ class EmojiHoarder: BaseHoarder {
 		}
 	}
 	
-	@MainActor
 	func downloadAllStickers() async {
 		let start: Date = .now
+		
+//		let dict = trie.dict
+//		let allStickers = Set(emojis.map { $0.name })
+//		let downloadedStickers = downloadedStickers
+//		let toDownload = allStickers.filter { !downloadedStickers.contains($0) }
+//		
+//		await withTaskGroup { group in
+//			for name in toDownload {
+//				group.addTask {
+//					await self.download(emoji: dict[name], skipStoreIndex: true)
+//				}
+//			}
+//		}
+//		await buildDownloadedStickers()
+		
 		let cores = ProcessInfo.processInfo.processorCount-1
 		var ranges: [Range<Int>] = []
 		for i in 0..<cores {
@@ -83,9 +97,7 @@ class EmojiHoarder: BaseHoarder {
 			for range in ranges {
 				group.addTask {
 					for i in range {
-						guard await !self.downloadedStickers.contains(await self.emojis[i].name) else { continue }
 						await self.download(emoji: self.emojis[i], skipStoreIndex: true)
-						let _ = await MainActor.run { self.downloadedStickers.insert(self.emojis[i].name) }
 					}
 				}
 			}
@@ -209,7 +221,7 @@ class EmojiHoarder: BaseHoarder {
 	
 	override nonisolated func download(emoji: (any StickerProtocol)?, skipStoreIndex: Bool = false) async {
 		guard let emoji else { return }
-		guard !downloadedStickers.contains(emoji.name) else { return }
+		guard await !downloadedStickers.contains(emoji.name) else { return }
 		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		
 		await MainActor.run {
