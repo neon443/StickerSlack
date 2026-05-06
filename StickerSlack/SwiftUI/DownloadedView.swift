@@ -35,6 +35,7 @@ struct DownloadedView: View {
 			}
 		}
 		.pickerStyle(.segmented)
+		.padding(.horizontal)
 		if emojiHoarder.downloadedStickers.isEmpty && gifHoarder.downloadedStickers.isEmpty {
 			NoStickersView()
 				.padding()
@@ -43,10 +44,8 @@ struct DownloadedView: View {
 		EmojiCollectionView(
 			hoarder: emojiHoarder,
 			items: emojiHoarder.downloadedStickersArr,
-			pack: nil,
 			width: 75,
 			style: .plainWithMenu,
-			animate: false,
 			edit: false
 		)
 //		GeometryReader { geo in

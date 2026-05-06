@@ -34,23 +34,24 @@ struct SearchView: View {
 	var body: some View {
 		VStack {
 			if fromPackEditor {
-				GeometryReader { geo in
-					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
-					let layout = Array(repeating: col, count: columns)
-					ScrollView {
-						LazyVGrid(columns: layout, spacing: spacing) {
-							ForEach(searchResult, id: \.self) { name in
-								let emoji = hoarder.trie.dict[name] ?? .test
-								StickerPreview(sticker: emoji)
-									.onTapGesture {
-										callback(emoji)
-										dismiss()
-									}
-							}
-						}
-						.padding()
-					}
-				}
+//				GeometryReader { geo in
+//					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
+//					let layout = Array(repeating: col, count: columns)
+//					ScrollView {
+//						LazyVGrid(columns: layout, spacing: spacing) {
+//							ForEach(searchResult, id: \.self) { name in
+//								let emoji = hoarder.trie.dict[name] ?? .test
+//								StickerPreview(sticker: emoji)
+//									.onTapGesture {
+//										callback(emoji)
+//										dismiss()
+//									}
+//							}
+//						}
+//						.padding()
+//					}
+//				}
+				EmojiCollectionView(hoarder: hoarder, items: searchResult, width: 75, style: .plain)
 			} else {
 				Picker("", selection: $stickerType) {
 					ForEach(StickerType.allCases) { type in

@@ -13,10 +13,8 @@ import Haptics
 struct EmojiCollectionView: UIViewRepresentable {
 	let hoarder: EmojiHoarder
 	let items: [String]
-	let pack: EmojiPack?
 	let width: CGFloat
 	let style: EmojiCollectionView.Style
-	var animate: Bool = true
 	var edit: Bool?
 	var onRemoveSUI: ((String) -> Void)?
 	
@@ -33,7 +31,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 		context.coordinator.hoarder = hoarder
 		context.coordinator.onRemove = onRemoveSUI
 		
-		context.coordinator.animate = animate
 		context.coordinator.edit = edit
 		if edit ?? false {
 			context.coordinator.startAnimating()
@@ -51,16 +48,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 			context.coordinator.items = items
 			uiView.reloadData()
 		}
-		if pack != context.coordinator.pack {
-			context.coordinator.pack = pack
-		}
 	}
 	
 	func makeCoordinator() -> Coordinator {
 		Coordinator(
 			hoarder: hoarder,
 			items: items,
-			pack: pack,
 			width: width,
 			style: style
 		)
@@ -76,10 +69,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 	final class Coordinator: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 		var hoarder: EmojiHoarder
 		var items: [String]
-		var pack: EmojiPack?
 		var width: CGFloat
 		var style: EmojiCollectionView.Style
-		var animate: Bool = true
 		var edit: Bool? = false
 		var onRemove: ((String) -> Void)?
 		
@@ -95,16 +86,11 @@ struct EmojiCollectionView: UIViewRepresentable {
 		init(
 			hoarder: EmojiHoarder,
 			items: [String],
-			pack: EmojiPack?,
 			width: CGFloat,
 			style: EmojiCollectionView.Style,
 		) {
 			self.hoarder = hoarder
 			self.items = items
-			if let pack {
-				self.pack = pack
-				self.items = pack.items
-			}
 			self.width = width
 			self.style = style
 			
@@ -156,7 +142,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 			let emojiName = items[indexPath.item]
 			guard let emoji = hoarder.trie.dict[emojiName] else { return cell }
 			
-			cell.animate = animate
 			cell.configure(with: hoarder, emoji: emoji)
 			return cell
 		}
@@ -166,6 +151,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			displayLink.add(to: .main, forMode: .common)
 		}
 		func stopAnimating() {
+			displayLink?.remove(from: .main, forMode: .common)
 			displayLink?.invalidate()
 			UIView.animate(withDuration: 0.2) {
 				for cell in self.collectionView.visibleCells {
@@ -236,49 +222,64 @@ struct EmojiCollectionView: UIViewRepresentable {
 			point: CGPoint
 		) -> UIContextMenuConfiguration? {
 			guard self.style == .plainWithMenu else { return nil }
+			
+			let emojiName = self.items[indexPath.row]
+			let packMenuItem: (EmojiHoarder, Int) -> UIAction = { hoarder, packIndex in
+				let pack = hoarder.emojiPacks[packIndex]
+				return UIAction(
+					title: pack.name,
+					subtitle: "\(pack.items.count) item\(pack.items.count.plural)",
+					image: pack.items.contains(emojiName) ? UIImage(systemName: "checkmark") : nil
+				) { action in
+					hoarder.emojiPacks[packIndex].addRemove(emojiName)
+					hoarder.saveEmojiPacks()
+				}
+			}
+			var packMenuItems: [UIMenuElement] = []
+			for i in self.hoarder.emojiPacks.indices {
+				packMenuItems.append(packMenuItem(self.hoarder, i))
+			}
+			let createNewPackMenu = UIMenu(
+				options: .displayInline,
+				children: [
+					UIAction(title: "Create New", image: UIImage(systemName: "plus")) { action in
+						self.hoarder.newEmojiPack(withItems: [emojiName])
+					}
+				]
+			)
+			packMenuItems.append(createNewPackMenu)
+			let addToPackMenu = UIMenu(title: "Add to Pack", image: UIImage(systemName: "square.stack.3d.up.fill"), children: packMenuItems)
+			
+			let copyName = UIAction(title: "Copy Name", image: UIImage(systemName: "doc.on.clipboard")) { action in
+				UIPasteboard.general.string = emojiName
+				Haptic.success.trigger()
+			}
+			let copyImage = UIAction(title: "Copy Image", image: UIImage(systemName: "photo.fill.on.rectangle.fill")) { action in
+				UIPasteboard.general.image = self.hoarder.trie.dict[emojiName]?.image
+				Haptic.success.trigger()
+			}
+			let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { action in
+				
+			}
+			let sharingMenu = UIMenu(options: .displayInline, children: [copyName, copyImage, share])
+			
+			let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash")) { action in
+				Task.detached {
+					await self.hoarder.delete(emoji: self.hoarder.trie.dict[emojiName])
+				}
+				self.items.remove(at: indexPath.row)
+				collectionView.performBatchUpdates {
+					collectionView.deleteItems(at: [indexPath])
+				}
+			}
+			delete.attributes.update(with: .destructive)
+			let destructiveMenu = UIMenu(options: .displayInline, children: [delete])
+			
+			let menu = UIMenu(title: emojiName, children: [addToPackMenu, sharingMenu, destructiveMenu])
 			return UIContextMenuConfiguration(
 				identifier: nil,
 				previewProvider: nil) { suggestedActions in
-					let emojiName = self.items[indexPath.row]
-					
-					let packMenuItem: (EmojiHoarder, Int) -> UIAction = { hoarder, packIndex in
-						return UIAction(title: hoarder.emojiPacks[packIndex].name, image: hoarder.emojiPacks[packIndex].items.contains(emojiName) ? UIImage(systemName: "checkmark") : nil) { action in
-							hoarder.emojiPacks[packIndex].addRemove(emojiName)
-							hoarder.saveEmojiPacks()
-						}
-					}
-					var packMenuItems: [UIAction] = []
-					for i in self.hoarder.emojiPacks.indices {
-						packMenuItems.append(packMenuItem(self.hoarder, i))
-					}
-					packMenuItems.append(UIAction(title: "Create New Pack", image: UIImage(systemName: "plus")) { action in
-						self.hoarder.newEmojiPack(withItems: [emojiName])
-					})
-					let addToPackMenu = UIMenu(title: "Add to Pack", image: UIImage(systemName: "square.stack.3d.up.fill"), children: packMenuItems)
-					
-					let copyName = UIAction(title: "Copy Name", image: UIImage(systemName: "doc.on.clipboard")) { action in
-						UIPasteboard.general.string = emojiName
-						Haptic.success.trigger()
-					}
-					let copyImage = UIAction(title: "Copy Image", image: UIImage(systemName: "photo.fill.on.rectangle.fill")) { action in
-						UIPasteboard.general.image = self.hoarder.trie.dict[emojiName]?.image
-						Haptic.success.trigger()
-					}
-					let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { action in
-						
-					}
-					
-					let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash")) { action in
-						Task.detached {
-							await self.hoarder.delete(emoji: self.hoarder.trie.dict[emojiName])
-						}
-						self.items.remove(at: indexPath.row)
-						collectionView.performBatchUpdates {
-							collectionView.deleteItems(at: [indexPath])
-						}
-					}
-					delete.attributes.update(with: .destructive)
-					return UIMenu(title: emojiName, children: [addToPackMenu, copyName, copyImage, share, delete])
+					return menu
 				}
 		}
 	}

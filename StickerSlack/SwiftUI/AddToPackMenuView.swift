@@ -13,10 +13,6 @@ struct AddToPackMenuView: View {
 	
 	var body: some View {
 		Menu {
-			Button("Create new", systemImage: "plus") {
-				emojiHoarder.newEmojiPack(withItems: [sticker.name])
-			}
-			Divider()
 			if emojiHoarder.emojiPacks.isEmpty {
 				Label("No Packs", systemImage: "questionmark.app.dashed")
 			} else {
@@ -34,6 +30,10 @@ struct AddToPackMenuView: View {
 					Text("\(pack.items.count) item"+pack.items.count.plural)
 				}
 			}
+			Divider()
+			Button("Create New", systemImage: "plus") {
+				emojiHoarder.newEmojiPack(withItems: [sticker.name])
+			}
 		} label: {
 			Image(systemName: "plus")
 				.resizable().scaledToFit()
@@ -42,5 +42,8 @@ struct AddToPackMenuView: View {
 }
 
 #Preview {
-	AddToPackMenuView(emojiHoarder: EmojiHoarder(localOnly: true, skipIndex: true), sticker: .test)
+	AddToPackMenuView(
+		emojiHoarder: EmojiHoarder(localOnly: true, skipIndex: true),
+		sticker: .test
+	)
 }

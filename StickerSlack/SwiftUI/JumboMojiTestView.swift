@@ -31,10 +31,8 @@ struct JumboMojiTestView: View {
 					EmojiCollectionView(
 						hoarder: hoarder,
 						items: jumboMoji.items,
-						pack: nil,
 						width: CGFloat(jumboMoji.width),
-						style: .jumboMoji,
-						animate: false
+						style: .jumboMoji
 					)
 					.frame(width: 100, height: 100)
 					VStack(alignment: .leading) {

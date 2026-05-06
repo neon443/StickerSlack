@@ -11,7 +11,6 @@ import SwiftUI
 
 class PlainEmojiCollectionViewCell: UICollectionViewCell {
 	var hostingController: UIHostingController<StickerPreview>?
-	var animate: Bool = true
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -26,7 +25,7 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 	
 	func configure(with: EmojiHoarder, emoji: Emoji) {
 		hostingController?.view.removeFromSuperview()
-		let swiftUIView = StickerPreview(sticker: emoji, animate: animate)
+		let swiftUIView = StickerPreview(sticker: emoji)
 		
 		let hostingController = UIHostingController(rootView: swiftUIView)
 		self.hostingController = hostingController

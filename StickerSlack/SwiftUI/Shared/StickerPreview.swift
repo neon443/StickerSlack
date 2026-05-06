@@ -11,24 +11,23 @@ import Haptics
 struct StickerPreview: View {
 	@State var sticker: any StickerProtocol
 	@State var gifImage: Image?
-	@State var animate: Bool = true
 	
 	var body: some View {
 		if sticker.isLocal {
 			//local
-			GifView(url: sticker.localImageURL, animate: animate)
+			GifView(url: sticker.localImageURL)
 		} else {
 			//remote
 			if sticker.type == .slackEmoji {
-				GifView(url: sticker.remoteImageURL, animate: animate)
+				GifView(url: sticker.remoteImageURL)
 			} else {
 				let gif = sticker as! Gif
 				if let giphyImages = gif.giphyImages,
 				   let preview_gif = giphyImages.preview_gif,
 				   let url = URL(string: preview_gif.url) {
-					GifView(url: url, animate: animate)
+					GifView(url: url)
 				} else {
-					GifView(url: gif.remoteImageURL, animate: animate)
+					GifView(url: gif.remoteImageURL)
 						.overlay {
 							Image(systemName:
 									"square.arrowtriangle.4.outward")

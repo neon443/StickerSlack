@@ -72,7 +72,7 @@ extension StickerProtocol {
 		
 		var (data, _) = try await URLSession.shared.data(from: remoteImageURL)
 		
-		let targetSize = CGSize(width: 600, height: 600)
+		let targetSize = CGSize(width: 100, height: 100)
 		if let uiImage = UIImage(data: data),
 		   await localImageURLString.suffix(4) != ".gif" {
 			data = await resize(image: uiImage, to: targetSize).pngData()!

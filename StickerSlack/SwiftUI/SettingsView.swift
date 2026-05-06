@@ -140,7 +140,6 @@ struct SettingsView: View {
 								"btn-microhate-2",
 								"btn-microhate-3"
 							],
-							pack: nil,
 							width: 3,
 							style: .jumboMoji
 						)
@@ -151,7 +150,6 @@ struct SettingsView: View {
 						EmojiCollectionView(
 							hoarder: hoarder,
 							items: hoarder.emojis.prefix(10000).map { $0.name },
-							pack: nil,
 							width: 10,
 							style: .jumboMoji
 						)

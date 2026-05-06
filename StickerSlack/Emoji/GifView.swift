@@ -15,7 +15,7 @@ struct GifView: View {
 	@State var url: URL
 	@State var gif: [(frame: UIImage, showFor: Double)] = []
 	@State var currentI: Int = 0
-	@State var animate: Bool
+//	@State var animate: Bool
 	
 	@State var timer: Timer?
 //	@State var timer: Task<Void, Never>?
@@ -57,11 +57,7 @@ struct GifView: View {
 	
 	@MainActor
 	func updateGif(_ frames: [(UIImage, Double)]) {
-		if animate {
-			withAnimation(.spring(duration: 0.2)) {
-				self.gif = frames
-			}
-		} else {
+		withAnimation(.spring(duration: 0.2)) {
 			self.gif = frames
 		}
 	}
@@ -71,7 +67,7 @@ struct GifView: View {
 		Group {
 			if gif.isEmpty {
 				ProgressView()
-					.modifier(fadeIn(enabled: animate))
+					.modifier(fadeIn())
 			} else if url.pathExtension == "gif" {
 				if currentI < gif.count {
 					Image(uiImage: gif[currentI].frame)
@@ -101,9 +97,8 @@ struct GifView: View {
 #Preview {
 	GifView(
 		url: URL(string: "https://emoji.slack-edge.com/T09V59WQY1E/clockrun/f6641714fa6748ac.gif")!,
-		animate: true
 	)
-	GifView(url: Emoji.test.remoteImageURL, animate: true)
-	GifView(url: Emoji.testLongName.localImageURL, animate: true)
-	GifView(url: Gif.test.remoteImageURL, animate: true)
+	GifView(url: Emoji.test.remoteImageURL)
+	GifView(url: Emoji.testLongName.localImageURL)
+	GifView(url: Gif.test.remoteImageURL)
 }

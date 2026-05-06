@@ -17,6 +17,7 @@ struct EmojiPackDetailView: View {
 		
 	@State var downloading: Bool = false
 	
+	@State var showAdder: Bool = false
 	@State var showShare: Bool = false
 	
 	@State var useSwiftUIGrid: Bool = false
@@ -69,7 +70,6 @@ struct EmojiPackDetailView: View {
 					EmojiCollectionView(
 						hoarder: hoarder,
 						items: pack.items,
-						pack: pack,
 						width: 75,
 						style: .full,
 						edit: edit,
@@ -100,6 +100,33 @@ struct EmojiPackDetailView: View {
 					.modifier(glassButtonIfAv(edit))
 					.tint(edit ? Color.accentColor : .primary)
 				}
+				ToolbarItem(placement: .topBarLeading) {
+					if edit {
+						Button("", systemImage: "plus") {
+							showAdder.toggle()
+						}
+						.sheet(isPresented: $showAdder) {
+							NavigationView2 {
+								SearchView(
+									hoarder: hoarder,
+									fromPackEditor: true,
+									callback: { emoji in
+										pack.add(emoji.name)
+									}
+								)
+								.navigationTitle("Search Emojis")
+								.navigationBarTitleDisplayMode(.inline)
+								.toolbar {
+									Button("", systemImage: "xmark") {
+										showAdder.toggle()
+									}
+								}
+								.modifier(presentationHalfAndFullIfAv())
+							}
+						}
+					}
+				}
+				
 				ToolbarItem(placement: .topBarTrailing) {
 					if downloading {
 						ProgressView()
