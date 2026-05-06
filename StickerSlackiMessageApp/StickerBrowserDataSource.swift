@@ -16,7 +16,7 @@ class StickerBrowserDataSource: NSObject, MSStickerBrowserViewDataSource {
 	
 	override init() {
 		super.init()
-		msStickers = []
+		var emojis: [Emoji] = []
 		guard let files = try? FileManager.default.contentsOfDirectory(atPath: EmojiHoarder.container.safePath) else { return }
 		
 		for file in files {
@@ -24,9 +24,8 @@ class StickerBrowserDataSource: NSObject, MSStickerBrowserViewDataSource {
 					file.contains(".jpg") ||
 					file.contains(".gif") else { continue }
 			let name = String(file.split(separator: ".")[0])
-			if let emoji = hoarder.trie.dict[name],
-			   let msSticker = emoji.msSticker {
-				msStickers.append(msSticker)
+			if let emoji = hoarder.trie.dict[name] {
+				emojis.append(emoji)
 			} else {
 				print(
 					"name, emoji has value, mssticker has value:",
@@ -36,6 +35,12 @@ class StickerBrowserDataSource: NSObject, MSStickerBrowserViewDataSource {
 				)
 			}
 		}
+		emojis.sort(by: { $0.name > $1.name })
+		for emoji in emojis {
+			guard let msSticker = emoji.msSticker else { continue }
+			msStickers.append(msSticker)
+		}
+		
 		print(msStickers.count, "init")
 	}
 	

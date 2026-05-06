@@ -23,9 +23,22 @@ class MessagesViewController: MSMessagesAppViewController {
 	override func willBecomeActive(with conversation: MSConversation) {
 		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
 		stickerBrowser.dataSource = dataSource
+		let stackView = UIStackView()
+		for pack in dataSource.hoarder.emojiPacks {
+			let label = UILabel()
+			label.text = pack.name
+			stackView.addArrangedSubview(label)
+			label.translatesAutoresizingMaskIntoConstraints = false
+			NSLayoutConstraint.activate([
+				label.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+				label.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+				label.heightAnchor.constraint(equalToConstant: 30)
+			])
+		}
 
 		stickerBrowser.translatesAutoresizingMaskIntoConstraints = false
 		view.addSubview(stickerBrowser)
+		view.addSubview(stackView)
 		NSLayoutConstraint.activate([
 			stickerBrowser.topAnchor.constraint(equalTo: view.topAnchor),
 			stickerBrowser.bottomAnchor.constraint(equalTo: view.bottomAnchor),
