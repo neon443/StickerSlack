@@ -115,6 +115,18 @@ struct EmojiCollectionView: UIViewRepresentable {
 			fatalError("init(coder:) has not been implemented")
 		}
 		
+		func makeSnapshot() -> NSDiffableDataSourceSnapshot<Int, String> {
+			var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+			snapshot.appendSections([0])
+			snapshot.appendItems(items, toSection: 0)
+			return snapshot
+		}
+		
+		func applySnapshot(animated: Bool) async {
+			let snapshot = makeSnapshot()
+			await (self.collectionView.dataSource as! UICollectionViewDiffableDataSource).apply(snapshot, animatingDifferences: animated)
+		}
+		
 		override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 			return items.count
 		}
