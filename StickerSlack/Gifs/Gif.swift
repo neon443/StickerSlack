@@ -52,5 +52,18 @@ struct Gif: StickerProtocol {
 		
 		try! data.write(to: localImageURL)
 		return
-	}	
+	}
+	
+	nonisolated func getPreviewData() async -> Data? {
+		if let giphyImages = self.giphyImages,
+		   let preview_gif = giphyImages.preview_gif,
+		   let url = URL(string: preview_gif.url) {
+			return try? await URLSession.shared.data(from: url).0
+		} else { return nil }
+	}
+	
+	nonisolated func getPreviewImage() async -> UIImage? {
+		guard let data = await self.getPreviewData() else { return nil }
+		return UIImage(data: data)
+	}
 }

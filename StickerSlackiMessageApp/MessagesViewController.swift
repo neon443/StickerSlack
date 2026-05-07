@@ -23,27 +23,30 @@ class MessagesViewController: MSMessagesAppViewController {
 	override func willBecomeActive(with conversation: MSConversation) {
 		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
 		stickerBrowser.dataSource = dataSource
+		
 		let stackView = UIStackView()
+		stackView.translatesAutoresizingMaskIntoConstraints = false
+		stackView.axis = .vertical
 		for pack in dataSource.hoarder.emojiPacks {
 			let label = UILabel()
 			label.text = pack.name
 			stackView.addArrangedSubview(label)
 			label.translatesAutoresizingMaskIntoConstraints = false
 			NSLayoutConstraint.activate([
-				label.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-				label.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+//				label.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+//				label.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
 				label.heightAnchor.constraint(equalToConstant: 30)
 			])
 		}
 
 		stickerBrowser.translatesAutoresizingMaskIntoConstraints = false
-		view.addSubview(stickerBrowser)
+//		view.addSubview(stickerBrowser)
 		view.addSubview(stackView)
 		NSLayoutConstraint.activate([
-			stickerBrowser.topAnchor.constraint(equalTo: view.topAnchor),
-			stickerBrowser.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-			stickerBrowser.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			stickerBrowser.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+			stackView.topAnchor.constraint(equalTo: view.topAnchor),
+			stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+			stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
 		])
 		
 		guard stickerBrowser.dataSource?.numberOfStickers(in: stickerBrowser) != 0 else {

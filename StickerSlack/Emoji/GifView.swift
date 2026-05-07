@@ -11,7 +11,7 @@ import SwiftUI
 import WebKit
 
 struct GifView: View {
-	@State var sticker: StickerProtocol?
+	@State var sticker: (any StickerProtocol)?
 	@State var url: URL
 	@State var gif: [(frame: UIImage, showFor: Double)] = []
 	@State var currentI: Int = 0
@@ -20,19 +20,19 @@ struct GifView: View {
 	@State var timer: Timer?
 //	@State var timer: Task<Void, Never>?
 	
-	@MainActor func run() async {
-		guard url.pathExtension == "gif" else {
+	nonisolated func run() async {
+		guard await url.pathExtension == "gif" else {
 			if let data = try? await URLSession.shared.data(from: url).0,
 			   let uiImage = UIImage(data: data) {
-				updateGif([(uiImage, 1)])
+				await updateGif([(uiImage, 1)])
 			}
 			return
 		}
 		
 		do {
-			if gif.isEmpty {
+			if await gif.isEmpty {
 				let frames = try await GifManager.gifFrom(url: url)
-				updateGif(frames)
+				await updateGif(frames)
 			}
 		} catch {
 			print(error)
@@ -45,14 +45,14 @@ struct GifView: View {
 			timer = nil
 		}
 		
-		timer = Timer(timeInterval: gif[0].showFor, repeats: true) { timer in
+		await timer = Timer(timeInterval: gif[0].showFor, repeats: true) { timer in
 			if currentI == (gif.count-1) {
 				currentI = 0
 			} else {
 				currentI += 1
 			}
 		}
-		RunLoop.main.add(timer!, forMode: .common)
+		RunLoop.main.add(await timer!, forMode: .common)
 	}
 	
 	@MainActor

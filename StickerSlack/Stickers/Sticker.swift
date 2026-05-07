@@ -38,8 +38,24 @@ extension StickerProtocol {
 		return try? MSSticker(contentsOfFileURL: localImageURL, localizedDescription: name)
 	}
 	
-	var isLocal: Bool {
+	nonisolated var isLocal: Bool {
 		return FileManager.default.fileExists(atPath: localImageURLString)
+	}
+	
+	nonisolated func data() async -> Data? {
+		var result: (data: Data, response: URLResponse)
+		do {
+			result = try await URLSession.shared.data(from: isLocal ? localImageURL : remoteImageURL)
+		} catch {
+			print(error.localizedDescription)
+			return nil
+		}
+		return result.data
+	}
+	
+	nonisolated func image() async -> UIImage? {
+		guard let data = await data() else { return nil }
+		return UIImage(data: data)
 	}
 	
 	var image: UIImage? {
@@ -52,7 +68,7 @@ extension StickerProtocol {
 		}
 	}
 	
-	var type: StickerType {
+	nonisolated var type: StickerType {
 		let typeOfSelf = Swift.type(of: self)
 		if typeOfSelf == Emoji.self {
 			return .slackEmoji
