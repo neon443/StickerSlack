@@ -24,6 +24,7 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 			view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 			view.heightAnchor.constraint(equalTo: view.widthAnchor),
 		])
+		addGestureRecognizer(UITapGestureRecognizer())
 	}
 	
 	required init?(coder: NSCoder) {
@@ -53,6 +54,11 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 //			hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 //			hostingController.view.heightAnchor.constraint(equalTo: hostingController.view.widthAnchor),
 //		])
+	}
+	
+	func handleTap(sender: UITapGestureRecognizer) {
+		guard sender.state == .ended else { return }
+		print("tap")
 	}
 	
 	override func prepareForReuse() {
