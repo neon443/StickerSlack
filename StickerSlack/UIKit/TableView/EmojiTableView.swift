@@ -23,18 +23,15 @@ struct EmojiTableView: UIViewRepresentable {
 	func updateUIView(_ uiView: UITableView, context: Context) {
 		context.coordinator.hoarder = hoarder
 		
-		weak let dataSourceRef: UITableViewDiffableDataSource<Int, String>! = uiView.dataSource as? UITableViewDiffableDataSource<Int, String>
-		var snapshotBefore = dataSourceRef.snapshot()
 		let itemsBefore = context.coordinator.items
 		let itemsAfter = items
 		context.coordinator.items = items
 		Task.detached {
-			guard !itemsAfter.isEmpty else {
-				snapshotBefore.deleteAllItems()
-				dataSourceRef.apply(snapshotBefore, animatingDifferences: true)
+			guard !itemsAfter.isEmpty || itemsBefore.count-itemsAfter.count > 10_000 else {
+				await context.coordinator.instantApplySnapshot()
 				return
 			}
-			dataSourceRef.apply(context.coordinator.makeSnapshot(), animatingDifferences: true)
+			await context.coordinator.applySnapshot(animated: true)
 		}
 	}
 	
@@ -69,15 +66,11 @@ struct EmojiTableView: UIViewRepresentable {
 		}
 		func applySnapshot(animated: Bool) async {
 			let snapshot = makeSnapshot()
-			(self.tableView.dataSource as! UITableViewDiffableDataSource).apply(snapshot, animatingDifferences: animated) {
-				
-			}
+			await (self.tableView.dataSource as! UITableViewDiffableDataSource).apply(snapshot, animatingDifferences: animated)
 		}
 		func instantApplySnapshot() async {
 			let snapshot = makeSnapshot()
-			(self.tableView.dataSource as! UITableViewDiffableDataSource).applySnapshotUsingReloadData(snapshot) {
-				
-			}
+			await (self.tableView.dataSource as! UITableViewDiffableDataSource).applySnapshotUsingReloadData(snapshot)
 		}
 		
 		func cell(
