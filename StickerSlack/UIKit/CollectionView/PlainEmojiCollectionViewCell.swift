@@ -81,7 +81,8 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 		}
 		let totalSpacing = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.minimumInteritemSpacing ?? 0 * (cols-1)
 		let itemWidth = (availWidth-totalSpacing)/cols
-		layoutAttributes.size = CGSize(width: itemWidth, height: layoutAttributes.size.height)
+		layoutAttributes.size = CGSize(width: itemWidth, height: itemWidth)
+		print(layoutAttributes.size)
 		return layoutAttributes
 	}
 	

@@ -104,10 +104,11 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	}
 	
 	override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-		super.preferredLayoutAttributesFitting(layoutAttributes)
+		let layoutAttributes = super.preferredLayoutAttributesFitting(layoutAttributes)
 		guard label.text != nil else { return layoutAttributes }
-		let labelHeight = label.sizeThatFits(CGSize(width: self.contentView.frame.width, height: .infinity)).height
-		layoutAttributes.size = CGSize(width: self.contentView.frame.width, height: labelHeight+4+view.frame.height)
+		let labelHeight = label.sizeThatFits(CGSize(width: layoutAttributes.size.width, height: .infinity)).height
+		layoutAttributes.size = CGSize(width: layoutAttributes.size.width, height: labelHeight+4+view.frame.height)
+		print(label.text!, layoutAttributes.size)
 		return layoutAttributes
 	}
 	
