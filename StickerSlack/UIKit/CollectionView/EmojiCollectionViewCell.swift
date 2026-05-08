@@ -26,6 +26,7 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		
 		button.alpha = 0
 		button.isHidden = true
+		button.isEnabled = false
 		button.setImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
 		button.imageView?.contentMode = .scaleAspectFit
 		button.contentHorizontalAlignment = .fill
@@ -67,6 +68,7 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		if edit ?? false {
 			contentView.bringSubviewToFront(button)
 			self.button.isHidden = false
+			button.isEnabled = true
 			UIView.animate(withDuration: 0.2) {
 				self.button.alpha = 1
 			}
@@ -75,6 +77,7 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 				self.button.alpha = 0
 			} completion: { _ in
 				self.button.isHidden = true
+				self.button.isEnabled = false
 			}
 		}
 	}
@@ -98,6 +101,14 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 			}
 		}
 		return super.hitTest(point, with: event)
+	}
+	
+	override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+		super.preferredLayoutAttributesFitting(layoutAttributes)
+		guard label.text != nil else { return layoutAttributes }
+		let labelHeight = label.sizeThatFits(CGSize(width: self.contentView.frame.width, height: .infinity)).height
+		layoutAttributes.size = CGSize(width: self.contentView.frame.width, height: labelHeight+4+view.frame.height)
+		return layoutAttributes
 	}
 	
 	override func prepareForReuse() {

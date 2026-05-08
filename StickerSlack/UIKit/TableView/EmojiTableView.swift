@@ -27,7 +27,8 @@ struct EmojiTableView: UIViewRepresentable {
 		let itemsAfter = items
 		context.coordinator.items = items
 		Task.detached {
-			guard !itemsAfter.isEmpty || itemsBefore.count-itemsAfter.count > 10_000 else {
+			//if its being cleared or removign 10k+
+			guard !itemsAfter.isEmpty && itemsBefore.count-itemsAfter.count < 10_000 else {
 				await context.coordinator.instantApplySnapshot()
 				return
 			}

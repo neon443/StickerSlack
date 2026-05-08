@@ -53,14 +53,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 		let itemsAfter = items
 		context.coordinator.items = items
 		Task.detached {
-//			if !(-10_000...10_000).contains(itemsBefore.count-itemsAfter.count) ||
-//				itemsAfter == itemsBefore {
-//				//diff of more than 10k
-//				fatalError()
-//				await context.coordinator.instantApplySnapshot()
-//			} else {
-				await context.coordinator.applySnapshot(animated: true)
-//			}
+			//if its being cleared or adding 10k+
+			guard !itemsAfter.isEmpty && itemsAfter.count-itemsBefore.count < 10_000 else {
+				await context.coordinator.instantApplySnapshot()
+				return
+			}
+			await context.coordinator.applySnapshot(animated: true)
 		}
 	}
 	
@@ -75,6 +73,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 	
 	enum Style {
 		case plain
+		case plainWithLabel
 		case plainWithMenu
 		case full
 		case jumboMoji
@@ -124,6 +123,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 				self.layout.minimumInteritemSpacing = 8
 				collectionView.contentInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
 			}
+			layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
 		}
 		
 		required init?(coder: NSCoder) {
@@ -136,10 +136,13 @@ struct EmojiCollectionView: UIViewRepresentable {
 			snapshot.appendItems(items, toSection: 0)
 			return snapshot
 		}
-		
 		func applySnapshot(animated: Bool) async {
 			let snapshot = makeSnapshot()
 			await (self.collectionView.dataSource as! UICollectionViewDiffableDataSource).apply(snapshot, animatingDifferences: animated)
+		}
+		func instantApplySnapshot() async {
+			let snapshot = makeSnapshot()
+			await (self.collectionView.dataSource as! UICollectionViewDiffableDataSource).applySnapshotUsingReloadData(snapshot)
 		}
 		
 		override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -157,7 +160,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			switch style {
 			case .plain, .plainWithMenu, .jumboMoji:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plain", for: indexPath) as! PlainEmojiCollectionViewCell
-			case .full:
+			case .full, .plainWithLabel:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "full", for: indexPath) as! EmojiCollectionViewCell
 				(cell as! EmojiCollectionViewCell).setEdit(to: edit)
 				(cell as! EmojiCollectionViewCell).onRemove = {
@@ -169,10 +172,10 @@ struct EmojiCollectionView: UIViewRepresentable {
 					self.onRemove?($0)
 				}
 			}
-			
-			cell.onTap = { self.onTap?(emojiName) }
 			guard let emoji = hoarder.trie.dict[emojiName] else { return cell }
-			
+			cell.width = width
+			cell.style = style
+			cell.onTap = { self.onTap?(emojiName) }
 			cell.configure(with: hoarder, emoji: emoji)
 			return cell
 		}
@@ -198,53 +201,6 @@ struct EmojiCollectionView: UIViewRepresentable {
 			for cell in collectionView.visibleCells {
 				cell.transform = CGAffineTransform(rotationAngle: angle)
 			}
-		}
-		
-		func collectionView(
-			_ collectionView: UICollectionView,
-			layout collectionViewLayout: UICollectionViewLayout,
-			sizeForItemAt indexPath: IndexPath
-		) -> CGSize {
-			let totalWidth = collectionView.bounds.width
-			let availWidth = totalWidth-(collectionView.contentInset.left*2)
-			let cols: CGFloat
-			if style == .jumboMoji {
-				cols = width
-			} else {
-				cols = max(1, floor(availWidth/width))
-			}
-			let totalSpacing = layout.minimumInteritemSpacing * (cols - 1)
-			let itemWidth = (availWidth-totalSpacing)/cols
-			let defaultSize = CGSize(width: itemWidth, height: itemWidth)
-			
-			guard self.style == .full else { return defaultSize }
-			guard !hoarder.trie.dict.isEmpty else { return defaultSize }
-			let emojiName = items[indexPath.item]
-			
-			let labelHeight: CGFloat
-			if let widthDict = EmojiCollectionView.Coordinator.labelSizeDict[itemWidth],
-			   let storedHeight = widthDict[emojiName] {
-				labelHeight = storedHeight
-			} else {
-				let label = UILabel()
-				label.font = .preferredFont(forTextStyle: .caption1)
-				label.numberOfLines = 0
-				label.text = emojiName
-				labelHeight = label.sizeThatFits(CGSize(width: itemWidth, height: .infinity)).height
-				if EmojiCollectionView.Coordinator.labelSizeDict[itemWidth] != nil {
-					EmojiCollectionView.Coordinator.labelSizeDict[itemWidth]![emojiName] = labelHeight
-				} else {
-					EmojiCollectionView.Coordinator.labelSizeDict[itemWidth] = [emojiName: labelHeight]
-				}
-			}
-			return CGSize(width: itemWidth, height: itemWidth+labelHeight+4)
-//			let font = UIFont.preferredFont(forTextStyle: .caption1)
-//			let rect = (emojiName as NSString).boundingRect(
-//				with: CGSize(width: itemWidth, height: .greatestFiniteMagnitude),
-//				options: [.usesLineFragmentOrigin, .usesFontLeading],
-//				attributes: [.font: font],
-//				context: nil
-//			)
 		}
 		
 		override func collectionView(

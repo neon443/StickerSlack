@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Haptics
 
 struct EmojiPackDetailView: View {
 	@ObservedObject var hoarder: EmojiHoarder
@@ -110,12 +111,16 @@ struct EmojiPackDetailView: View {
 								SearchView(
 									hoarder: hoarder,
 									fromPackEditor: true,
-									callback: { pack.add($0); showAdder.toggle() }
+									callback: {
+										pack.add($0)
+										Haptic.success.trigger()
+										showAdder.toggle()
+									}
 								)
 								.navigationTitle("Search Emojis")
 								.navigationBarTitleDisplayMode(.inline)
 								.toolbar {
-									Button("", systemImage: "check") {
+									Button("", systemImage: "checkmark") {
 										showAdder.toggle()
 									}
 								}

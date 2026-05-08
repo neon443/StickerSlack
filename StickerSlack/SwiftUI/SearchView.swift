@@ -51,7 +51,13 @@ struct SearchView: View {
 //						.padding()
 //					}
 //				}
-				EmojiCollectionView(hoarder: hoarder, items: searchResult, width: 75, style: .plain, onTapCallback: { callback($0) })
+				EmojiCollectionView(
+					hoarder: hoarder,
+					items: searchResult,
+					width: 75,
+					style: .plainWithLabel,
+					onTapCallback: { callback($0)
+					})
 			} else {
 				Picker("", selection: $stickerType) {
 					ForEach(StickerType.allCases) { type in

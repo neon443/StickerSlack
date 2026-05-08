@@ -13,6 +13,8 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 	var view: UIKitGifView = UIKitGifView(image: nil)
 	var hostingController: UIHostingController<StickerPreview>?
 	var imageLoadTask: Task<Void, Never>?
+	var width: CGFloat = 0
+	var style: EmojiCollectionView.Style = .plain
 	var onTap: (() -> Void)?
 	
 	override init(frame: CGRect) {
@@ -62,6 +64,25 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 		guard sender.state == .ended else { return }
 		onTap?()
 		print("tap")
+	}
+	
+	override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+		super.preferredLayoutAttributesFitting(layoutAttributes)
+		guard let superview,
+			  let collectionView = superview as? UICollectionView else { return layoutAttributes }
+		
+		let totalWidth = collectionView.bounds.width
+		let availWidth = totalWidth-collectionView.contentInset.left-collectionView.contentInset.right
+		let cols: CGFloat
+		if style == .jumboMoji {
+			cols = width
+		} else {
+			cols = max(1, floor(availWidth/width))
+		}
+		let totalSpacing = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.minimumInteritemSpacing ?? 0 * (cols-1)
+		let itemWidth = (availWidth-totalSpacing)/cols
+		layoutAttributes.size = CGSize(width: itemWidth, height: layoutAttributes.size.height)
+		return layoutAttributes
 	}
 	
 	override func prepareForReuse() {
