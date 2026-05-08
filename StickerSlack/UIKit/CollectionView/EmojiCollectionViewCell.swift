@@ -108,7 +108,6 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		guard label.text != nil else { return layoutAttributes }
 		let labelHeight = label.sizeThatFits(CGSize(width: layoutAttributes.size.width, height: .infinity)).height
 		layoutAttributes.size = CGSize(width: layoutAttributes.size.width, height: labelHeight+4+view.frame.height)
-		print(label.text!, layoutAttributes.size)
 		return layoutAttributes
 	}
 	
