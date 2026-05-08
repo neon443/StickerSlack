@@ -28,37 +28,39 @@ class UIKitGifView: UIImageView {
 	}
 	
 	nonisolated func prepareImage(for sticker: any StickerProtocol) async -> UIImage? {
-		let raw: UIImage?
+		let raw: Data?
 		
 		switch sticker.type {
 		case .slackEmoji:
-			raw = await sticker.image()
+			raw = await sticker.data()
 		case .giphyGifs:
 			if sticker.isLocal {
-				raw = await sticker.image()
+				raw = await sticker.data()
 			} else {
 				let gif = sticker as! Gif
-				raw = await gif.getPreviewImage()
+				raw = await gif.getPreviewData()
 			}
 		}
 		
 		guard let raw else { return nil }
-		return await render(image: raw)
+		return await render(data: raw)
 	}
 	
-	nonisolated func render(image: UIImage) async -> UIImage {
+	nonisolated func render(data: Data) async -> UIImage {
 		return await Task.detached(priority: .userInitiated) {
-			let size = image.size
-			guard size.width > 0 && size.height > 0 else { return image }
+			return GifManager.uiImageFrom(data: data) ?? UIImage(systemName: "xmark")!
 			
-			let format = UIGraphicsImageRendererFormat()
-			format.scale = image.scale
-			format.opaque = false
-			
-			let renderer = UIGraphicsImageRenderer(size: size, format: format)
-			return renderer.image { _ in
-				image.draw(at: .zero)
-			}
+//			let size = image.size
+//			guard size.width > 0 && size.height > 0 else { return image }
+//			
+//			let format = UIGraphicsImageRendererFormat()
+//			format.scale = image.scale
+//			format.opaque = false
+//			
+//			let renderer = UIGraphicsImageRenderer(size: size, format: format)
+//			return renderer.image { _ in
+//				image.draw(at: .zero)
+//			}
 		}.value
 	}
 }

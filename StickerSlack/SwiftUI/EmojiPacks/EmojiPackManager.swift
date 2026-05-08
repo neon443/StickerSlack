@@ -10,6 +10,7 @@ import SwiftUI
 struct EmojiPackManager: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	@State var useSwiftUIGrid: Bool = false
+	@State var showShareSheet: Bool = false
 	
 	var body: some View {
 		NavigationView2 {
@@ -28,6 +29,18 @@ struct EmojiPackManager: View {
 						Text(pack.name)
 					}
 					.swipeActions(edge: .trailing) {
+						if #available(iOS 16, *) {
+							ShareLink(item: pack.shareLink())
+						} else {
+							Button {
+								showShareSheet.toggle()
+							} label: {
+								Label("Share", systemImage: "square.and.arrow.up")
+							}
+							.sheet(isPresented: $showShareSheet) {
+								ShareSheet(activityItems: [pack.shareLink()])
+							}
+						}
 						Button {
 							hoarder.removeEmojiPack(pack)
 						} label: {

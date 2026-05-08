@@ -146,6 +146,10 @@
 		A9CD6C3B2EDDE6B500B7F421 /* EmojiPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D15B892EB1142C00404792 /* EmojiPack.swift */; };
 		A9D15B8B2EB1142C00404792 /* EmojiPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D15B892EB1142C00404792 /* EmojiPack.swift */; };
 		A9D6A8212F7014AE00F198FB /* TestStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995D95A2F6EBBDD0043E5F5 /* TestStructures.swift */; };
+		A9E61EC42FAE60370057220B /* iPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E61EC32FAE60370057220B /* iPad.swift */; };
+		A9E61EC52FAE60370057220B /* iPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E61EC32FAE60370057220B /* iPad.swift */; };
+		A9E61EC72FAE60430057220B /* iPhone.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E61EC62FAE60430057220B /* iPhone.swift */; };
+		A9E61EC82FAE60430057220B /* iPhone.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E61EC62FAE60430057220B /* iPhone.swift */; };
 		A9EB72392EB93FDB00658CEB /* EmojiTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72382EB93FDB00658CEB /* EmojiTableView.swift */; };
 		A9EB72472EB948C400658CEB /* StickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72462EB948C400658CEB /* StickerRow.swift */; };
 		A9EB72492EB948C400658CEB /* StickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72462EB948C400658CEB /* StickerRow.swift */; };
@@ -263,6 +267,8 @@
 		A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackManager.swift; sourceTree = "<group>"; };
 		A9D15B892EB1142C00404792 /* EmojiPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPack.swift; sourceTree = "<group>"; };
 		A9E2ECD72EB74CE00038B2D6 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		A9E61EC32FAE60370057220B /* iPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPad.swift; sourceTree = "<group>"; };
+		A9E61EC62FAE60430057220B /* iPhone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPhone.swift; sourceTree = "<group>"; };
 		A9EB72382EB93FDB00658CEB /* EmojiTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTableView.swift; sourceTree = "<group>"; };
 		A9EB72462EB948C400658CEB /* StickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerRow.swift; sourceTree = "<group>"; };
 		A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrieTestingView.swift; sourceTree = "<group>"; };
@@ -357,6 +363,8 @@
 			isa = PBXGroup;
 			children = (
 				A949B1F02EA04E8200215164 /* ContentView.swift */,
+				A9E61EC62FAE60430057220B /* iPhone.swift */,
+				A9E61EC32FAE60370057220B /* iPad.swift */,
 				A91C098C2EBBD7AB00210C34 /* EmojiPacks */,
 				A9F423C32F87229100C0BE3B /* Shared */,
 				A9F423C42F8722AA00C0BE3B /* Misc */,
@@ -726,6 +734,7 @@
 				A955B3EE2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
 				A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */,
 				A957C17A2ECE542D00EA3EE9 /* GifManager.swift in Sources */,
+				A9E61EC42FAE60370057220B /* iPad.swift in Sources */,
 				A9C52F6F2F89A22000078588 /* Wiggle.metal in Sources */,
 				A9BDEADE2F82BC93002798DF /* NoStickersView.swift in Sources */,
 				A955B3F52EC22EE900E1732D /* SearchView.swift in Sources */,
@@ -749,6 +758,7 @@
 				A949B1F82EA04F2300215164 /* EmojiHoarder.swift in Sources */,
 				A9BBC5182EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A9EB72492EB948C400658CEB /* StickerRow.swift in Sources */,
+				A9E61EC72FAE60430057220B /* iPhone.swift in Sources */,
 				A921C2E22ED071C900E57B1A /* ListRow.swift in Sources */,
 				A9773C2F2EA54AF000F3B753 /* StickerPreview.swift in Sources */,
 				A9BE30F02F5B004800A57668 /* GifHoarder.swift in Sources */,
@@ -810,6 +820,7 @@
 				A9C52F762F89A93D00078588 /* URL.swift in Sources */,
 				A9B9A8302EB2CD0B004C9245 /* Emoji.swift in Sources */,
 				A9C52F702F89A22000078588 /* Wiggle.metal in Sources */,
+				A9E61EC52FAE60370057220B /* iPad.swift in Sources */,
 				A955B3F12EC22E9700E1732D /* BrowseView.swift in Sources */,
 				A9A7A4402F6835F800BB84C6 /* Trending.swift in Sources */,
 				A975F9212FA52B3600A5C62E /* AddToPackMenuView.swift in Sources */,
@@ -837,6 +848,7 @@
 				A9C52F7A2F89BB0800078588 /* EmojiTableViewCell.swift in Sources */,
 				A957C1752ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
 				A9CD6C362EDDE22800B7F421 /* EmojiPackDetailView.swift in Sources */,
+				A9E61EC82FAE60430057220B /* iPhone.swift in Sources */,
 				A9EB72472EB948C400658CEB /* StickerRow.swift in Sources */,
 				A9CD6C392EDDE37500B7F421 /* EmojiPackManager.swift in Sources */,
 				A97BFFBD2F9E6092000441E5 /* EmptyEmojiPackView.swift in Sources */,

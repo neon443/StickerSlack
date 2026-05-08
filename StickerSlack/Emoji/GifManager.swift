@@ -38,4 +38,30 @@ class GifManager {
 		}
 		return result
 	}
+	
+	nonisolated static func uiImageFrom(data: Data) -> UIImage? {
+		guard let source = CGImageSourceCreateWithData(data as NSData, nil) else { fatalError("couldnt create source") }
+		let frameCount = CGImageSourceGetCount(source)
+		guard frameCount > 1 else { return UIImage(data: data) }
+		
+		var result: [UIImage] = []
+		var frameDuration: Double = 0.0833333333
+		
+		for i in 0..<frameCount {
+			guard let cgImage = CGImageSourceCreateImageAtIndex(source, i, nil) else {
+				print("AAAA")
+				continue
+			}
+			if let properties = CGImageSourceCopyPropertiesAtIndex(source, i, nil),
+			   let gifInfo = (properties as NSDictionary)[kCGImagePropertyGIFDictionary as String] as? NSDictionary,
+			   let duration = (gifInfo[kCGImagePropertyGIFDelayTime as String] as? NSNumber) {
+				result.append(UIImage(cgImage: cgImage))
+				frameDuration = Double(truncating: duration)
+			} else {
+				result.append(UIImage(cgImage: cgImage))
+			}
+		}
+		
+		return UIImage.animatedImage(with: result, duration: frameDuration*Double(frameCount))
+	}
 }
