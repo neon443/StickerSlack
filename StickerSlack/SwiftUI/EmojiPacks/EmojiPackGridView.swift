@@ -111,7 +111,7 @@ struct EmojiPackGridView: View {
 							NavigationView2 {
 								SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
 									withAnimation(.spring) {
-										pack.add(selection.name)
+										pack.add(selection)
 									}
 								}
 								.navigationTitle("Search Emojis")

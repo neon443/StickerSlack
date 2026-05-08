@@ -13,6 +13,7 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 	var view: UIKitGifView = UIKitGifView(image: nil)
 	var hostingController: UIHostingController<StickerPreview>?
 	var imageLoadTask: Task<Void, Never>?
+	var onTap: (() -> Void)?
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -24,7 +25,8 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 			view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 			view.heightAnchor.constraint(equalTo: view.widthAnchor),
 		])
-		addGestureRecognizer(UITapGestureRecognizer())
+		let gestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+		addGestureRecognizer(gestureRecogniser)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -56,8 +58,9 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 //		])
 	}
 	
-	func handleTap(sender: UITapGestureRecognizer) {
+	@objc func handleTap(sender: UITapGestureRecognizer) {
 		guard sender.state == .ended else { return }
+		onTap?()
 		print("tap")
 	}
 	

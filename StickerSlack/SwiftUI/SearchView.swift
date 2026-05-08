@@ -18,7 +18,7 @@ struct SearchView: View {
 	@State var stickerType: StickerType = .slackEmoji
 	
 	@State var fromPackEditor: Bool = false
-	@State var callback: ((Emoji) -> Void) = { _ in }
+	@State var callback: ((String) -> Void) = { _ in }
 	var minColWidth: CGFloat { 75 }
 	var spacing: CGFloat { 10 }
 	var col: GridItem {
@@ -51,7 +51,7 @@ struct SearchView: View {
 //						.padding()
 //					}
 //				}
-				EmojiCollectionView(hoarder: hoarder, items: searchResult, width: 75, style: .plain)
+				EmojiCollectionView(hoarder: hoarder, items: searchResult, width: 75, style: .plain, onTapCallback: { callback($0) })
 			} else {
 				Picker("", selection: $stickerType) {
 					ForEach(StickerType.allCases) { type in

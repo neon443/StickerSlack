@@ -17,12 +17,12 @@ struct EmojiCollectionView: UIViewRepresentable {
 	let style: EmojiCollectionView.Style
 	var edit: Bool?
 	var onRemoveSUI: ((String) -> Void)?
+	var onTapCallback: ((String) -> Void)?
 	
 	func makeUIView(context: Context) -> UICollectionView {
 		let collectionView = context.coordinator as UICollectionViewController
 		collectionView.collectionView.register(PlainEmojiCollectionViewCell.self, forCellWithReuseIdentifier: "plain")
 		collectionView.collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "full")
-		collectionView.collectionView.dataSource = context.coordinator
 		collectionView.collectionView.delegate = context.coordinator
 		return collectionView.collectionView
 	}
@@ -30,6 +30,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 	func updateUIView(_ uiView: UICollectionView, context: Context) {
 		context.coordinator.hoarder = hoarder
 		context.coordinator.onRemove = onRemoveSUI
+		context.coordinator.onTap = onTapCallback
 		
 		context.coordinator.edit = edit
 		if edit ?? false {
@@ -44,9 +45,22 @@ struct EmojiCollectionView: UIViewRepresentable {
 			}
 		}
 		
-		if items != context.coordinator.items {
-			context.coordinator.items = items
-			uiView.reloadData()
+//		if items != context.coordinator.items {
+//			context.coordinator.items = items
+//			uiView.reloadData()
+//		}
+		let itemsBefore = context.coordinator.items
+		let itemsAfter = items
+		context.coordinator.items = items
+		Task.detached {
+//			if !(-10_000...10_000).contains(itemsBefore.count-itemsAfter.count) ||
+//				itemsAfter == itemsBefore {
+//				//diff of more than 10k
+//				fatalError()
+//				await context.coordinator.instantApplySnapshot()
+//			} else {
+				await context.coordinator.applySnapshot(animated: true)
+//			}
 		}
 	}
 	
@@ -73,6 +87,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 		var style: EmojiCollectionView.Style
 		var edit: Bool? = false
 		var onRemove: ((String) -> Void)?
+		var onTap: ((String) -> Void)?
 		
 		var dataSource: UICollectionViewDiffableDataSource<Int, String>!
 		
@@ -97,7 +112,7 @@ struct EmojiCollectionView: UIViewRepresentable {
 			super.init(collectionViewLayout: layout)
 			
 			self.dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: String) -> UICollectionViewCell? in
-				collectionView.cellForItem(at: indexPath)
+				self.collectionView(collectionView, cellForItemAt: indexPath)
 			}
 			collectionView.dataSource = dataSource
 			
@@ -136,6 +151,9 @@ struct EmojiCollectionView: UIViewRepresentable {
 			cellForItemAt indexPath: IndexPath
 		) -> UICollectionViewCell {
 			let cell: PlainEmojiCollectionViewCell
+			guard !hoarder.trie.dict.isEmpty else { return UICollectionViewCell() }
+			let emojiName = items[indexPath.item]
+			
 			switch style {
 			case .plain, .plainWithMenu, .jumboMoji:
 				cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plain", for: indexPath) as! PlainEmojiCollectionViewCell
@@ -145,13 +163,14 @@ struct EmojiCollectionView: UIViewRepresentable {
 				(cell as! EmojiCollectionViewCell).onRemove = {
 					guard let index = self.items.firstIndex(of: $0) else { return }
 					self.items.remove(at: index)
-					collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
+					Task.detached {
+						await self.applySnapshot(animated: true)
+					}
 					self.onRemove?($0)
 				}
 			}
 			
-			guard !hoarder.trie.dict.isEmpty else { return cell }
-			let emojiName = items[indexPath.item]
+			cell.onTap = { self.onTap?(emojiName) }
 			guard let emoji = hoarder.trie.dict[emojiName] else { return cell }
 			
 			cell.configure(with: hoarder, emoji: emoji)

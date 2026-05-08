@@ -10,8 +10,8 @@ import UIKit
 
 class UIKitGifView: UIImageView {
 	override init(image: UIImage?) {
-//		<#code#>
 		super.init(image: image)
+		self.contentMode = .scaleAspectFit
 	}
 	
 	required init?(coder: NSCoder) {

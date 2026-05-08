@@ -110,19 +110,17 @@ struct EmojiPackDetailView: View {
 								SearchView(
 									hoarder: hoarder,
 									fromPackEditor: true,
-									callback: { emoji in
-										pack.add(emoji.name)
-									}
+									callback: { pack.add($0); showAdder.toggle() }
 								)
 								.navigationTitle("Search Emojis")
 								.navigationBarTitleDisplayMode(.inline)
 								.toolbar {
-									Button("", systemImage: "xmark") {
+									Button("", systemImage: "check") {
 										showAdder.toggle()
 									}
 								}
-								.modifier(presentationHalfAndFullIfAv())
 							}
+							.modifier(presentationHalfAndFullIfAv())
 						}
 					}
 				}
