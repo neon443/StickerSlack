@@ -210,7 +210,17 @@ struct EmojiCollectionView: UIViewRepresentable {
 		) -> UIContextMenuConfiguration? {
 			guard self.style == .plainWithMenu else { return nil }
 			
+			var menuChildrem: [UIMenuElement] = []
 			let emojiName = self.items[indexPath.row]
+			
+//			if let localImagePath = hoarder.trie.dict[emojiName]?.localImageURLString,
+//			   let attrs = try? FileManager.default.attributesOfItem(atPath: localImagePath),
+//			   let size = attrs[FileAttributeKey("NSFileSize")] {
+//				print(size, "bytes")
+//				let sizeLabel = UIAction(title: "\(size as! Int/1000) KB", image: nil, identifier: nil, discoverabilityTitle: nil, attributes: .disabled) { _ in }
+//				menuChildrem.append(sizeLabel)
+//			}
+			
 			let packMenuItem: (EmojiHoarder, Int) -> UIAction = { hoarder, packIndex in
 				let pack = hoarder.emojiPacks[packIndex]
 				return UIAction(
@@ -235,7 +245,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 				]
 			)
 			packMenuItems.append(createNewPackMenu)
-			let addToPackMenu = UIMenu(title: "Add to Pack", image: UIImage(systemName: "square.stack.3d.up.fill"), children: packMenuItems)
+//			let addToPackMenu = UIMenu(title: "Add to Pack", image: UIImage(systemName: "square.stack.3d.up.fill"), children: packMenuItems)
+			menuChildrem.append(UIMenu(title: "Add to Pack", image: UIImage(systemName: "square.stack.3d.up.fill"), children: packMenuItems))
 			
 			let copyName = UIAction(title: "Copy Name", image: UIImage(systemName: "doc.on.clipboard")) { action in
 				UIPasteboard.general.string = emojiName
@@ -248,7 +259,8 @@ struct EmojiCollectionView: UIViewRepresentable {
 			let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { action in
 				
 			}
-			let sharingMenu = UIMenu(options: .displayInline, children: [copyName, copyImage, share])
+//			let sharingMenu = UIMenu(options: .displayInline, children: [copyName, copyImage, share])
+			menuChildrem.append(UIMenu(options: .displayInline, children: [copyName, copyImage, share]))
 			
 			let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash")) { action in
 				Task.detached {
@@ -260,9 +272,11 @@ struct EmojiCollectionView: UIViewRepresentable {
 				}
 			}
 			delete.attributes.update(with: .destructive)
-			let destructiveMenu = UIMenu(options: .displayInline, children: [delete])
+//			let destructiveMenu = UIMenu(options: .displayInline, children: [delete])
+			menuChildrem.append(UIMenu(options: .displayInline, children: [delete]))
 			
-			let menu = UIMenu(title: emojiName, children: [addToPackMenu, sharingMenu, destructiveMenu])
+//			let menu = UIMenu(title: emojiName, children: [addToPackMenu, sharingMenu, destructiveMenu])
+			let menu = UIMenu(title: emojiName, children: menuChildrem)
 			return UIContextMenuConfiguration(
 				identifier: nil,
 				previewProvider: nil) { suggestedActions in

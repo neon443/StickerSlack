@@ -1,0 +1,9 @@
+{
+  "id" : "f788be3f-ea78-49e8-a73f-06a26b2c4e3a",
+  "targets" : [
+    {
+      "id" : "C05654F5-CD40-44E4-80B8-2A14F2CD10BA",
+      "name" : "StickerSlack"
+    }
+  ]
+}
