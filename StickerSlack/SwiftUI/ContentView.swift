@@ -38,6 +38,13 @@ struct ContentView: View {
 						}
 					}
 				}
+				.tabViewBottomAccessorySafe {
+					HStack {
+						Image(systemName: "magnifyingglass")
+						TextField("", text: .constant("sa"), prompt: Text("Search"))
+					}
+					.padding(.horizontal)
+				}
 			} else {
 				TabView {
 					BrowseView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)

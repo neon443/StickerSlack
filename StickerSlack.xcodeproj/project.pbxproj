@@ -20,8 +20,6 @@
 		A917BAD22F9B7B68008DB31E /* PlainEmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A917BAD02F9B7B68008DB31E /* PlainEmojiCollectionViewCell.swift */; };
 		A921C2DF2ED067BB00E57B1A /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A921C2DE2ED067BB00E57B1A /* WelcomeView.swift */; };
 		A921C2E02ED067BB00E57B1A /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A921C2DE2ED067BB00E57B1A /* WelcomeView.swift */; };
-		A921C2E22ED071C900E57B1A /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A921C2E12ED071C900E57B1A /* ListRow.swift */; };
-		A921C2E32ED071C900E57B1A /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A921C2E12ED071C900E57B1A /* ListRow.swift */; };
 		A924C3732EA9127200F20781 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
 		A924C3782EA9225800F20781 /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = A924C3772EA9225800F20781 /* Haptics */; };
 		A935437B2EB2A3C800BB80A4 /* FilterCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */; };
@@ -200,7 +198,6 @@
 		A917BACD2F9B787B008DB31E /* EmojiCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionView.swift; sourceTree = "<group>"; };
 		A917BAD02F9B7B68008DB31E /* PlainEmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainEmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		A921C2DE2ED067BB00E57B1A /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		A921C2E12ED071C900E57B1A /* ListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRow.swift; sourceTree = "<group>"; };
 		A924C3712EA9127200F20781 /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
 		A924C3742EA9134C00F20781 /* StickerSlack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerSlack.entitlements; sourceTree = "<group>"; };
 		A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategory.swift; sourceTree = "<group>"; };
@@ -549,7 +546,6 @@
 			children = (
 				A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */,
 				A9BDEADD2F82BC93002798DF /* NoStickersView.swift */,
-				A921C2E12ED071C900E57B1A /* ListRow.swift */,
 				A9C52F6A2F8988CD00078588 /* EmptyCollectionView.swift */,
 			);
 			path = Misc;
@@ -628,7 +624,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2600;
+				LastSwiftUpdateCheck = 2700;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					A949B1DE2EA04C0B00215164 = {
@@ -749,7 +745,6 @@
 				A949B1F82EA04F2300215164 /* EmojiHoarder.swift in Sources */,
 				A9BBC5182EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A9EB72492EB948C400658CEB /* StickerRow.swift in Sources */,
-				A921C2E22ED071C900E57B1A /* ListRow.swift in Sources */,
 				A9773C2F2EA54AF000F3B753 /* StickerPreview.swift in Sources */,
 				A9BE30F02F5B004800A57668 /* GifHoarder.swift in Sources */,
 				A9BE30F22F5B004E00A57668 /* Gif.swift in Sources */,
@@ -821,7 +816,6 @@
 				A9EC46AE2F6D9E5800E066E6 /* StickerType.swift in Sources */,
 				A9B9A82F2EB2CCED004C9245 /* EmojiHoarder.swift in Sources */,
 				A9CD6C3B2EDDE6B500B7F421 /* EmojiPack.swift in Sources */,
-				A921C2E32ED071C900E57B1A /* ListRow.swift in Sources */,
 				A9BE30EF2F5B004800A57668 /* GifHoarder.swift in Sources */,
 				A9A7A4492F68361200BB84C6 /* Meta.swift in Sources */,
 				A9EB724A2EB948E000658CEB /* EmojiTableView.swift in Sources */,

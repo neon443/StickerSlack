@@ -23,7 +23,13 @@
           }
         },
         {
-          "glass" : true,
+          "blend-mode-specializations" : [
+            {
+              "appearance" : "dark",
+              "value" : "normal"
+            }
+          ],
+          "glass" : false,
           "image-name" : "Group 7.png",
           "name" : "Group 7",
           "position" : {
@@ -35,6 +41,7 @@
           }
         },
         {
+          "glass" : true,
           "image-name" : "Group 8.png",
           "name" : "Group 8",
           "position" : {

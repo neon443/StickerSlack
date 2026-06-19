@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchView: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	
+	@FocusState private var searchFocused: Bool
 	@State private var currentSearch: Task<Void, Never>?
 	@State var searchTerm: String = ""
 	@State var previousSearches: [String] = []
@@ -59,12 +60,6 @@ struct SearchView: View {
 					onTapCallback: { callback($0)
 					})
 			} else {
-				Picker("", selection: $stickerType) {
-					ForEach(StickerType.allCases) { type in
-						Text(type.description).tag(type)
-					}
-				}
-				.pickerStyle(.segmented)
 				switch stickerType {
 				case .slackEmoji:
 					Text("\(searchResult.count)")
@@ -73,6 +68,12 @@ struct SearchView: View {
 				case .giphyGifs:
 					Text("uhh")
 				}
+				Picker("", selection: $stickerType) {
+					ForEach(StickerType.allCases) { type in
+						Text(type.description).tag(type)
+					}
+				}
+				.pickerStyle(.segmented)
 			}
 		}
 		.searchable(text: $searchTerm)
