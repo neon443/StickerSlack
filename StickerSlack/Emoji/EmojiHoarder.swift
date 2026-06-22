@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 import UniformTypeIdentifiers
 import Haptics
-q
+
 class EmojiHoarder: BaseHoarder {
 	static let container: URL = library.appendingPathComponent("Emojis", conformingTo: .directory)
 	nonisolated static let localEmojiDB: URL = EmojiHoarder.library.appendingPathComponent("localEmojiDB.json", conformingTo: .fileURL)
