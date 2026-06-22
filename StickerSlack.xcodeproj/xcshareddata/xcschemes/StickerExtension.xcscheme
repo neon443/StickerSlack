@@ -31,6 +31,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A949B1DE2EA04C0B00215164"
                BuildableName = "StickerSlack.app"
+               BlueprintName = "StickerSlack"
                ReferencedContainer = "container:StickerSlack.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -71,6 +72,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A949B1DE2EA04C0B00215164"
             BuildableName = "StickerSlack.app"
+            BlueprintName = "StickerSlack"
             ReferencedContainer = "container:StickerSlack.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -89,6 +91,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A949B1DE2EA04C0B00215164"
             BuildableName = "StickerSlack.app"
+            BlueprintName = "StickerSlack"
             ReferencedContainer = "container:StickerSlack.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
