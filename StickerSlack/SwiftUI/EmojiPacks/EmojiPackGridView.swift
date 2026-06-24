@@ -109,7 +109,7 @@ struct EmojiPackGridView: View {
 						}
 						.sheet(isPresented: $showAdder) {
 							NavigationView2 {
-								SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
+								SearchView(hoarder: hoarder, searchTerm: $searchTerm, fromPackEditor: true) { selection in
 									withAnimation(.spring) {
 										pack.add(selection)
 									}

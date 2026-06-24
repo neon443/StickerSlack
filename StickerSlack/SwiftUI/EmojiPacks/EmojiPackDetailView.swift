@@ -12,6 +12,8 @@ struct EmojiPackDetailView: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	@Binding var pack: EmojiPack
 	
+	@State var searchTerm: String = ""
+	
 	@State var edit: Bool = false
 	@State var editName: Bool = false
 	@State var editDescription: Bool = false
@@ -98,7 +100,6 @@ struct EmojiPackDetailView: View {
 					) {
 						withAnimation(.spring) { edit.toggle() }
 					}
-					.modifier(glassButtonIfAv(edit))
 					.tint(edit ? Color.accentColor : .primary)
 				}
 				ToolbarItem(placement: .topBarLeading) {
@@ -110,6 +111,7 @@ struct EmojiPackDetailView: View {
 							NavigationView2 {
 								SearchView(
 									hoarder: hoarder,
+									searchTerm: $searchTerm,
 									fromPackEditor: true,
 									callback: {
 										pack.add($0)

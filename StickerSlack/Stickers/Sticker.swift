@@ -120,7 +120,7 @@ extension StickerProtocol {
 			bitsPerComponent: cgImage.bitsPerComponent,
 			bytesPerRow: cgImage.bytesPerRow,
 			space: cgImage.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
-			bitmapInfo: cgImage.bitmapInfo
+			bitmapInfo: cgImage.bitmapInfo.rawValue
 		) else { fatalError() }
 		
 		context.interpolationQuality = .default

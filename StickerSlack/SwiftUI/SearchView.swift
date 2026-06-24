@@ -12,7 +12,7 @@ struct SearchView: View {
 	
 	@FocusState private var searchFocused: Bool
 	@State private var currentSearch: Task<Void, Never>?
-	@State var searchTerm: String = ""
+	@Binding var searchTerm: String
 	@State var previousSearches: [String] = []
 	@State var searchResult: [String] = []
 	
@@ -32,26 +32,32 @@ struct SearchView: View {
 	
 	@Environment(\.dismiss) var dismiss
 	
+	func runSearch(with: String) {
+		if currentSearch != nil { currentSearch?.cancel() }
+		guard !searchTerm.isEmpty else {
+			currentSearch?.cancel()
+			searchResult = []
+			previousSearches = []
+			return
+		}
+		currentSearch = Task.detached {
+			let result = await hoarder.trie.search(
+				for: searchTerm,
+				previousQuery: previousSearches.last,
+				previousResult: Set(searchResult)
+			)
+			await MainActor.run {
+				withAnimation(.snappy) {
+					searchResult = result
+					previousSearches.append(searchTerm)
+				}
+			}
+		}
+	}
+	
 	var body: some View {
 		VStack {
 			if fromPackEditor {
-//				GeometryReader { geo in
-//					let columns: Int = max(1, Int((geo.size.width - 2*spacing) / (minColWidth + spacing)))
-//					let layout = Array(repeating: col, count: columns)
-//					ScrollView {
-//						LazyVGrid(columns: layout, spacing: spacing) {
-//							ForEach(searchResult, id: \.self) { name in
-//								let emoji = hoarder.trie.dict[name] ?? .test
-//								StickerPreview(sticker: emoji)
-//									.onTapGesture {
-//										callback(emoji)
-//										dismiss()
-//									}
-//							}
-//						}
-//						.padding()
-//					}
-//				}
 				EmojiCollectionView(
 					hoarder: hoarder,
 					items: searchResult,
@@ -74,37 +80,27 @@ struct SearchView: View {
 					}
 				}
 				.pickerStyle(.segmented)
+				.padding(.horizontal)
 			}
 		}
 		.searchable(text: $searchTerm)
 		.onChange(of: searchTerm) { new in
-			if currentSearch != nil { currentSearch?.cancel() }
-			guard !searchTerm.isEmpty else {
-				currentSearch?.cancel()
-				searchResult = []
-				previousSearches = []
-				return
-			}
-			currentSearch = Task.detached {
-				let result = await hoarder.trie.search(
-					for: searchTerm,
-					previousQuery: previousSearches.last,
-					previousResult: Set(searchResult)
-				)
-				await MainActor.run {
-					withAnimation(.snappy) {
-						searchResult = result
-						previousSearches.append(searchTerm)
-					}
-				}
-			}
+			runSearch(with: new)
+		}
+		.onAppear {
+			guard !searchTerm.isEmpty else { return }
+			runSearch(with: searchTerm)
 		}
 	}
 }
 
+@available(iOS 17, *)
 #Preview {
+	@Previewable @State var searchTerm: String = ""
+	
 	SearchView(
 		hoarder: EmojiHoarder(localOnly: true),
+		searchTerm: $searchTerm,
 		fromPackEditor: true
 	) {
 		print($0)

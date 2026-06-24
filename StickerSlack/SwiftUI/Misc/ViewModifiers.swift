@@ -18,16 +18,6 @@ struct numericTextCompat: ViewModifier {
 	}
 }
 
-struct tabViewActivationSearchActivation: ViewModifier {
-	func body(content: Content) -> some View {
-		if #available(iOS 26, *) {
-			content.tabViewSearchActivation(.searchTabSelection)
-		} else {
-			content
-		}
-	}
-}
-
 struct glassButtonIfAv: ViewModifier {
 	var enabled: Bool
 	
@@ -36,6 +26,7 @@ struct glassButtonIfAv: ViewModifier {
 	}
 	
 	func body(content: Content) -> some View {
+#if compiler(>=6.2)
 		if enabled {
 			if #available(iOS 19, *) {
 				content.buttonStyle(.glassProminent)
@@ -45,6 +36,13 @@ struct glassButtonIfAv: ViewModifier {
 		} else {
 			content
 		}
+#else
+		if enabled {
+			content.buttonStyle(.borderedProminent)
+		} else {
+			content
+		}
+#endif
 	}
 }
 
@@ -125,12 +123,16 @@ struct TabViewBottomAcceessorySafe<T: View>: ViewModifier {
 	@ViewBuilder var contents: () -> T
 	
 	func body(content: Content) -> some View where Content: View {
+#if compiler(>=6.2.1)
 		if #available(iOS 26.1, *) {
 			content
 				.tabViewBottomAccessory(isEnabled: isEnabled, content: contents)
 		} else {
 			content
 		}
+#else
+		content
+#endif
 	}
 }
 
