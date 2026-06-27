@@ -201,6 +201,7 @@
 		A924C3712EA9127200F20781 /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
 		A924C3742EA9134C00F20781 /* StickerSlack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerSlack.entitlements; sourceTree = "<group>"; };
 		A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategory.swift; sourceTree = "<group>"; };
+		A94693D62FEF0A4200E56AC5 /* TabbedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedContentView.swift; sourceTree = "<group>"; };
 		A949B1DF2EA04C0B00215164 /* StickerSlack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StickerSlack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A949B1EF2EA04E8200215164 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A949B1F02EA04E8200215164 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -371,6 +372,7 @@
 		A91C098E2EBBD7C700210C34 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				A94693D62FEF0A4200E56AC5 /* TabbedContentView.swift */,
 				A94F3E632F9E384D00FA6995 /* TableView */,
 				A94F3E642F9E385300FA6995 /* CollectionView */,
 				A9C52F712F89A85F00078588 /* ShareSheet.swift */,
