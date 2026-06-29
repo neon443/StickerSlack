@@ -75,6 +75,8 @@
 		A99589B12F5E0D83003A4A8C /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = A99589AE2F5E0D83003A4A8C /* image.png */; };
 		A995D95B2F6EBBDD0043E5F5 /* TestStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995D95A2F6EBBDD0043E5F5 /* TestStructures.swift */; };
 		A995D95C2F6EBBDD0043E5F5 /* TestStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995D95A2F6EBBDD0043E5F5 /* TestStructures.swift */; };
+		A99C4B8D2FF2E8D30070CBA5 /* TabbedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94693D62FEF0A4200E56AC5 /* TabbedContentView.swift */; };
+		A99C4B8E2FF2E8D30070CBA5 /* TabbedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94693D62FEF0A4200E56AC5 /* TabbedContentView.swift */; };
 		A9A7A43F2F6835F800BB84C6 /* Trending.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A43E2F6835F800BB84C6 /* Trending.swift */; };
 		A9A7A4402F6835F800BB84C6 /* Trending.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A43E2F6835F800BB84C6 /* Trending.swift */; };
 		A9A7A4422F68360200BB84C6 /* GifObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4412F68360200BB84C6 /* GifObject.swift */; };
@@ -733,6 +735,7 @@
 				A9C52F752F89A93D00078588 /* URL.swift in Sources */,
 				A9CD6C352EDDE22800B7F421 /* EmojiPackDetailView.swift in Sources */,
 				A9F7B3812F8951210071F198 /* EmojiPackImporterView.swift in Sources */,
+				A99C4B8D2FF2E8D30070CBA5 /* TabbedContentView.swift in Sources */,
 				A9A7A44E2F68383900BB84C6 /* GiphyImages.swift in Sources */,
 				A9C172DD2EB8C9AC008A7885 /* Trie.swift in Sources */,
 				A955B3F22EC22E9700E1732D /* BrowseView.swift in Sources */,
@@ -801,6 +804,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A99C4B8E2FF2E8D30070CBA5 /* TabbedContentView.swift in Sources */,
 				A9A7A4462F68360900BB84C6 /* Pagination.swift in Sources */,
 				A957C17C2ECE542D00EA3EE9 /* GifManager.swift in Sources */,
 				A9104C7F2EB4022500D160EA /* MSSticker.swift in Sources */,

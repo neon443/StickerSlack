@@ -17,7 +17,7 @@ struct WelcomeView: View {
 	var body: some View {
 		VStack(spacing: 0) {
 			HStack {
-				Image("icon\(isDark ? "-dark" : "")")
+				Image("icon")
 					.resizable().scaledToFit()
 					.frame(maxWidth: 75)
 				Spacer()
@@ -52,7 +52,7 @@ struct WelcomeView: View {
 					} label: {
 						ContinueButtonView()
 					}
-					.buttonStyle(.glassProminent)
+					.modifier(glassButtonIfAv())
 				} else {
 					Button() {
 						dismiss()

@@ -20,7 +20,7 @@ struct SettingsView: View {
 			List {
 				Section {
 					HStack {
-						Image(isDark ? "icon-dark" : "icon")
+						Image("icon")
 							.resizable().scaledToFit()
 							.frame(width: 100, height: 100)
 							.clipShape(RoundedRectangle(cornerRadius: 24))
