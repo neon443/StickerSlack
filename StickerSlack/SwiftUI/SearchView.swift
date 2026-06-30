@@ -58,14 +58,12 @@ struct SearchView: View {
 	var body: some View {
 		VStack {
 			if searchTerm.isEmpty {
-				EmptyCollectionView(title: "Search", details: "", systemImage: "magnifyingglass")
+				EmptyCollectionView(title: "Start a Search", details: "", systemImage: "magnifyingglass")
 					.frame(maxHeight: 100)
-					.padding()
 				Spacer()
 			} else if searchResult.isEmpty {
 				EmptyCollectionView(title: "No Results", details: "Try a new search", systemImage: "exclamationmark.magnifyingglass")
 					.frame(maxHeight: 100)
-					.padding()
 				Spacer()
 			} else if fromPackEditor {
 				EmojiCollectionViewRepresentable(
@@ -77,45 +75,6 @@ struct SearchView: View {
 					})
 			} else {
 				EmojiTableViewRepresentable(hoarder: hoarder, items: searchResult)
-			}
-			
-			if fromPackEditor {
-				if searchResult.isEmpty {
-					EmptyCollectionView(title: "No Results", details: "Try a new search", systemImage: "exclamationmark.magnifyingglass")
-						.frame(maxHeight: 100)
-						.padding()
-					Spacer()
-				} else {
-					EmojiCollectionViewRepresentable(
-						hoarder: hoarder,
-						items: searchResult,
-						width: 75,
-						style: .plainWithLabel,
-						onTapCallback: { callback($0)
-						})
-				}
-			} else {
-				switch stickerType {
-				case .slackEmoji:
-					Text("\(searchResult.count)")
-					if searchResult.isEmpty {
-						EmptyCollectionView(title: "No Results", details: "Try a new search", systemImage: "exclamationmark.magnifyingglass")
-							.frame(maxHeight: 100)
-							.padding()
-						Spacer()
-					} else {
-						EmojiTableViewRepresentable(hoarder: hoarder, items: searchResult)
-					}
-				case .giphyGifs:
-					Text("uhh")
-				}
-				Picker("", selection: $stickerType) {
-					ForEach(StickerType.allCases) { type in
-						Text(type.description).tag(type)
-					}
-				}
-				.pickerStyle(.segmented)
-				.padding(.horizontal)
 			}
 		}
 		.searchable(text: $searchTerm)

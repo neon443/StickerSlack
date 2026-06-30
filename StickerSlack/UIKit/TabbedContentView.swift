@@ -13,17 +13,17 @@ final class TabbedContentView: UITabBarController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.edgesForExtendedLayout = .bottom
-		self.extendedLayoutIncludesOpaqueBars = false
+//		self.edgesForExtendedLayout = .bottom
+//		self.extendedLayoutIncludesOpaqueBars = false
 		
-		if #available(iOS 26, *) {
-			let appearance = UITabBarAppearance()
-			appearance.configureWithDefaultBackground()
-			tabBar.standardAppearance = appearance
-			tabBar.scrollEdgeAppearance = appearance
-		} else {
-			self.tabBarController?.tabBar.isTranslucent = false
-		}
+//		if #available(iOS 26, *) {
+//			let appearance = UITabBarAppearance()
+//			appearance.configureWithDefaultBackground()
+//			tabBar.standardAppearance = appearance
+//			tabBar.scrollEdgeAppearance = appearance
+//		} else {
+//			self.tabBarController?.tabBar.isTranslucent = false
+//		}
 		setupTabs()
 	}
 	
@@ -50,10 +50,6 @@ final class TabbedContentView: UITabBarController {
 		let downloaded = UINavigationController(rootViewController: downloadedView)
 		downloadedView.navigationItem.title = "Downloaded"
 		downloaded.tabBarItem = UITabBarItem(title: "Downloaded", image: UIImage(systemName: "arrow.down.circle.fill"), tag: 2)
-		
-//		let downloadedView = DownloadedView(emojiHoarder: emojiHoarder, gifHoarder: gifHoarder)
-//		let downloaded = UIHostingController(rootView: downloadedView)
-//		downloaded.tabBarItem = UITabBarItem(title: "Downloaded", image: UIImage(systemName: "arrow.down.circle.fill"), tag: 2)
 		
 		let settingsView = SettingsView(hoarder: emojiHoarder)
 		let settings = UIHostingController(rootView: settingsView)

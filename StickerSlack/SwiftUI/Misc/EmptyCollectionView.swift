@@ -24,12 +24,14 @@ struct EmptyCollectionView: View {
 					.bold()
 					.font(.title3)
 			}
-			HStack {
-				Spacer()
-				Text(details)
-					.multilineTextAlignment(.center)
-					.foregroundStyle(.gray)
-				Spacer()
+			if !details.isEmpty {
+				HStack {
+					Spacer()
+					Text(details)
+						.multilineTextAlignment(.center)
+						.foregroundStyle(.gray)
+					Spacer()
+				}
 			}
 		}
 		.listRowSeparator(.hidden)
