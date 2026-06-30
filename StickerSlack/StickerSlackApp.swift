@@ -7,26 +7,38 @@
 
 import SwiftUI
 
+//@main
+//struct StickerSlackApp: App {
+//	@ObservedObject var emojiHoarder: EmojiHoarder = EmojiHoarder()
+//	@ObservedObject var gifhoarder: GifHoarder = GifHoarder()
+//	
+//	@State var importingEmojiPack: Bool = false
+//	@State var pack: EmojiPack = .new()
+//	
+//	var body: some Scene {
+//		WindowGroup {
+//			ContentView(emojiHoarder: emojiHoarder, gifhoarder: gifhoarder)
+//				.onOpenURL { url in
+//					if let imported = EmojiPack(fromShareLink: url) {
+//						importingEmojiPack = true
+//						pack = imported
+//					}
+//				}
+//				.sheet(isPresented: $importingEmojiPack) {
+//					EmojiPackImporterView(emojiHoarder: emojiHoarder, pack: $pack)
+//				}
+//		}
+//	}
+//}
+
 @main
-struct StickerSlackApp: App {
-	@ObservedObject var emojiHoarder: EmojiHoarder = EmojiHoarder()
-	@ObservedObject var gifhoarder: GifHoarder = GifHoarder()
+class AirAPApp: UIResponder, UIApplicationDelegate {
+	var window: UIWindow?
 	
-	@State var importingEmojiPack: Bool = false
-	@State var pack: EmojiPack = .new()
-	
-	var body: some Scene {
-		WindowGroup {
-			ContentView(emojiHoarder: emojiHoarder, gifhoarder: gifhoarder)
-				.onOpenURL { url in
-					if let imported = EmojiPack(fromShareLink: url) {
-						importingEmojiPack = true
-						pack = imported
-					}
-				}
-				.sheet(isPresented: $importingEmojiPack) {
-					EmojiPackImporterView(emojiHoarder: emojiHoarder, pack: $pack)
-				}
-		}
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
+		window = UIWindow(frame: UIScreen.main.bounds)
+		window?.rootViewController = TabbedContentView()
+		window?.makeKeyAndVisible()
+		return true
 	}
 }

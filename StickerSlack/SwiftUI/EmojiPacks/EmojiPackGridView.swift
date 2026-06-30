@@ -15,7 +15,6 @@ struct EmojiPackGridView: View {
 	@State var initDate: Date = .now
 	
 	@State var showAdder: Bool = false
-	@State var searchTerm: String = ""
 
 	@State var showNotFoundAlert: Bool = false
 	
@@ -109,7 +108,7 @@ struct EmojiPackGridView: View {
 						}
 						.sheet(isPresented: $showAdder) {
 							NavigationView2 {
-								SearchView(hoarder: hoarder, searchTerm: $searchTerm, fromPackEditor: true) { selection in
+								SearchView(hoarder: hoarder, fromPackEditor: true) { selection in
 									withAnimation(.spring) {
 										pack.add(selection)
 									}

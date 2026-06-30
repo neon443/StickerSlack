@@ -12,6 +12,18 @@ import SwiftUI
 final class TabbedContentView: UITabBarController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		self.edgesForExtendedLayout = .bottom
+		self.extendedLayoutIncludesOpaqueBars = false
+		
+		if #available(iOS 26, *) {
+			let appearance = UITabBarAppearance()
+			appearance.configureWithDefaultBackground()
+			tabBar.standardAppearance = appearance
+			tabBar.scrollEdgeAppearance = appearance
+		} else {
+			self.tabBarController?.tabBar.isTranslucent = false
+		}
 		setupTabs()
 	}
 	
@@ -19,30 +31,27 @@ final class TabbedContentView: UITabBarController {
 		let emojiHoarder = EmojiHoarder()
 		let gifHoarder = GifHoarder()
 		
-		let browseView = BrowseView(emojiHoarder: emojiHoarder, gifHoarder: gifHoarder)
-		let browse = UIHostingController(rootView: browseView)
-		browse.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+		let browseView = EmojiTableView(hoarder: emojiHoarder, items: emojiHoarder.emojis.map { $0.name })
+		let browse = UINavigationController(rootViewController: browseView)
+		browseView.navigationItem.title = "Browse"
+		browse.tabBarItem = UITabBarItem(title: "Browse", image: UIImage(systemName: "square.grid.2x2.fill"), tag: 0)
 		
 		let packsView = EmojiPackManager(hoarder: emojiHoarder)
 		let packs = UIHostingController(rootView: packsView)
-		packs.tabBarItem = UITabBarItem(title: "Packs", image: UIImage(systemName: "house"), tag: 1)
+		packs.tabBarItem = UITabBarItem(title: "Packs", image: UIImage(systemName: "square.stack.3d.up.fill"), tag: 1)
 		
 		let downloadedView = DownloadedView(emojiHoarder: emojiHoarder, gifHoarder: gifHoarder)
 		let downloaded = UIHostingController(rootView: downloadedView)
-		downloaded.tabBarItem = UITabBarItem(title: "Downloaded", image: UIImage(systemName: "house"), tag: 2)
+		downloaded.tabBarItem = UITabBarItem(title: "Downloaded", image: UIImage(systemName: "arrow.down.circle.fill"), tag: 2)
 		
 		let settingsView = SettingsView(hoarder: emojiHoarder)
 		let settings = UIHostingController(rootView: settingsView)
-		settings.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 3)
+		settings.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), tag: 3)
 		
-		self.setViewControllers([browse], animated: true)
-		selectedIndex = 0
+		let searchView = SearchView(hoarder: emojiHoarder)
+		let search = UIHostingController(rootView: searchView)
+		search.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 4)
 		
+		self.setViewControllers([browse, packs, downloaded, settings, search], animated: false)
 	}
-}
-
-@available(iOS 17, *)
-#Preview {
-	let view2 = TabbedContentView()
-	return view2.view
 }

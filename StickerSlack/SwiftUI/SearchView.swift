@@ -12,7 +12,7 @@ struct SearchView: View {
 	
 	@FocusState private var searchFocused: Bool
 	@State private var currentSearch: Task<Void, Never>?
-	@Binding var searchTerm: String
+	@State var searchTerm: String = ""
 	@State var previousSearches: [String] = []
 	@State var searchResult: [String] = []
 	
@@ -69,7 +69,7 @@ struct SearchView: View {
 				switch stickerType {
 				case .slackEmoji:
 					Text("\(searchResult.count)")
-					EmojiTableView(hoarder: hoarder, items: searchResult)
+					EmojiTableViewRepresentable(hoarder: hoarder, items: searchResult)
 						.padding(.bottom, 10)
 				case .giphyGifs:
 					Text("uhh")
@@ -100,7 +100,6 @@ struct SearchView: View {
 	
 	SearchView(
 		hoarder: EmojiHoarder(localOnly: true),
-		searchTerm: $searchTerm,
 		fromPackEditor: true
 	) {
 		print($0)

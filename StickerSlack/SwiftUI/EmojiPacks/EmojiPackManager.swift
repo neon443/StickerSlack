@@ -29,6 +29,12 @@ struct EmojiPackManager: View {
 						Text(pack.name)
 					}
 					.swipeActions(edge: .trailing) {
+						Button {
+							hoarder.removeEmojiPack(pack)
+						} label: {
+							Label("Delete", systemImage: "trash")
+						}
+						.tint(.red)
 						if #available(iOS 16, *) {
 							ShareLink(item: pack.shareLink())
 						} else {
@@ -41,12 +47,6 @@ struct EmojiPackManager: View {
 								ShareSheet(activityItems: [pack.shareLink()])
 							}
 						}
-						Button {
-							hoarder.removeEmojiPack(pack)
-						} label: {
-							Label("Delete", systemImage: "trash")
-						}
-						.tint(.red)
 					}
 				}
 			}

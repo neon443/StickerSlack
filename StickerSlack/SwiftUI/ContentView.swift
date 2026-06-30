@@ -45,17 +45,10 @@ struct ContentView: View {
 					
 					Tab(value: AppTab.search, role: .search) {
 						NavigationStack {
-							SearchView(hoarder: emojiHoarder, searchTerm: $searchTerm)
+							SearchView(hoarder: emojiHoarder)
 						}
 					}
 				}
-//				.tabViewBottomAccessorySafe() {
-//					HStack {
-//						Image(systemName: "magnifyingglass")
-//						TextField("", text: $searchTerm, prompt: Text("Search"))
-//					}
-//					.padding(.horizontal)
-//				}
 			} else {
 				TabView(selection: $tabSelection) {
 					BrowseView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
@@ -79,7 +72,7 @@ struct ContentView: View {
 							Label("Setings", systemImage: "gear")
 						}
 					NavigationView2 {
-						SearchView(hoarder: emojiHoarder, searchTerm: $searchTerm)
+						SearchView(hoarder: emojiHoarder)
 					}
 					.tag(AppTab.search)
 					.tabItem {

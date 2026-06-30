@@ -2,125 +2,108 @@
 //  EmojiTableView.swift
 //  StickerSlack
 //
-//  Created by neon443 on 03/11/2025.
+//  Created by neon443 on 30/06/2026.
 //
 
 import Foundation
 import UIKit
-import SwiftUI
-import Haptics
 
-struct EmojiTableView: UIViewRepresentable {
-	let hoarder: EmojiHoarder
-	let items: [String]
+final class EmojiTableView: UITableViewController {
+	var dataSource: UITableViewDiffableDataSource<Int, String>!
+	var hoarder: EmojiHoarder
+	var items: [String]
 	
-	func makeUIView(context: Context) -> UITableView {
-		let tableView = context.coordinator as UITableViewController
-		tableView.tableView.register(EmojiTableViewCell.self, forCellReuseIdentifier: "cell")
-		return tableView.tableView
+	init(hoarder: EmojiHoarder, items: [String]) {
+		self.hoarder = hoarder
+		self.items = items
+		super.init(style: .plain)
+		self.dataSource = UITableViewDiffableDataSource<Int, String>(tableView: tableView) { (tableView: UITableView, indexPath: IndexPath, itemIdentifier: String) -> UITableViewCell? in
+			return self.cell(tableView, indexPath: indexPath, forItemIdentifier: itemIdentifier)
+		}
+		tableView.dataSource = dataSource
+		tableView.register(EmojiTableViewCell.self, forCellReuseIdentifier: "cell")
+		self.refreshUI(with: items)
 	}
 	
-	func updateUIView(_ uiView: UITableView, context: Context) {
-		context.coordinator.hoarder = hoarder
-		
-		let itemsBefore = context.coordinator.items
-		let itemsAfter = items
-		context.coordinator.items = items
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
+	func refreshUI(with newItems: [String]) {
+		let itemsBefore = self.items
+		let itemsAfter = newItems
+		self.items = newItems
 		Task.detached {
 			//if its being cleared or removign 10k+
 			guard !itemsAfter.isEmpty && itemsBefore.count-itemsAfter.count < 10_000 else {
-				await context.coordinator.instantApplySnapshot()
+				await self.instantApplySnapshot()
 				return
 			}
-			await context.coordinator.applySnapshot(animated: true)
+			await self.applySnapshot(animated: true)
 		}
 	}
 	
-	func makeCoordinator() -> Coordinator {
-		Coordinator(hoarder: hoarder, items: items)
+	func makeSnapshot() -> NSDiffableDataSourceSnapshot<Int, String> {
+		var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+		snapshot.appendSections([0])
+		snapshot.appendItems(items, toSection: 0)
+		return snapshot
+	}
+	func applySnapshot(animated: Bool) async {
+		let snapshot = makeSnapshot()
+		await (self.tableView.dataSource as! UITableViewDiffableDataSource).apply(snapshot, animatingDifferences: animated)
+	}
+	func instantApplySnapshot() async {
+		let snapshot = makeSnapshot()
+		await (self.tableView.dataSource as! UITableViewDiffableDataSource).applySnapshotUsingReloadData(snapshot)
 	}
 	
-	final class Coordinator: UITableViewController {
-		var dataSource: UITableViewDiffableDataSource<Int, String>!
-		var hoarder: EmojiHoarder
-		var items: [String]
+	func cell(
+		_ tableView: UITableView,
+		indexPath: IndexPath,
+		forItemIdentifier itemIdentifier: String
+	) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! EmojiTableViewCell
+		cell.selectionStyle = .none
 		
-		init(hoarder: EmojiHoarder, items: [String]) {
-			self.hoarder = hoarder
-			self.items = items
-			super.init(style: .plain)
-			self.dataSource = UITableViewDiffableDataSource<Int, String>(tableView: tableView) { (tableView: UITableView, indexPath: IndexPath, itemIdentifier: String) -> UITableViewCell? in
-				return self.cell(tableView, indexPath: indexPath, forItemIdentifier: itemIdentifier)
-			}
-			tableView.dataSource = dataSource
-		}
+		guard !hoarder.trie.dict.isEmpty else { return cell }
 		
-		required init?(coder: NSCoder) {
-			fatalError("init(coder:) has not been implemented")
-		}
+		guard let emoji = hoarder.trie.dict[itemIdentifier] else { return cell }
 		
-		func makeSnapshot() -> NSDiffableDataSourceSnapshot<Int, String> {
-			var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-			snapshot.appendSections([0])
-			snapshot.appendItems(items, toSection: 0)
-			return snapshot
+		cell.configure(with: hoarder, emoji: emoji)
+		return cell
+	}
+	
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return items.count
+	}
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		let refreshControl = UIRefreshControl()
+		refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+		if #available(iOS 10, *) {
+			tableView.refreshControl = refreshControl
+		} else {
+			tableView.backgroundView = refreshControl
 		}
-		func applySnapshot(animated: Bool) async {
-			let snapshot = makeSnapshot()
-			await (self.tableView.dataSource as! UITableViewDiffableDataSource).apply(snapshot, animatingDifferences: animated)
-		}
-		func instantApplySnapshot() async {
-			let snapshot = makeSnapshot()
-			await (self.tableView.dataSource as! UITableViewDiffableDataSource).applySnapshotUsingReloadData(snapshot)
-		}
+	}
+	
+	@objc func refresh(_ refreshControl: UIRefreshControl) {
+		hoarder.startLoading(localOnly: false, skipIndex: false)
+		refreshControl.endRefreshing()
 		
-		func cell(
-			_ tableView: UITableView,
-			indexPath: IndexPath,
-			forItemIdentifier itemIdentifier: String
-		) -> UITableViewCell {
-			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! EmojiTableViewCell
-			cell.selectionStyle = .none
-			
-			guard !hoarder.trie.dict.isEmpty else { return cell }
-			
-			guard let emoji = hoarder.trie.dict[itemIdentifier] else { return cell }
-			
-			cell.configure(with: hoarder, emoji: emoji)
-			return cell
-		}
-		
-		override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-			return items.count
-		}
-		
-		override func viewDidLoad() {
-			super.viewDidLoad()
-			let refreshControl = UIRefreshControl()
-			refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
-			if #available(iOS 10, *) {
-				tableView.refreshControl = refreshControl
-			} else {
-				tableView.backgroundView = refreshControl
-			}
-		}
-		
-		@objc func refresh(_ refreshControl: UIRefreshControl) {
-			hoarder.startLoading(localOnly: false, skipIndex: false)
-			refreshControl.endRefreshing()
-			
-		}
-		
-		override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	}
+	
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //			<#code#>
-		}
-		
-		override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+	}
+	
+	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
 //			<#code#>
-		}
-		
-		override func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
-			return true
-		}
+	}
+	
+	override func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+		return true
 	}
 }
