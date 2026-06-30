@@ -118,7 +118,7 @@ struct SettingsView: View {
 						Label("jumbomoji search", systemImage: "text.page.badge.magnifyingglass")
 					}
 					NavigationLink {
-						EmojiCollectionView(
+						EmojiCollectionViewRepresentable(
 							hoarder: hoarder,
 							items: [
 								"btn-3kh0-1",
@@ -147,7 +147,7 @@ struct SettingsView: View {
 						Label("jumbomoji", systemImage: "square.split.2x2")
 					}
 					NavigationLink {
-						EmojiCollectionView(
+						EmojiCollectionViewRepresentable(
 							hoarder: hoarder,
 							items: hoarder.emojis.prefix(10000).map { $0.name },
 							width: 10,

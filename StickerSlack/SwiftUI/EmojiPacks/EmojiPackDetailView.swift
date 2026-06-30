@@ -58,7 +58,11 @@ struct EmojiPackDetailView: View {
 				}
 				
 				if pack.items.isEmpty {
-					EmptyEmojiPackView()
+					EmptyCollectionView(
+						title: "No Emoji",
+						details: "Add emojis to this pack by editing it using the pencil button in the toolbar.",
+						systemImage: "exclamationmark.triangle.fill"
+					)
 				}
 				
 				if useSwiftUIGrid {
@@ -68,7 +72,7 @@ struct EmojiPackDetailView: View {
 						edit: $edit
 					)
 				} else {
-					EmojiCollectionView(
+					EmojiCollectionViewRepresentable(
 						hoarder: hoarder,
 						items: pack.items,
 						width: 75,

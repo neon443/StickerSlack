@@ -57,8 +57,18 @@ struct SearchView: View {
 	
 	var body: some View {
 		VStack {
-			if fromPackEditor {
-				EmojiCollectionView(
+			if searchTerm.isEmpty {
+				EmptyCollectionView(title: "Search", details: "", systemImage: "magnifyingglass")
+					.frame(maxHeight: 100)
+					.padding()
+				Spacer()
+			} else if searchResult.isEmpty {
+				EmptyCollectionView(title: "No Results", details: "Try a new search", systemImage: "exclamationmark.magnifyingglass")
+					.frame(maxHeight: 100)
+					.padding()
+				Spacer()
+			} else if fromPackEditor {
+				EmojiCollectionViewRepresentable(
 					hoarder: hoarder,
 					items: searchResult,
 					width: 75,
@@ -66,11 +76,36 @@ struct SearchView: View {
 					onTapCallback: { callback($0)
 					})
 			} else {
+				EmojiTableViewRepresentable(hoarder: hoarder, items: searchResult)
+			}
+			
+			if fromPackEditor {
+				if searchResult.isEmpty {
+					EmptyCollectionView(title: "No Results", details: "Try a new search", systemImage: "exclamationmark.magnifyingglass")
+						.frame(maxHeight: 100)
+						.padding()
+					Spacer()
+				} else {
+					EmojiCollectionViewRepresentable(
+						hoarder: hoarder,
+						items: searchResult,
+						width: 75,
+						style: .plainWithLabel,
+						onTapCallback: { callback($0)
+						})
+				}
+			} else {
 				switch stickerType {
 				case .slackEmoji:
 					Text("\(searchResult.count)")
-					EmojiTableViewRepresentable(hoarder: hoarder, items: searchResult)
-						.padding(.bottom, 10)
+					if searchResult.isEmpty {
+						EmptyCollectionView(title: "No Results", details: "Try a new search", systemImage: "exclamationmark.magnifyingglass")
+							.frame(maxHeight: 100)
+							.padding()
+						Spacer()
+					} else {
+						EmojiTableViewRepresentable(hoarder: hoarder, items: searchResult)
+					}
 				case .giphyGifs:
 					Text("uhh")
 				}

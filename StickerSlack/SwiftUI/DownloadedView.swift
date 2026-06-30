@@ -41,7 +41,7 @@ struct DownloadedView: View {
 				.padding()
 		}
 		
-		EmojiCollectionView(
+		EmojiCollectionViewRepresentable(
 			hoarder: emojiHoarder,
 			items: emojiHoarder.downloadedStickersArr,
 			width: 75,

@@ -32,7 +32,7 @@ import SwiftUI
 //}
 
 @main
-class AirAPApp: UIResponder, UIApplicationDelegate {
+class StickerSlackApp: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {

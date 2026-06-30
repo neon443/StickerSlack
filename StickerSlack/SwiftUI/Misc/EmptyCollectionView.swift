@@ -13,29 +13,37 @@ struct EmptyCollectionView: View {
 	@State var systemImage: String
 	
     var body: some View {
-		ZStack {
-			Color.accentColor
-				.opacity(0.4)
-				.padding(.horizontal, -15)
-				.padding(.vertical, -15)
-				.blur(radius: 5)
+		VStack {
 			HStack {
 				Image(systemName: systemImage)
 					.resizable()
 					.scaledToFit()
 					.frame(width: 25)
+					.padding(.horizontal, 5)
 				Text(title)
 					.bold()
 					.font(.title3)
 			}
+			HStack {
+				Spacer()
+				Text(details)
+					.multilineTextAlignment(.center)
+					.foregroundStyle(.gray)
+				Spacer()
+			}
 		}
 		.listRowSeparator(.hidden)
-		HStack {
-			Spacer()
-			Text(details)
-				.multilineTextAlignment(.center)
-			Spacer()
+		.transition(.scale)
+		.multilineTextAlignment(.center)
+		.frame(maxWidth: .infinity)
+		.padding()
+		.background {
+			Color.accentColor.opacity(0.2)
+				.clipShape(RoundedRectangle(cornerRadius: 10))
+				.blur(radius: 5)
+				.shadow(color: .accentColor, radius: 5)
 		}
+		.padding()
     }
 }
 

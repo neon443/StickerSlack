@@ -1,8 +1,8 @@
 //
-//  EmojiTableView.swift
+//  EmojiTableViewRepresentable.swift
 //  StickerSlack
 //
-//  Created by neon443 on 03/11/2025.
+//  Created by neon443 on 30/06/2026.
 //
 
 import Foundation

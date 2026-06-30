@@ -28,7 +28,7 @@ struct JumboMojiTestView: View {
 				}
 			ForEach(jumboMoji, id: \.self) { jumboMoji in
 				HStack {
-					EmojiCollectionView(
+					EmojiCollectionViewRepresentable(
 						hoarder: hoarder,
 						items: jumboMoji.items,
 						width: CGFloat(jumboMoji.width),
