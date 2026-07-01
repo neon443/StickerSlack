@@ -71,23 +71,21 @@ struct EmojiPackManager: View {
 					ToolbarSpacer()
 				}
 				
-//				if editMode?.wrappedValue.isEditing ?? false {
-					ToolbarItem(placement: .topBarLeading) {
-						Button("", systemImage: "trash") {
-							showDeleteAlert.toggle()
-						}
-						.disabled(selection.isEmpty)
-						.confirmationDialog("These items will be deleted immediately", isPresented: $showDeleteAlert) {
-							Button("Delete \(selection.count) pack\(selection.count.plural)", role: .destructive) {
-								for pack in selection {
-									hoarder.removeEmojiPack(pack)
-								}
-							}
-						} message: {
-							Text("This action cannot be undone")
-						}
+				ToolbarItem(placement: .topBarLeading) {
+					Button("", systemImage: "trash") {
+						showDeleteAlert.toggle()
 					}
-//				}
+					.disabled(selection.isEmpty)
+//					.confirmationDialog("These items will be deleted immediately", isPresented: $showDeleteAlert) {
+//						Button("Delete \(selection.count) pack\(selection.count.plural)", role: .destructive) {
+//							for pack in selection {
+//								hoarder.removeEmojiPack(pack)
+//							}
+//						}
+//					} message: {
+//						Text("This action cannot be undone")
+//					}
+				}
 			}
 		}
 	}

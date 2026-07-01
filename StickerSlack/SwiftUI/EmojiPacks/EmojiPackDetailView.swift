@@ -159,6 +159,7 @@ struct EmojiPackDetailView: View {
 								}
 							}
 						}
+						.disabled(pack.items.isEmpty)
 						.tint(allDownloaded ? .red : .accentColor)
 					}
 				}
