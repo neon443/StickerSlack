@@ -68,6 +68,8 @@
 		A986A6CE2EB659E000B6E0FA /* StickerBrowserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */; };
 		A986A6CF2EB659E000B6E0FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A986A6C62EB659E000B6E0FA /* Assets.xcassets */; };
 		A986A6D12EB659E000B6E0FA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A986A6C92EB659E000B6E0FA /* MainInterface.storyboard */; };
+		A98BD15C2FF5242700ADC264 /* EmojiPackPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98BD15B2FF5242700ADC264 /* EmojiPackPreview.swift */; };
+		A98BD15D2FF5242700ADC264 /* EmojiPackPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98BD15B2FF5242700ADC264 /* EmojiPackPreview.swift */; };
 		A98FA65B2FF3B29700D50212 /* EmojiTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FA65A2FF3B29700D50212 /* EmojiTableView.swift */; };
 		A98FA65C2FF3B29700D50212 /* EmojiTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FA65A2FF3B29700D50212 /* EmojiTableView.swift */; };
 		A98FA6612FF3BD5400D50212 /* EmojiCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FA6602FF3BD5400D50212 /* EmojiCollectionView.swift */; };
@@ -234,6 +236,7 @@
 		A986A6C82EB659E000B6E0FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A986A6CA2EB659E000B6E0FA /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBrowserDataSource.swift; sourceTree = "<group>"; };
+		A98BD15B2FF5242700ADC264 /* EmojiPackPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackPreview.swift; sourceTree = "<group>"; };
 		A98FA65A2FF3B29700D50212 /* EmojiTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTableView.swift; sourceTree = "<group>"; };
 		A98FA6602FF3BD5400D50212 /* EmojiCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionView.swift; sourceTree = "<group>"; };
 		A99589AE2F5E0D83003A4A8C /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
@@ -348,6 +351,7 @@
 			children = (
 				A9CD6C342EDDE22800B7F421 /* EmojiPackDetailView.swift */,
 				A9CD6C372EDDE37500B7F421 /* EmojiPackManager.swift */,
+				A98BD15B2FF5242700ADC264 /* EmojiPackPreview.swift */,
 				A9F7B37F2F8951210071F198 /* EmojiPackImporterView.swift */,
 				A9C52F6E2F89A22000078588 /* Wiggle.metal */,
 				A975F9182FA38C8D00A5C62E /* EmojiPackGridView.swift */,
@@ -727,6 +731,7 @@
 				A957C1742ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
 				A9A7A44B2F6837A800BB84C6 /* GiphyUser.swift in Sources */,
 				A9EB72392EB93FDB00658CEB /* EmojiTableViewRepresentable.swift in Sources */,
+				A98BD15D2FF5242700ADC264 /* EmojiPackPreview.swift in Sources */,
 				A955B3EE2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
 				A949B1FB2EA0518800215164 /* SlackResponse.swift in Sources */,
 				A957C17A2ECE542D00EA3EE9 /* GifManager.swift in Sources */,
@@ -831,6 +836,7 @@
 				A9A7A4492F68361200BB84C6 /* Meta.swift in Sources */,
 				A9EB724A2EB948E000658CEB /* EmojiTableViewRepresentable.swift in Sources */,
 				A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
+				A98BD15C2FF5242700ADC264 /* EmojiPackPreview.swift in Sources */,
 				A9BBC51A2EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A995D95B2F6EBBDD0043E5F5 /* TestStructures.swift in Sources */,
 				A955B3ED2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
@@ -1039,7 +1045,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13;
@@ -1091,7 +1097,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13;
@@ -1128,7 +1134,7 @@
 				INFOPLIST_FILE = StickerSlackiMessageApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StickerSlack;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1160,7 +1166,7 @@
 				INFOPLIST_FILE = StickerSlackiMessageApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StickerSlack;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct EmojiPack: Identifiable, Codable, Equatable {
+struct EmojiPack: Identifiable, Codable, Equatable, Hashable {
 	var id: UUID
 	var name: String
 	var description: String

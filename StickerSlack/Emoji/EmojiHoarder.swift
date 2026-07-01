@@ -11,24 +11,24 @@ import Combine
 import UniformTypeIdentifiers
 import Haptics
 
-class EmojiHoarder: BaseHoarder {
+@Observable class EmojiHoarder: BaseHoarder {
 	static let container: URL = library.appendingPathComponent("Emojis", conformingTo: .directory)
 	nonisolated static let localEmojiDB: URL = EmojiHoarder.library.appendingPathComponent("localEmojiDB.json", conformingTo: .fileURL)
 	nonisolated static let localTrieDict: URL = EmojiHoarder.library.appendingPathComponent("localTrieDict.json", conformingTo: .fileURL)
 	nonisolated static let packStore: URL = EmojiHoarder.library.appendingPathComponent("packStore.json", conformingTo: .fileURL)
 	let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	
-	@Published var emojis: [Emoji] = []
-	@Published var emojiPacks: [EmojiPack] = []
+	var emojis: [Emoji] = []
+	var emojiPacks: [EmojiPack] = []
 	
-	@Published var trie: Trie = Trie()
+	var trie: Trie = Trie()
 	//	@Published var downloadedStickers: Set<String> = []
 	var downloadedStickersArr: [String] = []
 	
-	@Published var letterStats: [EmojiHoarder.LetterStat] = []
-	@Published var letterStatsSorting: EmojiHoarder.LetterStatSorting = .init(by: .letter, ascending: true)
+	var letterStats: [EmojiHoarder.LetterStat] = []
+	var letterStatsSorting: EmojiHoarder.LetterStatSorting = .init(by: .letter, ascending: true)
 	
-	@Published var showWelcome: Bool = false
+	var showWelcome: Bool = false
 	
 	init(localOnly: Bool = false, skipIndex: Bool = false) {
 		super.init()
@@ -302,6 +302,20 @@ class EmojiHoarder: BaseHoarder {
 	func removeEmojiPack(_ packToRemove: EmojiPack) {
 		withAnimation {
 			emojiPacks.removeAll { $0.id == packToRemove.id }
+		}
+		saveEmojiPacks()
+	}
+	
+	func removeEmojiPack(atOffsets offset: IndexSet) {
+		withAnimation {
+			emojiPacks.remove(atOffsets: offset)
+		}
+		saveEmojiPacks()
+	}
+	
+	func moveEmojiPacks(fromOffsets: IndexSet, toOffset: Int) {
+		withAnimation {
+			emojiPacks.move(fromOffsets: fromOffsets, toOffset: toOffset)
 		}
 		saveEmojiPacks()
 	}

@@ -21,11 +21,11 @@ protocol Hoarder: ObservableObject {
 	nonisolated func delete(emoji: any StickerProtocol, skipStoreIndex: Bool) async
 }
 
-class BaseHoarder: Hoarder {
+@Observable class BaseHoarder: Hoarder {
 	
 	static let library: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
 	
-	@Published var downloadedStickers: Set<String> = []
+	var downloadedStickers: Set<String> = []
 
 	var encoder: JSONEncoder = JSONEncoder()
 	var decoder: JSONDecoder = JSONDecoder()

@@ -82,11 +82,13 @@ struct EmojiPackDetailView: View {
 					)
 				}
 				
-				Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
-					.bold()
-					.multilineTextAlignment(.center)
-					.shadow(radius: 5)
-					.padding(.bottom)
+				if !pack.items.isEmpty {
+					Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
+						.bold()
+						.multilineTextAlignment(.center)
+						.shadow(radius: 5)
+						.padding(.bottom)
+				}
 			}
 			.transition(.scale)
 			.navigationTitle(edit ? "Editing" : "Pack Details")
