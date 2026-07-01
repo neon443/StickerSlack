@@ -76,6 +76,7 @@ struct EmojiPackManager: View {
 						Button("", systemImage: "trash") {
 							showDeleteAlert.toggle()
 						}
+						.disabled(selection.isEmpty)
 						.confirmationDialog("These items will be deleted immediately", isPresented: $showDeleteAlert) {
 							Button("Delete \(selection.count) pack\(selection.count.plural)", role: .destructive) {
 								for pack in selection {
