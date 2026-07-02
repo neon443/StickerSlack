@@ -40,6 +40,10 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		
 		super.init(collectionViewLayout: layout)
 		
+		collectionView.register(PlainEmojiCollectionViewCell.self, forCellWithReuseIdentifier: "plain")
+		collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "full")
+		collectionView.delegate = self
+		
 		self.dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: String) -> UICollectionViewCell? in
 			self.collectionView(collectionView, cellForItemAt: indexPath)
 		}
@@ -74,7 +78,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		self.refreshUI(edit: edit, with: items)
 	}
 	
-	func refreshUI(edit: Bool?, with items: [String]) {
+	func refreshUI(edit: Bool? = false, with items: [String]) {
 		self.edit = edit
 		if edit ?? false {
 			self.startAnimating()

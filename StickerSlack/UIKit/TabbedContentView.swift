@@ -41,15 +41,8 @@ final class TabbedContentView: UITabBarController {
 		packs.tabBarItem = UITabBarItem(title: "Packs", image: UIImage(systemName: "square.stack.3d.up.fill"), tag: 1)
 		
 		
-		let downloadedView = EmojiCollectionView(
-			hoarder: emojiHoarder,
-			items: emojiHoarder.downloadedStickersArr,
-			width: 75,
-			style: .plainWithMenu
-		)
-		let downloaded = UINavigationController(rootViewController: downloadedView)
-		downloadedView.navigationItem.title = "Downloaded"
-		downloaded.tabBarItem = UITabBarItem(title: "Downloaded", image: UIImage(systemName: "arrow.down.circle.fill"), tag: 2)
+		let downloaded = DownloadedViewController(emojiHoarder: emojiHoarder)
+		downloaded.tabBarItem = UITabBarItem(title: "Saved", image: UIImage(systemName: "arrow.down.circle.fill"), tag: 2)
 		
 		let settingsView = SettingsView(hoarder: emojiHoarder)
 		let settings = UIHostingController(rootView: settingsView)

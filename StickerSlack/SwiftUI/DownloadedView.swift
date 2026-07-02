@@ -11,21 +11,21 @@ struct DownloadedView: View {
 	@ObservedObject var emojiHoarder: EmojiHoarder
 	@ObservedObject var gifHoarder: GifHoarder
 	
-	@Environment(\.colorScheme) var colorScheme
-	var isDark: Bool { colorScheme == .dark }
-	@State var browseWhat: StickerType = .slackEmoji
+//	@Environment(\.colorScheme) var colorScheme
+//	var isDark: Bool { colorScheme == .dark }
+	@State private var browseWhat: StickerType = .slackEmoji
 	
-	@State var showShare: Bool = false
+//	@State var showShare: Bool = false
 	
-	var minColWidth: CGFloat { 75 }
-	var spacing: CGFloat { 5 }
-	var col: GridItem {
-		GridItem(
-			.flexible(minimum: minColWidth, maximum: 100),
-			spacing: spacing,
-			alignment: .center
-		)
-	}
+//	var minColWidth: CGFloat { 75 }
+//	var spacing: CGFloat { 5 }
+//	var col: GridItem {
+//		GridItem(
+//			.flexible(minimum: minColWidth, maximum: 100),
+//			spacing: spacing,
+//			alignment: .center
+//		)
+//	}
 	
 	var body: some View {
 		Picker("", selection: $browseWhat) {

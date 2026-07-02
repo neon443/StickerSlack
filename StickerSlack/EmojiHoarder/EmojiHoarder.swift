@@ -41,6 +41,7 @@ import Haptics
 		loadEmojiPacks()
 		
 		self.emojis = loadLocalDB()
+		sendChangeNotif(for: .emojis)
 		self.trie.dict = loadTrieDict()
 		
 		startLoading(localOnly: localOnly, skipIndex: skipIndex)
@@ -64,48 +65,6 @@ import Haptics
 		}
 	}
 	
-	func downloadAllStickers() async {
-		let start: Date = .now
-		
-//		let dict = trie.dict
-//		let allStickers = Set(emojis.map { $0.name })
-//		let downloadedStickers = downloadedStickers
-//		let toDownload = allStickers.filter { !downloadedStickers.contains($0) }
-//		
-//		await withTaskGroup { group in
-//			for name in toDownload {
-//				group.addTask {
-//					await self.download(emoji: dict[name], skipStoreIndex: true)
-//				}
-//			}
-//		}
-//		await buildDownloadedStickers()
-		
-		let cores = ProcessInfo.processInfo.processorCount-1
-		var ranges: [Range<Int>] = []
-		for i in 0..<cores {
-			let onething = emojis.count/cores
-			ranges.append(onething*i..<onething + (onething*i))
-			if i == (0..<cores).last {
-				let last = ranges.last!
-				ranges.removeLast()
-				ranges.append(onething*i..<(onething + (onething*i)+emojis.count-last.upperBound))
-			}
-		}
-		
-		await withTaskGroup { group in
-			for range in ranges {
-				group.addTask {
-					for i in range {
-						await self.download(emoji: self.emojis[i], skipStoreIndex: true)
-					}
-				}
-			}
-		}
-		
-		print(Date.now.timeIntervalSince(start))
-	}
-	
 	func deleteAllStickers() async {
 		await withTaskGroup { group in
 			for i in emojis.indices {
@@ -118,6 +77,7 @@ import Haptics
 		await MainActor.run {
 			downloadedStickers = []
 			downloadedStickersArr = []
+			sendChangeNotif(for: .downloadedEmojis)
 		}
 	}
 	
@@ -133,6 +93,7 @@ import Haptics
 		try? FileManager.default.removeItem(at: EmojiHoarder.localTrieDict)
 		
 		downloadedStickers = []
+		sendChangeNotif(for: .downloadedEmojis)
 		letterStats = []
 	}
 	
@@ -172,6 +133,7 @@ import Haptics
 	nonisolated override func buildDownloadedStickers(for stickerType: String = "Emojis") async {
 		await super.buildDownloadedStickers(for: stickerType)
 		downloadedStickersArr = await Array(downloadedStickers).sorted()
+		sendChangeNotif(for: .downloadedEmojis)
 	}
 
 	private func loadLocalDB() -> [Emoji] {
@@ -192,6 +154,7 @@ import Haptics
 		   await fetched != self.emojis {
 			await MainActor.run {
 				withAnimation(.snappy) { self.emojis = fetched }
+				sendChangeNotif(for: .emojis)
 			}
 		}
 	}
@@ -206,6 +169,35 @@ import Haptics
 			print(error.localizedDescription)
 			return nil
 		}
+	}
+	
+	//MARK: emojis
+	func downloadAllStickers() async {
+		let start: Date = .now
+		
+		let cores = ProcessInfo.processInfo.processorCount-1
+		var ranges: [Range<Int>] = []
+		for i in 0..<cores {
+			let onething = emojis.count/cores
+			ranges.append(onething*i..<onething + (onething*i))
+			if i == (0..<cores).last {
+				let last = ranges.last!
+				ranges.removeLast()
+				ranges.append(onething*i..<(onething + (onething*i)+emojis.count-last.upperBound))
+			}
+		}
+		
+		await withTaskGroup { group in
+			for range in ranges {
+				group.addTask {
+					for i in range {
+						await self.download(emoji: self.emojis[i], skipStoreIndex: true)
+					}
+				}
+			}
+		}
+		
+		print(Date.now.timeIntervalSince(start))
 	}
 	
 	nonisolated func batchDownload(emojis emojisToDownload: [any StickerProtocol]) async {
@@ -229,6 +221,7 @@ import Haptics
 				let _ = withAnimation(.snappy) {
 					self.downloadedStickers.insert(emoji.name)
 					self.downloadedStickersArr.append(emoji.name)
+					sendChangeNotif(for: .downloadedEmojis)
 				}
 			}
 		}
@@ -242,9 +235,6 @@ import Haptics
 				}
 			}
 		}
-//		for emoji in emojisToDelete {
-//			await delete(emoji: emoji, skipStoreIndex: true)
-//		}
 		await buildDownloadedStickers()
 	}
 	
@@ -257,6 +247,7 @@ import Haptics
 				let _ = withAnimation(.snappy) {
 					downloadedStickers.remove(emoji.name)
 					downloadedStickersArr.removeAll(where: { $0 == emoji.name })
+					sendChangeNotif(for: .downloadedEmojis)
 				}
 			}
 		}
@@ -267,103 +258,38 @@ import Haptics
 		self.showWelcome = newValue
 	}
 	
-	func loadEmojiPacks() {
-		guard let data = try? Data(contentsOf: Self.packStore),
-			  let decoded = try? decoder.decode([URL].self, from: data) else { return }
-		self.emojiPacks = decoded.map {
-			EmojiPack(fromShareLink: $0) ?? .new()
+	//MARK: notifications
+	func sendChangeNotif(for notifFor: NotifCategory) {
+		let nc = NotificationCenter.default
+		switch notifFor {
+		case .emojis:
+			nc.post(name: notifFor.name, object: nil)
+		case .downloadedEmojis:
+			nc.post(name: notifFor.name, object: nil)
+		case .emojiPacks:
+			nc.post(name: notifFor.name, object: nil)
+		case .emojiPack(let emojiPack):
+			nc.post(name: notifFor.name, object: nil)
 		}
 	}
 	
-	func saveEmojiPacks() {
-		var toStore: [URL] = []
-		for pack in emojiPacks {
-			toStore.append(pack.shareLink())
-		}
-		guard let encoded = try? encoder.encode(toStore) else { return }
-		try? encoded.write(to: Self.packStore)
-	}
-	
-	func newEmojiPack(withItems items: [String] = []) {
-		addEmojiPack(.new(withItems: items))
-	}
-	
-	func addEmojiPack(_ packToAdd: EmojiPack) {
-		var packToAdd = packToAdd
-		if emojiPacks.contains(where: { $0.id == packToAdd.id }) {
-			packToAdd.id = UUID()
-		}
-		withAnimation {
-			emojiPacks.append(packToAdd)
-		}
-		saveEmojiPacks()
-	}
-	
-	func removeEmojiPack(_ packToRemove: EmojiPack) {
-		withAnimation {
-			emojiPacks.removeAll { $0.id == packToRemove.id }
-		}
-		saveEmojiPacks()
-	}
-	
-	func removeEmojiPack(atOffsets offset: IndexSet) {
-		withAnimation {
-			emojiPacks.remove(atOffsets: offset)
-		}
-		saveEmojiPacks()
-	}
-	
-	func moveEmojiPacks(fromOffsets: IndexSet, toOffset: Int) {
-		withAnimation {
-			emojiPacks.move(fromOffsets: fromOffsets, toOffset: toOffset)
-		}
-		saveEmojiPacks()
-	}
-	
-	func generateLetterStats() {
-		var result: [EmojiHoarder.LetterStat] = []
-		for child in trie.root.children {
-			let count = trie.collectWords(startingWith: child.key, from: child.value).count
-			let stat = LetterStat(char: child.key, count: count)
-			result.append(stat)
-		}
-		self.letterStats = result
-		sortLetterStats(by: self.letterStatsSorting)
-	}
-	
-	func sortLetterStats(by: EmojiHoarder.LetterStatSorting) {
-		self.letterStatsSorting = by
-		let sortByLetter = letterStatsSorting.by == .letter
-		switch by.ascending {
-		case true:
-			letterStats.sort {
-				if sortByLetter {
-					$0.char > $1.char
-				} else {
-					$0.count > $1.count
-				}
-			}
-		case false:
-			letterStats.sort {
-				if sortByLetter {
-					$0.char > $1.char
-				} else {
-					$0.count < $1.count
-				}
+	enum NotifCategory {
+		case emojis
+		case downloadedEmojis
+		case emojiPacks
+		case emojiPack(EmojiPack)
+		
+		var name: Notification.Name {
+			switch self {
+			case .emojis:
+				Notification.Name("EmojiHoarder.notif.emojis")
+			case .downloadedEmojis:
+				Notification.Name("EmojiHoarder.notif.downloadedEmojis")
+			case .emojiPacks:
+				Notification.Name("EmojiHoarder.notif.emojiPacks")
+			case .emojiPack(let emojiPack):
+				Notification.Name("EmojiHoarder.notif.emojiPack.\(emojiPack.id)")
 			}
 		}
-	}
-	
-	struct LetterStat: Hashable {
-		var char: String
-		var count: Int
-	}
-	enum SortLetterStatsBy: String, CaseIterable {
-		case letter = "Letter"
-		case count = "Count"
-	}
-	struct LetterStatSorting: Hashable, Equatable {
-		var by: EmojiHoarder.SortLetterStatsBy = .count
-		var ascending: Bool = true
 	}
 }

@@ -22,7 +22,6 @@ protocol Hoarder: ObservableObject {
 }
 
 @Observable class BaseHoarder: Hoarder {
-	
 	static let library: URL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.neon443.StickerSlack")!.appendingPathComponent("Library", conformingTo: .directory)
 	
 	var downloadedStickers: Set<String> = []

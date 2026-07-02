@@ -67,24 +67,20 @@ struct EmojiPackManager: View {
 					EditButton()
 				}
 				
+#if compiler(>=6.2)
 				if #available(iOS 19, *) {
 					ToolbarSpacer()
 				}
+#endif
 				
 				ToolbarItem(placement: .topBarLeading) {
 					Button("", systemImage: "trash") {
-						showDeleteAlert.toggle()
+						for pack in selection {
+							hoarder.removeEmojiPack(pack)
+						}
+						selection = []
 					}
 					.disabled(selection.isEmpty)
-//					.confirmationDialog("These items will be deleted immediately", isPresented: $showDeleteAlert) {
-//						Button("Delete \(selection.count) pack\(selection.count.plural)", role: .destructive) {
-//							for pack in selection {
-//								hoarder.removeEmojiPack(pack)
-//							}
-//						}
-//					} message: {
-//						Text("This action cannot be undone")
-//					}
 				}
 			}
 		}
