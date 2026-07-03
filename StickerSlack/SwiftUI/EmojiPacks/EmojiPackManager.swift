@@ -30,7 +30,7 @@ struct EmojiPackManager: View {
 					List(selection: $selection) {
 						ForEach($hoarder.emojiPacks, id: \.self) { $pack in
 							NavigationLink {
-								EmojiPackDetailView(hoarder: hoarder, pack: $pack, useSwiftUIGrid: useSwiftUIGrid)
+//								EmojiPackDetailView(hoarder: hoarder, pack: $pack, useSwiftUIGrid: useSwiftUIGrid)
 								EmojiPackDetailViewRepresentable(hoarder: hoarder, pack: pack)
 							} label: {
 								Text(pack.name)

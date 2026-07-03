@@ -73,7 +73,8 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		case jumboMoji
 	}
 	
-	override func viewWillLayoutSubviews() {
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		self.refreshUI(with: items)
 	}
 	

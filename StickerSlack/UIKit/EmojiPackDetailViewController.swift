@@ -26,6 +26,7 @@ class EmojiPackDetailViewController: UINavigationController {
 		super.init(rootViewController: collectionView)
 		
 		let editButton = UIBarButtonItem(systemItem: .edit)
+		editButton.target = self
 		let downloadButton = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.down"),
 			style: .plain,
@@ -67,5 +68,10 @@ class EmojiPackDetailViewController: UINavigationController {
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		collectionView.setEditing(editing, animated: animated)
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		NotificationCenter.default.post(name: EmojiHoarder.NotifCategory.emojiPack(pack.id).name, object: nil)
 	}
 }
