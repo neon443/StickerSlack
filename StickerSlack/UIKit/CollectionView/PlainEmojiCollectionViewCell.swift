@@ -73,12 +73,13 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 		
 		let totalWidth = collectionView.bounds.width
 		let availWidth = totalWidth-collectionView.contentInset.left-collectionView.contentInset.right
-		let cols: CGFloat
+		var cols: CGFloat
 		if style == .jumboMoji {
 			cols = width
 		} else {
 			cols = max(1, floor(availWidth/width))
 		}
+		if cols == 0 || cols == .infinity { cols = 4 }
 		let totalSpacing = ((collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.minimumInteritemSpacing ?? 0) * (cols-1)
 		let itemWidth = ((availWidth-totalSpacing)/cols).rounded(.down)
 		layoutAttributes.size = CGSize(width: itemWidth, height: itemWidth)

@@ -10,18 +10,16 @@ import UIKit
 import SwiftUI
 
 struct EmojiPackDetailViewRepresentable: UIViewControllerRepresentable {
-	typealias UIViewControllerType = UINavigationController
-	
 	var hoarder: EmojiHoarder
 	var pack: EmojiPack
 	
-	func makeUIViewController(context: Context) -> UINavigationController {
+	func makeUIViewController(context: Context) -> UIViewController {
 		let view = EmojiPackDetailViewController(with: hoarder, andPack: pack)
-		view.isToolbarHidden = false
+		view.navigationController?.isToolbarHidden = false
 		return view
 	}
 	
-	func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
+	func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
 		
 	}
 }
