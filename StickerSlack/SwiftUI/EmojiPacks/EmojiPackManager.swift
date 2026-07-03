@@ -63,14 +63,14 @@ struct EmojiPackManager: View {
 			.navigationBarTitleDisplayMode(.inline)
 			.animation(nil, value: editMode?.wrappedValue)
 			.toolbar {
-				ToolbarItem(placement: .topBarTrailing) {
+				ToolbarItem(placement: .topBarLeading) {
 					Button("", systemImage: "plus") {
 						hoarder.newEmojiPack()
 					}
 					.tint(.accentColor)
 					.modifier(glassButtonIfAv())
 				}
-				ToolbarItem(placement: .topBarLeading) {
+				ToolbarItem(placement: .topBarTrailing) {
 					EditButton()
 				}
 			}

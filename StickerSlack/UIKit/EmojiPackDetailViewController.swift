@@ -7,12 +7,14 @@
 
 import Foundation
 import UIKit
-
+import SwiftUI
 
 class EmojiPackDetailViewController: UINavigationController {
 	var hoarder: EmojiHoarder
 	var pack: EmojiPack
 	let collectionView: EmojiCollectionView
+	var adderSheetButton: UIBarButtonItem
+	var searchView: UIViewController
 	
 	init(with hoarder: EmojiHoarder, andPack pack: EmojiPack) {
 		self.hoarder = hoarder
@@ -23,6 +25,9 @@ class EmojiPackDetailViewController: UINavigationController {
 			width: 75,
 			style: .full
 		)
+		self.adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: #selector(showSheet))
+		let suiView = SearchView(hoarder: hoarder, fromPackEditor: true)
+		self.searchView = UIHostingController(rootView: suiView)
 		super.init(rootViewController: collectionView)
 		
 		let editButton = collectionView.editButtonItem
@@ -41,7 +46,7 @@ class EmojiPackDetailViewController: UINavigationController {
 		)
 		collectionView.navigationItem.title = pack.name
 //		collectionView.toolbarItems = [editButton, downloadButton, shareButton]
-		collectionView.navigationItem.leftBarButtonItem = editButton
+		collectionView.navigationItem.leftBarButtonItems = [editButton, adderSheetButton]
 		collectionView.navigationItem.rightBarButtonItems = [shareButton, downloadButton]
 		
 		NotificationCenter.default.addObserver(
@@ -64,9 +69,26 @@ class EmojiPackDetailViewController: UINavigationController {
 		collectionView.refreshUI(with: pack.items)
 	}
 	
+	@objc func showSheet() {
+		if let sheet = searchView.sheetPresentationController {
+			sheet.detents = [.medium(), .large()]
+			sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+			sheet.prefersEdgeAttachedInCompactHeight = true
+			sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+			sheet.prefersGrabberVisible = true
+		}
+		self.present(self.searchView, animated: true)
+	}
+	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		collectionView.setEditing(editing, animated: animated)
+		if editing {
+//			collectionView.navigationItem.setLeftBarButtonItems(
+//				[collectionView.editButtonItem, ],
+//				animated: true
+//			)
+		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

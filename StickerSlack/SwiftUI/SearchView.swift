@@ -10,25 +10,13 @@ import SwiftUI
 struct SearchView: View {
 	@ObservedObject var hoarder: EmojiHoarder
 	
-	@FocusState private var searchFocused: Bool
 	@State private var currentSearch: Task<Void, Never>?
-	@State var searchTerm: String = ""
+	@State private var searchTerm: String = ""
 	@State var previousSearches: [String] = []
-	@State var searchResult: [String] = []
-	
-	@State var stickerType: StickerType = .slackEmoji
+	@State private var searchResult: [String] = []
 	
 	@State var fromPackEditor: Bool = false
 	@State var callback: ((String) -> Void) = { _ in }
-	var minColWidth: CGFloat { 75 }
-	var spacing: CGFloat { 10 }
-	var col: GridItem {
-		GridItem(
-			.flexible(minimum: minColWidth, maximum: 100),
-			spacing: spacing,
-			alignment: .center
-		)
-	}
 	
 	@Environment(\.dismiss) var dismiss
 	

@@ -10,27 +10,7 @@ import UIKit
 import SwiftUI
 
 final class TabbedContentView: UITabBarController {
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		
-//		self.edgesForExtendedLayout = .bottom
-//		self.extendedLayoutIncludesOpaqueBars = false
-		
-//		if #available(iOS 26, *) {
-//			let appearance = UITabBarAppearance()
-//			appearance.configureWithDefaultBackground()
-//			tabBar.standardAppearance = appearance
-//			tabBar.scrollEdgeAppearance = appearance
-//		} else {
-//			self.tabBarController?.tabBar.isTranslucent = false
-//		}
-		setupTabs()
-	}
-	
-	private func setupTabs() {
-		let emojiHoarder = EmojiHoarder()
-		let gifHoarder = GifHoarder()
-		
+	func setupTabs(with emojiHoarder: EmojiHoarder, and gifHoarder: GifHoarder) {
 		let browseView = EmojiTableView(hoarder: emojiHoarder, items: emojiHoarder.emojis.map { $0.name })
 		let browse = UINavigationController(rootViewController: browseView)
 		browseView.navigationItem.title = "Browse"

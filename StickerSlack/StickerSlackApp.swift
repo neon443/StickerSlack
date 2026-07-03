@@ -33,12 +33,35 @@ import SwiftUI
 
 @main
 class StickerSlackApp: UIResponder, UIApplicationDelegate {
+	var emojiHoarder: EmojiHoarder = .init()
+	var gifHoarder: GifHoarder = .init()
+	
 	var window: UIWindow?
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
 		window?.rootViewController = TabbedContentView()
+		(window?.rootViewController! as! TabbedContentView).setupTabs(with: emojiHoarder, and: gifHoarder)
 		window?.makeKeyAndVisible()
+		return true
+	}
+	
+	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+		guard app.canOpenURL(url) else { return false }
+		guard let rootViewController = window?.rootViewController else { return false }
+
+		guard let imported = EmojiPack(fromShareLink: url) else { return false }
+		let importView = UIHostingController(rootView: EmojiPackImporterView(emojiHoarder: emojiHoarder, pack: .constant(imported)))
+		
+		if let sheet = importView.sheetPresentationController {
+			sheet.detents = [.large()]
+			sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+			sheet.prefersEdgeAttachedInCompactHeight = true
+			sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+			sheet.prefersGrabberVisible = true
+		}
+		
+		rootViewController.present(importView, animated: true)
 		return true
 	}
 }
