@@ -25,8 +25,8 @@ class EmojiPackDetailViewController: UINavigationController {
 		)
 		super.init(rootViewController: collectionView)
 		
-		let editButton = UIBarButtonItem(systemItem: .edit)
-		editButton.target = self
+		let editButton = collectionView.editButtonItem
+		editButton.target = collectionView
 		let downloadButton = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.down"),
 			style: .plain,
@@ -39,8 +39,10 @@ class EmojiPackDetailViewController: UINavigationController {
 			target: nil,
 			action: nil
 		)
-		collectionView.navigationItem.title = "HI"
-		collectionView.toolbarItems = [editButton, downloadButton, shareButton]
+		collectionView.navigationItem.title = pack.name
+//		collectionView.toolbarItems = [editButton, downloadButton, shareButton]
+		collectionView.navigationItem.leftBarButtonItem = editButton
+		collectionView.navigationItem.rightBarButtonItems = [shareButton, downloadButton]
 		
 		NotificationCenter.default.addObserver(
 			self,
@@ -55,14 +57,11 @@ class EmojiPackDetailViewController: UINavigationController {
 	}
 	
 	@objc func packChanged(_ notification: Notification) {
-		if notification.name == EmojiHoarder.NotifCategory.emojiPack(pack.id).name {
-			print("ooh its this pack")
-			guard let updatedPack = hoarder.emojiPacks.first(where: { $0.id == pack.id }) else { return }
-			self.pack = updatedPack
-			collectionView.refreshUI(with: pack.items)
-		} else {
-			print("diff one")
-		}
+		guard notification.name == EmojiHoarder.NotifCategory.emojiPack(pack.id).name else { return }
+		guard let updatedPack = hoarder.emojiPacks.first(where: { $0.id == pack.id }) else { return }
+		self.pack = updatedPack
+		collectionView.navigationItem.title = pack.name
+		collectionView.refreshUI(with: pack.items)
 	}
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
