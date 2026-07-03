@@ -11,24 +11,24 @@ import Combine
 import UniformTypeIdentifiers
 import Haptics
 
-@Observable class EmojiHoarder: BaseHoarder {
+class EmojiHoarder: BaseHoarder {
 	static let container: URL = library.appendingPathComponent("Emojis", conformingTo: .directory)
 	nonisolated static let localEmojiDB: URL = EmojiHoarder.library.appendingPathComponent("localEmojiDB.json", conformingTo: .fileURL)
 	nonisolated static let localTrieDict: URL = EmojiHoarder.library.appendingPathComponent("localTrieDict.json", conformingTo: .fileURL)
 	nonisolated static let packStore: URL = EmojiHoarder.library.appendingPathComponent("packStore.json", conformingTo: .fileURL)
 	let endpoint: URL = URL(string: "https://cachet.dunkirk.sh/emojis")!
 	
-	var emojis: [Emoji] = []
-	var emojiPacks: [EmojiPack] = []
+	@Published var emojis: [Emoji] = []
+	@Published var emojiPacks: [EmojiPack] = []
 	
 	var trie: Trie = Trie()
 	//	@Published var downloadedStickers: Set<String> = []
-	var downloadedStickersArr: [String] = []
+	@Published var downloadedStickersArr: [String] = []
 	
-	var letterStats: [EmojiHoarder.LetterStat] = []
-	var letterStatsSorting: EmojiHoarder.LetterStatSorting = .init(by: .letter, ascending: true)
+	@Published var letterStats: [EmojiHoarder.LetterStat] = []
+	@Published var letterStatsSorting: EmojiHoarder.LetterStatSorting = .init(by: .letter, ascending: true)
 	
-	var showWelcome: Bool = false
+	@Published var showWelcome: Bool = false
 	
 	init(localOnly: Bool = false, skipIndex: Bool = false) {
 		super.init()
@@ -277,7 +277,7 @@ import Haptics
 		case emojis
 		case downloadedEmojis
 		case emojiPacks
-		case emojiPack(EmojiPack)
+		case emojiPack(UUID)
 		
 		var name: Notification.Name {
 			switch self {
@@ -287,8 +287,8 @@ import Haptics
 				Notification.Name("EmojiHoarder.notif.downloadedEmojis")
 			case .emojiPacks:
 				Notification.Name("EmojiHoarder.notif.emojiPacks")
-			case .emojiPack(let emojiPack):
-				Notification.Name("EmojiHoarder.notif.emojiPack.\(emojiPack.id)")
+			case .emojiPack(let emojiPackID):
+				Notification.Name("EmojiHoarder.notif.emojiPack.\(emojiPackID)")
 			}
 		}
 	}

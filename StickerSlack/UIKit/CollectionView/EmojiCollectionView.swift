@@ -14,7 +14,6 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 	var items: [String]
 	var width: CGFloat
 	var style: EmojiCollectionView.Style
-	var edit: Bool? = false
 	var onRemove: ((String) -> Void)?
 	var onTap: ((String) -> Void)?
 	
@@ -59,7 +58,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		}
 		layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
 		
-		refreshUI(edit: false, with: items)
+		refreshUI(with: items)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -75,23 +74,17 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 	}
 	
 	override func viewWillLayoutSubviews() {
-		self.refreshUI(edit: edit, with: items)
+		self.refreshUI(with: items)
 	}
 	
-	func refreshUI(edit: Bool? = false, with items: [String]) {
-		self.edit = edit
-		if edit ?? false {
-			self.startAnimating()
-		} else {
-			self.stopAnimating()
-		}
-		
-		for cell in collectionView.visibleCells {
-			if let cell = cell as? EmojiCollectionViewCell {
-				cell.setEdit(to: edit)
+	func refreshUI(with items: [String]) {
+		guard !items.isEmpty else {
+			self.items = []
+			Task.detached {
+				await self.instantApplySnapshot()
 			}
+			return
 		}
-		
 		let itemsBefore = self.items
 		let itemsAfter = items
 		self.items = items
@@ -137,7 +130,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 			cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plain", for: indexPath) as! PlainEmojiCollectionViewCell
 		case .full, .plainWithLabel:
 			cell = collectionView.dequeueReusableCell(withReuseIdentifier: "full", for: indexPath) as! EmojiCollectionViewCell
-			(cell as! EmojiCollectionViewCell).setEdit(to: edit)
+			(cell as! EmojiCollectionViewCell).setEdit(to: isEditing)
 			(cell as! EmojiCollectionViewCell).onRemove = {
 				guard let index = self.items.firstIndex(of: $0) else { return }
 				self.items.remove(at: index)
@@ -175,6 +168,20 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		
 		for cell in collectionView.visibleCells {
 			cell.transform = CGAffineTransform(rotationAngle: angle)
+		}
+	}
+	
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		for cell in collectionView.visibleCells {
+			if let cell = cell as? EmojiCollectionViewCell {
+				cell.setEdit(to: isEditing)
+			}
+		}
+		if editing {
+			self.startAnimating()
+		} else {
+			self.stopAnimating()
 		}
 	}
 	

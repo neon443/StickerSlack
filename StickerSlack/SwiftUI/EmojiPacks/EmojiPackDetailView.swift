@@ -168,10 +168,12 @@ struct EmojiPackDetailView: View {
 						ShareLink(item: pack.shareLink()) {
 							Image(systemName: "square.and.arrow.up")
 						}
+						.disabled(pack.items.isEmpty)
 					} else {
 						Button("", systemImage: "square.and.arrow.up") {
 							showShare.toggle()
 						}
+						.disabled(pack.items.isEmpty)
 						.sheet(isPresented: $showShare) {
 							ShareSheet(activityItems: [pack.shareLink()])
 						}

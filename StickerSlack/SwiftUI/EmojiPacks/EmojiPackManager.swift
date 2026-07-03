@@ -31,13 +31,9 @@ struct EmojiPackManager: View {
 						ForEach($hoarder.emojiPacks, id: \.self) { $pack in
 							NavigationLink {
 								EmojiPackDetailView(hoarder: hoarder, pack: $pack, useSwiftUIGrid: useSwiftUIGrid)
+								EmojiPackDetailViewRepresentable(hoarder: hoarder, pack: pack)
 							} label: {
 								Text(pack.name)
-							}
-							.contextMenu {
-								EmojiPackActionButtons(hoarder: hoarder, pack: pack, showLabelText: true)
-							} preview: {
-								EmojiPackPreview(hoarder: hoarder, pack: pack)
 							}
 							.swipeActions(edge: .trailing) {
 								EmojiPackActionButtons(hoarder: hoarder, pack: pack, showLabelText: false)
@@ -50,6 +46,17 @@ struct EmojiPackManager: View {
 							hoarder.removeEmojiPack(atOffsets: indexSet)
 						}
 					}
+					.modifier(ContextMenuSafe(itemType: EmojiPack.self, menu: { items in
+						if items.count == 1 {
+							EmojiPackActionButtons(hoarder: hoarder, pack: items.first ?? .test, showLabelText: true)
+						} else {
+							Button("Delete \(items.count) pack\(items.count.plural)", systemImage: "trash", role: .destructive) {
+								for item in items {
+									hoarder.removeEmojiPack(item)
+								}
+							}
+						}
+					}))
 				}
 			}
 			.navigationTitle("Emoji Packs")
@@ -66,22 +73,6 @@ struct EmojiPackManager: View {
 				ToolbarItem(placement: .topBarLeading) {
 					EditButton()
 				}
-				
-#if compiler(>=6.2)
-				if #available(iOS 19, *) {
-					ToolbarSpacer()
-				}
-#endif
-				
-				ToolbarItem(placement: .topBarLeading) {
-					Button("", systemImage: "trash") {
-						for pack in selection {
-							hoarder.removeEmojiPack(pack)
-						}
-						selection = []
-					}
-					.disabled(selection.isEmpty)
-				}
 			}
 		}
 	}
@@ -94,13 +85,13 @@ struct EmojiPackManager: View {
 		@State private var showShareSheet: Bool = false
 		
 		var body: some View {
-			Button {
+			Button(showLabelText ? "Delete" : "", systemImage: "trash", role: .destructive) {
 				hoarder.removeEmojiPack(pack)
-			} label: {
-				Label(showLabelText ? "Delete" : "", systemImage: "trash")
-					.foregroundStyle(.red)
 			}
 			.tint(.red)
+			Button(showLabelText ? "Duplicate" : "", systemImage: "plus.square.fill.on.square.fill") {
+				hoarder.addEmojiPack(pack)
+			}
 			if #available(iOS 16, *) {
 				if showLabelText {
 					ShareLink(item: pack.shareLink())

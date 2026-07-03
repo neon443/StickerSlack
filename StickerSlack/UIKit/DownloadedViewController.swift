@@ -23,7 +23,12 @@ class DownloadedViewController: UINavigationController, UINavigationControllerDe
 		downloadedView.navigationItem.title = "Saved"
 		super.init(rootViewController: downloadedView)
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(downloadedEmojisChanged), name: EmojiHoarder.NotifCategory.downloadedEmojis.name, object: nil)
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(downloadedEmojisChanged),
+			name: EmojiHoarder.NotifCategory.downloadedEmojis.name,
+			object: nil
+		)
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

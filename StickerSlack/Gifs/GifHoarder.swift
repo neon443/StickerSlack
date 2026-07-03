@@ -10,15 +10,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 import Combine
 
-@Observable class GifHoarder: BaseHoarder {
+class GifHoarder: BaseHoarder {
 	static let container: URL = library.appendingPathComponent("Gifs", conformingTo: .directory)
 	
 	static var apiKey: String = "a2mFsDTpX5blodY8ltkG6Q1xy5NgFSbc"
 	var endpoint: URL = URL(string: "https://api.giphy.com/v1/gifs/trending")!
 	var endpointSearch: URL = URL(string: "https://api.giphy.com/v1/gifs/search")!
 	
-	var searchTerm: String = ""
-	var trendingGifs: [Gif] = []
+	@Published var trendingGifs: [Gif] = []
 	//	@Published override var downloadedStickers: Set<String> = []
 	
 	init(localOnly: Bool = false) {

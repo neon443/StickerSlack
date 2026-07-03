@@ -27,11 +27,11 @@ struct EmojiCollectionViewRepresentable: UIViewRepresentable {
 	func updateUIView(_ uiView: UICollectionView, context: Context) {
 		context.coordinator.hoarder = hoarder
 		context.coordinator.items = items
-		context.coordinator.edit = edit
 		context.coordinator.onRemove = onRemoveSUI
 		context.coordinator.onTap = onTapCallback
+		context.coordinator.setEditing(edit ?? false, animated: true)
 		uiView.setNeedsLayout()
-		context.coordinator.refreshUI(edit: edit, with: items)
+		context.coordinator.refreshUI(with: items)
 	}
 	
 	func makeCoordinator() -> EmojiCollectionView {

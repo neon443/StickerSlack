@@ -169,3 +169,22 @@ struct fadeIn: ViewModifier {
 		}
 	}
 }
+
+//nonisolated func contextMenu<I, M>(forSelectionType itemType: I.Type = I.self, @ViewBuilder menu: @escaping (Set<I>) -> M, primaryAction: ((Set<I>) -> Void)? = nil) -> some View where I : Hashable, M : View
+
+struct ContextMenuSafe<I, M>: ViewModifier where I : Hashable, M : View {
+	var itemType: I.Type = I.self
+	@ViewBuilder var menu: (Set<I>) -> M
+	var primaryAction: ((Set<I>) -> Void)? = nil
+	
+	func body(content: Content) -> some View {
+		if #available(iOS 16, *) {
+			content
+				.contextMenu(forSelectionType: itemType) { items in
+					menu(items)
+				}
+		} else {
+			content
+		}
+	}
+}

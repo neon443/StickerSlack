@@ -48,7 +48,7 @@ extension EmojiHoarder {
 		withAnimation {
 			emojiPacks.removeAll { $0.id == packToRemove.id }
 		}
-		sendChangeNotif(for: .emojiPack(packToRemove))
+		sendChangeNotif(for: .emojiPack(packToRemove.id))
 		sendChangeNotif(for: .emojiPacks)
 		saveEmojiPacks()
 	}

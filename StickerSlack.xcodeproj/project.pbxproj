@@ -158,6 +158,10 @@
 		A9E8C79E2FF726DA009A38B5 /* EmojiHoarder.LetterStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C79D2FF726D4009A38B5 /* EmojiHoarder.LetterStats.swift */; };
 		A9E8C79F2FF726DA009A38B5 /* EmojiHoarder.LetterStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C79D2FF726D4009A38B5 /* EmojiHoarder.LetterStats.swift */; };
 		A9E8C7A02FF726DA009A38B5 /* EmojiHoarder.LetterStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C79D2FF726D4009A38B5 /* EmojiHoarder.LetterStats.swift */; };
+		A9E8C7A22FF7B815009A38B5 /* EmojiPackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C7A12FF7B815009A38B5 /* EmojiPackDetailViewController.swift */; };
+		A9E8C7A32FF7B815009A38B5 /* EmojiPackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C7A12FF7B815009A38B5 /* EmojiPackDetailViewController.swift */; };
+		A9E8C7A52FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */; };
+		A9E8C7A62FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */; };
 		A9EB72392EB93FDB00658CEB /* EmojiTableViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72382EB93FDB00658CEB /* EmojiTableViewRepresentable.swift */; };
 		A9EB72472EB948C400658CEB /* StickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72462EB948C400658CEB /* StickerRow.swift */; };
 		A9EB72492EB948C400658CEB /* StickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72462EB948C400658CEB /* StickerRow.swift */; };
@@ -280,6 +284,8 @@
 		A9E8C78E2FF71D8C009A38B5 /* DownloadedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedViewController.swift; sourceTree = "<group>"; };
 		A9E8C7992FF7256B009A38B5 /* EmojiHoarder.Packs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiHoarder.Packs.swift; sourceTree = "<group>"; };
 		A9E8C79D2FF726D4009A38B5 /* EmojiHoarder.LetterStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiHoarder.LetterStats.swift; sourceTree = "<group>"; };
+		A9E8C7A12FF7B815009A38B5 /* EmojiPackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackDetailViewController.swift; sourceTree = "<group>"; };
+		A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackDetailViewRepresentable.swift; sourceTree = "<group>"; };
 		A9EB72382EB93FDB00658CEB /* EmojiTableViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTableViewRepresentable.swift; sourceTree = "<group>"; };
 		A9EB72462EB948C400658CEB /* StickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerRow.swift; sourceTree = "<group>"; };
 		A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrieTestingView.swift; sourceTree = "<group>"; };
@@ -335,6 +341,7 @@
 				A9A7A4672F6AA17C00BB84C6 /* Int.swift */,
 				A995D95A2F6EBBDD0043E5F5 /* TestStructures.swift */,
 				A9C52F742F89A93D00078588 /* URL.swift */,
+				A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -397,6 +404,8 @@
 				A9C52F712F89A85F00078588 /* ShareSheet.swift */,
 				A9FB3EE22FA7AB3A00030E2A /* UIKitGifView.swift */,
 				A9E8C78E2FF71D8C009A38B5 /* DownloadedViewController.swift */,
+				A9E8C7A12FF7B815009A38B5 /* EmojiPackDetailViewController.swift */,
+				A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -578,7 +587,6 @@
 		A9F423C42F8722AA00C0BE3B /* Misc */ = {
 			isa = PBXGroup;
 			children = (
-				A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */,
 				A9BDEADD2F82BC93002798DF /* NoStickersView.swift */,
 				A9C52F6A2F8988CD00078588 /* EmptyCollectionView.swift */,
 			);
@@ -748,12 +756,14 @@
 				A9A7A43F2F6835F800BB84C6 /* Trending.swift in Sources */,
 				A9A7A4422F68360200BB84C6 /* GifObject.swift in Sources */,
 				A9E8C79A2FF7256B009A38B5 /* EmojiHoarder.Packs.swift in Sources */,
+				A9E8C7A32FF7B815009A38B5 /* EmojiPackDetailViewController.swift in Sources */,
 				A97322A62FA8CA2B004B657D /* JumboMojiTestView.swift in Sources */,
 				A975F9192FA38C8D00A5C62E /* EmojiPackGridView.swift in Sources */,
 				A957C1772ECD008E00EA3EE9 /* Bundle.swift in Sources */,
 				A957C17F2ECFAA1100EA3EE9 /* GifView.swift in Sources */,
 				A957C1742ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
 				A9A7A44B2F6837A800BB84C6 /* GiphyUser.swift in Sources */,
+				A9E8C7A62FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift in Sources */,
 				A9EB72392EB93FDB00658CEB /* EmojiTableViewRepresentable.swift in Sources */,
 				A98BD15D2FF5242700ADC264 /* EmojiPackPreview.swift in Sources */,
 				A955B3EE2EC22C4A00E1732D /* DownloadedView.swift in Sources */,
@@ -864,6 +874,7 @@
 				A9A7A4492F68361200BB84C6 /* Meta.swift in Sources */,
 				A9EB724A2EB948E000658CEB /* EmojiTableViewRepresentable.swift in Sources */,
 				A9EB724D2EB94A6B00658CEB /* TrieTestingView.swift in Sources */,
+				A9E8C7A22FF7B815009A38B5 /* EmojiPackDetailViewController.swift in Sources */,
 				A98BD15C2FF5242700ADC264 /* EmojiPackPreview.swift in Sources */,
 				A9BBC51A2EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A995D95B2F6EBBDD0043E5F5 /* TestStructures.swift in Sources */,
@@ -882,6 +893,7 @@
 				A9CD6C392EDDE37500B7F421 /* EmojiPackManager.swift in Sources */,
 				A9E8C7902FF71D8C009A38B5 /* DownloadedViewController.swift in Sources */,
 				A955B3F62EC22EE900E1732D /* SearchView.swift in Sources */,
+				A9E8C7A52FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift in Sources */,
 				A97322A52FA8CA2B004B657D /* JumboMojiTestView.swift in Sources */,
 				A98FA6622FF3BD5400D50212 /* EmojiCollectionView.swift in Sources */,
 				A9BDEADF2F82BC93002798DF /* NoStickersView.swift in Sources */,
@@ -1075,7 +1087,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13;
@@ -1127,7 +1139,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13;
@@ -1164,7 +1176,7 @@
 				INFOPLIST_FILE = StickerSlackiMessageApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StickerSlack;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1196,7 +1208,7 @@
 				INFOPLIST_FILE = StickerSlackiMessageApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StickerSlack;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
