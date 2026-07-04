@@ -67,7 +67,6 @@ struct EmojiPackManager: View {
 					Button("", systemImage: "plus") {
 						hoarder.newEmojiPack()
 					}
-					.tint(.accentColor)
 					.modifier(glassButtonIfAv())
 				}
 				ToolbarItem(placement: .topBarTrailing) {

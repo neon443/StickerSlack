@@ -13,8 +13,8 @@ class EmojiPackDetailViewController: UINavigationController {
 	var hoarder: EmojiHoarder
 	var pack: EmojiPack
 	let collectionView: EmojiCollectionView
-	var adderSheetButton: UIBarButtonItem
-	var searchView: UIViewController
+//	var adderSheetButton: UIBarButtonItem
+	var searchView: SearchViewController
 	
 	init(with hoarder: EmojiHoarder, andPack pack: EmojiPack) {
 		self.hoarder = hoarder
@@ -25,10 +25,15 @@ class EmojiPackDetailViewController: UINavigationController {
 			width: 75,
 			style: .full
 		)
-		self.adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: #selector(showSheet))
-		let suiView = SearchView(hoarder: hoarder, fromPackEditor: true)
-		self.searchView = UIHostingController(rootView: suiView)
+//		let suiView = SearchView(hoarder: hoarder, fromPackEditor: true)
+//		self.searchView = UIHostingController(rootView: suiView)
+		self.searchView = SearchViewController(emojiHoarder: hoarder)
+		
 		super.init(rootViewController: collectionView)
+		
+		let adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(showSheet))
+		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(hideSheet))
+		searchView.resultsView.navigationItem.leftBarButtonItem = cancelButton
 		
 		let editButton = collectionView.editButtonItem
 		editButton.target = collectionView
@@ -78,6 +83,10 @@ class EmojiPackDetailViewController: UINavigationController {
 			sheet.prefersGrabberVisible = true
 		}
 		self.present(self.searchView, animated: true)
+	}
+	
+	@objc func hideSheet() {
+		self.dismiss(animated: true)
 	}
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {

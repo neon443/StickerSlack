@@ -132,7 +132,9 @@ class EmojiHoarder: BaseHoarder {
 	
 	nonisolated override func buildDownloadedStickers(for stickerType: String = "Emojis") async {
 		await super.buildDownloadedStickers(for: stickerType)
-		downloadedStickersArr = await Array(downloadedStickers).sorted()
+		await MainActor.run {
+			downloadedStickersArr = Array(downloadedStickers).sorted()
+		}
 		sendChangeNotif(for: .downloadedEmojis)
 	}
 

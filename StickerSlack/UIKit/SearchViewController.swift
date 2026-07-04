@@ -12,13 +12,21 @@ import SwiftUI
 class SearchViewController: UINavigationController, UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate {
 	var emojiHoarder: EmojiHoarder
 	
-	var resultsTable: EmojiTableView
+	var resultsView: EmojiTableView
 	var searchController: UISearchController
 	var previousQueries: [String] = []
 	
+	var noResultsView = UIHostingController(
+		rootView: EmptyCollectionView(
+			title: "No Results",
+			details: "Try searching for something else",
+			systemImage: "magnifyingglass"
+		)
+	)
+	
 	init(emojiHoarder: EmojiHoarder) {
 		self.emojiHoarder = emojiHoarder
-		self.resultsTable = EmojiTableView(hoarder: emojiHoarder, items: emojiHoarder.trie.allNames())
+		self.resultsView = EmojiTableView(hoarder: emojiHoarder, items: emojiHoarder.trie.allNames())
 		self.searchController = UISearchController(searchResultsController: nil)
 		
 		super.init(nibName: nil, bundle: nil)
@@ -31,9 +39,9 @@ class SearchViewController: UINavigationController, UISearchControllerDelegate, 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		setViewControllers([resultsTable], animated: true)
+		setViewControllers([resultsView], animated: true)
 		
-		resultsTable.navigationItem.title = "Search"
+		resultsView.navigationItem.title = "Search"
 		
 		searchController.delegate = self
 		searchController.searchResultsUpdater = self
@@ -41,11 +49,29 @@ class SearchViewController: UINavigationController, UISearchControllerDelegate, 
 		searchController.searchBar.autocapitalizationType = .none
 		searchController.searchBar.delegate = self
 		searchController.hidesNavigationBarDuringPresentation = false
-		resultsTable.navigationItem.hidesSearchBarWhenScrolling = false
+		resultsView.navigationItem.hidesSearchBarWhenScrolling = false
 		
-		resultsTable.navigationItem.searchController = searchController
-		resultsTable.navigationItem.hidesBackButton = false
+		resultsView.navigationItem.searchController = searchController
+		resultsView.navigationItem.hidesBackButton = false
 		definesPresentationContext = true
+		
+		noResultsView.view.transform = CGAffineTransform(scaleX: 0, y: 0)
+		resultsView.addChild(noResultsView)
+		resultsView.view.addSubview(noResultsView.view)
+		noResultsView.view.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			resultsView.view.leadingAnchor.constraint(equalTo: noResultsView.view.leadingAnchor),
+			resultsView.view.trailingAnchor.constraint(equalTo: noResultsView.view.trailingAnchor),
+			resultsView.view.topAnchor.constraint(equalTo: noResultsView.view.topAnchor),
+			resultsView.view.bottomAnchor.constraint(equalTo: noResultsView.view.topAnchor, constant: 100)
+		])
+		noResultsView.didMove(toParent: self)
+	}
+	
+	func reset() {
+		previousQueries = []
+		resultsView.refreshUI(with: [])
+		self.noResultsView.view.transform = CGAffineTransform(scaleX: 0, y: 0)
 	}
 	
 	func updateSearchResults(for searchController: UISearchController) {
@@ -60,18 +86,31 @@ class SearchViewController: UINavigationController, UISearchControllerDelegate, 
 		let results = emojiHoarder.trie.search(
 			for: text,
 			previousQuery: previousQuery,
-			previousResult: Set(resultsTable.items)
+			previousResult: Set(resultsView.items)
 		)
 		
-		resultsTable.refreshUI(with: results)
+		if results.isEmpty {
+			UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1) {
+				self.noResultsView.view.transform = .identity
+			}
+		} else {
+			UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1) {
+				self.noResultsView.view.transform = CGAffineTransform(scaleX: 0, y: 0)
+			}
+		}
+		resultsView.refreshUI(with: results)
 	}
 	
 	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 		guard !searchText.isEmpty else {
-			previousQueries = []
+			reset()
 			return
 		}
 		previousQueries.append(searchText)
 		print(previousQueries)
+	}
+	
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		reset()
 	}
 }
