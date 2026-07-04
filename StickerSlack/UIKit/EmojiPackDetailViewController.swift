@@ -49,9 +49,8 @@ class EmojiPackDetailViewController: UINavigationController {
 			target: nil,
 			action: nil
 		)
-//		collectionView.navigationItem.title = pack.name
+		collectionView.navigationItem.title = pack.name
 		
-		collectionView.navigationItem.titleView = UIImageView(image: UIImage(systemName: "square.and.arrow.up.circle.fill"))
 //		collectionView.toolbarItems = [editButton, downloadButton, shareButton]
 		collectionView.navigationItem.leftBarButtonItems = [editButton, adderSheetButton]
 		collectionView.navigationItem.rightBarButtonItems = [shareButton, downloadButton]
