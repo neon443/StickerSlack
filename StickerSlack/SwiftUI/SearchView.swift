@@ -46,7 +46,7 @@ struct SearchView: View {
 	var body: some View {
 		VStack {
 			if searchTerm.isEmpty {
-				EmptyCollectionView(title: "Start a Search", details: "", systemImage: "magnifyingglass")
+				EmptyCollectionView(title: "Start a Search", details: nil, systemImage: "magnifyingglass")
 					.frame(maxHeight: 100)
 				Spacer()
 			} else if searchResult.isEmpty {

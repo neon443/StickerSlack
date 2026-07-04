@@ -35,10 +35,18 @@ final class EmojiTableView: UITableViewController {
 		self.items = newItems
 		Task.detached {
 			//if its being cleared or removign 10k+
-			guard !itemsAfter.isEmpty && itemsBefore.count-itemsAfter.count < 10_000 else {
+			if itemsAfter.isEmpty {
 				await self.instantApplySnapshot()
 				return
 			}
+			if itemsAfter.count > 10_000 {
+				await self.instantApplySnapshot()
+				return
+			}
+//			guard !itemsAfter.isEmpty && itemsBefore.count-itemsAfter.count < 10_000 else {
+//				await self.instantApplySnapshot()
+//				return
+//			}
 			await self.applySnapshot(animated: true)
 		}
 	}

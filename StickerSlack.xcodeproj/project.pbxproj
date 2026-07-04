@@ -162,6 +162,8 @@
 		A9E8C7A32FF7B815009A38B5 /* EmojiPackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C7A12FF7B815009A38B5 /* EmojiPackDetailViewController.swift */; };
 		A9E8C7A52FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */; };
 		A9E8C7A62FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */; };
+		A9E8C7A82FF95FEC009A38B5 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C7A72FF95FEC009A38B5 /* SearchViewController.swift */; };
+		A9E8C7A92FF95FEC009A38B5 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C7A72FF95FEC009A38B5 /* SearchViewController.swift */; };
 		A9EB72392EB93FDB00658CEB /* EmojiTableViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72382EB93FDB00658CEB /* EmojiTableViewRepresentable.swift */; };
 		A9EB72472EB948C400658CEB /* StickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72462EB948C400658CEB /* StickerRow.swift */; };
 		A9EB72492EB948C400658CEB /* StickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EB72462EB948C400658CEB /* StickerRow.swift */; };
@@ -286,6 +288,7 @@
 		A9E8C79D2FF726D4009A38B5 /* EmojiHoarder.LetterStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiHoarder.LetterStats.swift; sourceTree = "<group>"; };
 		A9E8C7A12FF7B815009A38B5 /* EmojiPackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackDetailViewController.swift; sourceTree = "<group>"; };
 		A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackDetailViewRepresentable.swift; sourceTree = "<group>"; };
+		A9E8C7A72FF95FEC009A38B5 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A9EB72382EB93FDB00658CEB /* EmojiTableViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTableViewRepresentable.swift; sourceTree = "<group>"; };
 		A9EB72462EB948C400658CEB /* StickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerRow.swift; sourceTree = "<group>"; };
 		A9EB724C2EB94A6B00658CEB /* TrieTestingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrieTestingView.swift; sourceTree = "<group>"; };
@@ -406,6 +409,7 @@
 				A9E8C78E2FF71D8C009A38B5 /* DownloadedViewController.swift */,
 				A9E8C7A12FF7B815009A38B5 /* EmojiPackDetailViewController.swift */,
 				A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */,
+				A9E8C7A72FF95FEC009A38B5 /* SearchViewController.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -802,6 +806,7 @@
 				A9BE30EC2F5AFE1E00A57668 /* StickerType.swift in Sources */,
 				A9A7A4482F68361200BB84C6 /* Meta.swift in Sources */,
 				A995D95C2F6EBBDD0043E5F5 /* TestStructures.swift in Sources */,
+				A9E8C7A92FF95FEC009A38B5 /* SearchViewController.swift in Sources */,
 				A9BE30FE2F5FA47100A57668 /* Hoarder.swift in Sources */,
 				A97322A32FA7B9C8004B657D /* JumboMoji.swift in Sources */,
 				A97BFFBF2F9E745C000441E5 /* EmojiCollectionViewCell.swift in Sources */,
@@ -889,6 +894,7 @@
 				A9C52F7A2F89BB0800078588 /* EmojiTableViewCell.swift in Sources */,
 				A957C1752ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,
 				A9CD6C362EDDE22800B7F421 /* EmojiPackDetailView.swift in Sources */,
+				A9E8C7A82FF95FEC009A38B5 /* SearchViewController.swift in Sources */,
 				A9EB72472EB948C400658CEB /* StickerRow.swift in Sources */,
 				A9CD6C392EDDE37500B7F421 /* EmojiPackManager.swift in Sources */,
 				A9E8C7902FF71D8C009A38B5 /* DownloadedViewController.swift in Sources */,

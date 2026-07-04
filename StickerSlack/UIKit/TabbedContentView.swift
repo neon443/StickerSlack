@@ -24,14 +24,16 @@ final class TabbedContentView: UITabBarController {
 		let downloaded = DownloadedViewController(emojiHoarder: emojiHoarder)
 		downloaded.tabBarItem = UITabBarItem(title: "Saved", image: UIImage(systemName: "arrow.down.circle.fill"), tag: 2)
 		
+//		let searchView = SearchView(hoarder: emojiHoarder)
+//		let search = UIHostingController(rootView: searchView)
+		let search = SearchViewController(emojiHoarder: emojiHoarder)
+		search.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 3)
+		
+		
 		let settingsView = SettingsView(hoarder: emojiHoarder)
 		let settings = UIHostingController(rootView: settingsView)
-		settings.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), tag: 3)
+		settings.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), tag: 4)
 		
-		let searchView = SearchView(hoarder: emojiHoarder)
-		let search = UIHostingController(rootView: searchView)
-		search.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 4)
-		
-		self.setViewControllers([browse, packs, downloaded, settings, search], animated: false)
+		self.setViewControllers([browse, packs, downloaded, search, settings], animated: false)
 	}
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EmptyCollectionView: View {
 	@State var title: String
-	@State var details: String
+	@State var details: String?
 	@State var systemImage: String
 	
     var body: some View {
@@ -24,10 +24,10 @@ struct EmptyCollectionView: View {
 					.bold()
 					.font(.title3)
 			}
-			if !details.isEmpty {
+			if details != nil {
 				HStack {
 					Spacer()
-					Text(details)
+					Text(details!)
 						.multilineTextAlignment(.center)
 						.foregroundStyle(.gray)
 					Spacer()

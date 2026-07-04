@@ -44,8 +44,12 @@ class Trie: ObservableObject {
 		}
 	}
 	
+	nonisolated func allNames() -> [String] {
+		return Array(self.dict.keys)
+	}
+	
 	nonisolated func search(for query: String, previousQuery: String?, previousResult: Set<String>?) -> [String] {
-		guard !query.isEmpty else { return [] }
+		guard !query.isEmpty else { return allNames() }
 		var result: Set<String> = wordlist
 		if let previousQuery,
 		   let previousResult,
