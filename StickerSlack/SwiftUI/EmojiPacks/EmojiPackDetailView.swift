@@ -14,8 +14,7 @@ struct EmojiPackDetailView: View {
 	
 	@State var edit: Bool = false
 	@State var editName: Bool = false
-	@State var editDescription: Bool = false
-		
+	
 	@State var downloading: Bool = false
 	
 	@State var showAdder: Bool = false
@@ -44,17 +43,6 @@ struct EmojiPackDetailView: View {
 				.disabled(!edit)
 				.alert("Edit Name", isPresented: $editName) {
 					TextField("", text: $pack.name)
-				}
-				
-				Button() {
-					editDescription.toggle()
-				} label: {
-					Text(pack.description.isEmpty ? "Description" : pack.description)
-						.foregroundStyle(edit ? Color.accentColor : .primary)
-				}
-				.disabled(!edit)
-				.alert("Edit Description", isPresented: $editDescription) {
-					TextField("", text: $pack.description)
 				}
 				
 				if pack.items.isEmpty {

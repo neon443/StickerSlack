@@ -12,13 +12,11 @@ import UniformTypeIdentifiers
 struct EmojiPack: Identifiable, Codable, Equatable, Hashable {
 	var id: UUID
 	var name: String
-	var description: String
 	var items: [String]
 	
-	init(id: UUID, name: String, description: String, items: [String]) {
+	init(id: UUID, name: String, items: [String]) {
 		self.id = id
 		self.name = name
-		self.description = description
 		self.items = items
 	}
 	
@@ -54,7 +52,7 @@ struct EmojiPack: Identifiable, Codable, Equatable, Hashable {
 			case "name":
 				pack.name = value
 			case "description":
-				pack.description = value
+				print(value)
 			case "items":
 				if let data = Data(base64Encoded: value),
 				   let decoded = try? JSONDecoder().decode([String].self, from: data) {
@@ -126,7 +124,6 @@ struct EmojiPack: Identifiable, Codable, Equatable, Hashable {
 		let queries: [URLQueryItem] = [
 			.init(name: "id", value: id.uuidString),
 			.init(name: "name", value: name),
-			.init(name: "description", value: description),
 			.init(name: "items", value: data.base64EncodedString())
 		]
 		
@@ -154,7 +151,6 @@ extension EmojiPack {
 		EmojiPack(
 			id: UUID(),
 			name: "New Pack",
-			description: "Created on \(Date().formatted())",
 			items: items
 		)
 	}

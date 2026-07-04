@@ -22,9 +22,6 @@ struct EmojiPackPreview: View {
 					.foregroundStyle(.primary)
 					.font(.title)
 				
-				Text(pack.description.isEmpty ? "Description" : pack.description)
-					.foregroundStyle(.primary)
-				
 				if pack.items.isEmpty {
 					EmptyCollectionView(
 						title: "No Emoji",
