@@ -9,8 +9,10 @@ import Foundation
 import UIKit
 import SwiftUI
 
-final class TabbedContentView: UITabBarController {
+final class TabbedContentView: UITabBarController, UITabBarControllerDelegate {
 	func setupTabs(with emojiHoarder: EmojiHoarder, and gifHoarder: GifHoarder) {
+		self.delegate = self
+		
 		let browseView = EmojiTableView(hoarder: emojiHoarder, items: emojiHoarder.emojis.map { $0.name })
 		let browse = UINavigationController(rootViewController: browseView)
 		browseView.navigationItem.title = "Browse"
@@ -18,8 +20,8 @@ final class TabbedContentView: UITabBarController {
 		
 //		let packsView = EmojiPackManager(hoarder: emojiHoarder)
 //		let packs = UIHostingController(rootView: packsView)
-//		let packs = EmojiPackManagerController(emojiHoarder: emojiHoarder)
-		let packs = EmojiPackDetailViewController(with: emojiHoarder, andPack: .test)
+		let packs = EmojiPackManagerController(emojiHoarder: emojiHoarder)
+//		let packs = EmojiPackDetailViewController(with: emojiHoarder, andPack: .test)
 		packs.tabBarItem = UITabBarItem(title: "Packs", image: UIImage(systemName: "square.stack.3d.up.fill"), tag: 1)
 		
 		let downloaded = DownloadedViewController(emojiHoarder: emojiHoarder)
@@ -37,4 +39,30 @@ final class TabbedContentView: UITabBarController {
 		
 		self.setViewControllers([browse, packs, downloaded, search, settings], animated: false)
 	}
+	
+	func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+		guard let selectedVc = selectedViewController else { return true }
+		if viewController.tabBarItem.tag == selectedVc.tabBarItem.tag {
+			guard let navController = viewController as? UINavigationController else { return true }
+			navController.popToRootViewController(animated: true)
+			return true
+		}
+		return true
+	}
+	
+	func tabBarController(_ tabBarController: UITabBarController, willSelect viewController: UIViewController) {
+		guard let navController = viewController as? UINavigationController else { return }
+		navController.popToRootViewController(animated: true)
+	}
+	
+//	override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+//		item
+//	}/
+	
+	
+//	func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//		let navController = viewController as! UINavigationController
+//		navController.popViewController(animated: true)
+//	}
+
 }

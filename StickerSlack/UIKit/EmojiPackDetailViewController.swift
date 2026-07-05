@@ -10,7 +10,7 @@ import UIKit
 import SwiftUI
 import UniformTypeIdentifiers
 
-class EmojiPackDetailViewController: UINavigationController {
+class EmojiPackDetailViewController: UIViewController {
 	var hoarder: EmojiHoarder
 	var pack: EmojiPack
 	let collectionView: EmojiCollectionView
@@ -62,7 +62,8 @@ class EmojiPackDetailViewController: UINavigationController {
 //			collectionView.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
 //		])
 		
-		super.init(rootViewController: collectionView)
+//		super.init(rootViewController: collectionView)
+		super.init(nibName: nil, bundle: nil)
 		collectionView.navigationItem.title = pack.name
 		
 		collectionView.onEditChange = { editing in
@@ -79,7 +80,6 @@ class EmojiPackDetailViewController: UINavigationController {
 			}
 		}
 		
-		self.isToolbarHidden = false
 		collectionView.toolbarItems = [shareButton, downloadButton]
 //		collectionView.toolbarItems = [editButton, adderSheetButton]
 		
