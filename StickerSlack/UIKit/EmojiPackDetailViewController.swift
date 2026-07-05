@@ -14,7 +14,10 @@ class EmojiPackDetailViewController: UINavigationController {
 	var hoarder: EmojiHoarder
 	var pack: EmojiPack
 	let collectionView: EmojiCollectionView
+	
+	var adderSheetButton: UIBarButtonItem
 	var downloadButton: UIBarButtonItem
+	
 	var searchView: SearchViewController
 	
 	init(with hoarder: EmojiHoarder, andPack pack: EmojiPack) {
@@ -30,18 +33,17 @@ class EmojiPackDetailViewController: UINavigationController {
 //		self.searchView = UIHostingController(rootView: suiView)
 		self.searchView = SearchViewController(emojiHoarder: hoarder, gridLayout: true)
 		
-		let adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: #selector(showSheet))
+		self.adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: #selector(showSheet))
 		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: #selector(hideSheet))
 		searchView.resultsView.navigationItem.leftBarButtonItem = cancelButton
 		
-		let editButton = collectionView.editButtonItem
-		editButton.target = collectionView
 		self.downloadButton = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.down"),
 			style: .plain,
 			target: nil,
 			action: #selector(downloadAll)
 		)
+		self.downloadButton.tintColor = .accent
 		let shareButton = UIBarButtonItem(
 			image: UIImage(systemName: "square.and.arrow.up"),
 			style: .plain,
@@ -51,9 +53,11 @@ class EmojiPackDetailViewController: UINavigationController {
 		super.init(rootViewController: collectionView)
 		collectionView.navigationItem.title = pack.name
 		
-//		collectionView.toolbarItems = [editButton, downloadButton, shareButton]
-		collectionView.navigationItem.leftBarButtonItems = [editButton, adderSheetButton]
-		collectionView.navigationItem.rightBarButtonItems = [shareButton, downloadButton]
+		self.isToolbarHidden = false
+		collectionView.toolbarItems = [shareButton, downloadButton]
+//		collectionView.toolbarItems = [editButton, adderSheetButton]
+		
+		collectionView.navigationItem.rightBarButtonItems = [collectionView.editButtonItem, adderSheetButton]
 		
 		NotificationCenter.default.addObserver(
 			self,
@@ -98,9 +102,11 @@ class EmojiPackDetailViewController: UINavigationController {
 			if pack.allDownloaded(in: hoarder) {
 				await pack.deleteAll(hoarder: hoarder)
 				self.downloadButton.image = UIImage(systemName: "arrow.down")
+				self.downloadButton.tintColor = .accent
 			} else {
 				await pack.downloadAll(hoarder: hoarder)
 				self.downloadButton.image = UIImage(systemName: "checkmark")
+				self.downloadButton.tintColor = .red
 			}
 		}
 	}
@@ -113,6 +119,21 @@ class EmojiPackDetailViewController: UINavigationController {
 		let shareSheet = UIActivityViewController(activityItemsConfiguration: config)
 		
 		present(shareSheet, animated: true)
+	}
+	
+	@objc func setEdit() {
+		collectionView.setEditing(!collectionView.isEditing, animated: true)
+		if collectionView.isEditing {
+			collectionView.navigationItem.setRightBarButtonItems(
+				[self.editButtonItem, adderSheetButton],
+				animated: true
+			)
+		} else {
+			collectionView.navigationItem.setRightBarButtonItems(
+				[self.editButtonItem],
+				animated: true
+			)
+		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

@@ -18,8 +18,8 @@ final class TabbedContentView: UITabBarController {
 		
 		let packsView = EmojiPackManager(hoarder: emojiHoarder)
 		let packs = UIHostingController(rootView: packsView)
+//		let packs = EmojiPackDetailViewController(with: emojiHoarder, andPack: .test)
 		packs.tabBarItem = UITabBarItem(title: "Packs", image: UIImage(systemName: "square.stack.3d.up.fill"), tag: 1)
-		
 		
 		let downloaded = DownloadedViewController(emojiHoarder: emojiHoarder)
 		downloaded.tabBarItem = UITabBarItem(title: "Saved", image: UIImage(systemName: "arrow.down.circle.fill"), tag: 2)

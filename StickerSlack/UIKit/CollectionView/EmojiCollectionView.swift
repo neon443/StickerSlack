@@ -179,8 +179,22 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 				cell.setEdit(to: isEditing)
 			}
 		}
+		
+		if collectionView.isEditing {
+			collectionView.navigationItem.setRightBarButtonItems(
+				[self.editButtonItem, adderSheetButton],
+				animated: true
+			)
+		} else {
+			collectionView.navigationItem.setRightBarButtonItems(
+				[self.editButtonItem],
+				animated: true
+			)
+		}
+		
 		if editing {
 			self.startAnimating()
+			
 		} else {
 			self.stopAnimating()
 		}
