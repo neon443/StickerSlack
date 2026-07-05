@@ -8,12 +8,13 @@
 import Foundation
 import UIKit
 import SwiftUI
+import UniformTypeIdentifiers
 
 class EmojiPackDetailViewController: UINavigationController {
 	var hoarder: EmojiHoarder
 	var pack: EmojiPack
 	let collectionView: EmojiCollectionView
-//	var adderSheetButton: UIBarButtonItem
+	var downloadButton: UIBarButtonItem
 	var searchView: SearchViewController
 	
 	init(with hoarder: EmojiHoarder, andPack pack: EmojiPack) {
@@ -27,28 +28,27 @@ class EmojiPackDetailViewController: UINavigationController {
 		)
 //		let suiView = SearchView(hoarder: hoarder, fromPackEditor: true)
 //		self.searchView = UIHostingController(rootView: suiView)
-		self.searchView = SearchViewController(emojiHoarder: hoarder)
+		self.searchView = SearchViewController(emojiHoarder: hoarder, gridLayout: true)
 		
-		super.init(rootViewController: collectionView)
-		
-		let adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(showSheet))
-		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(hideSheet))
+		let adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: #selector(showSheet))
+		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: #selector(hideSheet))
 		searchView.resultsView.navigationItem.leftBarButtonItem = cancelButton
 		
 		let editButton = collectionView.editButtonItem
 		editButton.target = collectionView
-		let downloadButton = UIBarButtonItem(
+		self.downloadButton = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.down"),
 			style: .plain,
 			target: nil,
-			action: nil
+			action: #selector(downloadAll)
 		)
 		let shareButton = UIBarButtonItem(
 			image: UIImage(systemName: "square.and.arrow.up"),
 			style: .plain,
 			target: nil,
-			action: nil
+			action: #selector(share)
 		)
+		super.init(rootViewController: collectionView)
 		collectionView.navigationItem.title = pack.name
 		
 //		collectionView.toolbarItems = [editButton, downloadButton, shareButton]
@@ -90,15 +90,29 @@ class EmojiPackDetailViewController: UINavigationController {
 		self.dismiss(animated: true)
 	}
 	
-	override func setEditing(_ editing: Bool, animated: Bool) {
-		super.setEditing(editing, animated: animated)
-		collectionView.setEditing(editing, animated: animated)
-		if editing {
-//			collectionView.navigationItem.setLeftBarButtonItems(
-//				[collectionView.editButtonItem, ],
-//				animated: true
-//			)
+	@objc func downloadAll() {
+		if !pack.allDownloaded(in: hoarder) {
+//			downloading = true
 		}
+		Task {
+			if pack.allDownloaded(in: hoarder) {
+				await pack.deleteAll(hoarder: hoarder)
+				self.downloadButton.image = UIImage(systemName: "arrow.down")
+			} else {
+				await pack.downloadAll(hoarder: hoarder)
+				self.downloadButton.image = UIImage(systemName: "checkmark")
+			}
+		}
+	}
+	
+	@objc func share() {
+		let itemProvider = NSItemProvider(item: pack.shareLink() as NSURL, typeIdentifier: UTType.url.identifier)
+		
+		let config = UIActivityItemsConfiguration(itemProviders: [itemProvider])
+		
+		let shareSheet = UIActivityViewController(activityItemsConfiguration: config)
+		
+		present(shareSheet, animated: true)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
