@@ -16,6 +16,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 	var style: EmojiCollectionView.Style
 	var onRemove: ((String) -> Void)?
 	var onTap: ((String) -> Void)?
+	var onEditChange: ((Bool) -> Void)?
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, String>!
 	
@@ -174,22 +175,13 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
+		
+		onEditChange?(editing)
+		
 		for cell in collectionView.visibleCells {
 			if let cell = cell as? EmojiCollectionViewCell {
 				cell.setEdit(to: isEditing)
 			}
-		}
-		
-		if collectionView.isEditing {
-			collectionView.navigationItem.setRightBarButtonItems(
-				[self.editButtonItem, adderSheetButton],
-				animated: true
-			)
-		} else {
-			collectionView.navigationItem.setRightBarButtonItems(
-				[self.editButtonItem],
-				animated: true
-			)
 		}
 		
 		if editing {

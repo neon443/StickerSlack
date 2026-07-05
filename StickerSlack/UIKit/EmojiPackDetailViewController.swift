@@ -50,14 +50,40 @@ class EmojiPackDetailViewController: UINavigationController {
 			target: nil,
 			action: #selector(share)
 		)
+//		super.init(nibName: nil, bundle: nil)
+//		self.setviewcontrollers
+//		self.addChild(collectionView)
+//		self.view.addSubview(collectionView.view)
+//		collectionView.view.translatesAutoresizingMaskIntoConstraints = false
+//		NSLayoutConstraint.activate([
+//			collectionView.view.topAnchor.constraint(equalTo: self.view.topAnchor),
+//			collectionView.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+//			collectionView.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+//			collectionView.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+//		])
+		
 		super.init(rootViewController: collectionView)
 		collectionView.navigationItem.title = pack.name
+		
+		collectionView.onEditChange = { editing in
+			if editing {
+				self.collectionView.navigationItem.setRightBarButtonItems(
+					[self.collectionView.editButtonItem, self.adderSheetButton],
+					animated: true
+				)
+			} else {
+				self.collectionView.navigationItem.setRightBarButtonItems(
+					[self.editButtonItem],
+					animated: true
+				)
+			}
+		}
 		
 		self.isToolbarHidden = false
 		collectionView.toolbarItems = [shareButton, downloadButton]
 //		collectionView.toolbarItems = [editButton, adderSheetButton]
 		
-		collectionView.navigationItem.rightBarButtonItems = [collectionView.editButtonItem, adderSheetButton]
+		collectionView.navigationItem.rightBarButtonItems = [collectionView.editButtonItem]
 		
 		NotificationCenter.default.addObserver(
 			self,

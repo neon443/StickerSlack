@@ -16,9 +16,10 @@ final class TabbedContentView: UITabBarController {
 		browseView.navigationItem.title = "Browse"
 		browse.tabBarItem = UITabBarItem(title: "Browse", image: UIImage(systemName: "square.grid.2x2.fill"), tag: 0)
 		
-		let packsView = EmojiPackManager(hoarder: emojiHoarder)
-		let packs = UIHostingController(rootView: packsView)
-//		let packs = EmojiPackDetailViewController(with: emojiHoarder, andPack: .test)
+//		let packsView = EmojiPackManager(hoarder: emojiHoarder)
+//		let packs = UIHostingController(rootView: packsView)
+//		let packs = EmojiPackManagerController(emojiHoarder: emojiHoarder)
+		let packs = EmojiPackDetailViewController(with: emojiHoarder, andPack: .test)
 		packs.tabBarItem = UITabBarItem(title: "Packs", image: UIImage(systemName: "square.stack.3d.up.fill"), tag: 1)
 		
 		let downloaded = DownloadedViewController(emojiHoarder: emojiHoarder)
