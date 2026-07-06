@@ -66,10 +66,16 @@ class EmojiPackDetailViewController: UIViewController {
 			}
 		}
 		
-		collectionView.toolbarItems = [shareButton, downloadButton]
-//		collectionView.toolbarItems = [editButton, adderSheetButton]
+		var shareButton2 = UIAction(title: "Share...", image: UIImage(systemName: "square.and.arrow.up")) { action in
+			print()
+		}
+		var downloadButton2 = UIAction(title: "Download", image: UIImage(systemName: "square.and.arrow.up")) { action in
+			print()
+		}
+		downloadButton2.image = UIImage(systemName: "arrow.down")
+		let x = UIBarButtonItem(title: "menu", image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: UIMenu(children: [shareButton2, downloadButton2]))
 		
-		collectionView.navigationItem.rightBarButtonItems = [collectionView.editButtonItem]
+		collectionView.navigationItem.rightBarButtonItems = [collectionView.editButtonItem, x]
 		
 		NotificationCenter.default.addObserver(
 			self,
