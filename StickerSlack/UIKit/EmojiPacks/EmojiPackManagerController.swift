@@ -22,4 +22,24 @@ class EmojiPackManagerController: UINavigationController, UINavigationController
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+	
+	override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+		super.pushViewController(viewController, animated: animated)
+		setToolbar(forViewController: viewController)
+	}
+	
+	override func popViewController(animated: Bool) -> UIViewController? {
+		let vc = super.popViewController(animated: animated)
+		setToolbar(forViewController: vc)
+		return vc
+	}
+	
+	func setToolbar(forViewController vc: UIViewController?) {
+		guard let vc else { return }
+		if vc == tableView {
+			self.setToolbarHidden(true, animated: true)
+		} else {
+			self.setToolbarHidden(false, animated: true)
+		}
+	}
 }

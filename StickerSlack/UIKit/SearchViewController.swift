@@ -31,16 +31,17 @@ class SearchViewController: UINavigationController, UISearchControllerDelegate, 
 		if gridLayout {
 			self.resultsView = EmojiCollectionView(
 				hoarder: emojiHoarder,
-				items: emojiHoarder.trie.allNames(),
+				items: [],
 				width: 75,
 				style: .plainWithLabel
 			)
 		} else {
-			self.resultsView = EmojiTableView(hoarder: emojiHoarder, items: emojiHoarder.trie.allNames())
+			self.resultsView = EmojiTableView(hoarder: emojiHoarder, items: [])
 		}
 		self.searchController = UISearchController(searchResultsController: nil)
 		
 		super.init(nibName: nil, bundle: nil)
+//		self.searchController.obscuresBackgroundDuringPresentation = false
 	}
 	
 	required init?(coder: NSCoder) {

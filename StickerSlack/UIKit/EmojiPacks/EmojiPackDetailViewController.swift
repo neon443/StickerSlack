@@ -15,8 +15,8 @@ class EmojiPackDetailViewController: UIViewController {
 	var pack: EmojiPack
 	let collectionView: EmojiCollectionView
 	
-	var adderSheetButton: UIBarButtonItem
-	var downloadButton: UIBarButtonItem
+	var adderSheetButton: UIBarButtonItem!
+	var downloadButton: UIBarButtonItem!
 	
 	var searchView: SearchViewController
 	
@@ -29,28 +29,27 @@ class EmojiPackDetailViewController: UIViewController {
 			width: 75,
 			style: .full
 		)
-//		let suiView = SearchView(hoarder: hoarder, fromPackEditor: true)
-//		self.searchView = UIHostingController(rootView: suiView)
 		self.searchView = SearchViewController(emojiHoarder: hoarder, gridLayout: true)
 		
-		self.adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: #selector(showSheet))
-		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: #selector(hideSheet))
+		super.init(nibName: nil, bundle: nil)
+		
+		self.adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(showSheet))
+		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(hideSheet))
 		searchView.resultsView.navigationItem.leftBarButtonItem = cancelButton
 		
 		self.downloadButton = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.down"),
 			style: .plain,
-			target: nil,
+			target: self,
 			action: #selector(downloadAll)
 		)
 		self.downloadButton.tintColor = .accent
 		let shareButton = UIBarButtonItem(
 			image: UIImage(systemName: "square.and.arrow.up"),
 			style: .plain,
-			target: nil,
+			target: self,
 			action: #selector(share)
 		)
-		super.init(nibName: nil, bundle: nil)
 		collectionView.navigationItem.title = pack.name
 		
 		collectionView.onEditChange = { editing in
@@ -100,11 +99,11 @@ class EmojiPackDetailViewController: UIViewController {
 			sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
 			sheet.prefersGrabberVisible = true
 		}
-		self.present(self.searchView, animated: true)
+		self.collectionView.present(self.searchView, animated: true)
 	}
 	
 	@objc func hideSheet() {
-		self.dismiss(animated: true)
+		self.searchView.dismiss(animated: true)
 	}
 	
 	@objc func downloadAll() {

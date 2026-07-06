@@ -71,7 +71,7 @@ class EmojiPackListView: UITableViewController {
 			
 		} else {
 			let detailView = EmojiPackDetailViewController(with: emojiHoarder, andPack: pack)
-			super.navigationController?.pushViewController(detailView.collectionView, animated: true)
+			self.navigationController?.pushViewController(detailView.collectionView, animated: true)
 		}
 	}
 	
