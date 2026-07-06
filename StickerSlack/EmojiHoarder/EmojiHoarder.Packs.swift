@@ -29,7 +29,6 @@ extension EmojiHoarder {
 	
 	func newEmojiPack(withItems items: [String] = []) {
 		addEmojiPack(.new(withItems: items))
-		sendChangeNotif(for: .emojiPacks)
 	}
 	
 	func addEmojiPack(_ packToAdd: EmojiPack) {

@@ -126,11 +126,8 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	@objc func share() {
 		let itemProvider = NSItemProvider(item: pack.shareLink() as NSURL, typeIdentifier: UTType.url.identifier)
-		
 		let config = UIActivityItemsConfiguration(itemProviders: [itemProvider])
-		
 		let shareSheet = UIActivityViewController(activityItemsConfiguration: config)
-		
 		present(shareSheet, animated: true)
 	}
 	

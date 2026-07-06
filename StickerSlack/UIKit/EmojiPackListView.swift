@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import UniformTypeIdentifiers
 
 class EmojiPackListView: UITableViewController {
 	var emojiHoarder: EmojiHoarder
@@ -14,10 +15,30 @@ class EmojiPackListView: UITableViewController {
 	init(emojiHoarder: EmojiHoarder) {
 		self.emojiHoarder = emojiHoarder
 		super.init(nibName: nil, bundle: nil)
+		self.tableView.allowsMultipleSelectionDuringEditing = true
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+	
+	override func viewDidLoad() {
+		self.navigationItem.title = "Packs"
+		
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(refresh),
+			name: EmojiHoarder.NotifCategory.emojiPacks.name,
+			object: nil
+		)
+		
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			image: UIImage(systemName: "plus"),
+			style: .plain,
+			target: self,
+			action: #selector(addPack)
+		)
+		self.navigationItem.rightBarButtonItem = self.editButtonItem
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -27,7 +48,7 @@ class EmojiPackListView: UITableViewController {
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = UITableViewCell()
 		var content = cell.defaultContentConfiguration()
-		guard indexPath.row+1 <= emojiHoarder.emojiPacks.count else { return cell }
+		guard emojiHoarder.emojiPacks.indices.contains(indexPath.row) else { return cell }
 		let pack = emojiHoarder.emojiPacks[indexPath.row]
 		
 		content.text = pack.name
@@ -39,13 +60,96 @@ class EmojiPackListView: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard indexPath.row+1 <= emojiHoarder.emojiPacks.count else { return }
+		guard emojiHoarder.emojiPacks.indices.contains(indexPath.row) else { return }
 		let pack = emojiHoarder.emojiPacks[indexPath.row]
 		
-		print(indexPath)
+		if self.isEditing {
+			
+		} else {
+			let detailView = EmojiPackDetailViewController(with: emojiHoarder, andPack: pack)
+			super.navigationController?.pushViewController(detailView.collectionView, animated: true)
+		}
+	}
+	
+	override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+		guard let pack = self.packFor(indexPath: indexPath) else { return nil }
+		let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { action in
+			self.delete(indexPath)
+		}
+		let duplicate = UIAction(title: "Duplicate", image: UIImage(systemName: "plus.square.fill.on.square.fill")) { action in
+			self.dup(indexPath)
+		}
+		let share = UIAction(title: "Share...", image: UIImage(systemName: "square.and.arrow.up")) { action in
+			self.share(indexPath)
+		}
+		let menu = UIMenu(children: [share, duplicate, delete])
 		
-		let detailView = EmojiPackDetailViewController(with: emojiHoarder, andPack: pack)
+		return UIContextMenuConfiguration(identifier: nil) {
+			return EmojiCollectionView(hoarder: self.emojiHoarder, items: pack.items, width: 50, style: .plain)
+		} actionProvider: { suggestedActions in
+			return menu
+		}
+	}
+	
+	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		guard emojiHoarder.emojiPacks.indices.contains(indexPath.row) else { return nil }
+		let pack = emojiHoarder.emojiPacks[indexPath.row]
+		let delete = UIContextualAction(style: .destructive, title: "Delete") { contextualAction, view, closure in
+			self.delete(indexPath)
+		}
+		delete.image = UIImage(systemName: "trash")
 		
-		super.navigationController?.pushViewController(detailView.collectionView, animated: true)
+		let dupButton = UIContextualAction(style: .normal, title: "Duplicate") { contextualAction, view, closure in
+			self.dup(indexPath)
+		}
+		dupButton.image = UIImage(systemName: "plus.square.fill.on.square.fill")
+		
+		let share = UIContextualAction(style: .normal, title: "Share") { contextualAction, view, closure in
+			self.share(indexPath)
+		}
+		share.image = UIImage(systemName: "square.and.arrow.up")
+		return UISwipeActionsConfiguration(actions: [delete, share, dupButton])
+	}
+	
+	@objc func addPack() {
+		emojiHoarder.newEmojiPack()
+		self.tableView.insertRows(
+			at: [IndexPath(row: tableView(self.tableView, numberOfRowsInSection: 0)-1, section: 0)],
+			with: .automatic
+		)
+	}
+	
+	@objc func refresh(_ notification: Notification) {
+	}
+	
+	func delete(_ indexPath: IndexPath) {
+		guard let pack = packFor(indexPath: indexPath) else { return }
+		
+		self.emojiHoarder.removeEmojiPack(pack)
+		self.tableView.deleteRows(at: [indexPath], with: .automatic)
+	}
+	
+	func dup(_ indexPath: IndexPath) {
+		guard let pack = packFor(indexPath: indexPath) else { return }
+		
+		self.emojiHoarder.addEmojiPack(pack)
+		self.tableView.insertRows(
+			at: [IndexPath(row: self.emojiHoarder.emojiPacks.count-1, section: 0)],
+			with: .automatic
+		)
+	}
+	
+	func share(_ indexPath: IndexPath) {
+		guard let pack = packFor(indexPath: indexPath) else { return }
+		
+		let itemProvider = NSItemProvider(item: pack.shareLink() as NSURL, typeIdentifier: UTType.url.identifier)
+		let config = UIActivityItemsConfiguration(itemProviders: [itemProvider])
+		let shareSheet = UIActivityViewController(activityItemsConfiguration: config)
+		self.present(shareSheet, animated: true)
+	}
+	
+	func packFor(indexPath: IndexPath) -> EmojiPack? {
+		guard emojiHoarder.emojiPacks.indices.contains(indexPath.row) else { return nil }
+		return emojiHoarder.emojiPacks[indexPath.row]
 	}
 }
