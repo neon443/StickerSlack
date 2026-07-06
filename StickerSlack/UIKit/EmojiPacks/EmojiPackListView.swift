@@ -158,10 +158,19 @@ class EmojiPackListView: UITableViewController {
 	
 	@objc func multiDelete() {
 		guard let selectedRows = self.tableView.indexPathsForSelectedRows else { return }
+		
+		var packs: [EmojiPack] = []
 		for indexPath in selectedRows {
-			guard let pack = packFor(indexPath: indexPath) else { continue }
-			delete(indexPath)
+			guard let pack = packFor(indexPath: indexPath) else { return }
+			packs.append(pack)
 		}
+		guard !packs.isEmpty else { return }
+		
+		for pack in packs {
+			self.emojiHoarder.removeEmojiPack(pack)
+		}
+		self.tableView.deleteRows(at: selectedRows, with: .automatic)
+		setEditing(false, animated: true)
 	}
 	
 	func dup(_ indexPath: IndexPath) {
