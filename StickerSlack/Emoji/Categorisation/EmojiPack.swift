@@ -75,7 +75,6 @@ struct EmojiPack: Identifiable, Codable, Equatable, Hashable {
 	mutating func add(_ newItem: String) {
 		guard !items.contains(newItem) else { return }
 		self.items.append(newItem)
-		NotificationCenter.default.post(name: EmojiHoarder.NotifCategory.emojiPack(id).name, object: nil)
 	}
 	
 	mutating func remove(_ itemToRemove: String) {
@@ -83,7 +82,6 @@ struct EmojiPack: Identifiable, Codable, Equatable, Hashable {
 			return
 		}
 		self.items.remove(at: index)
-		NotificationCenter.default.post(name: EmojiHoarder.NotifCategory.emojiPack(id).name, object: nil)
 	}
 	
 	mutating func addRemove(_ item: String) {

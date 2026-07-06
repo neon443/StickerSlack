@@ -60,6 +60,15 @@ extension EmojiHoarder {
 		saveEmojiPacks()
 	}
 	
+	func updateEmojiPack(_ updatedPack: EmojiPack) {
+		guard let index = self.emojiPacks.firstIndex(where: { $0.id == updatedPack.id }) else { return }
+		withAnimation {
+			self.emojiPacks[index] = updatedPack
+		}
+		sendChangeNotif(for: .emojiPacks)
+		saveEmojiPacks()
+	}
+	
 	func moveEmojiPacks(fromOffsets: IndexSet, toOffset: Int) {
 		withAnimation {
 			emojiPacks.move(fromOffsets: fromOffsets, toOffset: toOffset)

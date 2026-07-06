@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import SwiftUI
 import UniformTypeIdentifiers
+import Haptics
 
 class EmojiPackDetailViewController: UIViewController {
 	var hoarder: EmojiHoarder
@@ -32,10 +33,38 @@ class EmojiPackDetailViewController: UIViewController {
 		self.searchView = SearchViewController(emojiHoarder: hoarder, gridLayout: true)
 		
 		super.init(nibName: nil, bundle: nil)
+		self.addChild(collectionView)
+		self.view.addSubview(collectionView.view)
+		collectionView.view.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			collectionView.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+			collectionView.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+			collectionView.view.topAnchor.constraint(equalTo: self.view.topAnchor),
+			collectionView.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+		])
+		collectionView.didMove(toParent: self)
+		collectionView.onRemove = { removedItem in
+			self.pack.items = self.collectionView.items
+		}
+		
+		self.searchView.setOnTapCallback { selection in
+			guard !self.pack.items.contains(selection) else {
+				Haptic.error.trigger()
+				return
+			}
+			self.pack.add(selection)
+			Haptic.heavy.trigger()
+			var newItems = self.collectionView.items
+			newItems.append(selection)
+			self.collectionView.refreshUI(with: newItems)
+		}
 		
 		self.adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(showSheet))
-		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(hideSheet))
-		searchView.resultsView.navigationItem.leftBarButtonItem = cancelButton
+		
+//		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(hideSheet))
+//		searchView.resultsView.navigationItem.leftBarButtonItem = cancelButton
+		let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(hideSheet))
+		searchView.resultsView.navigationItem.rightBarButtonItem = doneButton
 		
 		self.downloadButton = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.down"),
@@ -50,16 +79,16 @@ class EmojiPackDetailViewController: UIViewController {
 			target: self,
 			action: #selector(share)
 		)
-		collectionView.navigationItem.title = pack.name
+		self.navigationItem.title = pack.name
 		
 		collectionView.onEditChange = { editing in
 			if editing {
-				self.collectionView.navigationItem.setRightBarButtonItems(
+				self.navigationItem.setRightBarButtonItems(
 					[self.collectionView.editButtonItem, self.adderSheetButton],
 					animated: true
 				)
 			} else {
-				self.collectionView.navigationItem.setRightBarButtonItems(
+				self.navigationItem.setRightBarButtonItems(
 					[self.collectionView.editButtonItem],
 					animated: true
 				)
@@ -75,14 +104,14 @@ class EmojiPackDetailViewController: UIViewController {
 		downloadButton2.image = UIImage(systemName: "arrow.down")
 		let x = UIBarButtonItem(title: "menu", image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: UIMenu(children: [shareButton2, downloadButton2]))
 		
-		collectionView.navigationItem.rightBarButtonItems = [collectionView.editButtonItem, x]
+		self.navigationItem.rightBarButtonItems = [collectionView.editButtonItem, x]
 		
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(packChanged),
-			name: EmojiHoarder.NotifCategory.emojiPack(pack.id).name,
-			object: nil
-		)
+//		NotificationCenter.default.addObserver(
+//			self,
+//			selector: #selector(packChanged),
+//			name: EmojiHoarder.NotifCategory.emojiPack(pack.id).name,
+//			object: nil
+//		)
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -93,7 +122,7 @@ class EmojiPackDetailViewController: UIViewController {
 		guard notification.name == EmojiHoarder.NotifCategory.emojiPack(pack.id).name else { return }
 		guard let updatedPack = hoarder.emojiPacks.first(where: { $0.id == pack.id }) else { return }
 		self.pack = updatedPack
-		collectionView.navigationItem.title = pack.name
+		self.navigationItem.title = pack.name
 		collectionView.refreshUI(with: pack.items)
 	}
 	
@@ -105,7 +134,7 @@ class EmojiPackDetailViewController: UIViewController {
 			sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
 			sheet.prefersGrabberVisible = true
 		}
-		self.collectionView.present(self.searchView, animated: true)
+		self.present(self.searchView, animated: true)
 	}
 	
 	@objc func hideSheet() {
@@ -143,11 +172,6 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
-		guard hoarder.emojiPacks.contains(pack) else { return }
-		guard let index = hoarder.emojiPacks.firstIndex(of: pack) else { return }
-		if hoarder.emojiPacks[index] != pack {
-			hoarder.emojiPacks[index] = pack
-			
-		}
+		hoarder.updateEmojiPack(pack)
 	}
 }

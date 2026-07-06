@@ -71,7 +71,7 @@ class EmojiPackListView: UITableViewController {
 			
 		} else {
 			let detailView = EmojiPackDetailViewController(with: emojiHoarder, andPack: pack)
-			self.navigationController?.pushViewController(detailView.collectionView, animated: true)
+			self.navigationController?.pushViewController(detailView/*.collectionView*/, animated: true)
 		}
 	}
 	
@@ -88,7 +88,8 @@ class EmojiPackListView: UITableViewController {
 				self.multiDelete()
 			}
 			return UIContextMenuConfiguration(identifier: nil) {
-				return EmojiCollectionView(hoarder: self.emojiHoarder, items: pack.items, width: 50, style: .plain)
+//				return EmojiCollectionView(hoarder: self.emojiHoarder, items: pack.items, width: 50, style: .plain)
+				return nil
 			} actionProvider: { suggestedActions in
 				return UIMenu(children: [multiDelete])
 			}
@@ -105,7 +106,22 @@ class EmojiPackListView: UITableViewController {
 			let menu = UIMenu(children: [share, duplicate, delete])
 			
 			return UIContextMenuConfiguration(identifier: nil) {
-				return EmojiCollectionView(hoarder: self.emojiHoarder, items: pack.items, width: 50, style: .plain)
+				let grid = EmojiCollectionView(hoarder: self.emojiHoarder, items: pack.items, width: 50, style: .plain)
+				let vc = UINavigationController(rootViewController: grid)
+				
+				let title = UILabel()
+				title.text = pack.name
+				title.font = .boldSystemFont(ofSize: title.font.pointSize)
+				let subtitle = UILabel()
+				subtitle.text = "\(pack.items.count) item\(pack.items.count.plural)"
+				subtitle.textColor = .gray
+				
+				let stackView = UIStackView(arrangedSubviews: [title, subtitle])
+				stackView.axis = .vertical
+				stackView.alignment = .center
+				stackView.spacing -= 2
+				grid.navigationItem.titleView = stackView
+				return vc
 			} actionProvider: { suggestedActions in
 				return menu
 			}
@@ -147,6 +163,7 @@ class EmojiPackListView: UITableViewController {
 	}
 	
 	@objc func refresh(_ notification: Notification) {
+		self.tableView.reloadData()
 	}
 	
 	func delete(_ indexPath: IndexPath) {

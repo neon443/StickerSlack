@@ -80,6 +80,11 @@ class SearchViewController: UINavigationController, UISearchControllerDelegate, 
 //		noResultsView.didMove(toParent: self)
 	}
 	
+	func setOnTapCallback(to newCallback: @escaping ((String) -> Void)) {
+		guard let collectionView = self.resultsView as? EmojiCollectionView else { return }
+		collectionView.onTap = newCallback
+	}
+	
 	func reset() {
 		previousQueries = []
 		refreshResults(with: [])

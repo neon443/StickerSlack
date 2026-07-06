@@ -263,16 +263,7 @@ class EmojiHoarder: BaseHoarder {
 	//MARK: notifications
 	func sendChangeNotif(for notifFor: NotifCategory) {
 		let nc = NotificationCenter.default
-		switch notifFor {
-		case .emojis:
-			nc.post(name: notifFor.name, object: nil)
-		case .downloadedEmojis:
-			nc.post(name: notifFor.name, object: nil)
-		case .emojiPacks:
-			nc.post(name: notifFor.name, object: nil)
-		case .emojiPack(let emojiPack):
-			nc.post(name: notifFor.name, object: nil)
-		}
+		nc.post(name: notifFor.name, object: nil)
 	}
 	
 	enum NotifCategory {
