@@ -50,19 +50,6 @@ class EmojiPackDetailViewController: UIViewController {
 			target: nil,
 			action: #selector(share)
 		)
-//		super.init(nibName: nil, bundle: nil)
-//		self.setviewcontrollers
-//		self.addChild(collectionView)
-//		self.view.addSubview(collectionView.view)
-//		collectionView.view.translatesAutoresizingMaskIntoConstraints = false
-//		NSLayoutConstraint.activate([
-//			collectionView.view.topAnchor.constraint(equalTo: self.view.topAnchor),
-//			collectionView.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-//			collectionView.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-//			collectionView.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-//		])
-		
-//		super.init(rootViewController: collectionView)
 		super.init(nibName: nil, bundle: nil)
 		collectionView.navigationItem.title = pack.name
 		
@@ -74,7 +61,7 @@ class EmojiPackDetailViewController: UIViewController {
 				)
 			} else {
 				self.collectionView.navigationItem.setRightBarButtonItems(
-					[self.editButtonItem],
+					[self.collectionView.editButtonItem],
 					animated: true
 				)
 			}
@@ -147,23 +134,18 @@ class EmojiPackDetailViewController: UIViewController {
 		present(shareSheet, animated: true)
 	}
 	
-	@objc func setEdit() {
-		collectionView.setEditing(!collectionView.isEditing, animated: true)
-		if collectionView.isEditing {
-			collectionView.navigationItem.setRightBarButtonItems(
-				[self.editButtonItem, adderSheetButton],
-				animated: true
-			)
-		} else {
-			collectionView.navigationItem.setRightBarButtonItems(
-				[self.editButtonItem],
-				animated: true
-			)
-		}
-	}
-	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		NotificationCenter.default.post(name: EmojiHoarder.NotifCategory.emojiPack(pack.id).name, object: nil)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		guard hoarder.emojiPacks.contains(pack) else { return }
+		guard let index = hoarder.emojiPacks.firstIndex(of: pack) else { return }
+		if hoarder.emojiPacks[index] != pack {
+			hoarder.emojiPacks[index] = pack
+			
+		}
 	}
 }

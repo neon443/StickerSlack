@@ -50,11 +50,6 @@ final class TabbedContentView: UITabBarController, UITabBarControllerDelegate {
 		return true
 	}
 	
-	func tabBarController(_ tabBarController: UITabBarController, willSelect viewController: UIViewController) {
-		guard let navController = viewController as? UINavigationController else { return }
-		navController.popToRootViewController(animated: true)
-	}
-	
 //	override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 //		item
 //	}/
