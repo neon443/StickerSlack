@@ -11,11 +11,11 @@ import UniformTypeIdentifiers
 
 class EmojiPackListView: UITableViewController {
 	var emojiHoarder: EmojiHoarder
+	var multiDeleteButton: UIBarButtonItem!
 	
 	init(emojiHoarder: EmojiHoarder) {
 		self.emojiHoarder = emojiHoarder
-		super.init(nibName: nil, bundle: nil)
-		self.tableView.allowsMultipleSelectionDuringEditing = true
+		super.init(style: .insetGrouped)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -23,7 +23,11 @@ class EmojiPackListView: UITableViewController {
 	}
 	
 	override func viewDidLoad() {
+		self.tableView.allowsMultipleSelectionDuringEditing = true
 		self.navigationItem.title = "Packs"
+		
+		self.multiDeleteButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(multiDelete))
+		self.setToolbarItems([multiDeleteButton], animated: true)
 		
 		NotificationCenter.default.addObserver(
 			self,
@@ -73,27 +77,45 @@ class EmojiPackListView: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
 		guard let pack = self.packFor(indexPath: indexPath) else { return nil }
-		let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { action in
-			self.delete(indexPath)
-		}
-		let duplicate = UIAction(title: "Duplicate", image: UIImage(systemName: "plus.square.fill.on.square.fill")) { action in
-			self.dup(indexPath)
-		}
-		let share = UIAction(title: "Share...", image: UIImage(systemName: "square.and.arrow.up")) { action in
-			self.share(indexPath)
-		}
-		let menu = UIMenu(children: [share, duplicate, delete])
 		
-		return UIContextMenuConfiguration(identifier: nil) {
-			return EmojiCollectionView(hoarder: self.emojiHoarder, items: pack.items, width: 50, style: .plain)
-		} actionProvider: { suggestedActions in
-			return menu
+		if let selectedRows = self.tableView.indexPathsForSelectedRows,
+		   selectedRows.contains(indexPath) {
+			let multiDelete = UIAction(
+				title: "Delete \(selectedRows.count) pack\(selectedRows.count.plural)",
+				image: UIImage(systemName: "trash"),
+				attributes: .destructive
+			) { action in
+				self.multiDelete()
+			}
+			return UIContextMenuConfiguration(identifier: nil) {
+				return EmojiCollectionView(hoarder: self.emojiHoarder, items: pack.items, width: 50, style: .plain)
+			} actionProvider: { suggestedActions in
+				return UIMenu(children: [multiDelete])
+			}
+		} else {
+			let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { action in
+				self.delete(indexPath)
+			}
+			let duplicate = UIAction(title: "Duplicate", image: UIImage(systemName: "plus.square.fill.on.square.fill")) { action in
+				self.dup(indexPath)
+			}
+			let share = UIAction(title: "Share...", image: UIImage(systemName: "square.and.arrow.up")) { action in
+				self.share(indexPath)
+			}
+			let menu = UIMenu(children: [share, duplicate, delete])
+			
+			return UIContextMenuConfiguration(identifier: nil) {
+				return EmojiCollectionView(hoarder: self.emojiHoarder, items: pack.items, width: 50, style: .plain)
+			} actionProvider: { suggestedActions in
+				return menu
+			}
 		}
 	}
 	
 	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		guard emojiHoarder.emojiPacks.indices.contains(indexPath.row) else { return nil }
 		let pack = emojiHoarder.emojiPacks[indexPath.row]
+		
 		let delete = UIContextualAction(style: .destructive, title: "Delete") { contextualAction, view, closure in
 			self.delete(indexPath)
 		}
@@ -109,6 +131,11 @@ class EmojiPackListView: UITableViewController {
 		}
 		share.image = UIImage(systemName: "square.and.arrow.up")
 		return UISwipeActionsConfiguration(actions: [delete, share, dupButton])
+	}
+	
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		self.navigationController?.setToolbarHidden(!editing, animated: true)
 	}
 	
 	@objc func addPack() {
@@ -127,6 +154,14 @@ class EmojiPackListView: UITableViewController {
 		
 		self.emojiHoarder.removeEmojiPack(pack)
 		self.tableView.deleteRows(at: [indexPath], with: .automatic)
+	}
+	
+	@objc func multiDelete() {
+		guard let selectedRows = self.tableView.indexPathsForSelectedRows else { return }
+		for indexPath in selectedRows {
+			guard let pack = packFor(indexPath: indexPath) else { continue }
+			delete(indexPath)
+		}
 	}
 	
 	func dup(_ indexPath: IndexPath) {

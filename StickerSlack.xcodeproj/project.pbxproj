@@ -408,16 +408,13 @@
 			isa = PBXGroup;
 			children = (
 				A94693D62FEF0A4200E56AC5 /* TabbedContentView.swift */,
-				A9D53AE92FFB0272001C1BB9 /* EmojiPackManagerController.swift */,
-				A9D53AEC2FFB0E83001C1BB9 /* EmojiPackListView.swift */,
+				A9FB3EE22FA7AB3A00030E2A /* UIKitGifView.swift */,
+				A9C52F712F89A85F00078588 /* ShareSheet.swift */,
+				A9E8C78E2FF71D8C009A38B5 /* DownloadedViewController.swift */,
+				A9E8C7A72FF95FEC009A38B5 /* SearchViewController.swift */,
+				A9B37EAB2FFBD69200531FA1 /* EmojiPacks */,
 				A94F3E632F9E384D00FA6995 /* TableView */,
 				A94F3E642F9E385300FA6995 /* CollectionView */,
-				A9C52F712F89A85F00078588 /* ShareSheet.swift */,
-				A9FB3EE22FA7AB3A00030E2A /* UIKitGifView.swift */,
-				A9E8C78E2FF71D8C009A38B5 /* DownloadedViewController.swift */,
-				A9E8C7A12FF7B815009A38B5 /* EmojiPackDetailViewController.swift */,
-				A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */,
-				A9E8C7A72FF95FEC009A38B5 /* SearchViewController.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -548,6 +545,17 @@
 				A949B1FA2EA0518800215164 /* SlackResponse.swift */,
 			);
 			path = Cachet;
+			sourceTree = "<group>";
+		};
+		A9B37EAB2FFBD69200531FA1 /* EmojiPacks */ = {
+			isa = PBXGroup;
+			children = (
+				A9D53AE92FFB0272001C1BB9 /* EmojiPackManagerController.swift */,
+				A9D53AEC2FFB0E83001C1BB9 /* EmojiPackListView.swift */,
+				A9E8C7A12FF7B815009A38B5 /* EmojiPackDetailViewController.swift */,
+				A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */,
+			);
+			path = EmojiPacks;
 			sourceTree = "<group>";
 		};
 		A9B9A82D2EB2CCBE004C9245 /* StickerSlackTests */ = {
