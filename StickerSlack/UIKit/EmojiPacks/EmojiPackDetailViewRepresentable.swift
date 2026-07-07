@@ -15,7 +15,6 @@ struct EmojiPackDetailViewRepresentable: UIViewControllerRepresentable {
 	
 	func makeUIViewController(context: Context) -> UIViewController {
 		let view = EmojiPackDetailViewController(with: hoarder, andPack: pack)
-		view.navigationController?.isToolbarHidden = false
 		return view
 	}
 	

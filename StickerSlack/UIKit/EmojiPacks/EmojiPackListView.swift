@@ -27,7 +27,7 @@ class EmojiPackListView: UITableViewController {
 		self.navigationItem.title = "Packs"
 		
 		self.multiDeleteButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(multiDelete))
-		self.setToolbarItems([multiDeleteButton], animated: true)
+		self.navigationItem.rightBarButtonItem = self.editButtonItem
 		
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
 			image: UIImage(systemName: "plus"),
@@ -35,7 +35,6 @@ class EmojiPackListView: UITableViewController {
 			target: self,
 			action: #selector(addPack)
 		)
-		self.navigationItem.rightBarButtonItem = self.editButtonItem
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -148,7 +147,17 @@ class EmojiPackListView: UITableViewController {
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		self.navigationController?.setToolbarHidden(!editing, animated: true)
+		var items: [UIBarButtonItem]
+		if editing {
+			if #available(iOS 26, *) {
+				items = [self.editButtonItem, .fixedSpace(), multiDeleteButton]
+			} else {
+				items = [self.editButtonItem, multiDeleteButton]
+			}
+		} else {
+			items = [self.editButtonItem]
+		}
+		self.navigationItem.setRightBarButtonItems(items, animated: true)
 	}
 	
 	@objc func addPack() {

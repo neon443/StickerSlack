@@ -17,7 +17,8 @@ class EmojiPackDetailViewController: UIViewController {
 	let collectionView: EmojiCollectionView
 	
 	var adderSheetButton: UIBarButtonItem!
-	var downloadButton: UIBarButtonItem!
+	var downloadButton: UIAction!
+	var shareButton: UIAction!
 	
 	var searchView: SearchViewController
 	
@@ -61,50 +62,19 @@ class EmojiPackDetailViewController: UIViewController {
 		
 		self.adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(showSheet))
 		
-//		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(hideSheet))
-//		searchView.resultsView.navigationItem.leftBarButtonItem = cancelButton
 		let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(hideSheet))
 		searchView.resultsView.navigationItem.rightBarButtonItem = doneButton
 		
-		self.downloadButton = UIBarButtonItem(
-			image: UIImage(systemName: "arrow.down"),
-			style: .plain,
-			target: self,
-			action: #selector(downloadAll)
-		)
-		self.downloadButton.tintColor = .accent
-		let shareButton = UIBarButtonItem(
-			image: UIImage(systemName: "square.and.arrow.up"),
-			style: .plain,
-			target: self,
-			action: #selector(share)
-		)
+		self.shareButton = UIAction(title: "Share...", image: UIImage(systemName: "square.and.arrow.up")) { action in
+			self.share()
+		}
+		self.downloadButton = UIAction(title: "Download", image: UIImage(systemName: "arrow.down")) { action in
+			self.downloadButtonAction()
+		}
 		self.navigationItem.title = pack.name
+		self.setToolbar(editing: false)
 		
-		collectionView.onEditChange = { editing in
-			if editing {
-				self.navigationItem.setRightBarButtonItems(
-					[self.collectionView.editButtonItem, self.adderSheetButton],
-					animated: true
-				)
-			} else {
-				self.navigationItem.setRightBarButtonItems(
-					[self.collectionView.editButtonItem],
-					animated: true
-				)
-			}
-		}
-		
-		var shareButton2 = UIAction(title: "Share...", image: UIImage(systemName: "square.and.arrow.up")) { action in
-			print()
-		}
-		var downloadButton2 = UIAction(title: "Download", image: UIImage(systemName: "square.and.arrow.up")) { action in
-			print()
-		}
-		downloadButton2.image = UIImage(systemName: "arrow.down")
-		let x = UIBarButtonItem(title: "menu", image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: UIMenu(children: [shareButton2, downloadButton2]))
-		
-		self.navigationItem.rightBarButtonItems = [collectionView.editButtonItem, x]
+		collectionView.onEditChange = { self.setToolbar(editing: $0) }
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -126,7 +96,7 @@ class EmojiPackDetailViewController: UIViewController {
 		self.searchView.dismiss(animated: true)
 	}
 	
-	@objc func downloadAll() {
+	@objc func downloadButtonAction() {
 		if !pack.allDownloaded(in: hoarder) {
 //			downloading = true
 		}
@@ -134,12 +104,13 @@ class EmojiPackDetailViewController: UIViewController {
 			if pack.allDownloaded(in: hoarder) {
 				await pack.deleteAll(hoarder: hoarder)
 				self.downloadButton.image = UIImage(systemName: "arrow.down")
-				self.downloadButton.tintColor = .accent
+				self.downloadButton.title = "Download"
 			} else {
 				await pack.downloadAll(hoarder: hoarder)
-				self.downloadButton.image = UIImage(systemName: "checkmark")
-				self.downloadButton.tintColor = .red
+				self.downloadButton.image = UIImage(systemName: "trash")
+				self.downloadButton.title = "Remove Download"
 			}
+			self.setToolbar(editing: false)
 		}
 	}
 	
@@ -148,6 +119,21 @@ class EmojiPackDetailViewController: UIViewController {
 		let config = UIActivityItemsConfiguration(itemProviders: [itemProvider])
 		let shareSheet = UIActivityViewController(activityItemsConfiguration: config)
 		present(shareSheet, animated: true)
+	}
+	
+	func setToolbar(editing: Bool) {
+		let items: [UIBarButtonItem]
+		if editing {
+			if #available(iOS 26, *) {
+				items = [self.collectionView.editButtonItem, .fixedSpace(), self.adderSheetButton]
+			} else {
+				items = [self.collectionView.editButtonItem, self.adderSheetButton]
+			}
+		} else {
+			let dotdotdotButton = UIBarButtonItem(title: "menu", image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: UIMenu(children: [shareButton, downloadButton]))
+			items = [self.collectionView.editButtonItem, dotdotdotButton]
+		}
+		self.navigationItem.setRightBarButtonItems(items, animated: true)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
