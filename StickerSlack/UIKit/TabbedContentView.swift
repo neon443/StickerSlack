@@ -10,12 +10,10 @@ import UIKit
 import SwiftUI
 
 final class TabbedContentView: UITabBarController, UITabBarControllerDelegate {
-	func setupTabs(with emojiHoarder: EmojiHoarder, and gifHoarder: GifHoarder) {
+	func setupTabs(with emojiHoarder: EmojiHoarder) {
 		self.delegate = self
 		
-		let browseView = EmojiTableView(hoarder: emojiHoarder, items: emojiHoarder.emojis.map { $0.name })
-		let browse = UINavigationController(rootViewController: browseView)
-		browseView.navigationItem.title = "Browse"
+		let browse = BrowseViewController(emojiHoarder: emojiHoarder)
 		browse.tabBarItem = UITabBarItem(title: "Browse", image: UIImage(systemName: "square.grid.2x2.fill"), tag: 0)
 		
 //		let packsView = EmojiPackManager(hoarder: emojiHoarder)

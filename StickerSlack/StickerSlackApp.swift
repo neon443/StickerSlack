@@ -33,15 +33,18 @@ import SwiftUI
 
 @main
 class StickerSlackApp: UIResponder, UIApplicationDelegate {
+	#if DEBUG
+	var emojiHoarder: EmojiHoarder = .init(/*localOnly: true*/)
+	#else
 	var emojiHoarder: EmojiHoarder = .init()
-	var gifHoarder: GifHoarder = .init()
+	#endif
 	
 	var window: UIWindow?
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
 		window?.rootViewController = TabbedContentView()
-		(window?.rootViewController! as! TabbedContentView).setupTabs(with: emojiHoarder, and: gifHoarder)
+		(window?.rootViewController! as! TabbedContentView).setupTabs(with: emojiHoarder)
 		window?.makeKeyAndVisible()
 		return true
 	}
