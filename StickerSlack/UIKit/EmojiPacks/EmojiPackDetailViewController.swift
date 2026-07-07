@@ -16,6 +16,8 @@ class EmojiPackDetailViewController: UIViewController {
 	var pack: EmojiPack
 	let collectionView: EmojiCollectionView
 	
+	let emptyCollectionView: UIViewController
+	
 	var adderSheetButton: UIBarButtonItem!
 	var downloadButton: UIAction!
 	var shareButton: UIAction!
@@ -33,6 +35,13 @@ class EmojiPackDetailViewController: UIViewController {
 		)
 		self.searchView = SearchViewController(emojiHoarder: hoarder, gridLayout: true)
 		
+		let suiView = EmptyCollectionView(
+			title: "No Emoji",
+			details: "Add emojis to this pack by editing it using the pencil button in the toolbar.",
+			systemImage: "exclamationmark.triangle.fill"
+		)
+		self.emptyCollectionView = UIHostingController(rootView: suiView)
+		
 		super.init(nibName: nil, bundle: nil)
 		self.addChild(collectionView)
 		self.view.addSubview(collectionView.view)
@@ -46,18 +55,29 @@ class EmojiPackDetailViewController: UIViewController {
 		collectionView.didMove(toParent: self)
 		collectionView.onRemove = { removedItem in
 			self.pack.items = self.collectionView.items
+			self.refreshUI()
 		}
+		
+		collectionView.addChild(emptyCollectionView)
+		self.view.addSubview(emptyCollectionView.view)
+		emptyCollectionView.view.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			emptyCollectionView.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+			emptyCollectionView.view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+			emptyCollectionView.view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+		])
+		emptyCollectionView.didMove(toParent: collectionView)
+		checkForEmptyPack()
 		
 		self.searchView.setOnTapCallback { selection in
 			guard !self.pack.items.contains(selection) else {
 				Haptic.error.trigger()
 				return
 			}
-			self.pack.add(selection)
 			Haptic.heavy.trigger()
-			var newItems = self.collectionView.items
-			newItems.append(selection)
-			self.collectionView.refreshUI(with: newItems)
+			self.pack.items.append(selection)
+			self.collectionView.items = pack.items
+			self.refreshUI()
 		}
 		
 		self.adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(showSheet))
@@ -68,9 +88,10 @@ class EmojiPackDetailViewController: UIViewController {
 		self.shareButton = UIAction(title: "Share...", image: UIImage(systemName: "square.and.arrow.up")) { action in
 			self.share()
 		}
-		self.downloadButton = UIAction(title: "Download", image: UIImage(systemName: "arrow.down")) { action in
+		self.downloadButton = UIAction(title: "", image: UIImage(systemName: "")) { action in
 			self.downloadButtonAction()
 		}
+		updateDownloadButton()
 		self.navigationItem.title = pack.name
 		self.setToolbar(editing: false)
 		
@@ -79,6 +100,16 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+	
+	func checkForEmptyPack() {
+		self.emptyCollectionView.view.isHidden = !self.pack.items.isEmpty
+		
+		if self.pack.items.isEmpty {
+			
+		} else {
+			
+		}
 	}
 	
 	@objc func showSheet() {
@@ -103,14 +134,21 @@ class EmojiPackDetailViewController: UIViewController {
 		Task {
 			if pack.allDownloaded(in: hoarder) {
 				await pack.deleteAll(hoarder: hoarder)
-				self.downloadButton.image = UIImage(systemName: "arrow.down")
-				self.downloadButton.title = "Download"
 			} else {
 				await pack.downloadAll(hoarder: hoarder)
-				self.downloadButton.image = UIImage(systemName: "trash")
-				self.downloadButton.title = "Remove Download"
 			}
 			self.setToolbar(editing: false)
+			refreshUI()
+		}
+	}
+	
+	func updateDownloadButton() {
+		if pack.allDownloaded(in: hoarder) {
+			self.downloadButton.image = UIImage(systemName: "trash")
+			self.downloadButton.title = "Remove Download"
+		} else {
+			self.downloadButton.image = UIImage(systemName: "arrow.down")
+			self.downloadButton.title = "Download"
 		}
 	}
 	
@@ -140,7 +178,14 @@ class EmojiPackDetailViewController: UIViewController {
 		super.viewWillAppear(animated)
 		guard let updatedPack = hoarder.emojiPacks.first(where: { $0.id == pack.id }) else { return }
 		self.pack = updatedPack
+		refreshUI()
+	}
+	
+	func refreshUI() {
 		self.navigationItem.title = pack.name
+		checkForEmptyPack()
+		updateDownloadButton()
+		setToolbar(editing: isEditing)
 		collectionView.refreshUI(with: pack.items)
 	}
 	

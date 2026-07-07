@@ -103,7 +103,6 @@ class EmojiPackListView: UITableViewController {
 				self.multiDelete()
 			}
 			return UIContextMenuConfiguration(identifier: nil) {
-//				return EmojiCollectionView(hoarder: self.emojiHoarder, items: pack.items, width: 50, style: .plain)
 				return nil
 			} actionProvider: { suggestedActions in
 				return UIMenu(children: [multiDelete])
@@ -115,10 +114,25 @@ class EmojiPackListView: UITableViewController {
 			let duplicate = UIAction(title: "Duplicate", image: UIImage(systemName: "plus.square.fill.on.square.fill")) { action in
 				self.dup(indexPath)
 			}
+//			UIMenu(options: .displayInline, children: [delete])
 			let share = UIAction(title: "Share...", image: UIImage(systemName: "square.and.arrow.up")) { action in
 				self.share(indexPath)
 			}
-			let menu = UIMenu(children: [share, duplicate, delete])
+			let isDownloaded = pack.allDownloaded(in: emojiHoarder)
+			let download = UIAction(
+				title: "\(isDownloaded ? "Remove " : "")Download",
+				image: UIImage(systemName: isDownloaded ? "trash" : "arrow.down")
+			) { action in
+				Task {
+					if isDownloaded {
+						await pack.deleteAll(hoarder: self.emojiHoarder)
+					} else {
+						await pack.downloadAll(hoarder: self.emojiHoarder)
+					}
+				}
+			}
+			let submenu = UIMenu(options: .displayInline, children: [duplicate, share])
+			let menu = UIMenu(children: [download, submenu, delete])
 			
 			return UIContextMenuConfiguration(identifier: nil) {
 				let grid = EmojiCollectionView(hoarder: self.emojiHoarder, items: pack.items, width: 50, style: .plain)
@@ -145,7 +159,6 @@ class EmojiPackListView: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		guard emojiHoarder.emojiPacks.indices.contains(indexPath.row) else { return nil }
-		let pack = emojiHoarder.emojiPacks[indexPath.row]
 		
 		let delete = UIContextualAction(style: .destructive, title: "Delete") { contextualAction, view, closure in
 			self.delete(indexPath)
