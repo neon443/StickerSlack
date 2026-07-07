@@ -11,8 +11,8 @@ import UniformTypeIdentifiers
 
 class EmojiPackListView: UITableViewController {
 	var emojiHoarder: EmojiHoarder
-	var multiDeleteButton: UIButton!
-	var multiDeleteBarButton: UIBarButtonItem!
+	var multiDeleteButton: UIBarButtonItem!
+	var multiDeleteLabel: UIBarButtonItem!
 	
 	init(emojiHoarder: EmojiHoarder) {
 		self.emojiHoarder = emojiHoarder
@@ -27,17 +27,14 @@ class EmojiPackListView: UITableViewController {
 		self.tableView.allowsMultipleSelectionDuringEditing = true
 		self.navigationItem.title = "Packs"
 		
-		self.multiDeleteButton = UIButton(type: .custom)
-		self.multiDeleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
-		self.multiDeleteButton.imageView?.tintColor = .systemRed
-		self.multiDeleteButton.setTitle("", for: .normal)
-		self.multiDeleteButton.titleLabel?.textColor = .systemRed
-		self.multiDeleteButton.role = .destructive
-		self.multiDeleteButton.isEnabled = false
-		self.multiDeleteButton.addTarget(self, action: #selector(multiDelete), for: .touchUpInside)
-		
-//		self.multiDeleteBarButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(multiDelete))
-		self.multiDeleteBarButton = UIBarButtonItem(customView: multiDeleteButton)
+		self.multiDeleteButton = UIBarButtonItem(
+			image: UIImage(systemName: "trash"),
+			style: .plain,
+			target: self,
+			action: #selector(multiDelete)
+		)
+		self.multiDeleteButton.tintColor = .systemRed
+		self.multiDeleteLabel = UIBarButtonItem(title: "8", style: .plain, target: self, action: nil)
 		self.navigationItem.rightBarButtonItem = self.editButtonItem
 		
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -86,10 +83,10 @@ class EmojiPackListView: UITableViewController {
 		if let selectedRows = self.tableView.indexPathsForSelectedRows,
 		   !selectedRows.isEmpty {
 			self.multiDeleteButton.isEnabled = true
-			self.multiDeleteButton.setTitle("\(selectedRows.count)", for: .normal)
+			self.multiDeleteLabel.title = "\(selectedRows.count)"
 		} else {
 			self.multiDeleteButton.isEnabled = false
-			self.multiDeleteButton.setTitle("", for: .normal)
+			self.multiDeleteLabel.title = "0"
 		}
 	}
 	
@@ -177,9 +174,9 @@ class EmojiPackListView: UITableViewController {
 		var items: [UIBarButtonItem]
 		if editing {
 			if #available(iOS 26, *) {
-				items = [self.editButtonItem, .fixedSpace(), multiDeleteBarButton]
+				items = [self.editButtonItem, .fixedSpace(), multiDeleteLabel, multiDeleteButton]
 			} else {
-				items = [self.editButtonItem, multiDeleteBarButton]
+				items = [self.editButtonItem, multiDeleteLabel, multiDeleteButton]
 			}
 		} else {
 			items = [self.editButtonItem]
