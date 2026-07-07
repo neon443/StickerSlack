@@ -105,25 +105,10 @@ class EmojiPackDetailViewController: UIViewController {
 		let x = UIBarButtonItem(title: "menu", image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: UIMenu(children: [shareButton2, downloadButton2]))
 		
 		self.navigationItem.rightBarButtonItems = [collectionView.editButtonItem, x]
-		
-//		NotificationCenter.default.addObserver(
-//			self,
-//			selector: #selector(packChanged),
-//			name: EmojiHoarder.NotifCategory.emojiPack(pack.id).name,
-//			object: nil
-//		)
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
-	}
-	
-	@objc func packChanged(_ notification: Notification) {
-		guard notification.name == EmojiHoarder.NotifCategory.emojiPack(pack.id).name else { return }
-		guard let updatedPack = hoarder.emojiPacks.first(where: { $0.id == pack.id }) else { return }
-		self.pack = updatedPack
-		self.navigationItem.title = pack.name
-		collectionView.refreshUI(with: pack.items)
 	}
 	
 	@objc func showSheet() {
@@ -167,7 +152,10 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		NotificationCenter.default.post(name: EmojiHoarder.NotifCategory.emojiPack(pack.id).name, object: nil)
+		guard let updatedPack = hoarder.emojiPacks.first(where: { $0.id == pack.id }) else { return }
+		self.pack = updatedPack
+		self.navigationItem.title = pack.name
+		collectionView.refreshUI(with: pack.items)
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {

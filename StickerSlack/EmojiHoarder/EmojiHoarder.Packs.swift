@@ -15,7 +15,6 @@ extension EmojiHoarder {
 		self.emojiPacks = decoded.map {
 			EmojiPack(fromShareLink: $0) ?? .new()
 		}
-		sendChangeNotif(for: .emojiPacks)
 	}
 	
 	func saveEmojiPacks() {
@@ -39,7 +38,6 @@ extension EmojiHoarder {
 		withAnimation {
 			emojiPacks.append(packToAdd)
 		}
-		sendChangeNotif(for: .emojiPacks)
 		saveEmojiPacks()
 	}
 	
@@ -47,8 +45,6 @@ extension EmojiHoarder {
 		withAnimation {
 			emojiPacks.removeAll { $0.id == packToRemove.id }
 		}
-		sendChangeNotif(for: .emojiPack(packToRemove.id))
-		sendChangeNotif(for: .emojiPacks)
 		saveEmojiPacks()
 	}
 	
@@ -56,7 +52,6 @@ extension EmojiHoarder {
 		withAnimation {
 			emojiPacks.remove(atOffsets: offset)
 		}
-		sendChangeNotif(for: .emojiPacks)
 		saveEmojiPacks()
 	}
 	
@@ -65,7 +60,6 @@ extension EmojiHoarder {
 		withAnimation {
 			self.emojiPacks[index] = updatedPack
 		}
-		sendChangeNotif(for: .emojiPacks)
 		saveEmojiPacks()
 	}
 	
@@ -73,7 +67,6 @@ extension EmojiHoarder {
 		withAnimation {
 			emojiPacks.move(fromOffsets: fromOffsets, toOffset: toOffset)
 		}
-		sendChangeNotif(for: .emojiPacks)
 		saveEmojiPacks()
 	}
 }

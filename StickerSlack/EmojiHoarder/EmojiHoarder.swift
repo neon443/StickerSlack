@@ -269,8 +269,6 @@ class EmojiHoarder: BaseHoarder {
 	enum NotifCategory {
 		case emojis
 		case downloadedEmojis
-		case emojiPacks
-		case emojiPack(UUID)
 		
 		var name: Notification.Name {
 			switch self {
@@ -278,10 +276,6 @@ class EmojiHoarder: BaseHoarder {
 				Notification.Name("EmojiHoarder.notif.emojis")
 			case .downloadedEmojis:
 				Notification.Name("EmojiHoarder.notif.downloadedEmojis")
-			case .emojiPacks:
-				Notification.Name("EmojiHoarder.notif.emojiPacks")
-			case .emojiPack(let emojiPackID):
-				Notification.Name("EmojiHoarder.notif.emojiPack.\(emojiPackID)")
 			}
 		}
 	}

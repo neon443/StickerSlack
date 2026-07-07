@@ -29,13 +29,6 @@ class EmojiPackListView: UITableViewController {
 		self.multiDeleteButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(multiDelete))
 		self.setToolbarItems([multiDeleteButton], animated: true)
 		
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(refresh),
-			name: EmojiHoarder.NotifCategory.emojiPacks.name,
-			object: nil
-		)
-		
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
 			image: UIImage(systemName: "plus"),
 			style: .plain,
@@ -149,6 +142,10 @@ class EmojiPackListView: UITableViewController {
 		return UISwipeActionsConfiguration(actions: [delete, share, dupButton])
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		self.tableView.reloadData()
+	}
+	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		self.navigationController?.setToolbarHidden(!editing, animated: true)
@@ -163,7 +160,7 @@ class EmojiPackListView: UITableViewController {
 	}
 	
 	@objc func refresh(_ notification: Notification) {
-		self.tableView.reloadData()
+//		self.tableView.reloadData()
 	}
 	
 	func delete(_ indexPath: IndexPath) {
