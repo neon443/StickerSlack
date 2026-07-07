@@ -168,7 +168,14 @@ class EmojiPackDetailViewController: UIViewController {
 				items = [self.collectionView.editButtonItem, self.adderSheetButton]
 			}
 		} else {
-			let dotdotdotButton = UIBarButtonItem(title: "menu", image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: UIMenu(children: [shareButton, downloadButton]))
+			let shareMenu = UIMenu(options: .displayInline, children: [shareButton])
+			let menu = UIMenu(children: [downloadButton, shareMenu])
+			let dotdotdotButton = UIBarButtonItem(
+				title: "menu",
+				image: UIImage(systemName: "ellipsis"),
+				primaryAction: nil,
+				menu: menu
+			)
 			items = [self.collectionView.editButtonItem, dotdotdotButton]
 		}
 		self.navigationItem.setRightBarButtonItems(items, animated: true)

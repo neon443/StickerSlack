@@ -124,7 +124,6 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		cellForItemAt indexPath: IndexPath
 	) -> UICollectionViewCell {
 		let cell: PlainEmojiCollectionViewCell
-		guard !hoarder.trie.dict.isEmpty else { return UICollectionViewCell() }
 		let emojiName = items[indexPath.item]
 		
 		switch style {
@@ -206,7 +205,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 			let pack = hoarder.emojiPacks[packIndex]
 			return UIAction(
 				title: pack.name,
-				subtitle: "\(pack.items.count) item\(pack.items.count.plural)",
+				subtitle: "\(pack.items.count) emoji\(pack.items.count.plural)",
 				image: pack.items.contains(emojiName) ? UIImage(systemName: "checkmark") : nil
 			) { action in
 				hoarder.emojiPacks[packIndex].addRemove(emojiName)

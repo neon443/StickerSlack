@@ -34,7 +34,7 @@ class EmojiPackListView: UITableViewController {
 			action: #selector(multiDelete)
 		)
 		self.multiDeleteButton.tintColor = .systemRed
-		self.multiDeleteLabel = UIBarButtonItem(title: "8", style: .plain, target: self, action: nil)
+		self.multiDeleteLabel = UIBarButtonItem(title: "X", style: .plain, target: self, action: nil)
 		self.navigationItem.rightBarButtonItem = self.editButtonItem
 		
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -56,7 +56,7 @@ class EmojiPackListView: UITableViewController {
 		let pack = emojiHoarder.emojiPacks[indexPath.row]
 		
 		content.text = pack.name
-		content.secondaryText = "\(pack.items.count) item\(pack.items.count.plural)"
+		content.secondaryText = "\(pack.items.count) emoji\(pack.items.count.plural)"
 		
 		cell.contentConfiguration = content
 		
@@ -142,7 +142,7 @@ class EmojiPackListView: UITableViewController {
 				title.text = pack.name
 				title.font = .boldSystemFont(ofSize: title.font.pointSize)
 				let subtitle = UILabel()
-				subtitle.text = "\(pack.items.count) item\(pack.items.count.plural)"
+				subtitle.text = "\(pack.items.count) emoji\(pack.items.count.plural)"
 				subtitle.textColor = .gray
 				
 				let stackView = UIStackView(arrangedSubviews: [title, subtitle])
@@ -203,10 +203,6 @@ class EmojiPackListView: UITableViewController {
 			at: [IndexPath(row: tableView(self.tableView, numberOfRowsInSection: 0)-1, section: 0)],
 			with: .automatic
 		)
-	}
-	
-	@objc func refresh(_ notification: Notification) {
-//		self.tableView.reloadData()
 	}
 	
 	func delete(_ indexPath: IndexPath) {

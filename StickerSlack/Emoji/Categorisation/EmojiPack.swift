@@ -139,8 +139,14 @@ struct EmojiPack: Identifiable, Codable, Equatable, Hashable {
 	func downloadedFraction(in hoarder: EmojiHoarder) -> Double {
 		guard !items.isEmpty else { return 0 }
 		guard !allDownloaded(in: hoarder) else { return 1 }
+		return Double(downloadCount(in: hoarder))/Double(items.count)
+	}
+	
+	func downloadCount(in hoarder: EmojiHoarder) -> Int {
+		guard !items.isEmpty else { return 0 }
+		guard !allDownloaded(in: hoarder) else { return self.items.count }
 		let common = hoarder.downloadedStickers.intersection(items)
-		return Double(common.count)/Double(items.count)
+		return common.count
 	}
 }
 
