@@ -190,6 +190,7 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	func refreshUI() {
 		self.navigationItem.title = pack.name
+//		self.navigationItem.documentProperties
 		checkForEmptyPack()
 		updateDownloadButton()
 		setToolbar(editing: isEditing)
