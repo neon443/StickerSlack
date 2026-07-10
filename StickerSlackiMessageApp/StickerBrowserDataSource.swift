@@ -12,40 +12,20 @@ class StickerBrowserDataSource: NSObject, MSStickerBrowserViewDataSource {
 	var hoarder: EmojiHoarder = EmojiHoarder(localOnly: true, skipIndex: true)
 	
 	var msStickers: [MSSticker] = []
-	var emojis: [Emoji] = []
 	
 	override init() {
 		super.init()
-		var emojis: [Emoji] = []
-		guard let files = try? FileManager.default.contentsOfDirectory(atPath: EmojiHoarder.container.safePath) else { return }
-		
-		for file in files {
-			guard file.contains(".png") ||
-					file.contains(".jpg") ||
-					file.contains(".gif") else { continue }
-			let name = String(file.split(separator: ".")[0])
-			if let emoji = hoarder.trie.dict[name] {
-				emojis.append(emoji)
-			} else {
-				print(
-					"name, emoji has value, mssticker has value:",
-					name,
-					hoarder.trie.dict[name] != nil,
-					hoarder.trie.dict[name]?.msSticker != nil
-				)
+		Task {
+			await hoarder.buildDownloadedStickers()
+			for emojiName in hoarder.downloadedStickers {
+				guard let emoji = hoarder.trie.dict[emojiName],
+					  let msSticker = emoji.msSticker else { continue }
+				self.msStickers.append(msSticker)
 			}
 		}
-		emojis.sort(by: { $0.name > $1.name })
-		for emoji in emojis {
-			guard let msSticker = emoji.msSticker else { continue }
-			msStickers.append(msSticker)
-		}
-		
-		print(msStickers.count, "init")
 	}
 	
 	func numberOfStickers(in stickerBrowserView: MSStickerBrowserView) -> Int {
-		print(msStickers.count, "numberofstickers")
 		return msStickers.count
 	}
 	

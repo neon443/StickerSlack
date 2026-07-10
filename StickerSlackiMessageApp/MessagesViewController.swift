@@ -15,7 +15,6 @@ class MessagesViewController: MSMessagesAppViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view.
-		//		sleep(5)
 	}
 	
 	// MARK: - Conversation Handling
@@ -24,61 +23,30 @@ class MessagesViewController: MSMessagesAppViewController {
 		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
 		stickerBrowser.dataSource = dataSource
 		
-//		let stackView = UIStackView()
-//		stackView.translatesAutoresizingMaskIntoConstraints = false
-//		stackView.axis = .vertical
-//		for pack in dataSource.hoarder.emojiPacks {
-//			let label = UILabel()
-//			label.text = pack.name
-//			stackView.addArrangedSubview(label)
-//			label.translatesAutoresizingMaskIntoConstraints = false
-//			NSLayoutConstraint.activate([
-////				label.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-////				label.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-//				label.heightAnchor.constraint(equalToConstant: 30)
-//			])
-//		}
-
-		stickerBrowser.translatesAutoresizingMaskIntoConstraints = false
-		view.addSubview(stickerBrowser)
-//		view.addSubview(stackView)
-		NSLayoutConstraint.activate([
-			stickerBrowser.topAnchor.constraint(equalTo: view.topAnchor),
-			stickerBrowser.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-			stickerBrowser.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			stickerBrowser.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-		])
-		
 		guard stickerBrowser.dataSource?.numberOfStickers(in: stickerBrowser) != 0 else {
 			let swiftUIView = NoStickersView()
 			let hostingController = UIHostingController(rootView: swiftUIView)
 			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
 			view.addSubview(hostingController.view)
-			hostingController.didMove(toParent: self)
 			
-			let link = UIButton()
-			link.setTitle("Open StickerSlack", for: .normal)
-			link.setImage(UIImage(systemName: "arrow.up.right.square"), for: .normal)
-			link.setTitleColor(.systemBlue, for: .normal)
-			link.translatesAutoresizingMaskIntoConstraints = false
-			link.addTarget(self, action: #selector(openStickerSlack), for: .touchUpInside)
-			view.addSubview(link)
-
 			NSLayoutConstraint.activate([
 				hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 				hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 				hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-				hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-				link.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-				link.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-				link.heightAnchor.constraint(equalToConstant: 50)
+				hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 			])
-
 			return
 		}
 		
-//		stickerBrowser.reloadData()
-//		view.bringSubviewToFront(stickerBrowser)
+		stickerBrowser.translatesAutoresizingMaskIntoConstraints = false
+		view.addSubview(stickerBrowser)
+		stickerBrowser.contentInset = .zero
+		NSLayoutConstraint.activate([
+			stickerBrowser.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			stickerBrowser.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			stickerBrowser.topAnchor.constraint(equalTo: view.topAnchor),
+			stickerBrowser.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+		])
 		
 		// Called when the extension is about to move from the inactive to active state.
 		// This will happen when the extension is about to present UI.
