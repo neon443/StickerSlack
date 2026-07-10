@@ -37,7 +37,7 @@ class EmojiPackDetailViewController: UIViewController {
 		
 		let suiView = EmptyCollectionView(
 			title: "No Emoji",
-			details: "Add emojis to this pack by editing it using the pencil button in the toolbar.",
+			details: "Add emojis to this pack by editing it using the edit button in the toolbar.",
 			systemImage: "exclamationmark.triangle.fill"
 		)
 		self.emptyCollectionView = UIHostingController(rootView: suiView)
@@ -160,13 +160,12 @@ class EmojiPackDetailViewController: UIViewController {
 	}
 	
 	func setToolbar(editing: Bool) {
-		let items: [UIBarButtonItem]
+		var items: [UIBarButtonItem] = [self.collectionView.editButtonItem]
 		if editing {
 			if #available(iOS 26, *) {
-				items = [self.collectionView.editButtonItem, .fixedSpace(), self.adderSheetButton]
-			} else {
-				items = [self.collectionView.editButtonItem, self.adderSheetButton]
+				items.append(.fixedSpace(0))
 			}
+			items.append(self.adderSheetButton)
 		} else {
 			let shareMenu = UIMenu(options: .displayInline, children: [shareButton])
 			let menu = UIMenu(children: [downloadButton, shareMenu])

@@ -69,7 +69,7 @@ class EmojiHoarder: BaseHoarder {
 		await withTaskGroup { group in
 			for i in emojis.indices {
 				group.addTask {
-					guard await self.downloadedStickers.contains(self.emojis[i].name) else { return }
+					guard self.downloadedStickers.contains(self.emojis[i].name) else { return }
 					await self.delete(emoji: self.emojis[i], skipStoreIndex: true)
 				}
 			}
@@ -98,7 +98,7 @@ class EmojiHoarder: BaseHoarder {
 	}
 	
 	nonisolated private func saveTrieDict() async {
-		guard let dataDict = try? await encoder.encode(trie.dict) else {
+		guard let dataDict = try? encoder.encode(trie.dict) else {
 			fatalError("failed to encode trie dict")
 		}
 		try! dataDict.write(to: EmojiHoarder.localTrieDict)
@@ -113,18 +113,17 @@ class EmojiHoarder: BaseHoarder {
 		return decodedDict
 	}
 	
-	nonisolated
-	func buildTrie() async {
+	nonisolated func buildTrie() async {
 		let start = Date().timeIntervalSince1970
-		var wordlist = await trie.wordlist
-		var dict = await trie.dict
-		for emoji in await emojis {
+		var wordlist = trie.wordlist
+		var dict = trie.dict
+		for emoji in emojis {
 			//			trie.insert(word: emoji.name)
 			wordlist.insert(emoji.name)
 			dict[emoji.name] = emoji
 		}
-		await trie.wordlist = wordlist
-		await trie.dict = dict
+		trie.wordlist = wordlist
+		trie.dict = dict
 		
 		await buildDownloadedStickers()
 		print("done building trie in", Date().timeIntervalSince1970-start)
@@ -153,7 +152,7 @@ class EmojiHoarder: BaseHoarder {
 	nonisolated private func loadRemoteDB() async {
 		async let fetched = self.fetchRemoteDB()
 		if let fetched = await fetched,
-		   await fetched != self.emojis {
+		   fetched != self.emojis {
 			await MainActor.run {
 				withAnimation(.snappy) { self.emojis = fetched }
 				sendChangeNotif(for: .emojis)
@@ -164,9 +163,9 @@ class EmojiHoarder: BaseHoarder {
 	nonisolated private func fetchRemoteDB() async -> [Emoji]? {
 		do {
 			async let (data, _) = try URLSession.shared.data(from: endpoint)
-			let decoded: [SlackResponse] = try await decoder.decode([SlackResponse].self, from: await data)
-			try await storeDB(data: await data)
-			return await SlackResponse.toEmojis(from: decoded)
+			let decoded: [SlackResponse] = try decoder.decode([SlackResponse].self, from: await data)
+			try storeDB(data: await data)
+			return SlackResponse.toEmojis(from: decoded)
 		} catch {
 			print(error.localizedDescription)
 			return nil
@@ -215,7 +214,7 @@ class EmojiHoarder: BaseHoarder {
 	
 	override nonisolated func download(emoji: (any StickerProtocol)?, skipStoreIndex: Bool = false) async {
 		guard let emoji else { return }
-		guard await !downloadedStickers.contains(emoji.name) else { return }
+		guard !downloadedStickers.contains(emoji.name) else { return }
 		await super.download(emoji: emoji, skipStoreIndex: skipStoreIndex)
 		
 		await MainActor.run {

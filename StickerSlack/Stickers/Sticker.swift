@@ -79,9 +79,8 @@ extension StickerProtocol {
 		}
 	}
 	
-	nonisolated
-	func downloadImage() async throws {
-		if let data = try? await Data(contentsOf: localImageURL),
+	nonisolated func downloadImage() async throws {
+		if let data = try? Data(contentsOf: localImageURL),
 		   let _ = UIImage(data: data) {
 			return
 		}
@@ -90,11 +89,11 @@ extension StickerProtocol {
 		
 		let targetSize = CGSize(width: 100, height: 100)
 		if let uiImage = UIImage(data: data),
-		   await localImageURLString.suffix(4) != ".gif" {
+		   localImageURLString.suffix(4) != ".gif" {
 			data = await resize(image: uiImage, to: targetSize).pngData()!
 		}
 		
-		try! await data.write(to: localImageURL)
+		try! data.write(to: localImageURL)
 	}
 	
 	func deleteImage() {

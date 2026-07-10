@@ -216,7 +216,6 @@ class EmojiPackListView: UITableViewController {
 			let duplicate = UIAction(title: "Duplicate", image: UIImage(systemName: "plus.square.fill.on.square.fill")) { action in
 				self.dup(indexPath)
 			}
-//			UIMenu(options: .displayInline, children: [delete])
 			let share = UIAction(title: "Share...", image: UIImage(systemName: "square.and.arrow.up")) { action in
 				self.share(indexPath)
 			}
@@ -267,11 +266,6 @@ class EmojiPackListView: UITableViewController {
 		}
 		delete.image = UIImage(systemName: "trash")
 		
-		let dupButton = UIContextualAction(style: .normal, title: "Duplicate") { _, _, _ in
-			self.dup(indexPath)
-		}
-		dupButton.image = UIImage(systemName: "plus.square.fill.on.square.fill")
-		
 		let rename = UIContextualAction(style: .normal, title: "Rename") { _, _, _ in
 			self.showRenamer(for: indexPath)
 		}
@@ -281,7 +275,7 @@ class EmojiPackListView: UITableViewController {
 			self.share(indexPath)
 		}
 		share.image = UIImage(systemName: "square.and.arrow.up")
-		return UISwipeActionsConfiguration(actions: [delete, dupButton, rename, share])
+		return UISwipeActionsConfiguration(actions: [delete, rename, share])
 	}
 	
 }
