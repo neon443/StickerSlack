@@ -5,6 +5,7 @@
 	<key>MSSupportedPresentationContexts</key>
 	<array>
 		<string>MSMessagesAppPresentationContextMessages</string>
+		<string>MSMessagesAppPresentationContextMedia</string>
 	</array>
 	<key>NSExtension</key>
 	<dict>
