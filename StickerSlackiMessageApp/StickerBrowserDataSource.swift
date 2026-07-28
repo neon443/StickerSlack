@@ -9,15 +9,18 @@ import Foundation
 import Messages
 
 class StickerBrowserDataSource: NSObject, MSStickerBrowserViewDataSource {
-	var hoarder: EmojiHoarder = EmojiHoarder(localOnly: true, skipIndex: true)
-	
+	let pack: EmojiPack?
 	var msStickers: [MSSticker] = []
 	
-	override init() {
+	init(hoarder: EmojiHoarder, pack: EmojiPack?) {
+		self.pack = pack
 		super.init()
 		Task {
 			await hoarder.buildDownloadedStickers()
 			for emojiName in hoarder.downloadedStickers {
+				if let pack {
+					guard pack.items.contains(emojiName) else { continue }
+				}
 				guard let emoji = hoarder.trie.dict[emojiName],
 					  let msSticker = emoji.msSticker else { continue }
 				self.msStickers.append(msSticker)

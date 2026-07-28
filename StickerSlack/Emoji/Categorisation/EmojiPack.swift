@@ -9,10 +9,14 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct EmojiPack: Identifiable, Codable, Equatable, Hashable {
+struct EmojiPack: Identifiable, Codable, Equatable, Hashable, CustomStringConvertible {
 	var id: UUID
 	var name: String
 	var items: [String]
+	
+	var description: String {
+		return "\(items.count) emoji\(items.count.plural)"
+	}
 	
 	init(id: UUID, name: String, items: [String]) {
 		self.id = id

@@ -205,7 +205,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 			let pack = hoarder.emojiPacks[packIndex]
 			return UIAction(
 				title: pack.name,
-				subtitle: "\(pack.items.count) emoji\(pack.items.count.plural)",
+				subtitle: pack.description,
 				image: pack.items.contains(emojiName) ? UIImage(systemName: "checkmark") : nil
 			) { action in
 				hoarder.emojiPacks[packIndex].addRemove(emojiName)

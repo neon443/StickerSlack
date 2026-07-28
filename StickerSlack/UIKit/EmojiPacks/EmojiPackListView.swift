@@ -145,6 +145,7 @@ class EmojiPackListView: UITableViewController {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		refresh()
 	}
 	
@@ -169,7 +170,7 @@ class EmojiPackListView: UITableViewController {
 		guard let pack = packFor(indexPath: indexPath) else { return cell }
 		
 		content.text = pack.name
-		content.secondaryText = "\(pack.items.count) emoji\(pack.items.count.plural)"
+		content.secondaryText = pack.description
 		cell.contentConfiguration = content
 		return cell
 	}
@@ -243,7 +244,7 @@ class EmojiPackListView: UITableViewController {
 				title.text = pack.name
 				title.font = .boldSystemFont(ofSize: title.font.pointSize)
 				let subtitle = UILabel()
-				subtitle.text = "\(pack.items.count) emoji\(pack.items.count.plural)"
+				subtitle.text = pack.description
 				subtitle.textColor = .gray
 				
 				let stackView = UIStackView(arrangedSubviews: [title, subtitle])

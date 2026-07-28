@@ -44,6 +44,11 @@
 		A957C17E2ECFAA1100EA3EE9 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C17D2ECFAA1100EA3EE9 /* GifView.swift */; };
 		A957C17F2ECFAA1100EA3EE9 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C17D2ECFAA1100EA3EE9 /* GifView.swift */; };
 		A957C1802ECFAA1100EA3EE9 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C17D2ECFAA1100EA3EE9 /* GifView.swift */; };
+		A96D59963013D6450086948E /* MessagesPackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96D59953013D6450086948E /* MessagesPackListView.swift */; };
+		A96D59973013D6670086948E /* MessagesPackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96D59953013D6450086948E /* MessagesPackListView.swift */; };
+		A96D59993013D9050086948E /* MessagesSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96D59983013D9050086948E /* MessagesSplitViewController.swift */; };
+		A96D599A3013DE140086948E /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4672F6AA17C00BB84C6 /* Int.swift */; };
+		A96D599C301945240086948E /* MessagesRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96D599B301945240086948E /* MessagesRootViewController.swift */; };
 		A97322A12FA7B9C8004B657D /* JumboMoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97322A02FA7B9C8004B657D /* JumboMoji.swift */; };
 		A97322A22FA7B9C8004B657D /* JumboMoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97322A02FA7B9C8004B657D /* JumboMoji.swift */; };
 		A97322A32FA7B9C8004B657D /* JumboMoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97322A02FA7B9C8004B657D /* JumboMoji.swift */; };
@@ -244,6 +249,9 @@
 		A957C1792ECE542D00EA3EE9 /* GifManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifManager.swift; sourceTree = "<group>"; };
 		A957C17D2ECFAA1100EA3EE9 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
 		A969D6932EA3E86500399C05 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = Library/Frameworks/Messages.framework; sourceTree = DEVELOPER_DIR; };
+		A96D59953013D6450086948E /* MessagesPackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesPackListView.swift; sourceTree = "<group>"; };
+		A96D59983013D9050086948E /* MessagesSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesSplitViewController.swift; sourceTree = "<group>"; };
+		A96D599B301945240086948E /* MessagesRootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesRootViewController.swift; sourceTree = "<group>"; };
 		A97322A02FA7B9C8004B657D /* JumboMoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumboMoji.swift; sourceTree = "<group>"; };
 		A97322A42FA8CA2B004B657D /* JumboMojiTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumboMojiTestView.swift; sourceTree = "<group>"; };
 		A975F9182FA38C8D00A5C62E /* EmojiPackGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackGridView.swift; sourceTree = "<group>"; };
@@ -426,6 +434,7 @@
 		A949B1D62EA04C0B00215164 = {
 			isa = PBXGroup;
 			children = (
+				A96D59983013D9050086948E /* MessagesSplitViewController.swift */,
 				A9E2ECD72EB74CE00038B2D6 /* Config.xcconfig */,
 				A949B1F22EA04E8200215164 /* StickerSlack */,
 				A9104C742EB3AE4700D160EA /* Resources */,
@@ -517,6 +526,8 @@
 				A986A6C92EB659E000B6E0FA /* MainInterface.storyboard */,
 				A986A6CA2EB659E000B6E0FA /* MessagesViewController.swift */,
 				A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */,
+				A96D59953013D6450086948E /* MessagesPackListView.swift */,
+				A96D599B301945240086948E /* MessagesRootViewController.swift */,
 			);
 			path = StickerSlackiMessageApp;
 			sourceTree = "<group>";
@@ -832,6 +843,7 @@
 				A9E8C7A92FF95FEC009A38B5 /* SearchViewController.swift in Sources */,
 				A9BE30FE2F5FA47100A57668 /* Hoarder.swift in Sources */,
 				A97322A32FA7B9C8004B657D /* JumboMoji.swift in Sources */,
+				A96D59973013D6670086948E /* MessagesPackListView.swift in Sources */,
 				A97BFFBF2F9E745C000441E5 /* EmojiCollectionViewCell.swift in Sources */,
 				A9C52F792F89BB0800078588 /* EmojiTableViewCell.swift in Sources */,
 				A9C52F722F89A85F00078588 /* ShareSheet.swift in Sources */,
@@ -853,12 +865,14 @@
 				A9E8C79B2FF7256B009A38B5 /* EmojiHoarder.Packs.swift in Sources */,
 				A986A6CD2EB659E000B6E0FA /* MessagesViewController.swift in Sources */,
 				A9A7A4572F69568700BB84C6 /* GifHoarder.swift in Sources */,
+				A96D59963013D6450086948E /* MessagesPackListView.swift in Sources */,
 				A9BE30FF2F5FA78E00A57668 /* Hoarder.swift in Sources */,
 				A9C52F6C2F8988CE00078588 /* EmptyCollectionView.swift in Sources */,
 				A9C52F772F89A9BF00078588 /* URL.swift in Sources */,
 				A9A7A4582F69569100BB84C6 /* Trending.swift in Sources */,
 				A9A7A4592F69569100BB84C6 /* Pagination.swift in Sources */,
 				A9A7A45A2F69569100BB84C6 /* Meta.swift in Sources */,
+				A96D599A3013DE140086948E /* Int.swift in Sources */,
 				A9A7A45B2F69569100BB84C6 /* GifObject.swift in Sources */,
 				A9A7A45C2F69569100BB84C6 /* GiphyImages.swift in Sources */,
 				A9A7A45D2F69569100BB84C6 /* GiphyUser.swift in Sources */,
@@ -868,8 +882,10 @@
 				A9A7A45E2F6956B700BB84C6 /* StickerType.swift in Sources */,
 				A9D6A8212F7014AE00F198FB /* TestStructures.swift in Sources */,
 				A9BBC5192EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
+				A96D599C301945240086948E /* MessagesRootViewController.swift in Sources */,
 				A986A6C42EB6598500B6E0FA /* SlackResponse.swift in Sources */,
 				A9E8C79F2FF726DA009A38B5 /* EmojiHoarder.LetterStats.swift in Sources */,
+				A96D59993013D9050086948E /* MessagesSplitViewController.swift in Sources */,
 				A986A6C22EB6597600B6E0FA /* Emoji.swift in Sources */,
 				A986A6C12EB6595F00B6E0FA /* EmojiHoarder.swift in Sources */,
 			);

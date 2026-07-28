@@ -10,11 +10,14 @@ import Messages
 import SwiftUI
 
 class MessagesViewController: MSMessagesAppViewController {
-	let dataSource: StickerBrowserDataSource = StickerBrowserDataSource()
+	var emojiHoarder: EmojiHoarder!
+	var dataSource: StickerBrowserDataSource!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view.
+		
+		self.emojiHoarder = EmojiHoarder(localOnly: true, skipIndex: true)
+		self.dataSource = StickerBrowserDataSource(hoarder: emojiHoarder, pack: nil)
 	}
 	
 	// MARK: - Conversation Handling
@@ -38,15 +41,45 @@ class MessagesViewController: MSMessagesAppViewController {
 			return
 		}
 		
-		stickerBrowser.translatesAutoresizingMaskIntoConstraints = false
-		view.addSubview(stickerBrowser)
-		stickerBrowser.contentInset = .zero
+		
+		let browser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
+		let dataSource = StickerBrowserDataSource(hoarder: emojiHoarder, pack: nil)
+		browser.dataSource = dataSource
+		let vc = UIViewController()
+		browser.translatesAutoresizingMaskIntoConstraints = false
+		vc.view.addSubview(browser)
+		browser.contentInset = .zero
 		NSLayoutConstraint.activate([
-			stickerBrowser.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			stickerBrowser.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			stickerBrowser.topAnchor.constraint(equalTo: view.topAnchor),
-			stickerBrowser.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+			browser.leadingAnchor.constraint(equalTo: vc.view.leadingAnchor),
+			browser.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor),
+			browser.topAnchor.constraint(equalTo: vc.view.topAnchor),
+			browser.bottomAnchor.constraint(equalTo: vc.view.bottomAnchor)
 		])
+		
+		let splitView = MessagesRootViewController(
+			leading: MessagesPackListView(hoarder: emojiHoarder),
+			trailing: vc
+		)
+		self.addChild(splitView)
+		splitView.view.translatesAutoresizingMaskIntoConstraints = false
+		view.addSubview(splitView.view)
+		NSLayoutConstraint.activate([
+			splitView.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			splitView.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			splitView.view.topAnchor.constraint(equalTo: view.topAnchor),
+			splitView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+		])
+		return
+		
+//		stickerBrowser.translatesAutoresizingMaskIntoConstraints = false
+//		view.addSubview(stickerBrowser)
+//		stickerBrowser.contentInset = .zero
+//		NSLayoutConstraint.activate([
+//			stickerBrowser.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//			stickerBrowser.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//			stickerBrowser.topAnchor.constraint(equalTo: view.topAnchor),
+//			stickerBrowser.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+//		])
 		
 		// Called when the extension is about to move from the inactive to active state.
 		// This will happen when the extension is about to present UI.

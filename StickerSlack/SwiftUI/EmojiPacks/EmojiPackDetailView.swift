@@ -71,7 +71,7 @@ struct EmojiPackDetailView: View {
 				}
 				
 				if !pack.items.isEmpty {
-					Text("\(pack.items.count) Emoji\(pack.items.count.plural)")
+					Text(pack.description)
 						.bold()
 						.multilineTextAlignment(.center)
 						.shadow(radius: 5)
