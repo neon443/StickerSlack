@@ -49,9 +49,9 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		DispatchQueue.main.asyncAfter(deadline: .now()+3) {
-			self.stickerBrowserView.reloadData()
-		}
+//		DispatchQueue.main.asyncAfter(deadline: .now()+3) {
+//			self.stickerBrowserView.reloadData()
+//		}
 		return
 	}
 	
