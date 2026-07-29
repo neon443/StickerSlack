@@ -21,7 +21,7 @@ class MessagesSplitViewController: UISplitViewController, UISplitViewControllerD
 			let browser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
 			let dataSource = StickerBrowserDataSource(hoarder: hoarder, pack: pack)
 			browser.dataSource = dataSource
-			let vc = MessagesViewController(nibName: nil, bundle: nil)
+			let vc = MessagesAppViewController(nibName: nil, bundle: nil)
 			browser.translatesAutoresizingMaskIntoConstraints = false
 			vc.view.addSubview(browser)
 			browser.contentInset = .zero

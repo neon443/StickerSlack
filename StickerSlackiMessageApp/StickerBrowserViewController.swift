@@ -12,11 +12,11 @@ import SwiftUI
 
 class StickerBrowserViewController: MSStickerBrowserViewController {
 	var emojiHoarder: EmojiHoarder!
-	var dataSource: StickerBrowserDataSource!
+	var pack: EmojiPack?
 	
 	init(emojiHoarder: EmojiHoarder, pack: EmojiPack?) {
 		self.emojiHoarder = emojiHoarder
-		self.dataSource = StickerBrowserDataSource(hoarder: emojiHoarder, pack: pack)
+		self.pack = pack
 		super.init(stickerSize: .small)
 	}
 	
@@ -24,44 +24,53 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	override func numberOfStickers(in stickerBrowserView: MSStickerBrowserView) -> Int {
+		if let pack {
+			return emojiHoarder.downloadedStickers.union(pack.items).count
+		} else {
+			return emojiHoarder.downloadedStickers.count
+		}
+	}
+	
+	override func stickerBrowserView(_ stickerBrowserView: MSStickerBrowserView, stickerAt index: Int) -> MSSticker {
+		let emojiName: String
+		if let pack {
+			emojiName = emojiHoarder.downloadedStickers.union(pack.items).sorted()[index]
+		} else {
+			emojiName = emojiHoarder.downloadedStickersArr[index]
+		}
+		guard let emoji = emojiHoarder.trie.dict[emojiName],
+			  let msSticker = emoji.msSticker else {
+			fatalError()
+		}
+		return msSticker
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.emojiHoarder = EmojiHoarder(localOnly: true, skipIndex: true)
-		self.dataSource = StickerBrowserDataSource(hoarder: emojiHoarder, pack: nil)
-	
-		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
-		stickerBrowser.dataSource = dataSource
-		
-		guard stickerBrowser.dataSource?.numberOfStickers(in: stickerBrowser) != 0 else {
-			let swiftUIView = NoStickersView()
-			let hostingController = UIHostingController(rootView: swiftUIView)
-			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-			view.addSubview(hostingController.view)
-			
-			NSLayoutConstraint.activate([
-				hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-				hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-				hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-				hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-			])
-			return
+		DispatchQueue.main.asyncAfter(deadline: .now()+3) {
+			self.stickerBrowserView.reloadData()
 		}
-		
-		stickerBrowser.translatesAutoresizingMaskIntoConstraints = false
-		view.addSubview(stickerBrowser)
-		stickerBrowser.contentInset = .zero
-		NSLayoutConstraint.activate([
-			stickerBrowser.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			stickerBrowser.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			stickerBrowser.topAnchor.constraint(equalTo: view.topAnchor),
-			stickerBrowser.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-		])
 		return
-		
-		// Called when the extension is about to move from the inactive to active state.
-		// This will happen when the extension is about to present UI.
-		
-		// Use this method to configure the extension and restore previously stored state.
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		stickerBrowserView.reloadData()
+//		guard numberOfStickers(in: self.stickerBrowserView) != 0 else {
+//			let swiftUIView = NoStickersView()
+//			let hostingController = UIHostingController(rootView: swiftUIView)
+//			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+//			view.addSubview(hostingController.view)
+//			
+//			NSLayoutConstraint.activate([
+//				hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//				hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//				hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+//				hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+//			])
+//			return
+//		}
 	}
 }

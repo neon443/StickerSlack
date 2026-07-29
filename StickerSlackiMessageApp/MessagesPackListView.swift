@@ -26,11 +26,6 @@ class MessagesPackListView: UITableViewController {
 		return emojiHoarder.emojiPacks[indexPath.row]
 	}
 	
-	override func viewDidLoad() {
-//		self.splitViewController?.preferredPrimaryColumnWidth = UIScreen.main.bounds.width/4
-		return
-	}
-	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 	}

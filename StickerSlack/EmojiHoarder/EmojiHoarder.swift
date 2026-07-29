@@ -22,7 +22,6 @@ class EmojiHoarder: BaseHoarder {
 	@Published var emojiPacks: [EmojiPack] = []
 	
 	var trie: Trie = Trie()
-	//	@Published var downloadedStickers: Set<String> = []
 	@Published var downloadedStickersArr: [String] = []
 	
 	@Published var letterStats: [EmojiHoarder.LetterStat] = []

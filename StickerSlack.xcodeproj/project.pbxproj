@@ -71,7 +71,7 @@
 		A986A6C22EB6597600B6E0FA /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A924C3712EA9127200F20781 /* Emoji.swift */; };
 		A986A6C32EB6598100B6E0FA /* FilterCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */; };
 		A986A6C42EB6598500B6E0FA /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
-		A986A6CD2EB659E000B6E0FA /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A986A6CA2EB659E000B6E0FA /* MessagesViewController.swift */; };
+		A986A6CD2EB659E000B6E0FA /* MessagesAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A986A6CA2EB659E000B6E0FA /* MessagesAppViewController.swift */; };
 		A986A6CE2EB659E000B6E0FA /* StickerBrowserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */; };
 		A986A6CF2EB659E000B6E0FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A986A6C62EB659E000B6E0FA /* Assets.xcassets */; };
 		A986A6D12EB659E000B6E0FA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A986A6C92EB659E000B6E0FA /* MainInterface.storyboard */; };
@@ -264,7 +264,7 @@
 		A986A6C62EB659E000B6E0FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A986A6C72EB659E000B6E0FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A986A6C82EB659E000B6E0FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		A986A6CA2EB659E000B6E0FA /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		A986A6CA2EB659E000B6E0FA /* MessagesAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesAppViewController.swift; sourceTree = "<group>"; };
 		A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBrowserDataSource.swift; sourceTree = "<group>"; };
 		A98BD15B2FF5242700ADC264 /* EmojiPackPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackPreview.swift; sourceTree = "<group>"; };
 		A98FA65A2FF3B29700D50212 /* EmojiTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTableView.swift; sourceTree = "<group>"; };
@@ -436,7 +436,6 @@
 		A949B1D62EA04C0B00215164 = {
 			isa = PBXGroup;
 			children = (
-				A96D59983013D9050086948E /* MessagesSplitViewController.swift */,
 				A9E2ECD72EB74CE00038B2D6 /* Config.xcconfig */,
 				A949B1F22EA04E8200215164 /* StickerSlack */,
 				A9104C742EB3AE4700D160EA /* Resources */,
@@ -526,11 +525,12 @@
 				A986A6C62EB659E000B6E0FA /* Assets.xcassets */,
 				A986A6C72EB659E000B6E0FA /* Info.plist */,
 				A986A6C92EB659E000B6E0FA /* MainInterface.storyboard */,
-				A986A6CA2EB659E000B6E0FA /* MessagesViewController.swift */,
-				A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */,
-				A96D59953013D6450086948E /* MessagesPackListView.swift */,
+				A986A6CA2EB659E000B6E0FA /* MessagesAppViewController.swift */,
 				A96D599B301945240086948E /* MessagesRootViewController.swift */,
 				A9EF1842301A89B500804A07 /* StickerBrowserViewController.swift */,
+				A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */,
+				A96D59953013D6450086948E /* MessagesPackListView.swift */,
+				A96D59983013D9050086948E /* MessagesSplitViewController.swift */,
 			);
 			path = StickerSlackiMessageApp;
 			sourceTree = "<group>";
@@ -866,7 +866,7 @@
 				A9BDEAE02F82BCB4002798DF /* NoStickersView.swift in Sources */,
 				A9BE30FA2F5B03F400A57668 /* Sticker.swift in Sources */,
 				A9E8C79B2FF7256B009A38B5 /* EmojiHoarder.Packs.swift in Sources */,
-				A986A6CD2EB659E000B6E0FA /* MessagesViewController.swift in Sources */,
+				A986A6CD2EB659E000B6E0FA /* MessagesAppViewController.swift in Sources */,
 				A9A7A4572F69568700BB84C6 /* GifHoarder.swift in Sources */,
 				A96D59963013D6450086948E /* MessagesPackListView.swift in Sources */,
 				A9BE30FF2F5FA78E00A57668 /* Hoarder.swift in Sources */,

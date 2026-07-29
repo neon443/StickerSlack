@@ -43,22 +43,22 @@ class BaseHoarder: Hoarder {
 	}
 	
 	nonisolated func buildDownloadedStickers(for stickerType: String) async {
-			var newSet: Set<String> = []
-			let url = await BaseHoarder.library.appendingPathComponent(stickerType, conformingTo: .directory)
-			
-			if let files = try? FileManager.default.contentsOfDirectory(atPath: url.safePath) {
-				for file in files {
-					let name = String(file.split(separator: ".")[0])
-					newSet.insert(name)
-				}
+		var newSet: Set<String> = []
+		let url = await BaseHoarder.library.appendingPathComponent(stickerType, conformingTo: .directory)
+		
+		if let files = try? FileManager.default.contentsOfDirectory(atPath: url.safePath) {
+			for file in files {
+				let name = String(file.split(separator: ".")[0])
+				newSet.insert(name)
 			}
-			newSet.remove("DS_Store")
-			let immutable = newSet
-			await MainActor.run {
-				self.downloadedStickers = []
-				self.downloadedStickers = immutable
-			}
-			return
+		}
+		newSet.remove("DS_Store")
+		let immutable = newSet
+		await MainActor.run {
+			self.downloadedStickers = []
+			self.downloadedStickers = immutable
+		}
+		return
 	}
 	
 	init() {}
