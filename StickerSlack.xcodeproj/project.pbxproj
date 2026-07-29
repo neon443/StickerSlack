@@ -46,7 +46,6 @@
 		A957C1802ECFAA1100EA3EE9 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C17D2ECFAA1100EA3EE9 /* GifView.swift */; };
 		A96D59963013D6450086948E /* MessagesPackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96D59953013D6450086948E /* MessagesPackListView.swift */; };
 		A96D59973013D6670086948E /* MessagesPackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96D59953013D6450086948E /* MessagesPackListView.swift */; };
-		A96D59993013D9050086948E /* MessagesSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96D59983013D9050086948E /* MessagesSplitViewController.swift */; };
 		A96D599A3013DE140086948E /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7A4672F6AA17C00BB84C6 /* Int.swift */; };
 		A96D599C301945240086948E /* MessagesRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96D599B301945240086948E /* MessagesRootViewController.swift */; };
 		A97322A12FA7B9C8004B657D /* JumboMoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97322A02FA7B9C8004B657D /* JumboMoji.swift */; };
@@ -72,7 +71,6 @@
 		A986A6C32EB6598100B6E0FA /* FilterCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A935437A2EB2A3C800BB80A4 /* FilterCategory.swift */; };
 		A986A6C42EB6598500B6E0FA /* SlackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949B1FA2EA0518800215164 /* SlackResponse.swift */; };
 		A986A6CD2EB659E000B6E0FA /* MessagesAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A986A6CA2EB659E000B6E0FA /* MessagesAppViewController.swift */; };
-		A986A6CE2EB659E000B6E0FA /* StickerBrowserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */; };
 		A986A6CF2EB659E000B6E0FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A986A6C62EB659E000B6E0FA /* Assets.xcassets */; };
 		A986A6D12EB659E000B6E0FA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A986A6C92EB659E000B6E0FA /* MainInterface.storyboard */; };
 		A98BD15C2FF5242700ADC264 /* EmojiPackPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98BD15B2FF5242700ADC264 /* EmojiPackPreview.swift */; };
@@ -251,7 +249,6 @@
 		A957C17D2ECFAA1100EA3EE9 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
 		A969D6932EA3E86500399C05 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = Library/Frameworks/Messages.framework; sourceTree = DEVELOPER_DIR; };
 		A96D59953013D6450086948E /* MessagesPackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesPackListView.swift; sourceTree = "<group>"; };
-		A96D59983013D9050086948E /* MessagesSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesSplitViewController.swift; sourceTree = "<group>"; };
 		A96D599B301945240086948E /* MessagesRootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesRootViewController.swift; sourceTree = "<group>"; };
 		A97322A02FA7B9C8004B657D /* JumboMoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumboMoji.swift; sourceTree = "<group>"; };
 		A97322A42FA8CA2B004B657D /* JumboMojiTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumboMojiTestView.swift; sourceTree = "<group>"; };
@@ -265,7 +262,6 @@
 		A986A6C72EB659E000B6E0FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A986A6C82EB659E000B6E0FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A986A6CA2EB659E000B6E0FA /* MessagesAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesAppViewController.swift; sourceTree = "<group>"; };
-		A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBrowserDataSource.swift; sourceTree = "<group>"; };
 		A98BD15B2FF5242700ADC264 /* EmojiPackPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackPreview.swift; sourceTree = "<group>"; };
 		A98FA65A2FF3B29700D50212 /* EmojiTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTableView.swift; sourceTree = "<group>"; };
 		A98FA6602FF3BD5400D50212 /* EmojiCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionView.swift; sourceTree = "<group>"; };
@@ -528,9 +524,7 @@
 				A986A6CA2EB659E000B6E0FA /* MessagesAppViewController.swift */,
 				A96D599B301945240086948E /* MessagesRootViewController.swift */,
 				A9EF1842301A89B500804A07 /* StickerBrowserViewController.swift */,
-				A986A6CB2EB659E000B6E0FA /* StickerBrowserDataSource.swift */,
 				A96D59953013D6450086948E /* MessagesPackListView.swift */,
-				A96D59983013D9050086948E /* MessagesSplitViewController.swift */,
 			);
 			path = StickerSlackiMessageApp;
 			sourceTree = "<group>";
@@ -879,7 +873,6 @@
 				A9A7A45B2F69569100BB84C6 /* GifObject.swift in Sources */,
 				A9A7A45C2F69569100BB84C6 /* GiphyImages.swift in Sources */,
 				A9A7A45D2F69569100BB84C6 /* GiphyUser.swift in Sources */,
-				A986A6CE2EB659E000B6E0FA /* StickerBrowserDataSource.swift in Sources */,
 				A957C17E2ECFAA1100EA3EE9 /* GifView.swift in Sources */,
 				A9A7A45F2F69570200BB84C6 /* Gif.swift in Sources */,
 				A9A7A45E2F6956B700BB84C6 /* StickerType.swift in Sources */,
@@ -889,7 +882,6 @@
 				A9EF1843301A89B500804A07 /* StickerBrowserViewController.swift in Sources */,
 				A986A6C42EB6598500B6E0FA /* SlackResponse.swift in Sources */,
 				A9E8C79F2FF726DA009A38B5 /* EmojiHoarder.LetterStats.swift in Sources */,
-				A96D59993013D9050086948E /* MessagesSplitViewController.swift in Sources */,
 				A986A6C22EB6597600B6E0FA /* Emoji.swift in Sources */,
 				A986A6C12EB6595F00B6E0FA /* EmojiHoarder.swift in Sources */,
 			);
