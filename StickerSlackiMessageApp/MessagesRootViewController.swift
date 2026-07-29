@@ -39,11 +39,11 @@ class MessagesRootViewController: UIViewController {
 			leadingVC.view.topAnchor.constraint(equalTo: view.topAnchor),
 			leadingVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 			leadingVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			leadingVC.view.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width*0.25),
+			leadingVC.view.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.25),
 			
 			trailingVC.view.topAnchor.constraint(equalTo: view.topAnchor),
 			trailingVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-			trailingVC.view.leadingAnchor.constraint(equalTo: leadingVC.view.leadingAnchor),
+			trailingVC.view.leadingAnchor.constraint(equalTo: leadingVC.view.trailingAnchor),
 			trailingVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
 		])
 		

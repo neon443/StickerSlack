@@ -23,42 +23,43 @@ class MessagesViewController: MSMessagesAppViewController {
 	// MARK: - Conversation Handling
 	
 	override func willBecomeActive(with conversation: MSConversation) {
-		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
-		stickerBrowser.dataSource = dataSource
+//		let stickerBrowser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
+//		stickerBrowser.dataSource = dataSource
+//		
+//		guard stickerBrowser.dataSource?.numberOfStickers(in: stickerBrowser) != 0 else {
+//			let swiftUIView = NoStickersView()
+//			let hostingController = UIHostingController(rootView: swiftUIView)
+//			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+//			view.addSubview(hostingController.view)
+//			
+//			NSLayoutConstraint.activate([
+//				hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//				hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//				hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+//				hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+//			])
+//			return
+//		}
 		
-		guard stickerBrowser.dataSource?.numberOfStickers(in: stickerBrowser) != 0 else {
-			let swiftUIView = NoStickersView()
-			let hostingController = UIHostingController(rootView: swiftUIView)
-			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-			view.addSubview(hostingController.view)
-			
-			NSLayoutConstraint.activate([
-				hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-				hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-				hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-				hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-			])
-			return
-		}
-		
-		
-		let browser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
-		let dataSource = StickerBrowserDataSource(hoarder: emojiHoarder, pack: nil)
-		browser.dataSource = dataSource
-		let vc = UIViewController()
-		browser.translatesAutoresizingMaskIntoConstraints = false
-		vc.view.addSubview(browser)
-		browser.contentInset = .zero
-		NSLayoutConstraint.activate([
-			browser.leadingAnchor.constraint(equalTo: vc.view.leadingAnchor),
-			browser.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor),
-			browser.topAnchor.constraint(equalTo: vc.view.topAnchor),
-			browser.bottomAnchor.constraint(equalTo: vc.view.bottomAnchor)
-		])
-		
+//		let browser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
+//		let dataSource = StickerBrowserDataSource(hoarder: emojiHoarder, pack: nil)
+//		browser.dataSource = dataSource
+//		let vc = UIViewController()
+//		browser.translatesAutoresizingMaskIntoConstraints = false
+//		vc.view.addSubview(browser)
+//		browser.contentInset = .zero
+//		browser.backgroundColor = .red
+//		vc.view.backgroundColor = .blue
+//		NSLayoutConstraint.activate([
+//			browser.leadingAnchor.constraint(equalTo: vc.view.leadingAnchor),
+//			browser.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor),
+//			browser.topAnchor.constraint(equalTo: vc.view.topAnchor),
+//			browser.bottomAnchor.constraint(equalTo: vc.view.bottomAnchor)
+//		])
+//		
 		let splitView = MessagesRootViewController(
 			leading: MessagesPackListView(hoarder: emojiHoarder),
-			trailing: vc
+			trailing: StickerBrowserViewController(emojiHoarder: emojiHoarder, pack: nil)
 		)
 		self.addChild(splitView)
 		splitView.view.translatesAutoresizingMaskIntoConstraints = false
