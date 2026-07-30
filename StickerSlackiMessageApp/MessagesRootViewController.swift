@@ -24,6 +24,7 @@ class MessagesRootViewController: UIViewController {
 		self.trailingVC = trailing
 		super.init(nibName: nil, bundle: nil)
 		leadingVC.onSelect = { pack in
+			self.trailingVC.willMove(toParent: nil)
 			self.trailingVC.view.removeFromSuperview()
 			self.trailingVC.removeFromParent()
 			self.trailingVC.didMove(toParent: nil)

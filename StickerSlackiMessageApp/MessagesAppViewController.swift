@@ -14,13 +14,6 @@ class MessagesAppViewController: MSMessagesAppViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-	}
-	
-	// MARK: - Conversation Handling
-	
-	override func willBecomeActive(with conversation: MSConversation) {}
-	
-	override func viewWillAppear(_ animated: Bool) {
 		let splitView = MessagesRootViewController(
 			emojiHoarder: emojiHoarder,
 			leading: MessagesPackListView(hoarder: emojiHoarder),
@@ -36,6 +29,10 @@ class MessagesAppViewController: MSMessagesAppViewController {
 			splitView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 		])
 	}
+	
+	// MARK: - Conversation Handling
+	
+	override func willBecomeActive(with conversation: MSConversation) {}
 	
 	override func didResignActive(with conversation: MSConversation) {
 		// Called when the extension is about to move from the active to inactive state.
