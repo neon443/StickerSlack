@@ -40,9 +40,10 @@ class MessagesPackListView: UITableViewController {
 		
 		if let pack = packFor(indexPath: indexPath) {
 			config.text = pack.name
-			config.secondaryText = pack.description
 			config.textProperties.font = UIFont.systemFont(ofSize: 14)
-			config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 14)
+			config.secondaryText = pack.description
+			config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12)
+			config.secondaryTextProperties.color = .systemGray
 		}
 		
 		cell.contentConfiguration = config

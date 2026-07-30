@@ -44,7 +44,7 @@ class BaseHoarder: Hoarder {
 	
 	nonisolated func buildDownloadedStickers(for stickerType: String) async {
 		var newSet: Set<String> = []
-		let url = await BaseHoarder.library.appendingPathComponent(stickerType, conformingTo: .directory)
+		let url = BaseHoarder.library.appendingPathComponent(stickerType, conformingTo: .directory)
 		
 		if let files = try? FileManager.default.contentsOfDirectory(atPath: url.safePath) {
 			for file in files {

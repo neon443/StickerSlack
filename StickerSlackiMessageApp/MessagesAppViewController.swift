@@ -18,8 +18,11 @@ class MessagesAppViewController: MSMessagesAppViewController {
 	
 	// MARK: - Conversation Handling
 	
-	override func willBecomeActive(with conversation: MSConversation) {
+	override func willBecomeActive(with conversation: MSConversation) {}
+	
+	override func viewWillAppear(_ animated: Bool) {
 		let splitView = MessagesRootViewController(
+			emojiHoarder: emojiHoarder,
 			leading: MessagesPackListView(hoarder: emojiHoarder),
 			trailing: StickerBrowserViewController(emojiHoarder: emojiHoarder, pack: nil)
 		)
@@ -32,7 +35,6 @@ class MessagesAppViewController: MSMessagesAppViewController {
 			splitView.view.topAnchor.constraint(equalTo: view.topAnchor),
 			splitView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 		])
-		return
 	}
 	
 	override func didResignActive(with conversation: MSConversation) {

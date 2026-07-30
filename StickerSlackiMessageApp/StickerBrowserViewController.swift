@@ -13,64 +13,49 @@ import SwiftUI
 class StickerBrowserViewController: MSStickerBrowserViewController {
 	var emojiHoarder: EmojiHoarder!
 	var pack: EmojiPack?
+	var msStickers: [MSSticker] = []
 	
 	init(emojiHoarder: EmojiHoarder, pack: EmojiPack?) {
 		self.emojiHoarder = emojiHoarder
 		self.pack = pack
+		
 		super.init(stickerSize: .small)
+		
+		reload()
+		
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(reload),
+			name: EmojiHoarder.NotifCategory.downloadedEmojis.name,
+			object: nil
+		)
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override func numberOfStickers(in stickerBrowserView: MSStickerBrowserView) -> Int {
+	@objc func reload() {
+		msStickers = []
+		let names: [String]
 		if let pack {
-			return emojiHoarder.downloadedStickers.union(pack.items).count
+			names = emojiHoarder.downloadedStickers.intersection(pack.items).sorted()
 		} else {
-			return emojiHoarder.downloadedStickers.count
+			names = emojiHoarder.downloadedStickers.sorted()
 		}
+		for name in names {
+			guard let emoji = emojiHoarder.trie.dict[name],
+				  let msSticker = emoji.msSticker else { continue }
+			msStickers.append(msSticker)
+		}
+		stickerBrowserView.reloadData()
+	}
+	
+	override func numberOfStickers(in stickerBrowserView: MSStickerBrowserView) -> Int {
+		return msStickers.count
 	}
 	
 	override func stickerBrowserView(_ stickerBrowserView: MSStickerBrowserView, stickerAt index: Int) -> MSSticker {
-		let emojiName: String
-		if let pack {
-			emojiName = emojiHoarder.downloadedStickers.union(pack.items).sorted()[index]
-		} else {
-			emojiName = emojiHoarder.downloadedStickersArr[index]
-		}
-		guard let emoji = emojiHoarder.trie.dict[emojiName],
-			  let msSticker = emoji.msSticker else {
-			fatalError()
-		}
-		return msSticker
-	}
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		
-//		DispatchQueue.main.asyncAfter(deadline: .now()+3) {
-//			self.stickerBrowserView.reloadData()
-//		}
-		return
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		stickerBrowserView.reloadData()
-//		guard numberOfStickers(in: self.stickerBrowserView) != 0 else {
-//			let swiftUIView = NoStickersView()
-//			let hostingController = UIHostingController(rootView: swiftUIView)
-//			hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-//			view.addSubview(hostingController.view)
-//			
-//			NSLayoutConstraint.activate([
-//				hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//				hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//				hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-//				hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-//			])
-//			return
-//		}
+		return msStickers[index]
 	}
 }
