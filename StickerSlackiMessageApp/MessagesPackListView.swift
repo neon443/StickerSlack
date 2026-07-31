@@ -36,7 +36,14 @@ class MessagesPackListView: UITableViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .top)
+		let selRow = UserDefaults.standard.integer(forKey: "selectedPackRowIndex")
+		let indexPath: IndexPath
+		if selRow == -1 {
+			indexPath = IndexPath(row: 0, section: 0)
+		} else {
+			indexPath = IndexPath(row: selRow, section: 1)
+		}
+		tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 		reload()
 	}
 	
@@ -57,9 +64,16 @@ class MessagesPackListView: UITableViewController {
 		
 		guard indexPath.section == 1 else {
 			var config = cell.defaultContentConfiguration()
-			cell.backgroundColor = .lightGray
-			config.text = "All Downloaded"
+			
+			config.text = "All"
 			config.textProperties.font = UIFont.systemFont(ofSize: 14)
+			config.textProperties.color = #colorLiteral(red: 0.7490000129, green: 0.3529999852, blue: 0.949000001, alpha: 1)
+			
+			let dlCount = emojiHoarder.downloadedStickers.count
+			config.secondaryText = "\(dlCount) download\(dlCount.plural)"
+			config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12)
+			config.secondaryTextProperties.color = #colorLiteral(red: 0.7490000129, green: 0.3529999852, blue: 0.949000001, alpha: 1)
+			
 			cell.contentConfiguration = config
 			return cell
 		}
@@ -83,8 +97,10 @@ class MessagesPackListView: UITableViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if indexPath.section == 1 {
 			onSelect?(emojiHoarder.emojiPacks[indexPath.row])
+			UserDefaults.standard.set(indexPath.row, forKey: "selectedPackRowIndex")
 		} else {
 			onSelect?(nil)
+			UserDefaults.standard.set(-1, forKey: "selectedPackRowIndex")
 		}
 	}
 }

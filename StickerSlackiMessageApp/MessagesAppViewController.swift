@@ -11,14 +11,20 @@ import SwiftUI
 
 class MessagesAppViewController: MSMessagesAppViewController {
 	var emojiHoarder: EmojiHoarder = EmojiHoarder(localOnly: true, skipIndex: true)
+	var tableView: MessagesPackListView!
+	var browserView: StickerBrowserViewController!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		emojiHoarder.buildDownloadedStickersSync()
+		
+		self.tableView = MessagesPackListView(hoarder: emojiHoarder)
+		self.browserView = StickerBrowserViewController(emojiHoarder: emojiHoarder, pack: nil)
+		
 		let splitView = MessagesRootViewController(
 			emojiHoarder: emojiHoarder,
-			leading: MessagesPackListView(hoarder: emojiHoarder),
-			trailing: StickerBrowserViewController(emojiHoarder: emojiHoarder, pack: nil)
+			leading: self.tableView,
+			trailing: self.browserView
 		)
 		self.addChild(splitView)
 		splitView.view.translatesAutoresizingMaskIntoConstraints = false
