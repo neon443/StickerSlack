@@ -33,11 +33,7 @@ import SwiftUI
 
 @main
 class StickerSlackApp: UIResponder, UIApplicationDelegate {
-	#if DEBUG
-	var emojiHoarder: EmojiHoarder = .init(/*localOnly: true*/)
-	#else
 	var emojiHoarder: EmojiHoarder = .init()
-	#endif
 	
 	var window: UIWindow?
 	

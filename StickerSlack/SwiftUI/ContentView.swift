@@ -10,7 +10,6 @@ import Haptics
 
 struct ContentView: View {
 	@ObservedObject var emojiHoarder: EmojiHoarder
-	@ObservedObject var gifhoarder: GifHoarder
 	
 	@State var tabSelection: AppTab = .browse
 	@State var searchTerm: String = ""
@@ -28,7 +27,7 @@ struct ContentView: View {
 			if #available(iOS 18, *) {
 				TabView(selection: $tabSelection) {
 					Tab("Browse", systemImage: "square.grid.2x2.fill", value: AppTab.browse) {
-						BrowseView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
+						BrowseView(emojiHoarder: emojiHoarder)
 					}
 					
 					Tab("Packs", systemImage: "square.stack.3d.up.fill", value: AppTab.packs) {
@@ -36,7 +35,7 @@ struct ContentView: View {
 					}
 					
 					Tab("Downloaded", systemImage: "arrow.down.circle.fill", value: AppTab.downloaded) {
-						DownloadedView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
+						DownloadedView(emojiHoarder: emojiHoarder)
 					}
 					
 					Tab("Settings", systemImage: "gear", value: AppTab.settings) {
@@ -51,7 +50,7 @@ struct ContentView: View {
 				}
 			} else {
 				TabView(selection: $tabSelection) {
-					BrowseView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
+					BrowseView(emojiHoarder: emojiHoarder)
 						.tag(AppTab.browse)
 						.tabItem {
 							Label("Browse", systemImage: "square.grid.2x2.fill")
@@ -61,7 +60,7 @@ struct ContentView: View {
 						.tabItem {
 							Label("Packs", systemImage: "square.stack.3d.up.fill")
 						}
-					DownloadedView(emojiHoarder: emojiHoarder, gifHoarder: gifhoarder)
+					DownloadedView(emojiHoarder: emojiHoarder)
 						.tag(AppTab.downloaded)
 						.tabItem {
 							Label("Downloaded", systemImage: "arrow.down.circle.fill")
@@ -91,5 +90,5 @@ struct ContentView: View {
 }
 
 #Preview {
-	ContentView(emojiHoarder: EmojiHoarder(localOnly: false), gifhoarder: GifHoarder(localOnly: false))
+	ContentView(emojiHoarder: EmojiHoarder(localOnly: false))
 }

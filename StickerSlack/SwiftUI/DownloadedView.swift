@@ -9,20 +9,9 @@ import SwiftUI
 
 struct DownloadedView: View {
 	@ObservedObject var emojiHoarder: EmojiHoarder
-	@ObservedObject var gifHoarder: GifHoarder
-	
-	@State private var browseWhat: StickerType = .slackEmoji
 	
 	var body: some View {
-		Picker("", selection: $browseWhat) {
-			ForEach(StickerType.allCases) { type in
-				Text(type.description)
-					.tag(type)
-			}
-		}
-		.pickerStyle(.segmented)
-		.padding(.horizontal)
-		if emojiHoarder.downloadedStickers.isEmpty && gifHoarder.downloadedStickers.isEmpty {
+		if emojiHoarder.downloadedStickers.isEmpty {
 			NoStickersView()
 				.padding()
 		}
@@ -38,8 +27,5 @@ struct DownloadedView: View {
 }
 
 #Preview {
-	DownloadedView(
-		emojiHoarder: EmojiHoarder(localOnly: true),
-		gifHoarder: GifHoarder(localOnly: true)
-	)
+	DownloadedView(emojiHoarder: EmojiHoarder(localOnly: true))
 }

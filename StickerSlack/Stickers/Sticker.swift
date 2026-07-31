@@ -10,13 +10,7 @@ import Messages
 
 extension StickerProtocol {
 	var localImageURLString: String {
-		let containerPath: String
-		switch type {
-		case .slackEmoji:
-			containerPath = EmojiHoarder.container.safePath
-		case .giphyGifs:
-			containerPath = GifHoarder.container.safePath
-		}
+		let containerPath = EmojiHoarder.container.safePath
 		let urlString = remoteImageURL.absoluteString
 		let split = urlString.split(separator: ".")
 		let fileExtension = ".\(split.last!)"
@@ -69,14 +63,7 @@ extension StickerProtocol {
 	}
 	
 	nonisolated var type: StickerType {
-		let typeOfSelf = Swift.type(of: self)
-		if typeOfSelf == Emoji.self {
-			return .slackEmoji
-		} else if typeOfSelf == Gif.self {
-			return .giphyGifs
-		} else {
-			fatalError("unrecognised sticker type get crashed lmfao")
-		}
+		return .slackEmoji
 	}
 	
 	nonisolated func downloadImage() async throws {

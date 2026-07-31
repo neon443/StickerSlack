@@ -100,5 +100,4 @@ struct GifView: View {
 	)
 	GifView(url: Emoji.test.remoteImageURL)
 	GifView(url: Emoji.testLongName.localImageURL)
-	GifView(url: Gif.test.remoteImageURL)
 }

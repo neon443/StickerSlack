@@ -29,19 +29,7 @@ class UIKitGifView: UIImageView {
 	
 	nonisolated func prepareImage(for sticker: any StickerProtocol) async -> UIImage? {
 		let raw: Data?
-		
-		switch sticker.type {
-		case .slackEmoji:
-			raw = await sticker.data()
-		case .giphyGifs:
-			if sticker.isLocal {
-				raw = await sticker.data()
-			} else {
-				let gif = sticker as! Gif
-				raw = await gif.getPreviewData()
-			}
-		}
-		
+		raw = await sticker.data()
 		guard let raw else { return nil }
 		return await render(data: raw)
 	}
