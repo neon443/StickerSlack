@@ -18,8 +18,8 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 	init(emojiHoarder: EmojiHoarder, pack: EmojiPack?) {
 		self.emojiHoarder = emojiHoarder
 		self.pack = pack
-		
 		super.init(stickerSize: .small)
+		reload()
 	}
 	
 	required init?(coder: NSCoder) {
