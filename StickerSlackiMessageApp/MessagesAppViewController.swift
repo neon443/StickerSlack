@@ -10,7 +10,16 @@ import Messages
 import SwiftUI
 
 class MessagesAppViewController: MSMessagesAppViewController {
-	var emojiHoarder: EmojiHoarder = EmojiHoarder(localOnly: true, skipIndex: false)
+	var emojiHoarder: EmojiHoarder = EmojiHoarder(localOnly: true, skipIndex: true)
+	
+	init() {
+		emojiHoarder.buildDownloadedStickersSync()
+		super.init(nibName: nil, bundle: nil)
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()

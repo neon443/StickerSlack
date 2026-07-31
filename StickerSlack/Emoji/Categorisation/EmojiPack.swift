@@ -17,6 +17,15 @@ struct EmojiPack: Identifiable, Codable, Equatable, Hashable, CustomStringConver
 	var description: String {
 		return "\(items.count) emoji\(items.count.plural)"
 	}
+	var downloadedDescription: (Int) -> String {
+		{ dlCount in
+			if dlCount != items.count {
+				return "\(dlCount) / \(items.count) emoji\(items.count.plural)"
+			} else {
+				return "\(items.count) emoji\(items.count.plural)"
+			}
+		}
+	}
 	
 	init(id: UUID, name: String, items: [String]) {
 		self.id = id

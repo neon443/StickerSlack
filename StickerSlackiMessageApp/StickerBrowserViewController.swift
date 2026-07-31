@@ -20,15 +20,6 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 		self.pack = pack
 		
 		super.init(stickerSize: .small)
-		
-		reload()
-		
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(reload),
-			name: EmojiHoarder.NotifCategory.downloadedEmojis.name,
-			object: nil
-		)
 	}
 	
 	required init?(coder: NSCoder) {

@@ -135,6 +135,24 @@ class EmojiHoarder: BaseHoarder {
 		}
 		sendChangeNotif(for: .downloadedEmojis)
 	}
+	
+	func buildDownloadedStickersSync() {
+		var newSet: Set<String> = []
+		
+		if let files = try? FileManager.default.contentsOfDirectory(atPath: EmojiHoarder.container.safePath) {
+			for file in files {
+				let name = String(file.split(separator: ".")[0])
+				newSet.insert(name)
+			}
+		}
+		newSet.remove("DS_Store")
+		let immutable = newSet
+		self.downloadedStickers = []
+		self.downloadedStickers = immutable
+		downloadedStickersArr = Array(downloadedStickers).sorted()
+		sendChangeNotif(for: .downloadedEmojis)
+		return
+	}
 
 	private func loadLocalDB() -> [Emoji] {
 		do {

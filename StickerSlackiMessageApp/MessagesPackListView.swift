@@ -10,7 +10,7 @@ import UIKit
 
 class MessagesPackListView: UITableViewController {
 	var emojiHoarder: EmojiHoarder!
-	var onSelect: ((EmojiPack) -> Void)?
+	var onSelect: ((EmojiPack?) -> Void)?
 	
 	init(hoarder: EmojiHoarder) {
 		self.emojiHoarder = hoarder
@@ -26,22 +26,52 @@ class MessagesPackListView: UITableViewController {
 		return emojiHoarder.emojiPacks[indexPath.row]
 	}
 	
+	@objc func reload() {
+		var indexPaths: [IndexPath] = []
+		for row in 0..<tableView(tableView, numberOfRowsInSection: 1) {
+			indexPaths.append(IndexPath(row: row, section: 1))
+		}
+		tableView.reconfigureRows(at: indexPaths)
+	}
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .top)
+		reload()
+	}
+	
+	override func numberOfSections(in tableView: UITableView) -> Int {
+		return 2
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return emojiHoarder.emojiPacks.count
+		if section == 1 {
+			return emojiHoarder.emojiPacks.count
+		} else {
+			return 1
+		}
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = UITableViewCell()
+		let cell: UITableViewCell = tableView.cellForRow(at: indexPath) ?? .init()
+		
+		guard indexPath.section == 1 else {
+			var config = cell.defaultContentConfiguration()
+			cell.backgroundColor = .lightGray
+			config.text = "All Downloaded"
+			config.textProperties.font = UIFont.systemFont(ofSize: 14)
+			cell.contentConfiguration = config
+			return cell
+		}
 		var config = cell.defaultContentConfiguration()
 		
 		if let pack = packFor(indexPath: indexPath) {
 			config.text = pack.name
 			config.textProperties.font = UIFont.systemFont(ofSize: 14)
-			config.secondaryText = pack.description
+			
+			let dlCount = emojiHoarder.downloadedStickers.intersection(pack.items).count
+			config.secondaryText = pack.downloadedDescription(dlCount)
+			
 			config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12)
 			config.secondaryTextProperties.color = .systemGray
 		}
@@ -51,6 +81,10 @@ class MessagesPackListView: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		onSelect?(emojiHoarder.emojiPacks[indexPath.row])
+		if indexPath.section == 1 {
+			onSelect?(emojiHoarder.emojiPacks[indexPath.row])
+		} else {
+			onSelect?(nil)
+		}
 	}
 }
