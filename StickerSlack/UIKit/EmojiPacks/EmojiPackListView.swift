@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 class EmojiPackListView: UITableViewController {
 	var emojiHoarder: EmojiHoarder
 	var multiDeleteButton: UIBarButtonItem!
-	var multiDeleteLabel: UIBarButtonItem!
+	var selectCountButton: UIBarButtonItem!
 	
 	init(emojiHoarder: EmojiHoarder) {
 		self.emojiHoarder = emojiHoarder
@@ -29,7 +29,6 @@ class EmojiPackListView: UITableViewController {
 		alert.addTextField { textField in
 			textField.text = pack.name
 			textField.placeholder = pack.name
-			//			textField.borderStyle = .
 		}
 		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
 			self.dismiss(animated: true)
@@ -110,10 +109,10 @@ class EmojiPackListView: UITableViewController {
 		if let selectedRows = self.tableView.indexPathsForSelectedRows,
 		   !selectedRows.isEmpty {
 			self.multiDeleteButton.isEnabled = true
-			self.multiDeleteLabel.title = "\(selectedRows.count)"
+			self.selectCountButton.title = "\(selectedRows.count)"
 		} else {
 			self.multiDeleteButton.isEnabled = false
-			self.multiDeleteLabel.title = "0"
+			self.selectCountButton.title = "0"
 		}
 	}
 	
@@ -133,7 +132,10 @@ class EmojiPackListView: UITableViewController {
 		)
 		
 		self.navigationItem.rightBarButtonItem = self.editButtonItem
-		self.multiDeleteLabel = UIBarButtonItem(title: "X", style: .plain, target: self, action: nil)
+		self.selectCountButton = UIBarButtonItem(title: "X", style: .plain, target: self, action: nil)
+		if #unavailable(iOS 26) {
+			self.selectCountButton.tintColor = .systemRed
+		}
 		self.multiDeleteButton = UIBarButtonItem(
 			image: UIImage(systemName: "trash"),
 			style: .plain,
@@ -154,7 +156,10 @@ class EmojiPackListView: UITableViewController {
 		updateMultiDeleteButton()
 		var items: [UIBarButtonItem] = [self.editButtonItem]
 		if editing {
-			items.append(contentsOf: [multiDeleteLabel, multiDeleteButton])
+			if #unavailable(iOS 26) {
+				items.append(.fixedSpace(20))
+			}
+			items.append(contentsOf: [selectCountButton, multiDeleteButton])
 		}
 		self.navigationItem.setRightBarButtonItems(items, animated: true)
 	}
