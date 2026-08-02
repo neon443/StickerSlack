@@ -83,9 +83,10 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 	}
 	
 	@objc func reload() {
-		UIView.transition(with: labelStack, duration: 0.25, options: .transitionCrossDissolve) {
+		UIView.transition(with: labelStack, duration: 0.25, options: [.transitionCrossDissolve, .allowUserInteraction]) {
 			self.labelTitle.text = self.pack?.name ?? "All Downloaded"
-			self.labelSubTitle.text = self.pack?.downloadedDescription(self.emojiHoarder) ?? "idk"
+			self.labelSubTitle.text = self.pack?.downloadedDescription(self.emojiHoarder) ??
+			"\(self.emojiHoarder.downloadedStickers.count) emoji\(self.emojiHoarder.downloadedStickers.count.plural)"
 
 			self.view.layoutIfNeeded()
 		}
