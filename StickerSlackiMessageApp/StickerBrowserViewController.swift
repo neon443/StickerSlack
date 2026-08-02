@@ -52,7 +52,7 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 		stickerBrowserView.reloadData()
 		guard let subview = stickerBrowserView.subviews.first,
 			  let collectionView = subview as? UICollectionView else { return }
-		collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+		collectionView.setContentOffset(.zero, animated: true)
 	}
 	
 	func setEmptyViewTo(visible: Bool) {
@@ -73,6 +73,16 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 			emptyView.view.removeFromSuperview()
 			emptyView.didMove(toParent: nil)
 		}
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		guard let subview = stickerBrowserView.subviews.first,
+			  let collectionView = subview as? UICollectionView else { return }
+		collectionView.automaticallyAdjustsScrollIndicatorInsets = false
+		collectionView.directionalLayoutMargins.trailing = 0
+		self.view.directionalLayoutMargins.trailing = 0
+		collectionView.verticalScrollIndicatorInsets.bottom = view.safeAreaInsets.bottom
 	}
 	
 	override func numberOfStickers(in stickerBrowserView: MSStickerBrowserView) -> Int {

@@ -86,7 +86,7 @@ class MessagesPackListView: UITableViewController {
 			config.secondaryText = pack.downloadedDescription(dlCount)
 			
 			config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12)
-			config.secondaryTextProperties.color = .systemGray
+			config.secondaryTextProperties.color = dlCount == 0 ? .systemRed : .systemGray
 		}
 		
 		cell.contentConfiguration = config
