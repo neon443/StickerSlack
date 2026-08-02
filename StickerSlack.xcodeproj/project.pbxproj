@@ -10,6 +10,8 @@
 		A9034532301F42DB00EFFFDF /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9034531301F42DB00EFFFDF /* UIColor.swift */; };
 		A9034533301F42DB00EFFFDF /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9034531301F42DB00EFFFDF /* UIColor.swift */; };
 		A9034534301F42DB00EFFFDF /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9034531301F42DB00EFFFDF /* UIColor.swift */; };
+		A9034536301FC41600EFFFDF /* EmojiPackImporterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9034535301FC41600EFFFDF /* EmojiPackImporterViewController.swift */; };
+		A9034537301FC41600EFFFDF /* EmojiPackImporterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9034535301FC41600EFFFDF /* EmojiPackImporterViewController.swift */; };
 		A9104C752EB3AE4700D160EA /* Icon.pxd in Resources */ = {isa = PBXBuildFile; fileRef = A9104C722EB3AE4700D160EA /* Icon.pxd */; };
 		A9104C762EB3AE4700D160EA /* StickerSlack.icon in Resources */ = {isa = PBXBuildFile; fileRef = A9104C732EB3AE4700D160EA /* StickerSlack.icon */; };
 		A9104C772EB3AE4700D160EA /* Icon.pxd in Resources */ = {isa = PBXBuildFile; fileRef = A9104C722EB3AE4700D160EA /* Icon.pxd */; };
@@ -202,6 +204,7 @@
 
 /* Begin PBXFileReference section */
 		A9034531301F42DB00EFFFDF /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		A9034535301FC41600EFFFDF /* EmojiPackImporterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackImporterViewController.swift; sourceTree = "<group>"; };
 		A9104C722EB3AE4700D160EA /* Icon.pxd */ = {isa = PBXFileReference; lastKnownFileType = file; path = Icon.pxd; sourceTree = "<group>"; };
 		A9104C732EB3AE4700D160EA /* StickerSlack.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = StickerSlack.icon; sourceTree = "<group>"; };
 		A9104C7D2EB4022500D160EA /* MSSticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSSticker.swift; sourceTree = "<group>"; };
@@ -524,6 +527,7 @@
 				A9D53AEC2FFB0E83001C1BB9 /* EmojiPackListView.swift */,
 				A9E8C7A12FF7B815009A38B5 /* EmojiPackDetailViewController.swift */,
 				A9E8C7A42FF7C34A009A38B5 /* EmojiPackDetailViewRepresentable.swift */,
+				A9034535301FC41600EFFFDF /* EmojiPackImporterViewController.swift */,
 			);
 			path = EmojiPacks;
 			sourceTree = "<group>";
@@ -769,6 +773,7 @@
 				A9BE30FB2F5B03F400A57668 /* Sticker.swift in Sources */,
 				A9BE30F62F5B011A00A57668 /* StickerProtocol.swift in Sources */,
 				A921C2DF2ED067BB00E57B1A /* WelcomeView.swift in Sources */,
+				A9034537301FC41600EFFFDF /* EmojiPackImporterViewController.swift in Sources */,
 				A949B1F82EA04F2300215164 /* EmojiHoarder.swift in Sources */,
 				A9BBC5182EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A9EB72492EB948C400658CEB /* StickerRow.swift in Sources */,
@@ -827,6 +832,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A99C4B8E2FF2E8D30070CBA5 /* TabbedContentView.swift in Sources */,
+				A9034536301FC41600EFFFDF /* EmojiPackImporterViewController.swift in Sources */,
 				A9D53AEA2FFB0272001C1BB9 /* EmojiPackManagerController.swift in Sources */,
 				A9104C7F2EB4022500D160EA /* MSSticker.swift in Sources */,
 				A9C52F762F89A93D00078588 /* URL.swift in Sources */,

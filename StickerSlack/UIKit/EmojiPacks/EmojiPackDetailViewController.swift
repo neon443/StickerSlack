@@ -20,6 +20,7 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	var adderSheetButton: UIBarButtonItem!
 	var downloadButton: UIAction!
+	var renameButton: UIAction!
 	var shareButton: UIAction!
 	
 	var searchView: SearchViewController
@@ -88,6 +89,9 @@ class EmojiPackDetailViewController: UIViewController {
 		self.shareButton = UIAction(title: "Share...", image: UIImage(systemName: "square.and.arrow.up")) { action in
 			self.share()
 		}
+		self.renameButton = UIAction(title: "Rename", image: UIImage(systemName: "pencil")!, handler: { action in
+			self.renamePack()
+		})
 		self.downloadButton = UIAction(title: "", image: UIImage(systemName: "")) { action in
 			self.downloadButtonAction()
 		}
@@ -100,6 +104,36 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+	
+	func refreshUI() {
+		self.navigationItem.title = pack.name
+//		self.navigationItem.documentProperties
+		checkForEmptyPack()
+		updateDownloadButton()
+		setToolbar(editing: isEditing)
+		collectionView.refreshUI(with: pack.items)
+	}
+	
+	func renamePack() {
+		let alert = UIAlertController(title: "Rename", message: "", preferredStyle: .alert)
+		alert.addTextField { textField in
+			textField.text = self.pack.name
+			textField.placeholder = self.pack.name
+		}
+		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+			self.dismiss(animated: true)
+		}))
+		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+			guard let textField = alert.textFields?.first,
+				  let text = textField.text else { return }
+			self.pack.name = text
+			self.hoarder.updateEmojiPack(self.pack)
+			self.refreshUI()
+			self.dismiss(animated: true)
+		}))
+		alert.preferredAction = alert.actions.last
+		self.present(alert, animated: true)
 	}
 	
 	func checkForEmptyPack() {
@@ -168,7 +202,7 @@ class EmojiPackDetailViewController: UIViewController {
 			items.append(self.adderSheetButton)
 		} else {
 			let shareMenu = UIMenu(options: .displayInline, children: [shareButton])
-			let menu = UIMenu(children: [downloadButton, shareMenu])
+			let menu = UIMenu(children: [downloadButton, renameButton, shareMenu])
 			let dotdotdotButton = UIBarButtonItem(
 				title: "menu",
 				image: UIImage(systemName: "ellipsis"),
@@ -185,15 +219,6 @@ class EmojiPackDetailViewController: UIViewController {
 		guard let updatedPack = hoarder.emojiPacks.first(where: { $0.id == pack.id }) else { return }
 		self.pack = updatedPack
 		refreshUI()
-	}
-	
-	func refreshUI() {
-		self.navigationItem.title = pack.name
-//		self.navigationItem.documentProperties
-		checkForEmptyPack()
-		updateDownloadButton()
-		setToolbar(editing: isEditing)
-		collectionView.refreshUI(with: pack.items)
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {

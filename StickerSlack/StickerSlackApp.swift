@@ -50,7 +50,9 @@ class StickerSlackApp: UIResponder, UIApplicationDelegate {
 		guard let rootViewController = window?.rootViewController else { return false }
 
 		guard let imported = EmojiPack(fromShareLink: url) else { return false }
-		let importView = UIHostingController(rootView: EmojiPackImporterView(emojiHoarder: emojiHoarder, pack: .constant(imported)))
+//		let importView = EmojiPackDetailViewController(with: emojiHoarder, andPack: imported)
+		let importView = EmojiPackImporterViewController(emojiHoarder: emojiHoarder, pack: imported)
+//		let importView = UIHostingController(rootView: EmojiPackImporterView(emojiHoarder: emojiHoarder, pack: .constant(imported)))
 		
 		if let sheet = importView.sheetPresentationController {
 			sheet.detents = [.large()]
