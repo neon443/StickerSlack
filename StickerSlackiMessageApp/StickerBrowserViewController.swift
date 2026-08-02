@@ -45,24 +45,6 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		labelStack.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).inverted.withAlphaComponent(0.75)
-		labelStack.layoutMargins = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
-		labelStack.isLayoutMarginsRelativeArrangement = true
-		labelStack.layer.masksToBounds = true
-		labelStack.axis = .vertical
-		
-		labelTitle.font = UIFont.systemFont(ofSize: 14)
-		labelTitle.textAlignment = .center
-		
-		labelSubTitle.font = UIFont.systemFont(ofSize: 12)
-		labelSubTitle.textAlignment = .center
-		
-	}
-	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-		setScrollbars()
 		
 		self.view.addSubview(labelStack)
 		labelStack.translatesAutoresizingMaskIntoConstraints = false
@@ -70,24 +52,44 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 			labelStack.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
 			labelStack.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
 		])
+		labelStack.axis = .vertical
+		labelStack.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).inverted.withAlphaComponent(0.75)
 		labelStack.insetsLayoutMarginsFromSafeArea = false
-
+		labelStack.layoutMargins = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+		labelStack.isLayoutMarginsRelativeArrangement = true
+		
 		labelStack.layer.cornerCurve = .continuous
 		labelStack.layer.maskedCorners = [
 			.layerMinXMinYCorner,
 			.layerMaxXMinYCorner
 		]
-		labelStack.layer.cornerRadius = labelStack.frame.height/4
+		labelStack.layer.masksToBounds = true
+		
+		labelTitle.font = UIFont.systemFont(ofSize: 14)
+		labelTitle.textAlignment = .center
+		
+		labelSubTitle.font = UIFont.systemFont(ofSize: 12)
+		labelSubTitle.textAlignment = .center
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		setScrollbars()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		labelStack.layer.cornerRadius = labelStack.frame.height/4
 	}
 	
 	@objc func reload() {
-		self.labelTitle.text = pack?.name ?? "All Downloaded"
-		self.labelSubTitle.text = pack?.downloadedDescription(emojiHoarder) ??
-			"\(emojiHoarder.downloadedStickers.count) emoji\(emojiHoarder.downloadedStickers.count.plural)"
+		UIView.transition(with: labelStack, duration: 0.25, options: .transitionCrossDissolve) {
+			self.labelTitle.text = self.pack?.name ?? "All Downloaded"
+			self.labelSubTitle.text = self.pack?.downloadedDescription(self.emojiHoarder) ?? "idk"
+
+			self.view.layoutIfNeeded()
+		}
+		msStickers = []
 		let names: [String]
 		if let pack {
 			names = emojiHoarder.downloadedStickers.intersection(pack.items).sorted()
