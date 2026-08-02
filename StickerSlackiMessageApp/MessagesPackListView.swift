@@ -61,32 +61,29 @@ class MessagesPackListView: UITableViewController {
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell: UITableViewCell = tableView.cellForRow(at: indexPath) ?? .init()
 		
-		guard indexPath.section == 1 else {
-			var config = cell.defaultContentConfiguration()
-			
+		var config = cell.defaultContentConfiguration()
+		config.directionalLayoutMargins = .zero
+		cell.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+		cell.separatorInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
+		cell.preservesSuperviewLayoutMargins = false
+		config.textProperties.font = UIFont.systemFont(ofSize: 14)
+		config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12)
+		
+		if indexPath.section == 0 {
 			config.text = "All"
-			config.textProperties.font = UIFont.systemFont(ofSize: 14)
 			config.textProperties.color = #colorLiteral(red: 0.7490000129, green: 0.3529999852, blue: 0.949000001, alpha: 1)
 			
 			let dlCount = emojiHoarder.downloadedStickers.count
 			config.secondaryText = "\(dlCount) download\(dlCount.plural)"
-			config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12)
 			config.secondaryTextProperties.color = #colorLiteral(red: 0.7490000129, green: 0.3529999852, blue: 0.949000001, alpha: 1)
-			
-			cell.contentConfiguration = config
-			return cell
-		}
-		var config = cell.defaultContentConfiguration()
-		
-		if let pack = packFor(indexPath: indexPath) {
-			config.text = pack.name
-			config.textProperties.font = UIFont.systemFont(ofSize: 14)
-			
-			let dlCount = emojiHoarder.downloadedStickers.intersection(pack.items).count
-			config.secondaryText = pack.downloadedDescription(emojiHoarder)
-			
-			config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12)
-			config.secondaryTextProperties.color = dlCount == 0 ? .systemRed : .systemGray
+		} else {
+			if let pack = packFor(indexPath: indexPath) {
+				config.text = pack.name
+				
+				let dlCount = emojiHoarder.downloadedStickers.intersection(pack.items).count
+				config.secondaryText = pack.downloadedDescription(emojiHoarder)
+				config.secondaryTextProperties.color = dlCount == 0 ? .systemRed : .systemGray
+			}
 		}
 		
 		cell.contentConfiguration = config
