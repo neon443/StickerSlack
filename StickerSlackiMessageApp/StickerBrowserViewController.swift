@@ -65,9 +65,11 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 		]
 		labelStack.layer.masksToBounds = true
 		
+		labelTitle.textColor = .white
 		labelTitle.font = UIFont.systemFont(ofSize: 14)
 		labelTitle.textAlignment = .center
 		
+		labelSubTitle.textColor = .white
 		labelSubTitle.font = UIFont.systemFont(ofSize: 12)
 		labelSubTitle.textAlignment = .center
 	}
