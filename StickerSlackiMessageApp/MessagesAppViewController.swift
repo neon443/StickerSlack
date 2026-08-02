@@ -19,7 +19,14 @@ class MessagesAppViewController: MSMessagesAppViewController {
 		emojiHoarder.buildDownloadedStickersSync()
 		
 		self.tableView = MessagesPackListView(hoarder: emojiHoarder)
-		self.browserView = StickerBrowserViewController(emojiHoarder: emojiHoarder, pack: nil)
+		let selRow = UserDefaults.standard.integer(forKey: "selectedPackRowIndex")
+		let selPack: EmojiPack?
+		if selRow == -1 {
+			selPack = nil
+		} else {
+			selPack = emojiHoarder.emojiPacks[selRow]
+		}
+		self.browserView = StickerBrowserViewController(emojiHoarder: emojiHoarder, pack: selPack)
 		
 		let splitView = MessagesRootViewController(
 			emojiHoarder: emojiHoarder,
