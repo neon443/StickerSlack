@@ -20,7 +20,7 @@ class DownloadedViewController: UINavigationController, UINavigationControllerDe
 			width: 75,
 			style: .plainWithMenu
 		)
-		downloadedView.navigationItem.title = "Saved"
+		downloadedView.navigationItem.title = "Downloaded"
 		super.init(rootViewController: downloadedView)
 		
 		NotificationCenter.default.addObserver(

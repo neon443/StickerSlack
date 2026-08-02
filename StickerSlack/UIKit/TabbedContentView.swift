@@ -23,7 +23,7 @@ final class TabbedContentView: UITabBarController, UITabBarControllerDelegate {
 		packs.tabBarItem = UITabBarItem(title: "Packs", image: UIImage(systemName: "square.stack.3d.up.fill"), tag: 1)
 		
 		let downloaded = DownloadedViewController(emojiHoarder: emojiHoarder)
-		downloaded.tabBarItem = UITabBarItem(title: "Saved", image: UIImage(systemName: "arrow.down.circle.fill"), tag: 2)
+		downloaded.tabBarItem = UITabBarItem(title: "Downloaded", image: UIImage(systemName: "arrow.down.circle.fill"), tag: 2)
 		
 //		let searchView = SearchView(hoarder: emojiHoarder)
 //		let search = UIHostingController(rootView: searchView)
