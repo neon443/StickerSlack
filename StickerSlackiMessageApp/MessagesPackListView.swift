@@ -34,6 +34,18 @@ class MessagesPackListView: UITableViewController {
 		tableView.reconfigureRows(at: indexPaths)
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		let selRow = UserDefaults.standard.integer(forKey: "selectedPackRowIndex")
+		let indexPath: IndexPath
+		if selRow == -1 {
+			indexPath = IndexPath(row: 0, section: 0)
+		} else {
+			indexPath = IndexPath(row: selRow, section: 1)
+		}
+		tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+	}
+	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 2
 	}
