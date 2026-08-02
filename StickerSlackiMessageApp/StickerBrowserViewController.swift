@@ -106,6 +106,9 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 		guard let subview = stickerBrowserView.subviews.first,
 			  let collectionView = subview as? UICollectionView else { return }
 		collectionView.setContentOffset(.zero, animated: true)
+		DispatchQueue.main.async {
+			self.setScrollbars()
+		}
 	}
 	
 	func setScrollbars() {
