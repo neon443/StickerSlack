@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A9034532301F42DB00EFFFDF /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9034531301F42DB00EFFFDF /* UIColor.swift */; };
+		A9034533301F42DB00EFFFDF /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9034531301F42DB00EFFFDF /* UIColor.swift */; };
+		A9034534301F42DB00EFFFDF /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9034531301F42DB00EFFFDF /* UIColor.swift */; };
 		A9104C752EB3AE4700D160EA /* Icon.pxd in Resources */ = {isa = PBXBuildFile; fileRef = A9104C722EB3AE4700D160EA /* Icon.pxd */; };
 		A9104C762EB3AE4700D160EA /* StickerSlack.icon in Resources */ = {isa = PBXBuildFile; fileRef = A9104C732EB3AE4700D160EA /* StickerSlack.icon */; };
 		A9104C772EB3AE4700D160EA /* Icon.pxd in Resources */ = {isa = PBXBuildFile; fileRef = A9104C722EB3AE4700D160EA /* Icon.pxd */; };
@@ -198,6 +201,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A9034531301F42DB00EFFFDF /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		A9104C722EB3AE4700D160EA /* Icon.pxd */ = {isa = PBXFileReference; lastKnownFileType = file; path = Icon.pxd; sourceTree = "<group>"; };
 		A9104C732EB3AE4700D160EA /* StickerSlack.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = StickerSlack.icon; sourceTree = "<group>"; };
 		A9104C7D2EB4022500D160EA /* MSSticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSSticker.swift; sourceTree = "<group>"; };
@@ -328,6 +332,7 @@
 				A995D95A2F6EBBDD0043E5F5 /* TestStructures.swift */,
 				A9C52F742F89A93D00078588 /* URL.swift */,
 				A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */,
+				A9034531301F42DB00EFFFDF /* UIColor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -770,6 +775,7 @@
 				A9773C2F2EA54AF000F3B753 /* StickerPreview.swift in Sources */,
 				A917BACF2F9B787B008DB31E /* EmojiCollectionViewRepresentable.swift in Sources */,
 				A98FA6612FF3BD5400D50212 /* EmojiCollectionView.swift in Sources */,
+				A9034533301F42DB00EFFFDF /* UIColor.swift in Sources */,
 				A9E8C78F2FF71D8C009A38B5 /* DownloadedViewController.swift in Sources */,
 				A9BE30EC2F5AFE1E00A57668 /* StickerType.swift in Sources */,
 				A995D95C2F6EBBDD0043E5F5 /* TestStructures.swift in Sources */,
@@ -796,6 +802,7 @@
 				A9BDEAE02F82BCB4002798DF /* NoStickersView.swift in Sources */,
 				A9BE30FA2F5B03F400A57668 /* Sticker.swift in Sources */,
 				A98C51C0301D2925006CB5A9 /* GifManager.swift in Sources */,
+				A9034532301F42DB00EFFFDF /* UIColor.swift in Sources */,
 				A9E8C79B2FF7256B009A38B5 /* EmojiHoarder.Packs.swift in Sources */,
 				A986A6CD2EB659E000B6E0FA /* MessagesAppViewController.swift in Sources */,
 				A96D59963013D6450086948E /* MessagesPackListView.swift in Sources */,
@@ -852,6 +859,7 @@
 				A97322A22FA7B9C8004B657D /* JumboMoji.swift in Sources */,
 				A9C172DC2EB8C9AC008A7885 /* Trie.swift in Sources */,
 				A98FA65B2FF3B29700D50212 /* EmojiTableView.swift in Sources */,
+				A9034534301F42DB00EFFFDF /* UIColor.swift in Sources */,
 				A9FB3EE32FA7AB3A00030E2A /* UIKitGifView.swift in Sources */,
 				A9C52F7A2F89BB0800078588 /* EmojiTableViewCell.swift in Sources */,
 				A957C1752ECCE2CE00EA3EE9 /* SettingsView.swift in Sources */,

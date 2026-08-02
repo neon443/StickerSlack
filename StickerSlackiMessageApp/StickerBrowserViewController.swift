@@ -14,11 +14,19 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 	var emojiHoarder: EmojiHoarder!
 	var pack: EmojiPack?
 	var msStickers: [MSSticker] = []
+	var labelStack: UIStackView
+	var labelTitle: UILabel
+	var labelSubTitle: UILabel
 	var emptyView: UIViewController
 	
 	init(emojiHoarder: EmojiHoarder, pack: EmojiPack?) {
 		self.emojiHoarder = emojiHoarder
 		self.pack = pack
+		
+		self.labelTitle = UILabel()
+		self.labelSubTitle = UILabel()
+		self.labelStack = UIStackView(arrangedSubviews: [labelTitle, labelSubTitle])
+		
 		self.emptyView = UIHostingController(
 			rootView: EmptyCollectionView(
 				title: "None Downloaded",
@@ -35,8 +43,42 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		self.view.addSubview(labelStack)
+		labelStack.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			labelStack.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+			labelStack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+		])
+		
+		labelTitle.font = UIFont.systemFont(ofSize: 16)
+		labelTitle.textAlignment = .center
+		
+		labelSubTitle.font = UIFont.systemFont(ofSize: 14)
+		labelSubTitle.textAlignment = .center
+		
+		labelStack.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).inverted.withAlphaComponent(0.75)
+		labelStack.layoutMargins = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+		labelStack.isLayoutMarginsRelativeArrangement = true
+		labelStack.layer.masksToBounds = true
+		labelStack.axis = .vertical
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		setScrollbars()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		labelStack.layer.cornerRadius = labelStack.frame.height/4
+	}
+	
 	@objc func reload() {
-		msStickers = []
+		self.labelTitle.text = pack?.name ?? "All Downloaded"
+		self.labelSubTitle.text = pack?.downloadedDescription(emojiHoarder) ??
+			"\(emojiHoarder.downloadedStickers.count) emoji\(emojiHoarder.downloadedStickers.count.plural)"
 		let names: [String]
 		if let pack {
 			names = emojiHoarder.downloadedStickers.intersection(pack.items).sorted()
@@ -53,6 +95,15 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 		guard let subview = stickerBrowserView.subviews.first,
 			  let collectionView = subview as? UICollectionView else { return }
 		collectionView.setContentOffset(.zero, animated: true)
+	}
+	
+	func setScrollbars() {
+		guard let subview = stickerBrowserView.subviews.first,
+			  let collectionView = subview as? UICollectionView else { return }
+		collectionView.automaticallyAdjustsScrollIndicatorInsets = false
+		collectionView.directionalLayoutMargins.trailing = 0
+		self.view.directionalLayoutMargins.trailing = 0
+		collectionView.verticalScrollIndicatorInsets.bottom = view.safeAreaInsets.bottom
 	}
 	
 	func setEmptyViewTo(visible: Bool) {
@@ -73,16 +124,6 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 			emptyView.view.removeFromSuperview()
 			emptyView.didMove(toParent: nil)
 		}
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		guard let subview = stickerBrowserView.subviews.first,
-			  let collectionView = subview as? UICollectionView else { return }
-		collectionView.automaticallyAdjustsScrollIndicatorInsets = false
-		collectionView.directionalLayoutMargins.trailing = 0
-		self.view.directionalLayoutMargins.trailing = 0
-		collectionView.verticalScrollIndicatorInsets.bottom = view.safeAreaInsets.bottom
 	}
 	
 	override func numberOfStickers(in stickerBrowserView: MSStickerBrowserView) -> Int {

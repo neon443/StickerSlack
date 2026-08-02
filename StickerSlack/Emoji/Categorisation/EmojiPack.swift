@@ -17,8 +17,9 @@ struct EmojiPack: Identifiable, Codable, Equatable, Hashable, CustomStringConver
 	var description: String {
 		return "\(items.count) emoji\(items.count.plural)"
 	}
-	var downloadedDescription: (Int) -> String {
-		{ dlCount in
+	var downloadedDescription: (EmojiHoarder) -> String {
+		{ hoarder in
+			let dlCount = hoarder.downloadedStickers.intersection(items).count
 			if dlCount != items.count {
 				return "\(dlCount) / \(items.count) emoji\(items.count.plural)"
 			} else {

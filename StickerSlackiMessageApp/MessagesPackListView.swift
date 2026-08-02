@@ -83,7 +83,7 @@ class MessagesPackListView: UITableViewController {
 			config.textProperties.font = UIFont.systemFont(ofSize: 14)
 			
 			let dlCount = emojiHoarder.downloadedStickers.intersection(pack.items).count
-			config.secondaryText = pack.downloadedDescription(dlCount)
+			config.secondaryText = pack.downloadedDescription(emojiHoarder)
 			
 			config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12)
 			config.secondaryTextProperties.color = dlCount == 0 ? .systemRed : .systemGray
