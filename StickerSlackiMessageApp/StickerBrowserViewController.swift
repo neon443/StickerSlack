@@ -48,8 +48,11 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 				  let msSticker = emoji.msSticker else { continue }
 			msStickers.append(msSticker)
 		}
-		stickerBrowserView.reloadData()
 		setEmptyViewTo(visible: msStickers.isEmpty)
+		stickerBrowserView.reloadData()
+		guard let subview = stickerBrowserView.subviews.first,
+			  let collectionView = subview as? UICollectionView else { return }
+		collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
 	}
 	
 	func setEmptyViewTo(visible: Bool) {
