@@ -26,13 +26,13 @@ class MessagesRootViewController: UIViewController {
 		leadingVC.onSelect = { pack in
 			self.trailingVC.view.layoutIfNeeded()
 			self.trailingVC.view.transform = .identity
-			UIView.animate(withDuration: 0.25) {
+			UIView.animate(withDuration: 0.2) {
 				self.trailingVC.view.transform = CGAffineTransform.init(scaleX: 0.9, y: 0.9)
 				self.trailingVC.view.alpha = 0.25
 			} completion: { _ in
 				self.trailingVC.pack = pack
 				self.trailingVC.reload()
-				UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1) {
+				UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1) {
 					self.trailingVC.view.alpha = 1
 					self.trailingVC.view.transform = .identity
 				}
