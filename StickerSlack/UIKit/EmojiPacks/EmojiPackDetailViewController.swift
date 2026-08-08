@@ -97,9 +97,9 @@ class EmojiPackDetailViewController: UIViewController {
 		}
 		updateDownloadButton()
 		self.navigationItem.title = pack.name
-		self.setToolbar(editing: false)
+		self.setToolbar()
 		
-		collectionView.onEditChange = { self.setToolbar(editing: $0) }
+		collectionView.onEditChange = { self.setToolbar() }
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -111,7 +111,7 @@ class EmojiPackDetailViewController: UIViewController {
 //		self.navigationItem.documentProperties
 		checkForEmptyPack()
 		updateDownloadButton()
-		setToolbar(editing: isEditing)
+		setToolbar()
 		collectionView.refreshUI(with: pack.items)
 	}
 	
@@ -171,7 +171,7 @@ class EmojiPackDetailViewController: UIViewController {
 			} else {
 				await pack.downloadAll(hoarder: hoarder)
 			}
-			self.setToolbar(editing: false)
+			self.setToolbar()
 			refreshUI()
 		}
 	}
@@ -193,9 +193,9 @@ class EmojiPackDetailViewController: UIViewController {
 		present(shareSheet, animated: true)
 	}
 	
-	func setToolbar(editing: Bool) {
+	func setToolbar() {
 		var items: [UIBarButtonItem] = [self.collectionView.editButtonItem]
-		if editing {
+		if collectionView.isEditing {
 			if #available(iOS 26, *) {
 				items.append(.fixedSpace(0))
 			}
