@@ -42,6 +42,14 @@ class StickerSlackApp: UIResponder, UIApplicationDelegate {
 		window?.rootViewController = TabbedContentView()
 		(window?.rootViewController! as! TabbedContentView).setupTabs(with: emojiHoarder)
 		window?.makeKeyAndVisible()
+		
+		if emojiHoarder.showWelcome {
+			let welcomeView = UIHostingController(rootView: WelcomeView(emojiHoarder: emojiHoarder))
+			if welcomeView.sheetPresentationController != nil {
+				self.window?.rootViewController?.present(welcomeView, animated: true)
+			}
+		}
+		
 		return true
 	}
 	

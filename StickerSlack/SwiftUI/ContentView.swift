@@ -80,12 +80,6 @@ struct ContentView: View {
 				}
 			}
 		}
-		.sheet(isPresented: $emojiHoarder.showWelcome) {
-			emojiHoarder.setShowWelcome(to: false)
-		} content: {
-			WelcomeView()
-		}
-		
 	}
 }
 

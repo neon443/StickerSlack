@@ -93,7 +93,13 @@ struct SettingsView: View {
 				}
 				
 				Button("Show Welcome", systemImage: "arrow.trianglehead.clockwise") {
-					hoarder.setShowWelcome(to: true)
+					let welcomeVC = UIHostingController(rootView: WelcomeView(emojiHoarder: hoarder))
+					guard let appDelegate = UIApplication.shared.delegate,
+						  let window = appDelegate.window,
+						  let rootVC = window?.rootViewController,
+						  welcomeVC.sheetPresentationController != nil else { return }
+					
+					rootVC.present(welcomeVC, animated: true)
 				}
 				
 				Section("Use with Caution") {

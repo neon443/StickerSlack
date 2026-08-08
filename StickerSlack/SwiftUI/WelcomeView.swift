@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WelcomeView: View {
+	@ObservedObject var emojiHoarder: EmojiHoarder
 	@Environment(\.dismiss) var dismiss
 	@Environment(\.colorScheme) var colourScheme
 	var isDark: Bool {
@@ -35,7 +36,7 @@ struct WelcomeView: View {
 				)
 			) {
 				ListRow(number: 1, text: "Browse or Search", image: Image(uiImage: #imageLiteral(resourceName: "1-browseOrSearch")))
-				ListRow(number: 2, text: "Download it", image: Image(systemName: "arrow.down.circle"))
+				ListRow(number: 2, text: "Download", image: Image(systemName: "arrow.down.circle"))
 				ListRow(number: 3, text: "Open iMessage", image: Image(systemName: "message.fill"))
 				ListRow(number: 4, text: "Tap the +", image: Image(systemName: "plus.circle.fill"))
 				ListRow(number: 5, text: "Choose Stickers", image: Image(uiImage: #imageLiteral(resourceName: "stickersIcon.png")))
@@ -65,6 +66,9 @@ struct WelcomeView: View {
 			.padding(.bottom)
 			.tint(.accentColor)
 			.interactiveDismissDisabled()
+		}
+		.onDisappear {
+			emojiHoarder.setShowWelcome(to: false)
 		}
 	}
 	
@@ -107,6 +111,6 @@ fileprivate struct ContinueButtonView: View {
 	Color.gray.opacity(0.5)
 		.ignoresSafeArea(.all)
 		.sheet(isPresented: .constant(true)) {
-			WelcomeView()
+			WelcomeView(emojiHoarder: EmojiHoarder())
 		}
 }
