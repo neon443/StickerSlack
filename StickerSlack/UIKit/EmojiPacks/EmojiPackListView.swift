@@ -17,6 +17,12 @@ class EmojiPackListView: UITableViewController {
 	init(emojiHoarder: EmojiHoarder) {
 		self.emojiHoarder = emojiHoarder
 		super.init(style: .insetGrouped)
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(refresh),
+			name: EmojiHoarder.NotifCategory.packs.name,
+			object: nil
+		)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -116,7 +122,7 @@ class EmojiPackListView: UITableViewController {
 		}
 	}
 	
-	func refresh() {
+	@objc func refresh() {
 		self.tableView.reloadData()
 	}
 	

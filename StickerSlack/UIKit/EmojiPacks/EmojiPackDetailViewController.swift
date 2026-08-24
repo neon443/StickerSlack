@@ -18,6 +18,8 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	let emptyCollectionView: UIViewController
 	
+	var effectView: UIVisualEffectView!
+	var countLabel: UILabel!
 	var adderSheetButton: UIBarButtonItem!
 	var downloadButton: UIAction!
 	var renameButton: UIAction!
@@ -81,6 +83,32 @@ class EmojiPackDetailViewController: UIViewController {
 			self.refreshUI()
 		}
 		
+		self.countLabel = UILabel()
+		countLabel.text = "hello default"
+		countLabel.font = UIFont.systemFont(ofSize: 14)
+		countLabel.textAlignment = .center
+		self.effectView = UIVisualEffectView(effect: nil)
+		self.view.addSubview(effectView)
+		if #available(iOS 19, *) {
+			let glassEffect = UIGlassEffect()
+			glassEffect.isInteractive = true
+			effectView.effect = glassEffect
+		}
+		effectView.layer.masksToBounds = true
+		effectView.clipsToBounds = true
+		effectView.contentView.addSubview(countLabel)
+		effectView.translatesAutoresizingMaskIntoConstraints = false
+		countLabel.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			effectView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+			effectView.heightAnchor.constraint(equalTo: countLabel.heightAnchor, constant: 12),
+			effectView.widthAnchor.constraint(equalTo: countLabel.widthAnchor, constant: 24),
+			effectView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+			
+			countLabel.centerXAnchor.constraint(equalTo: effectView.centerXAnchor),
+			countLabel.centerYAnchor.constraint(equalTo: effectView.centerYAnchor)
+		])
+		
 		self.adderSheetButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(showSheet))
 		
 		let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(hideSheet))
@@ -108,6 +136,7 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	func refreshUI() {
 		self.navigationItem.title = pack.name
+		self.countLabel.text = pack.description
 //		self.navigationItem.documentProperties
 		checkForEmptyPack()
 		updateDownloadButton()
@@ -220,6 +249,12 @@ class EmojiPackDetailViewController: UIViewController {
 		self.pack = updatedPack
 		refreshUI()
 	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		effectView.layer.cornerRadius = effectView.bounds.height/2
+	}
+	
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)

@@ -16,7 +16,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 	var style: EmojiCollectionView.Style
 	var onRemove: ((String) -> Void)?
 	var onTap: ((String) -> Void)?
-	var onEditChange: ((Bool) -> Void)?
+	var onEditChange: (() -> Void)?
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, String>!
 	
@@ -175,7 +175,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		
-		onEditChange?(editing)
+		onEditChange?()
 		
 		for cell in collectionView.visibleCells {
 			if let cell = cell as? EmojiCollectionViewCell {
