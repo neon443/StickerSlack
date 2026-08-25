@@ -133,7 +133,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 			cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plain", for: indexPath) as! PlainEmojiCollectionViewCell
 		case .full, .plainWithLabel:
 			cell = collectionView.dequeueReusableCell(withReuseIdentifier: "full", for: indexPath) as! EmojiCollectionViewCell
-			(cell as! EmojiCollectionViewCell).setEdit(to: isEditing)
+			(cell as! EmojiCollectionViewCell).setEdit(to: parent?.isEditing ?? false)
 			(cell as! EmojiCollectionViewCell).onRemove = {
 				guard let index = self.items.firstIndex(of: $0) else { return }
 				self.items.remove(at: index)
@@ -240,11 +240,9 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		menuChildrem.append(UIMenu(options: .displayInline, children: [copyName, copyImage, share]))
 		
 		let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash")) { action in
-			Task.detached {
-				await self.hoarder.delete(emoji: self.hoarder.trie.dict[emojiName])
-			}
-			self.items.remove(at: indexPath.row)
 			Task.detached { @MainActor in
+				await self.hoarder.delete(emoji: self.hoarder.trie.dict[emojiName])
+				self.items.remove(at: indexPath.row)
 				await self.applySnapshot(animated: true)
 			}
 		}
