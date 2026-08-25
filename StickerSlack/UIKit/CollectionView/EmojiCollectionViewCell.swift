@@ -37,6 +37,7 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		contentView.addSubview(button)
 		
 		NSLayoutConstraint.activate([
+			label.topAnchor.constraint(equalTo: self.view.bottomAnchor),
 			label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 			label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -99,15 +100,10 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		return super.hitTest(point, with: event)
 	}
 	
-	override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-		let layoutAttributes = super.preferredLayoutAttributesFitting(layoutAttributes)
-		guard label.text != nil else { return layoutAttributes }
-		let labelHeight = label.sizeThatFits(CGSize(width: layoutAttributes.size.width, height: .infinity)).height
-		layoutAttributes.size = CGSize(
-			width: layoutAttributes.size.width,
-			height: labelHeight + 4 + layoutAttributes.size.height
-		)
-		return layoutAttributes
+	override func preferredItemSize(for width: CGFloat) -> CGSize {
+		guard label.text != nil else { return super.preferredItemSize(for: width) }
+		let labelHeight = label.sizeThatFits(CGSize(width: width, height: .infinity)).height
+		return CGSize(width: width, height: width + 4 + labelHeight)
 	}
 	
 	override func prepareForReuse() {

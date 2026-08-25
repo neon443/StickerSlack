@@ -174,16 +174,12 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		}
 	}
 	
-	override func setEditing(_ editing: Bool, animated: Bool) {
-		super.setEditing(editing, animated: animated)
-		
-		let offset = collectionView.contentOffset
-		
+	func edit(_ editing: Bool, animated: Bool) {
 		onEditChange?()
 		
 		for cell in collectionView.visibleCells {
 			if let cell = cell as? EmojiCollectionViewCell {
-				cell.setEdit(to: isEditing)
+				cell.setEdit(to: editing)
 			}
 		}
 		
@@ -192,9 +188,6 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		} else {
 			self.stopAnimating()
 		}
-		
-		collectionView.layoutIfNeeded()
-		collectionView.contentOffset = offset
 	}
 	
 	override func collectionView(

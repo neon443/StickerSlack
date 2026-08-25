@@ -222,9 +222,14 @@ class EmojiPackDetailViewController: UIViewController {
 		present(shareSheet, animated: true)
 	}
 	
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		collectionView.edit(editing, animated: animated)
+	}
+	
 	func setToolbar() {
-		var items: [UIBarButtonItem] = [self.collectionView.editButtonItem]
-		if collectionView.isEditing {
+		var items: [UIBarButtonItem] = [self.editButtonItem]
+		if self.isEditing {
 			if #available(iOS 26, *) {
 				items.append(.fixedSpace(0))
 			}
@@ -238,7 +243,7 @@ class EmojiPackDetailViewController: UIViewController {
 				primaryAction: nil,
 				menu: menu
 			)
-			items = [self.collectionView.editButtonItem, dotdotdotButton]
+			items = [self.editButtonItem, dotdotdotButton]
 		}
 		self.navigationItem.setRightBarButtonItems(items, animated: true)
 	}

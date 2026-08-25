@@ -66,6 +66,10 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 		print("tap")
 	}
 	
+	func preferredItemSize(for width: CGFloat) -> CGSize {
+		CGSize(width: width, height: width)
+	}
+	
 	override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
 		super.preferredLayoutAttributesFitting(layoutAttributes)
 		guard let superview,
@@ -82,7 +86,7 @@ class PlainEmojiCollectionViewCell: UICollectionViewCell {
 		if cols == 0 || cols == .infinity { cols = 4 }
 		let totalSpacing = ((collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.minimumInteritemSpacing ?? 0) * (cols-1)
 		let itemWidth = ((availWidth-totalSpacing)/cols).rounded(.down)
-		layoutAttributes.size = CGSize(width: itemWidth, height: itemWidth)
+		layoutAttributes.size = preferredItemSize(for: itemWidth)
 		return layoutAttributes
 	}
 	
