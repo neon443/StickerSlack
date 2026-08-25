@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import Haptics
 
+@MainActor
 final class EmojiCollectionView: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	var hoarder: EmojiHoarder
 	var items: [String]
@@ -44,8 +45,12 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "full")
 		collectionView.delegate = self
 		
-		self.dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: String) -> UICollectionViewCell? in
-			self.collectionView(collectionView, cellForItemAt: indexPath)
+		self.dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: collectionView) { (
+			collectionView: UICollectionView,
+			indexPath: IndexPath,
+			itemIdentifier: String
+		) -> UICollectionViewCell? in
+			self.cellForItemInAt(collectionView, indexPath: indexPath, itemIdentifier: itemIdentifier)
 		}
 		collectionView.dataSource = dataSource
 		
@@ -115,16 +120,13 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		await (self.collectionView.dataSource as! UICollectionViewDiffableDataSource).applySnapshotUsingReloadData(snapshot)
 	}
 	
-	override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return items.count
-	}
-	
-	override func collectionView(
+	func cellForItemInAt(
 		_ collectionView: UICollectionView,
-		cellForItemAt indexPath: IndexPath
+		indexPath: IndexPath,
+		itemIdentifier: String
 	) -> UICollectionViewCell {
 		let cell: PlainEmojiCollectionViewCell
-		let emojiName = items[indexPath.item]
+		let emojiName = itemIdentifier
 		
 		switch style {
 		case .plain, .plainWithMenu, .jumboMoji:
@@ -135,7 +137,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 			(cell as! EmojiCollectionViewCell).onRemove = {
 				guard let index = self.items.firstIndex(of: $0) else { return }
 				self.items.remove(at: index)
-				Task.detached {
+				Task.detached { @MainActor in
 					await self.applySnapshot(animated: true)
 				}
 				self.onRemove?($0)
@@ -175,6 +177,8 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		
+		let offset = collectionView.contentOffset
+		
 		onEditChange?()
 		
 		for cell in collectionView.visibleCells {
@@ -185,10 +189,12 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		
 		if editing {
 			self.startAnimating()
-			
 		} else {
 			self.stopAnimating()
 		}
+		
+		collectionView.layoutIfNeeded()
+		collectionView.contentOffset = offset
 	}
 	
 	override func collectionView(
@@ -245,7 +251,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 				await self.hoarder.delete(emoji: self.hoarder.trie.dict[emojiName])
 			}
 			self.items.remove(at: indexPath.row)
-			Task.detached {
+			Task.detached { @MainActor in
 				await self.applySnapshot(animated: true)
 			}
 		}

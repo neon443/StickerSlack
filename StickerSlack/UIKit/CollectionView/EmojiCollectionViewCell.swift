@@ -12,7 +12,7 @@ import SwiftUI
 class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 	let label = UILabel()
 	let button = UIButton(type: .custom)
-	var edit: Bool?
+	var edit: Bool = false
 	var onRemove: ((String) -> Void)?
 	
 	override init(frame: CGRect) {
@@ -25,7 +25,6 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		contentView.addSubview(label)
 		
 		button.alpha = 0
-		button.isHidden = true
 		button.isEnabled = false
 		button.setImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
 		button.imageView?.contentMode = .scaleAspectFit
@@ -63,22 +62,19 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		contentView.bringSubviewToFront(button)
 	}
 	
-	func setEdit(to newValue: Bool?) {
-		self.edit = newValue
-		if edit ?? false {
-			contentView.bringSubviewToFront(button)
-			self.button.isHidden = false
-			button.isEnabled = true
-			UIView.animate(withDuration: 0.2) {
-				self.button.alpha = 1
-			}
+	func setEdit(to editing: Bool, animated: Bool = true) {
+		self.edit = editing
+		button.isEnabled = editing
+		button.isUserInteractionEnabled = editing
+		
+		let changes = {
+			self.button.alpha = editing ? 1 : 0
+		}
+		
+		if animated {
+			UIView.animate(withDuration: 0.2, animations: changes)
 		} else {
-			UIView.animate(withDuration: 0.2) {
-				self.button.alpha = 0
-			} completion: { _ in
-				self.button.isHidden = true
-				self.button.isEnabled = false
-			}
+			changes()
 		}
 	}
 	
@@ -107,13 +103,20 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		let layoutAttributes = super.preferredLayoutAttributesFitting(layoutAttributes)
 		guard label.text != nil else { return layoutAttributes }
 		let labelHeight = label.sizeThatFits(CGSize(width: layoutAttributes.size.width, height: .infinity)).height
-		layoutAttributes.size = CGSize(width: layoutAttributes.size.width, height: labelHeight+4+view.frame.height)
+		layoutAttributes.size = CGSize(
+			width: layoutAttributes.size.width,
+			height: labelHeight + 4 + layoutAttributes.size.height
+		)
 		return layoutAttributes
 	}
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		label.text = nil
-		setEdit(to: edit)
+		onRemove = nil
+		button.alpha = 0
+		button.isEnabled = false
+		button.isUserInteractionEnabled = false
+		edit = false
 	}
 }
