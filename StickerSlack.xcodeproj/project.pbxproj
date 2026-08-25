@@ -140,6 +140,9 @@
 		A9D53AED2FFB0E83001C1BB9 /* EmojiPackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D53AEC2FFB0E83001C1BB9 /* EmojiPackListView.swift */; };
 		A9D53AEE2FFB0E83001C1BB9 /* EmojiPackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D53AEC2FFB0E83001C1BB9 /* EmojiPackListView.swift */; };
 		A9D6A8212F7014AE00F198FB /* TestStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995D95A2F6EBBDD0043E5F5 /* TestStructures.swift */; };
+		A9DB1DCB303DBAF30007C177 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9DB1DCA303DBAF30007C177 /* CGFloat.swift */; };
+		A9DB1DCC303DBAF30007C177 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9DB1DCA303DBAF30007C177 /* CGFloat.swift */; };
+		A9DB1DCD303DBAF30007C177 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9DB1DCA303DBAF30007C177 /* CGFloat.swift */; };
 		A9E8C78F2FF71D8C009A38B5 /* DownloadedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C78E2FF71D8C009A38B5 /* DownloadedViewController.swift */; };
 		A9E8C7902FF71D8C009A38B5 /* DownloadedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C78E2FF71D8C009A38B5 /* DownloadedViewController.swift */; };
 		A9E8C79A2FF7256B009A38B5 /* EmojiHoarder.Packs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8C7992FF7256B009A38B5 /* EmojiHoarder.Packs.swift */; };
@@ -271,6 +274,7 @@
 		A9D15B892EB1142C00404792 /* EmojiPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPack.swift; sourceTree = "<group>"; };
 		A9D53AE92FFB0272001C1BB9 /* EmojiPackManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackManagerController.swift; sourceTree = "<group>"; };
 		A9D53AEC2FFB0E83001C1BB9 /* EmojiPackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPackListView.swift; sourceTree = "<group>"; };
+		A9DB1DCA303DBAF30007C177 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
 		A9E2ECD72EB74CE00038B2D6 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A9E8C78E2FF71D8C009A38B5 /* DownloadedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedViewController.swift; sourceTree = "<group>"; };
 		A9E8C7992FF7256B009A38B5 /* EmojiHoarder.Packs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiHoarder.Packs.swift; sourceTree = "<group>"; };
@@ -336,6 +340,7 @@
 				A9C52F742F89A93D00078588 /* URL.swift */,
 				A9BBC5172EB8FA4500FFE82F /* ViewModifiers.swift */,
 				A9034531301F42DB00EFFFDF /* UIColor.swift */,
+				A9DB1DCA303DBAF30007C177 /* CGFloat.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -778,6 +783,7 @@
 				A9BBC5182EB8FA4500FFE82F /* ViewModifiers.swift in Sources */,
 				A9EB72492EB948C400658CEB /* StickerRow.swift in Sources */,
 				A9773C2F2EA54AF000F3B753 /* StickerPreview.swift in Sources */,
+				A9DB1DCC303DBAF30007C177 /* CGFloat.swift in Sources */,
 				A917BACF2F9B787B008DB31E /* EmojiCollectionViewRepresentable.swift in Sources */,
 				A98FA6612FF3BD5400D50212 /* EmojiCollectionView.swift in Sources */,
 				A9034533301F42DB00EFFFDF /* UIColor.swift in Sources */,
@@ -807,6 +813,7 @@
 				A9BDEAE02F82BCB4002798DF /* NoStickersView.swift in Sources */,
 				A9BE30FA2F5B03F400A57668 /* Sticker.swift in Sources */,
 				A98C51C0301D2925006CB5A9 /* GifManager.swift in Sources */,
+				A9DB1DCD303DBAF30007C177 /* CGFloat.swift in Sources */,
 				A9034532301F42DB00EFFFDF /* UIColor.swift in Sources */,
 				A9E8C79B2FF7256B009A38B5 /* EmojiHoarder.Packs.swift in Sources */,
 				A986A6CD2EB659E000B6E0FA /* MessagesAppViewController.swift in Sources */,
@@ -831,6 +838,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9DB1DCB303DBAF30007C177 /* CGFloat.swift in Sources */,
 				A99C4B8E2FF2E8D30070CBA5 /* TabbedContentView.swift in Sources */,
 				A9034536301FC41600EFFFDF /* EmojiPackImporterViewController.swift in Sources */,
 				A9D53AEA2FFB0272001C1BB9 /* EmojiPackManagerController.swift in Sources */,

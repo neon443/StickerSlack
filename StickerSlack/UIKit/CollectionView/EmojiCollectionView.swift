@@ -167,10 +167,16 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 	@objc
 	func updateAnimation() {
 		let t = Date().timeIntervalSince(initDate)
-		let angle = ((sin(t*20)*4)/360)*2*CGFloat.pi
+		let animFrac = sin(t*20)
+		let mult = 6.0
 		
 		for cell in collectionView.visibleCells {
-			cell.transform = CGAffineTransform(rotationAngle: angle)
+			guard let index = collectionView.indexPath(for: cell)?.row else { continue }
+			if index % 2 == 0 {
+				cell.transform = CGAffineTransform(rotationAngle: CGFloat(0 + (0.5 * animFrac)).rad() * mult)
+			} else {
+				cell.transform = CGAffineTransform(rotationAngle: CGFloat(0 - (0.5 * animFrac)).rad() * mult)
+			}
 		}
 	}
 	
