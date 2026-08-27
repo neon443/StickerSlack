@@ -220,7 +220,7 @@ class EmojiPackListView: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-		print(tableView, sourceIndexPath, destinationIndexPath)
+		self.emojiHoarder.moveEmojiPack(from: sourceIndexPath, to: destinationIndexPath)
 	}
 	
 	override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

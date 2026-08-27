@@ -69,4 +69,10 @@ extension EmojiHoarder {
 		}
 		saveEmojiPacks()
 	}
+	
+	func moveEmojiPack(from: IndexPath, to: IndexPath) {
+		let removed = emojiPacks.remove(at: from.row)
+		emojiPacks.insert(removed, at: to.row)
+		saveEmojiPacks()
+	}
 }
