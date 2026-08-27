@@ -53,6 +53,15 @@ class BrowseViewController: UINavigationController {
 	}
 	
 	@objc func shuffle() {
+		guard let tableView = self.tableView.tableView else { return }
+		let safeAreaInsets = tableView.safeAreaInsets
+		tableView.setContentOffset(
+			CGPoint(
+				x: CGFloat(-safeAreaInsets.left),
+				y: CGFloat(-safeAreaInsets.top)
+			),
+			animated: true
+		)
 		self.refreshUI(withItems: getItems().shuffled())
 	}
 }

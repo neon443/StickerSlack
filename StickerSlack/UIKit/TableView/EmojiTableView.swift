@@ -79,6 +79,8 @@ final class EmojiTableView: UITableViewController {
 		guard let emoji = hoarder.trie.dict[itemIdentifier] else { return cell }
 		
 		cell.configure(with: hoarder, emoji: emoji)
+		tableView.separatorInset = UIEdgeInsets(top: 0, left: cell.bounds.height + 8, bottom: 0, right: 16)
+		
 		return cell
 	}
 	
