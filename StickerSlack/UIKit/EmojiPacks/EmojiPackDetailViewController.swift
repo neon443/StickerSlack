@@ -89,11 +89,15 @@ class EmojiPackDetailViewController: UIViewController {
 		countLabel.textAlignment = .center
 		self.effectView = UIVisualEffectView(effect: nil)
 		self.view.addSubview(effectView)
+		var effect: UIVisualEffect
 		if #available(iOS 19, *) {
 			let glassEffect = UIGlassEffect()
 			glassEffect.isInteractive = true
-			effectView.effect = glassEffect
+			effect = glassEffect
+		} else {
+			effect = UIBlurEffect(style: .systemThinMaterial)
 		}
+		effectView.effect = effect
 		effectView.layer.masksToBounds = true
 		effectView.clipsToBounds = true
 		effectView.contentView.addSubview(countLabel)

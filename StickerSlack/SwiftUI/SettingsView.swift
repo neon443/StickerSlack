@@ -192,6 +192,8 @@ struct SettingsView: View {
 				}
 				//			Section(content: <#T##() -> View#>, header: <#T##() -> View#>, footer: <#T##() -> View#>)
 			}
+			.navigationTitle("Settings")
+			.navigationBarTitleDisplayMode(.inline)
 		}
     }
 }
