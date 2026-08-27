@@ -258,6 +258,7 @@ class EmojiPackDetailViewController: UIViewController {
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		effectView.layer.cornerRadius = effectView.bounds.height/2
+		collectionView.collectionView.contentInset.bottom = 8 + effectView.frame.height
 	}
 	
 	

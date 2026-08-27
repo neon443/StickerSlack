@@ -126,6 +126,16 @@ class EmojiPackListView: UITableViewController {
 		self.tableView.reloadData()
 	}
 	
+	func refreshDownloadIndicator(forCell cell: UITableViewCell, withPack pack: EmojiPack) {
+		if pack.allDownloaded(in: emojiHoarder) {
+			var dlImage = UIImage(systemName: "arrow.down.circle.fill")
+			dlImage = dlImage!.applyingSymbolConfiguration(.init(hierarchicalColor: .systemGray))
+			cell.accessoryView = UIImageView(image: dlImage)
+		} else {
+			cell.accessoryView = nil
+		}
+	}
+	
 	override func viewDidLoad() {
 		self.tableView.allowsMultipleSelectionDuringEditing = true
 		self.navigationItem.title = "Packs"
@@ -182,7 +192,11 @@ class EmojiPackListView: UITableViewController {
 		
 		content.text = pack.name
 		content.secondaryText = pack.description
+		
 		cell.contentConfiguration = content
+		
+		refreshDownloadIndicator(forCell: cell, withPack: pack)
+		
 		return cell
 	}
 	
@@ -201,7 +215,16 @@ class EmojiPackListView: UITableViewController {
 		updateMultiDeleteButton()
 	}
 	
+	override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+		return true
+	}
+	
+	override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+		print(tableView, sourceIndexPath, destinationIndexPath)
+	}
+	
 	override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+		guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
 		guard let pack = self.packFor(indexPath: indexPath) else { return nil }
 		
 		if let selectedRows = self.tableView.indexPathsForSelectedRows,
@@ -242,6 +265,7 @@ class EmojiPackListView: UITableViewController {
 					} else {
 						await pack.downloadAll(hoarder: self.emojiHoarder)
 					}
+					self.refreshDownloadIndicator(forCell: cell, withPack: pack)
 				}
 			}
 			let submenu = UIMenu(options: .displayInline, children: [rename, duplicate, share])
@@ -289,5 +313,4 @@ class EmojiPackListView: UITableViewController {
 		share.image = UIImage(systemName: "square.and.arrow.up")
 		return UISwipeActionsConfiguration(actions: [delete, rename, share])
 	}
-	
 }

@@ -10,14 +10,12 @@ import UIKit
 
 class EmojiPackImporterViewController: UINavigationController {
 	var emojiHoarder: EmojiHoarder
-	var pack: EmojiPack
 	var packView: EmojiPackDetailViewController
 	var addButton: UIButton
 	var cancelButton: UIButton
 	
 	init(emojiHoarder: EmojiHoarder, pack: EmojiPack) {
 		self.emojiHoarder = emojiHoarder
-		self.pack = pack
 		self.packView = EmojiPackDetailViewController(with: emojiHoarder, andPack: pack)
 		
 		var config: UIButton.Configuration
@@ -70,16 +68,12 @@ class EmojiPackImporterViewController: UINavigationController {
 	}
 	
 	@objc func add() {
-		emojiHoarder.addEmojiPack(pack)
+		emojiHoarder.addEmojiPack(packView.pack)
 		emojiHoarder.sendChangeNotif(for: .packs)
 		dismiss(animated: true)
 	}
 	
 	@objc func cancel() {
 		dismiss(animated: true)
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
 	}
 }

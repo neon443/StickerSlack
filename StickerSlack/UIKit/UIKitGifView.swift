@@ -37,18 +37,6 @@ class UIKitGifView: UIImageView {
 	nonisolated func render(data: Data) async -> UIImage {
 		return await Task.detached(priority: .userInitiated) {
 			return GifManager.uiImageFrom(data: data) ?? UIImage(systemName: "xmark")!
-			
-//			let size = image.size
-//			guard size.width > 0 && size.height > 0 else { return image }
-//			
-//			let format = UIGraphicsImageRendererFormat()
-//			format.scale = image.scale
-//			format.opaque = false
-//			
-//			let renderer = UIGraphicsImageRenderer(size: size, format: format)
-//			return renderer.image { _ in
-//				image.draw(at: .zero)
-//			}
 		}.value
 	}
 }
