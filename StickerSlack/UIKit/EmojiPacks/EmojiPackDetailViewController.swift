@@ -59,10 +59,12 @@ class EmojiPackDetailViewController: UIViewController {
 		collectionView.onRemove = { removedItem in
 			self.pack.items = self.collectionView.items
 			self.refreshUI()
+			self.hoarder.updateEmojiPack(self.pack)
 		}
 		collectionView.onInternalMove = {
 			self.pack.items = self.collectionView.items
 			self.refreshUI()
+			self.hoarder.updateEmojiPack(self.pack)
 		}
 		
 		collectionView.addChild(emptyCollectionView)
