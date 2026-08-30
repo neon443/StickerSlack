@@ -21,6 +21,7 @@ class DownloadedViewController: UINavigationController, UINavigationControllerDe
 			style: .plainWithMenu
 		)
 		downloadedView.navigationItem.title = "Downloaded"
+		downloadedView.collectionView.dragInteractionEnabled = false
 		super.init(rootViewController: downloadedView)
 		
 		refreshUI()

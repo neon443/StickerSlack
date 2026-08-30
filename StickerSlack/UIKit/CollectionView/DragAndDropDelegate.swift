@@ -16,7 +16,6 @@ extension EmojiCollectionView: UICollectionViewDragDelegate {
 		at indexPath: IndexPath
 	) -> [UIDragItem] {
 		let emojiName = items[indexPath.row]
-		guard let emoji = hoarder.trie.dict[emojiName] else { return [] }
 		
 		let item = NSItemProvider(item: emojiName as NSSecureCoding, typeIdentifier: UTType.utf8PlainText.identifier)
 		

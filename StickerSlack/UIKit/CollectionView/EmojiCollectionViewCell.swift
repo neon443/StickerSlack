@@ -115,4 +115,19 @@ class EmojiCollectionViewCell: PlainEmojiCollectionViewCell {
 		button.isUserInteractionEnabled = false
 		edit = false
 	}
+	
+	override func dragStateDidChange(_ dragState: UICollectionViewCell.DragState) {
+		self.transform = .identity
+		
+		switch dragState {
+		case .none:
+			self.setEdit(to: edit, animated: false)
+		case .lifting:
+			button.alpha = 0
+		case .dragging:
+			button.alpha = 0
+		@unknown default:
+			fatalError()
+		}
+	}
 }

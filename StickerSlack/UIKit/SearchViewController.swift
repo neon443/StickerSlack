@@ -35,6 +35,7 @@ class SearchViewController: UINavigationController, UISearchControllerDelegate, 
 				width: 75,
 				style: .plainWithLabel
 			)
+			(self.resultsView as! EmojiCollectionView).collectionView.dragInteractionEnabled = false
 		} else {
 			self.resultsView = EmojiTableView(hoarder: emojiHoarder, items: [])
 		}
