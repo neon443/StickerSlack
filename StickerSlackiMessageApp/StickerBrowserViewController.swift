@@ -14,7 +14,7 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 	var emojiHoarder: EmojiHoarder!
 	var pack: EmojiPack?
 	var msStickers: [MSSticker] = []
-	var labelStack: UIStackView
+	var labelStack: UIVisualEffectView
 	var labelTitle: UILabel
 	var labelSubTitle: UILabel
 	var emptyView: UIViewController
@@ -25,7 +25,16 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 		
 		self.labelTitle = UILabel()
 		self.labelSubTitle = UILabel()
-		self.labelStack = UIStackView(arrangedSubviews: [labelTitle, labelSubTitle])
+		self.labelStack = UIVisualEffectView(effect: nil)
+		var effect: UIVisualEffect
+		if #available(iOS 19, *) {
+			let glassEffect = UIGlassEffect()
+			glassEffect.isInteractive = true
+			effect = glassEffect
+		} else {
+			effect = UIBlurEffect(style: .systemThinMaterial)
+		}
+		labelStack.effect = effect
 		
 		self.emptyView = UIHostingController(
 			rootView: EmptyCollectionView(
@@ -46,23 +55,23 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		let stack = UIStackView(arrangedSubviews: [labelTitle, labelSubTitle])
+		labelStack.contentView.addSubview(stack)
 		self.view.addSubview(labelStack)
+		stack.translatesAutoresizingMaskIntoConstraints = false
 		labelStack.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate([
+			stack.heightAnchor.constraint(equalTo: labelStack.heightAnchor),
+			stack.widthAnchor.constraint(equalTo: labelStack.widthAnchor),
+			
 			labelStack.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-			labelStack.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+			labelStack.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -4)
 		])
-		labelStack.axis = .vertical
-		labelStack.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).inverted.withAlphaComponent(0.75)
-		labelStack.insetsLayoutMarginsFromSafeArea = false
-		labelStack.layoutMargins = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
-		labelStack.isLayoutMarginsRelativeArrangement = true
+		stack.axis = .vertical
+		stack.insetsLayoutMarginsFromSafeArea = false
+		stack.layoutMargins = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+		stack.isLayoutMarginsRelativeArrangement = true
 		
-		labelStack.layer.cornerCurve = .continuous
-		labelStack.layer.maskedCorners = [
-			.layerMinXMinYCorner,
-			.layerMaxXMinYCorner
-		]
 		labelStack.layer.masksToBounds = true
 		
 		labelTitle.textColor = .white
