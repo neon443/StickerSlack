@@ -18,6 +18,7 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 	var onRemove: ((String) -> Void)?
 	var onTap: ((String) -> Void)?
 	var onEditChange: (() -> Void)?
+	var onInternalMove: (() -> Void)?
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, String>!
 	
@@ -44,6 +45,9 @@ final class EmojiCollectionView: UICollectionViewController, UICollectionViewDel
 		collectionView.register(PlainEmojiCollectionViewCell.self, forCellWithReuseIdentifier: "plain")
 		collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "full")
 		collectionView.delegate = self
+		collectionView.dragInteractionEnabled = true
+		collectionView.dragDelegate = self
+		collectionView.dropDelegate = self
 		
 		self.dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: collectionView) { (
 			collectionView: UICollectionView,

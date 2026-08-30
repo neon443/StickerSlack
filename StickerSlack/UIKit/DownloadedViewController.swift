@@ -23,6 +23,8 @@ class DownloadedViewController: UINavigationController, UINavigationControllerDe
 		downloadedView.navigationItem.title = "Downloaded"
 		super.init(rootViewController: downloadedView)
 		
+		refreshUI()
+		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(downloadedEmojisChanged),
@@ -35,8 +37,12 @@ class DownloadedViewController: UINavigationController, UINavigationControllerDe
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	func refreshUI() {
+		downloadedView.refreshUI(with: emojiHoarder.downloadedStickersArr)
+	}
+	
 	@objc
 	func downloadedEmojisChanged(_ notification: Notification) {
-		downloadedView.refreshUI(with: emojiHoarder.downloadedStickersArr)
+		refreshUI()
 	}
 }

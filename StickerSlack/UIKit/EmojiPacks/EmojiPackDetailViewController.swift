@@ -60,6 +60,10 @@ class EmojiPackDetailViewController: UIViewController {
 			self.pack.items = self.collectionView.items
 			self.refreshUI()
 		}
+		collectionView.onInternalMove = {
+			self.pack.items = self.collectionView.items
+			self.refreshUI()
+		}
 		
 		collectionView.addChild(emptyCollectionView)
 		self.view.addSubview(emptyCollectionView.view)
