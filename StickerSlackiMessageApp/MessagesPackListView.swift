@@ -63,11 +63,11 @@ class MessagesPackListView: UITableViewController {
 		
 		var config = cell.defaultContentConfiguration()
 		config.directionalLayoutMargins = .zero
-		cell.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+		cell.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 8)
 		cell.separatorInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
 		cell.preservesSuperviewLayoutMargins = false
-		config.textProperties.font = UIFont.systemFont(ofSize: 14)
-		config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12)
+		config.textProperties.font = UIFont.preferredFont(forTextStyle: .caption1)
+		config.secondaryTextProperties.font = UIFont.preferredFont(forTextStyle: .caption2)
 		
 		if indexPath.section == 0 {
 			config.text = "All"

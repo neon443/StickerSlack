@@ -91,7 +91,7 @@ class EmojiPackDetailViewController: UIViewController {
 		
 		self.countLabel = UILabel()
 		countLabel.text = "hello default"
-		countLabel.font = UIFont.systemFont(ofSize: 14)
+		countLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
 		countLabel.textAlignment = .center
 		self.effectView = UIVisualEffectView(effect: nil)
 		self.view.addSubview(effectView)
