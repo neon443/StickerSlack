@@ -35,13 +35,13 @@ struct WelcomeView: View {
 					count: UIScreen.main.bounds.width < UIScreen.main.bounds.height ? 2 : 4
 				)
 			) {
-				ListRow(number: 1, text: "Browse or Search", image: Image(uiImage: #imageLiteral(resourceName: "1-browseOrSearch")))
+				ListRow(number: 1, text: "Browse or Search", image: Image("1-browseOrSearch"))
 				ListRow(number: 2, text: "Download", image: Image(systemName: "arrow.down.circle"))
 				ListRow(number: 3, text: "Open iMessage", image: Image(systemName: "message.fill"))
 				ListRow(number: 4, text: "Tap the +", image: Image(systemName: "plus.circle.fill"))
-				ListRow(number: 5, text: "Choose Stickers", image: Image(uiImage: #imageLiteral(resourceName: "stickersIcon")))
-				ListRow(number: 6, text: "Find StickerSlack", image: Image(uiImage: #imageLiteral(resourceName: "iMessageAppIcon")))
-				ListRow(number: 7, text: "Tap a sticker!", image: Image(systemName: "arrow.up.message"))
+				ListRow(number: 5, text: "Choose Stickers", image: Image("stickersIcon"))
+				ListRow(number: 6, text: "Find StickerSlack", image: Image("iMessageAppIcon"))
+				ListRow(number: 7, text: "Tap a sticker!", image: Image(systemName: "arrow.up.circle.fill"))
 			}
 			.padding()
 			.modifier(ScrollContentBackgroundHidden())
