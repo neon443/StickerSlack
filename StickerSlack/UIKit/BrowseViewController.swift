@@ -18,7 +18,7 @@ class BrowseViewController: UINavigationController {
 		super.init(rootViewController: self.tableView)
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(refreshUI),
+			selector: #selector(emojisChanged),
 			name: EmojiHoarder.NotifCategory.emojis.name,
 			object: nil
 		)
@@ -29,14 +29,6 @@ class BrowseViewController: UINavigationController {
 	}
 	
 	override func viewDidLoad() {
-		refreshUI()
-	}
-	
-	func getItems() -> [String] {
-		return emojiHoarder.emojis.map { $0.name }
-	}
-	
-	@objc func refreshUI(withItems items: [String]? = nil) {
 		tableView.navigationItem.title = "Browse"
 		tableView.navigationItem.rightBarButtonItem = UIBarButtonItem(
 			image: UIImage(systemName: "shuffle"),
@@ -44,6 +36,19 @@ class BrowseViewController: UINavigationController {
 			target: self,
 			action: #selector(shuffle)
 		)
+		
+		refreshUI()
+	}
+	
+	@objc func emojisChanged() {
+		self.refreshUI()
+	}
+	
+	func getItems() -> [String] {
+		return emojiHoarder.emojis.map { $0.name }
+	}
+	
+	@objc func refreshUI(withItems items: [String]? = nil) {
 		if let items,
 		   !items.isEmpty {
 			tableView.refreshUI(with: items)

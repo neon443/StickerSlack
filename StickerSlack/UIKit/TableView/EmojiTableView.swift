@@ -88,23 +88,6 @@ final class EmojiTableView: UITableViewController {
 		return items.count
 	}
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		let refreshControl = UIRefreshControl()
-		refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
-		if #available(iOS 10, *) {
-			tableView.refreshControl = refreshControl
-		} else {
-			tableView.backgroundView = refreshControl
-		}
-	}
-	
-	@objc func refresh(_ refreshControl: UIRefreshControl) {
-		hoarder.startLoading(localOnly: false, skipIndex: false)
-		refreshControl.endRefreshing()
-		
-	}
-	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //			<#code#>
 	}
