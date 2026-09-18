@@ -12,6 +12,9 @@ class UIKitGifView: UIImageView {
 	override init(image: UIImage?) {
 		super.init(image: image)
 		self.contentMode = .scaleAspectFit
+		if #available(iOS 17, *) {
+			self.preferredImageDynamicRange = .high
+		}
 	}
 	
 	required init?(coder: NSCoder) {
