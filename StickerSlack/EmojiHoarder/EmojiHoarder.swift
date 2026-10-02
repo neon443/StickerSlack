@@ -169,7 +169,7 @@ class EmojiHoarder: BaseHoarder {
 	nonisolated private func loadRemoteDB() async {
 		async let fetched = self.fetchRemoteDB()
 		if let fetched = await fetched,
-		   fetched != self.emojis {
+		   await fetched != self.emojis {
 			await MainActor.run {
 				withAnimation(.snappy) { self.emojis = fetched }
 				sendChangeNotif(for: .emojis)
