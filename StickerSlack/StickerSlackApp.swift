@@ -5,72 +5,30 @@
 //  Created by neon443 on 15/10/2025.
 //
 
+import UIKit
 import SwiftUI
-
-//@main
-//struct StickerSlackApp: App {
-//	@ObservedObject var emojiHoarder: EmojiHoarder = EmojiHoarder()
-//	@ObservedObject var gifhoarder: GifHoarder = GifHoarder()
-//	
-//	@State var importingEmojiPack: Bool = false
-//	@State var pack: EmojiPack = .new()
-//	
-//	var body: some Scene {
-//		WindowGroup {
-//			ContentView(emojiHoarder: emojiHoarder, gifhoarder: gifhoarder)
-//				.onOpenURL { url in
-//					if let imported = EmojiPack(fromShareLink: url) {
-//						importingEmojiPack = true
-//						pack = imported
-//					}
-//				}
-//				.sheet(isPresented: $importingEmojiPack) {
-//					EmojiPackImporterView(emojiHoarder: emojiHoarder, pack: $pack)
-//				}
-//		}
-//	}
-//}
 
 @main
 class StickerSlackApp: UIResponder, UIApplicationDelegate {
-	var emojiHoarder: EmojiHoarder = .init()
+	static var emojiHoarder: EmojiHoarder = .init()
 	
 	var window: UIWindow?
 	
-	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
-		window = UIWindow(frame: UIScreen.main.bounds)
-		window?.rootViewController = TabbedContentView()
-		(window?.rootViewController! as! TabbedContentView).setupTabs(with: emojiHoarder)
-		window?.makeKeyAndVisible()
-		
-		if emojiHoarder.showWelcome {
-			let welcomeView = UIHostingController(rootView: WelcomeView(emojiHoarder: emojiHoarder))
-			if welcomeView.sheetPresentationController != nil {
-				self.window?.rootViewController?.present(welcomeView, animated: true)
-			}
-		}
-		
+	func application(
+		_ application: UIApplication,
+		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?
+	) -> Bool {
 		return true
 	}
-	
-	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-		guard app.canOpenURL(url) else { return false }
-		guard let rootViewController = window?.rootViewController else { return false }
-
-		guard let imported = EmojiPack(fromShareLink: url) else { return false }
-//		let importView = EmojiPackDetailViewController(with: emojiHoarder, andPack: imported)
-		let importView = EmojiPackImporterViewController(emojiHoarder: emojiHoarder, pack: imported)
-//		let importView = UIHostingController(rootView: EmojiPackImporterView(emojiHoarder: emojiHoarder, pack: .constant(imported)))
 		
-		if let sheet = importView.sheetPresentationController {
-			sheet.detents = [.large()]
-			sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-			sheet.prefersEdgeAttachedInCompactHeight = true
-			sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-			sheet.prefersGrabberVisible = true
-		}
+	func application(
+			_ application: UIApplication,
+			configurationForConnecting connectingSceneSession: UISceneSession,
+			options: UIScene.ConnectionOptions
+	) -> UISceneConfiguration {
+		let config = UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+		config.delegateClass = SceneDelegate.self
 		
-		rootViewController.present(importView, animated: true)
-		return true
+		return config
 	}
 }

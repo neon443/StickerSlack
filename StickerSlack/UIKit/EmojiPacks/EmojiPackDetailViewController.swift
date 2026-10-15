@@ -27,6 +27,8 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	var searchView: SearchViewController
 	
+	var importing: Bool = false
+	
 	init(with hoarder: EmojiHoarder, andPack pack: EmojiPack) {
 		self.hoarder = hoarder
 		self.pack = pack
@@ -138,6 +140,8 @@ class EmojiPackDetailViewController: UIViewController {
 		self.setToolbar()
 		
 		collectionView.onEditChange = { self.setToolbar() }
+		
+		refreshUI()
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -160,16 +164,13 @@ class EmojiPackDetailViewController: UIViewController {
 			textField.text = self.pack.name
 			textField.placeholder = self.pack.name
 		}
-		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-			self.dismiss(animated: true)
-		}))
+		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
 			guard let textField = alert.textFields?.first,
 				  let text = textField.text else { return }
 			self.pack.name = text
 			self.hoarder.updateEmojiPack(self.pack)
 			self.refreshUI()
-			self.dismiss(animated: true)
 		}))
 		alert.preferredAction = alert.actions.last
 		self.present(alert, animated: true)
@@ -260,8 +261,10 @@ class EmojiPackDetailViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		guard let updatedPack = hoarder.emojiPacks.first(where: { $0.id == pack.id }) else { return }
-		self.pack = updatedPack
+		if !importing {
+			guard let updatedPack = hoarder.emojiPacks.first(where: { $0.id == pack.id }) else { return }
+			self.pack = updatedPack
+		}
 		refreshUI()
 	}
 	
