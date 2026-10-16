@@ -14,27 +14,14 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 	var emojiHoarder: EmojiHoarder!
 	var pack: EmojiPack?
 	var msStickers: [MSSticker] = []
-	var labelStack: UIVisualEffectView
-	var labelTitle: UILabel
-	var labelSubTitle: UILabel
+	
+	var toolbar: MessagesToolbarView
+	
 	var emptyView: UIViewController
 	
 	init(emojiHoarder: EmojiHoarder, pack: EmojiPack?) {
 		self.emojiHoarder = emojiHoarder
 		self.pack = pack
-		
-		self.labelTitle = UILabel()
-		self.labelSubTitle = UILabel()
-		self.labelStack = UIVisualEffectView(effect: nil)
-		var effect: UIVisualEffect
-		if #available(iOS 19, *) {
-			let glassEffect = UIGlassEffect()
-			glassEffect.isInteractive = true
-			effect = glassEffect
-		} else {
-			effect = UIBlurEffect(style: .systemThinMaterial)
-		}
-		labelStack.effect = effect
 		
 		self.emptyView = UIHostingController(
 			rootView: EmptyCollectionView(
@@ -44,6 +31,7 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 			)
 		)
 		emptyView.view.tintColor = #colorLiteral(red: 0.7490000129, green: 0.3529999852, blue: 0.949000001, alpha: 1)
+		self.toolbar = MessagesToolbarView()
 		super.init(stickerSize: .small)
 		reload()
 	}
@@ -55,32 +43,32 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		let stack = UIStackView(arrangedSubviews: [labelTitle, labelSubTitle])
-		labelStack.contentView.addSubview(stack)
-		self.view.addSubview(labelStack)
-		stack.translatesAutoresizingMaskIntoConstraints = false
-		labelStack.translatesAutoresizingMaskIntoConstraints = false
+//		let stack = UIStackView(arrangedSubviews: [labelTitle, labelSubTitle])
+//		labelStack.contentView.addSubview(stack)
+		self.view.addSubview(toolbar)
+//		stack.translatesAutoresizingMaskIntoConstraints = false
+		toolbar.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate([
-			stack.heightAnchor.constraint(equalTo: labelStack.heightAnchor),
-			stack.widthAnchor.constraint(equalTo: labelStack.widthAnchor),
+//			stack.heightAnchor.constraint(equalTo: toolbar.heightAnchor),
+//			stack.widthAnchor.constraint(equalTo: toolbar.widthAnchor),
 			
-			labelStack.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-			labelStack.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -4)
+			toolbar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+			toolbar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -4)
 		])
-		stack.axis = .vertical
-		stack.insetsLayoutMarginsFromSafeArea = false
-		stack.layoutMargins = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
-		stack.isLayoutMarginsRelativeArrangement = true
+//		stack.axis = .vertical
+//		stack.insetsLayoutMarginsFromSafeArea = false
+//		stack.layoutMargins = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+//		stack.isLayoutMarginsRelativeArrangement = true
 		
-		labelStack.layer.masksToBounds = true
+		toolbar.layer.masksToBounds = true
 		
-		labelTitle.textColor = .white
-		labelTitle.font = UIFont.preferredFont(forTextStyle: .subheadline)
-		labelTitle.textAlignment = .center
-		
-		labelSubTitle.textColor = .white
-		labelSubTitle.font = UIFont.preferredFont(forTextStyle: .caption1)
-		labelSubTitle.textAlignment = .center
+//		labelTitle.textColor = .white
+//		labelTitle.font = UIFont.preferredFont(forTextStyle: .subheadline)
+//		labelTitle.textAlignment = .center
+//		
+//		labelSubTitle.textColor = .white
+//		labelSubTitle.font = UIFont.preferredFont(forTextStyle: .caption1)
+//		labelSubTitle.textAlignment = .center
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -90,16 +78,17 @@ class StickerBrowserViewController: MSStickerBrowserViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		labelStack.layer.cornerRadius = labelStack.frame.height/4
+		toolbar.labelView.layer.cornerRadius = toolbar.labelView.frame.height/4
+		toolbar.goButton.layer.cornerRadius = toolbar.labelView.frame.height/4
 	}
 	
 	@objc func reload() {
-		UIView.transition(with: labelStack, duration: 0.25, options: [.transitionCrossDissolve, .allowUserInteraction]) {
-			self.labelTitle.text = self.pack?.name ?? "All Downloaded"
-			self.labelSubTitle.text = self.pack?.downloadedDescription(self.emojiHoarder) ??
+		UIView.transition(with: toolbar.labelView, duration: 0.25, options: [.transitionCrossDissolve, .allowUserInteraction]) {
+			self.toolbar.labelTitle.text = self.pack?.name ?? "All Downloaded"
+			self.toolbar.labelSubTitle.text = self.pack?.downloadedDescription(self.emojiHoarder) ??
 			"\(self.emojiHoarder.downloadedStickers.count) emoji\(self.emojiHoarder.downloadedStickers.count.plural)"
 
-			self.view.layoutIfNeeded()
+			self.toolbar.layoutIfNeeded()
 		}
 		msStickers = []
 		let names: [String]
